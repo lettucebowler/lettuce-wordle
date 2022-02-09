@@ -7,7 +7,7 @@ services:
     environment:
       - NODE_ENV=production
     volumes:
-      - ./build/:/home/node/app
+      - /home/lettucebowler/repo/lettuce-wordle/:/home/node/app
     expose:
       - "3000"
-    command: "npm start"
+    command: "npm run dev"
