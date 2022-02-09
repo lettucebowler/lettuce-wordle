@@ -1,0 +1,23 @@
+{
+  "0 debug pnpm:scope": {
+    "selected": 1
+  },
+  "1 info pnpm": {
+    "err": {
+      "name": "Error",
+      "message": "not found: instlal",
+      "code": "ENOENT",
+      "stack": "Error: not found: instlal\n    at getNotFoundError (/home/lettucebowler/.nvm/versions/node/v17.3.0/lib/node_modules/pnpm/dist/pnpm.cjs:41440:51)\n    at Function.whichSync [as sync] (/home/lettucebowler/.nvm/versions/node/v17.3.0/lib/node_modules/pnpm/dist/pnpm.cjs:41517:13)\n    at getCommandAbsolutePathSync (/home/lettucebowler/.nvm/versions/node/v17.3.0/lib/node_modules/pnpm/dist/pnpm.cjs:43082:44)\n    at default_1 (/home/lettucebowler/.nvm/versions/node/v17.3.0/lib/node_modules/pnpm/dist/pnpm.cjs:43091:32)\n    at /home/lettucebowler/.nvm/versions/node/v17.3.0/lib/node_modules/pnpm/dist/pnpm.cjs:179675:39"
+    }
+  },
+  "2 error pnpm": {
+    "code": "ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL",
+    "prefix": "/home/lettucebowler/repo/sudoku-svelte",
+    "err": {
+      "name": "pnpm",
+      "message": "not found: instlal",
+      "code": "ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL",
+      "stack": "Error: not found: instlal\n    at getNotFoundError (/home/lettucebowler/.nvm/versions/node/v17.3.0/lib/node_modules/pnpm/dist/pnpm.cjs:41440:51)\n    at Function.whichSync [as sync] (/home/lettucebowler/.nvm/versions/node/v17.3.0/lib/node_modules/pnpm/dist/pnpm.cjs:41517:13)\n    at getCommandAbsolutePathSync (/home/lettucebowler/.nvm/versions/node/v17.3.0/lib/node_modules/pnpm/dist/pnpm.cjs:43082:44)\n    at default_1 (/home/lettucebowler/.nvm/versions/node/v17.3.0/lib/node_modules/pnpm/dist/pnpm.cjs:43091:32)\n    at /home/lettucebowler/.nvm/versions/node/v17.3.0/lib/node_modules/pnpm/dist/pnpm.cjs:179675:39"
+    }
+  }
+}
