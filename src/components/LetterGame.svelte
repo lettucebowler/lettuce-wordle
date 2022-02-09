@@ -1,10 +1,11 @@
-<script lang="typescript">
+<script lang="ts">
     import LetterGrid from '../components/LetterGrid.svelte';
-    const answer = 'frame';
-    const words = [
+    export let answer = 'guide';
+    let success = false;
+    let words = [
         {
             complete: false,
-            word: 'frame',
+            word: '',
         },
         {
             complete: false,
@@ -52,60 +53,66 @@
         const statuses = word.word.padEnd(5).split('').map((l, i) => {
             return {letter: l, status: getLetterStatus(l, i, answer, word.complete)}
         });
+        const win = statuses.filter((s) => {
+            return s.status === 'correct'
+        }).length === 5;
+        if (win) {
+            success = true;
+        }
         return {
             complete: word.complete,
             word: statuses,
         }
     });
 
+    $: console.log(data);
+
+    $: console.log(success);
+
     const handleKeyPress = (event: { key: string }) => {
-		const actions = {
-			0() {
-				boardList = doMove(board, selectedRow, selectedCol, 0);
-			},
-			1() {
-				boardList = doMove(board, selectedRow, selectedCol, 1);
-			},
-			2() {
-				boardList = doMove(board, selectedRow, selectedCol, 2);
-			},
-			3() {
-				boardList = doMove(board, selectedRow, selectedCol, 3);
-			},
-			4() {
-				boardList = doMove(board, selectedRow, selectedCol, 4);
-			},
-			5() {
-				boardList = doMove(board, selectedRow, selectedCol, 5);
-			},
-			6() {
-				boardList = doMove(board, selectedRow, selectedCol, 6);
-			},
-			7() {
-				boardList = doMove(board, selectedRow, selectedCol, 7);
-			},
-			8() {
-				boardList = doMove(board, selectedRow, selectedCol, 8);
-			},
-			9() {
-				boardList = doMove(board, selectedRow, selectedCol, 9);
-			},
-			ArrowUp() {
-				moveSelection(-1, 0);
-			},
-			ArrowDown() {
-				moveSelection(1, 0);
-			},
-			ArrowLeft() {
-				moveSelection(0, -1);
-			},
-			ArrowRight() {
-				moveSelection(0, 1);
-			}
-		};
 		const { key } = event;
+
+        if (success) {
+            return;
+        }
+
+        if (key === 'Enter') {
+            const complete = words.filter((word) => word.complete);
+            const incomplete = words.filter((word) => !word.complete);
+            const [word] = incomplete;
+            if (word) {
+                if (word.word.length === 5) {
+                    word.complete = true;
+                }
+            }
+            words = complete.concat(incomplete);
+        } else if (key === 'Backspace') {
+            const complete = words.filter((word) => word.complete);
+            const incomplete = words.filter((word) => !word.complete);
+            let [word, ...rest] = incomplete;
+            if (word) {
+                let w = word.word.split('');
+                w.pop();
+                word.word = w.join('');
+            }
+            words = complete.concat([word]).concat(rest);
+        }
+
+        else if (key.match(/[a-z]/i)) {
+            const complete = words.filter((word) => word.complete);
+            const incomplete = words.filter((word) => !word.complete);
+            let [current, ...rest] = incomplete;
+            if (!current) {
+                return;
+            }
+            let {word} = current;
+            if (word?.length < 5) {
+                word = `${word}${key}`;
+            }
+            current = {...current, word};
+            words = complete.concat([current]).concat(rest);
+        }
         console.log(key);
-		actions[key] && actions[key]();
 	};
 
 </script>
