@@ -65,10 +65,6 @@
         }
     });
 
-    $: console.log(data);
-
-    $: console.log(success);
-
     const handleKeyPress = (event: { key: string }) => {
 		const { key } = event;
 
@@ -98,7 +94,7 @@
             words = complete.concat([word]).concat(rest);
         }
 
-        else if (key.match(/[a-z]/i)) {
+        else if (key.match(/[a-z]/i) && key.length === 1) {
             const complete = words.filter((word) => word.complete);
             const incomplete = words.filter((word) => !word.complete);
             let [current, ...rest] = incomplete;
