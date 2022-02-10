@@ -1,12 +1,14 @@
 <script lang="ts">
     import LetterGrid from '../components/LetterGrid.svelte';
-    export let answer = 'chart';
+    import getDailyWord from '../util/getDaillyWord';
+    export let answer = getDailyWord();
     let success = false;
+    let attempt = 0;
     let words = [
         {
             complete: false,
             word: '',
-        },
+        },       
         {
             complete: false,
             word: '',
@@ -73,15 +75,10 @@
         }
 
         if (key === 'Enter') {
-            const complete = words.filter((word) => word.complete);
-            const incomplete = words.filter((word) => !word.complete);
-            const [word] = incomplete;
-            if (word) {
-                if (word.word.length === 5) {
-                    word.complete = true;
-                }
+            if (words[attempt].word.length === 5) {
+                words[attempt].complete = true;
+                attempt++;
             }
-            words = complete.concat(incomplete);
         } else if (key === 'Backspace') {
             const complete = words.filter((word) => word.complete);
             const incomplete = words.filter((word) => !word.complete);
@@ -108,7 +105,6 @@
             current = {...current, word};
             words = complete.concat([current]).concat(rest);
         }
-        console.log(key);
 	};
 
 </script>
