@@ -1,6 +1,6 @@
 <script lang="ts">
     import LetterGrid from '../components/LetterGrid.svelte';
-    export let answer = 'guide';
+    export let answer = 'chart';
     let success = false;
     let words = [
         {
