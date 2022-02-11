@@ -80,7 +80,7 @@
 
     $: attempt === 6 && !success && toastError('You lose.');
 
-    $: attempt <= 5 && success && toastSuccess('Yay you win!');
+    $: success && toastSuccess('Yay you win!');
 
     const processEnterKey = () => {
         const guess = words[attempt].word;
@@ -147,7 +147,7 @@
 <div class="spacing" />
 <LetterGrid data={data}/>
 <SvelteToast />
-{#if attempt > 5}
+{#if attempt > 5 && !success}
     <div class="answer">{answer}</div>
 {/if}
 
