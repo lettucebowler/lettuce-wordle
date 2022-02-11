@@ -1,19 +1,8 @@
-version: "3.8"
+version: '3.9'
+
 services:
-  node:
-    container_name: 'wordle'
-    image: "node:17"
-    user: "node"
-    working_dir: /home/node/app
-    environment:
-      - NODE_ENV=production
-    volumes:
-      - /home/lettucebowler/repo/lettuce-wordle/:/home/node/app
-    expose:
-      - "3000"
-    network_mode: host
-    command: "npm run dev"
-    networks:
-      default:
-        external:
-          name: nginx
+    web:
+        build: ./app
+    adminer:
+        image: adminer
+        restart: always
