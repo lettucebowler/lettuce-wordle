@@ -1,4 +1,18 @@
-# specify the node base image with your desired version node:<version>
-FROM node:17
-# replace this with your application's default port
+FROM node:14.17-alpine
+
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm i --no-optional
+
+COPY . .
+
+RUN npm run build
+
+FROM node:14.17-slim
+
+WORKDIR /app
+COPY --from=0 /app .
+COPY . .
+
 EXPOSE 3000
+CMD ["node", "./build"]
