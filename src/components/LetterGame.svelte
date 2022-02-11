@@ -147,9 +147,17 @@
 <div class="spacing" />
 <LetterGrid data={data}/>
 <SvelteToast />
+{#if attempt > 5}
+    <div class="answer">{answer}</div>
+{/if}
 
 <style>
     .spacing {
 		padding: 16px 0 16px 0;
 	}
+
+    .answer {
+        color: var(--nord-6);
+        font-size: 2rem;
+    }
 </style>
