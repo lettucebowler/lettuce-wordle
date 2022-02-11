@@ -15,23 +15,27 @@
         align-items: center;
         vertical-align: center;
         display: inline-flex;
-        font-size: 2rem;
-        color: white;
+        font-size: 3rem;
+        border-radius: 4px;
+        color: var(--nord-6);
     }
 
     .none {
-        background-color: black;
+        background-color: (--none);
+        border-color: var(--incorrect);
+        border-style: solid;
+        border-width: medium;
     }
 
     .correct {
-        background-color: green;
+        background-color: var(--correct);
     }
 
     .contains {
-        background-color: yellow;
+        background-color: var(--contains);
     }
 
     .incorrect {
-        background-color: grey;
+        background-color: var(--incorrect);
     }
 </style>

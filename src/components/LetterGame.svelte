@@ -1,7 +1,12 @@
 <script lang="ts">
+    import { SvelteToast } from '@zerodevx/svelte-toast'
+    import { toastError, toastSuccess } from '../util/toastActions';
     import LetterGrid from '../components/LetterGrid.svelte';
-    import getDailyWord from '../util/getDaillyWord';
+    import { getDailyWord, isValidWord } from '../util/words';
+
+
     export let answer = getDailyWord();
+    
     let success = false;
     let attempt = 0;
     let words = [
@@ -31,10 +36,16 @@
         }
     ];
 
-    const getLetterStatus = (letter, i, word, complete) => {
+    const containsLetter = (letter: string, index: number, guess: string, answer: string) => {
+        const guessLocations = guess.split('').map((l: string, i: number) => ({letter: l, index: i})).filter((slot) => slot.letter === letter).map((slot) => slot.index);
+        const answerLocations = answer.split('').map((l: string, i: number) => ({letter: l, index: i})).filter((slot) => slot.letter === letter).map((slot) => slot.index).filter((index) => !guessLocations.includes(index));
+        return !!answerLocations.length;
+    }
+
+    const getLetterStatus = (letter, i, word, answer, complete) => {
         const none = !complete || letter === '';
-        const contains = word.split('').includes(letter);
-        const correct = word.split('')[i] === letter;
+        const contains = containsLetter(letter, i, word, answer);
+        const correct = answer.split('')[i] === letter;
 
         if (none) {
             return 'none';
@@ -53,7 +64,7 @@
 
     $: data = words.map((word, i) => {
         const statuses = word.word.padEnd(5).split('').map((l, i) => {
-            return {letter: l, status: getLetterStatus(l, i, answer, word.complete)}
+            return {letter: l, status: getLetterStatus(l, i, word.word, answer, word.complete)}
         });
         const win = statuses.filter((s) => {
             return s.status === 'correct'
@@ -67,6 +78,57 @@
         }
     });
 
+    $: attempt === 6 && !success && toastError('You lose.');
+
+    $: attempt <= 5 && success && toastSuccess('Yay you win!');
+
+    const processEnterKey = () => {
+        const guess = words[attempt].word;
+        const valid = isValidWord(guess);
+        const long = guess.length === 5;
+
+        if (!long) {
+            return toastError('Not enough letters.');
+        } else if (!valid) {
+            return toastError('Not in word list.');
+        } else if (attempt > 5) {
+            return toastError('No more attempts remaining.');
+        }
+
+        words[attempt].complete = true;
+        attempt++;
+    }
+
+    const processBackspaceKey = () => {
+        const complete = words.filter((word) => word.complete);
+        if (complete.length >= 6) {
+            return;
+        }
+        const incomplete = words.filter((word) => !word.complete);
+        let [word, ...rest] = incomplete;
+        if (word) {
+            let w = word.word.split('');
+            w.pop();
+            word.word = w.join('');
+        }
+        words = complete.concat([word]).concat(rest);
+    };
+
+    const processLetterKey = (letter) => {
+        const complete = words.filter((word) => word.complete);
+        const incomplete = words.filter((word) => !word.complete);
+        let [current, ...rest] = incomplete;
+        if (!current) {
+            return;
+        }
+        let {word} = current;
+        if (word?.length < 5) {
+            word = `${word}${letter}`;
+        }
+        current = {...current, word};
+        words = complete.concat([current]).concat(rest);
+    }
+
     const handleKeyPress = (event: { key: string }) => {
 		const { key } = event;
 
@@ -74,37 +136,9 @@
             return;
         }
 
-        if (key === 'Enter') {
-            if (words[attempt].word.length === 5) {
-                words[attempt].complete = true;
-                attempt++;
-            }
-        } else if (key === 'Backspace') {
-            const complete = words.filter((word) => word.complete);
-            const incomplete = words.filter((word) => !word.complete);
-            let [word, ...rest] = incomplete;
-            if (word) {
-                let w = word.word.split('');
-                w.pop();
-                word.word = w.join('');
-            }
-            words = complete.concat([word]).concat(rest);
-        }
-
-        else if (key.match(/[a-z]/i) && key.length === 1) {
-            const complete = words.filter((word) => word.complete);
-            const incomplete = words.filter((word) => !word.complete);
-            let [current, ...rest] = incomplete;
-            if (!current) {
-                return;
-            }
-            let {word} = current;
-            if (word?.length < 5) {
-                word = `${word}${key}`;
-            }
-            current = {...current, word};
-            words = complete.concat([current]).concat(rest);
-        }
+        key === 'Enter' && processEnterKey();
+        key === 'Backspace' && processBackspaceKey();
+        key.match(/[a-z]/i) && key.length === 1 && processLetterKey(key);
 	};
 
 </script>
@@ -112,6 +146,7 @@
 <svelte:window on:keydown={handleKeyPress} />
 <div class="spacing" />
 <LetterGrid data={data}/>
+<SvelteToast />
 
 <style>
     .spacing {

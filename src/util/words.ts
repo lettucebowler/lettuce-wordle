@@ -1,3 +1,5 @@
+import gen from 'random-seed';
+
 const answerList = [
     'aback',
     'abase',
@@ -2315,5 +2317,18 @@ const answerList = [
     'zesty',
     'zonal'
 ];
+
+const getDailyWord = () => {
+    const date = new Date();
+    date.setHours(0, 0, 0, 0);
+    const seed = date.getTime();
+    var random = gen(seed);
+    const index = random(answerList.length);
+    return answerList[index];
+};
+
+const isValidWord = (word: string) => answerList.includes(word);
+
+export {answerList, getDailyWord, isValidWord};
 
 export default answerList;
