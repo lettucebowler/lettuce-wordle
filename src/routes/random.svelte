@@ -1,9 +1,11 @@
 <script>
     import LetterPageContentContainer from '../components/LetterPageContentContainer.svelte';
     import LetterGame from '../components/LetterGame.svelte';
-    import '../app.css'
+    import { getRandomWord } from '../util/getDaillyWord';
+    import '../app.css';
 </script>
 
 <LetterPageContentContainer>
-    <LetterGame />
+    <LetterGame answer={getRandomWord()} />
 </LetterPageContentContainer>
+

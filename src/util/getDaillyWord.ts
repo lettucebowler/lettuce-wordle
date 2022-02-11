@@ -10,4 +10,12 @@ const getDailyWord = () => {
     return wordList[index];
 };
 
+const getRandomWord = () => {
+    var random = gen();
+    const index = random(wordList.length);
+    return wordList[index];
+}
+
+export { getDailyWord, getRandomWord };
+
 export default getDailyWord;
