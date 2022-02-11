@@ -1,8 +1,11 @@
-version: '3.9'
+version: '3.3'
 
 services:
-    web:
-        build: ./app
-    adminer:
-        image: adminer
-        restart: always
+  web:
+    build: .
+    container_name: lettuce-wordle
+    restart: unless-stopped
+networks:
+  default:
+    external:
+      name: nginx
