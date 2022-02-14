@@ -1,4 +1,4 @@
-<script lang ts>
+<script lang="ts">
 	import LettuceKey from '../components/LettuceKey.svelte';
 
 	const r1 = [
