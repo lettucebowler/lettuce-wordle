@@ -2,6 +2,7 @@
     import { SvelteToast } from '@zerodevx/svelte-toast'
     import { toastError, toastSuccess } from '../util/toastActions';
     import LetterGrid from '../components/LetterGrid.svelte';
+    import LettuceKeyboard from '../components/LettuceKeyboard.svelte';
     import { getDailyWord, isValidWord } from '../util/words';
 
 
@@ -129,9 +130,7 @@
         words = complete.concat([current]).concat(rest);
     }
 
-    const handleKeyPress = (event: { key: string }) => {
-		const { key } = event;
-
+    const handleKeyPress = (key: string) => {
         if (success) {
             return;
         }
@@ -143,9 +142,11 @@
 
 </script>
 
-<svelte:window on:keydown={handleKeyPress} />
+<svelte:window on:keydown={(event) => handleKeyPress(event.key)} />
 <div class="spacing" />
 <LetterGrid data={data}/>
+<div class="spacing" />
+<LettuceKeyboard on:keyPress={(event) => handleKeyPress(event.detail.key)}/>
 <SvelteToast />
 {#if attempt > 5 && !success}
     <div class="answer">{answer}</div>
