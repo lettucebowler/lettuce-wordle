@@ -242,10 +242,89 @@
 			enabled: false
 		}
 	];
+
+	const r5 = [
+		{
+			key: `Esc`,
+			width: 1,
+			enabled: false
+		},
+		{
+			key: `1`,
+			width: 1,
+			enabled: false
+		},
+		{
+			key: `2`,
+			width: 1,
+			enabled: false
+		},
+		{
+			key: `3`,
+			width: 1,
+			enabled: false
+		},
+		{
+			key: `4`,
+			width: 1,
+			enabled: false
+		},
+		{
+			key: `5`,
+			width: 1,
+			enabled: false
+		},
+		{
+			key: `6`,
+			width: 1,
+			enabled: false
+		},
+		{
+			key: `7`,
+			width: 1,
+			enabled: false
+		},
+		{
+			key: `8`,
+			width: 1,
+			enabled: false
+		},
+		{
+			key: `9`,
+			width: 1,
+			enabled: false
+		},
+		{
+			key: `0`,
+			width: 1,
+			enabled: false
+		},
+		{
+			key: `-`,
+			width: 1,
+			enabled: false
+		},
+		{
+			key: `=`,
+			width: 1,
+			enabled: false
+		},
+		{
+			key: `Backspace`,
+			width: 2,
+			enabled: true
+		}
+	];
 </script>
 
 <div class="border">
 	<div class="board">
+		<div class="r5">
+			{#each r5 as key}
+				<LettuceKey key={key.key} width={key.width} enabled={key.enabled} on:keyPress />
+			{/each}
+		</div>
+
 		<div class="r4">
 			{#each r4 as key}
 				<LettuceKey key={key.key} width={key.width} enabled={key.enabled} on:keyPress />
@@ -306,5 +385,10 @@
 	.r4 {
 		display: grid;
 		grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1.5fr;
+	}
+
+	.r5 {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 2fr;
 	}
 </style>
