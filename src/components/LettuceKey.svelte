@@ -17,8 +17,11 @@
 
 {#if enabled}
 	<div>
-		<button on:click={() => typeKey(key)} style="aspect-ratio: {width}" disabled={!enabled}
-			>{key.toLowerCase()}</button
+		<button
+			on:click={() => typeKey(key)}
+			style="aspect-ratio: {width}"
+			disabled={!enabled}
+		>{key.toLowerCase()}</button
 		>
 	</div>
 {/if}
@@ -28,12 +31,20 @@
 {/if}
 
 <style>
+	.none {
+		background-color: var(--incorrect);
+	}
+
 	.correct {
 		background-color: var(--correct);
 	}
 
 	.contains {
 		background-color: var(--contains);
+	}
+
+	.incorrect {
+		background-color: var(--none);
 	}
 
 	button {
@@ -43,7 +54,7 @@
 		border: solid;
 		border-color: var(--nord-0);
 		background-color: var(--nord-3);
-
+		font-size: 1.5rem;
 		color: var(--nord-6);
 		border-radius: 4px;
 	}

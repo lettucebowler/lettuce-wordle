@@ -21,7 +21,7 @@
 	}
 
 	.none {
-		background-color: (--none);
+		background-color: var(--none);
 		border-color: var(--incorrect);
 		border-style: solid;
 		border-width: medium;
