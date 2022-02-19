@@ -28,7 +28,6 @@
 {/if}
 
 <style>
-
 	.correct {
 		background-color: var(--correct);
 	}

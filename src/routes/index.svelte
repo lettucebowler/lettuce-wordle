@@ -1,17 +1,17 @@
 <script>
-    import LetterPageContentContainer from '../components/LetterPageContentContainer.svelte';
-    import LetterGame from '../components/LetterGame.svelte';
-    import '../app.css';
+	import LetterPageContentContainer from '../components/LetterPageContentContainer.svelte';
+	import LetterGame from '../components/LetterGame.svelte';
+	import '../app.css';
 </script>
 
 <body>
-    <LetterPageContentContainer>
-        <LetterGame />
-    </LetterPageContentContainer>
+	<LetterPageContentContainer>
+		<LetterGame />
+	</LetterPageContentContainer>
 </body>
 
 <style>
-    body {
-        background-color: var(--nord-0);
-    }
+	body {
+		background-color: var(--nord-0);
+	}
 </style>

@@ -6,13 +6,13 @@
 </script>
 
 <body>
-    <LetterPageContentContainer>
+	<LetterPageContentContainer>
 		<LetterGame answer={getRandomWord()} />
 	</LetterPageContentContainer>
 </body>
 
 <style>
-    body {
-        background-color: var(--nord-0);
-    }
+	body {
+		background-color: var(--nord-0);
+	}
 </style>

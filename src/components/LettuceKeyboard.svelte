@@ -3,17 +3,17 @@
 
 	const r1 = [
 		{
-			enabled: false,
+			enabled: false
 		},
 		{
 			key: 'Enter',
 			width: 3,
-			enabled: true,
+			enabled: true
 		},
 		{
 			key: 'Backspace',
 			width: 3,
-			enabled: true,
+			enabled: true
 		}
 	];
 
@@ -212,13 +212,13 @@
 	.r2 {
 		width: 100%;
 		display: grid;
-		grid-template-columns: .75fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 2.25fr;
+		grid-template-columns: 0.75fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 2.25fr;
 	}
 
 	.r3 {
 		width: 100%;
 		display: grid;
-		grid-template-columns: .25fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr .75fr;
+		grid-template-columns: 0.25fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 0.75fr;
 	}
 
 	.r4 {
