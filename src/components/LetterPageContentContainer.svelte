@@ -6,6 +6,7 @@
 
 <style>
 	.page {
+		max-width: 100vw;
 		width: 50vh;
 		flex-direction: column;
 		height: 100vh;
@@ -15,7 +16,6 @@
 	}
 
 	.center {
-		background-color: var(--nord-0);
 		margin: 0 0;
 		left: 0;
 		right: 0;

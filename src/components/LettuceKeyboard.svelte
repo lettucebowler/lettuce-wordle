@@ -3,46 +3,24 @@
 
 	const r1 = [
 		{
-			key: 'Control',
-			width: 1.25,
-			enabled: false
+			enabled: false,
 		},
 		{
-			key: 'Super',
-			width: 1.25,
-			enabled: false
+			key: 'Enter',
+			width: 3,
+			enabled: true,
 		},
 		{
-			key: 'Alt',
-			width: 1.25,
-			enabled: false
-		},
-		{
-			key: 'Space',
-			width: 6.25,
-			enabled: false
-		},
-		{
-			key: 'Alt',
-			width: 1.25,
-			enabled: false
-		},
-		{
-			key: 'Super',
-			width: 1.25,
-			enabled: false
-		},
-		{
-			key: 'Control',
-			width: 1.25,
-			enabled: false
+			key: 'Backspace',
+			width: 3,
+			enabled: true,
 		}
 	];
 
 	const r2 = [
 		{
-			key: 'Shift',
-			width: 2.25,
+			key: 'z',
+			width: 1,
 			enabled: false
 		},
 		{
@@ -79,33 +57,13 @@
 			key: 'm',
 			width: 1,
 			enabled: true
-		},
-		{
-			key: ',',
-			width: 1,
-			enabled: false
-		},
-		{
-			key: '.',
-			width: 1,
-			enabled: false
-		},
-		{
-			key: '/',
-			width: 1,
-			enabled: false
-		},
-		{
-			key: 'Shift',
-			width: 2.75,
-			enabled: false
 		}
 	];
 
 	const r3 = [
 		{
-			key: 'Caps',
-			width: 1.75,
+			key: 'a',
+			width: 1,
 			enabled: false
 		},
 		{
@@ -152,30 +110,10 @@
 			key: 'l',
 			width: 1,
 			enabled: true
-		},
-		{
-			key: ';',
-			width: 1,
-			enabled: false
-		},
-		{
-			key: "'",
-			width: 1,
-			enabled: false
-		},
-		{
-			key: 'Enter',
-			width: 2.25,
-			enabled: true
 		}
 	];
 
 	const r4 = [
-		{
-			key: 'Tab',
-			width: 1.5,
-			enabled: false
-		},
 		{
 			key: 'q',
 			width: 1,
@@ -225,106 +163,12 @@
 			key: 'p',
 			width: 1,
 			enabled: true
-		},
-		{
-			key: '[',
-			width: 1,
-			enabled: false
-		},
-		{
-			key: ']',
-			width: 1,
-			enabled: false
-		},
-		{
-			key: '\\',
-			width: 1.5,
-			enabled: false
-		}
-	];
-
-	const r5 = [
-		{
-			key: `Esc`,
-			width: 1,
-			enabled: false
-		},
-		{
-			key: `1`,
-			width: 1,
-			enabled: false
-		},
-		{
-			key: `2`,
-			width: 1,
-			enabled: false
-		},
-		{
-			key: `3`,
-			width: 1,
-			enabled: false
-		},
-		{
-			key: `4`,
-			width: 1,
-			enabled: false
-		},
-		{
-			key: `5`,
-			width: 1,
-			enabled: false
-		},
-		{
-			key: `6`,
-			width: 1,
-			enabled: false
-		},
-		{
-			key: `7`,
-			width: 1,
-			enabled: false
-		},
-		{
-			key: `8`,
-			width: 1,
-			enabled: false
-		},
-		{
-			key: `9`,
-			width: 1,
-			enabled: false
-		},
-		{
-			key: `0`,
-			width: 1,
-			enabled: false
-		},
-		{
-			key: `-`,
-			width: 1,
-			enabled: false
-		},
-		{
-			key: `=`,
-			width: 1,
-			enabled: false
-		},
-		{
-			key: `Backspace`,
-			width: 2,
-			enabled: true
 		}
 	];
 </script>
 
 <div class="border">
 	<div class="board">
-		<div class="r5">
-			{#each r5 as key}
-				<LettuceKey key={key.key} width={key.width} enabled={key.enabled} on:keyPress />
-			{/each}
-		</div>
-
 		<div class="r4">
 			{#each r4 as key}
 				<LettuceKey key={key.key} width={key.width} enabled={key.enabled} on:keyPress />
@@ -356,39 +200,30 @@
 		display: grid;
 		row-gap: 0px;
 
-		grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+		grid-template-rows: 1fr 1fr 1fr;
 	}
 
 	.r1 {
-		aspect-ratio: 16;
 		width: 100%;
 		display: grid;
-
-		grid-template-columns: 1.25fr 1.25fr 1.25fr 6.25fr 1.25fr 1.25fr 1.25fr;
-		grid-template-rows: 1fr;
+		grid-template-columns: 1.25fr 3fr 3fr 2.75fr;
 	}
 
 	.r2 {
 		width: 100%;
-		aspect-ratio: 16;
 		display: grid;
-		grid-template-columns: 9fr 4fr 4fr 4fr 4fr 4fr 4fr 4fr 4fr 4fr 4fr 11fr;
+		grid-template-columns: .75fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 2.25fr;
 	}
 
 	.r3 {
 		width: 100%;
-		aspect-ratio: 16;
 		display: grid;
-		grid-template-columns: 1.75fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 2.25fr;
+		grid-template-columns: .25fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr .75fr;
 	}
 
 	.r4 {
 		display: grid;
-		grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1.5fr;
-	}
-
-	.r5 {
-		display: grid;
-		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 2fr;
+		width: 100%;
+		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 	}
 </style>

@@ -5,6 +5,14 @@
 	import '../app.css';
 </script>
 
-<LetterPageContentContainer>
-	<LetterGame answer={getRandomWord()} />
-</LetterPageContentContainer>
+<body>
+    <LetterPageContentContainer>
+		<LetterGame answer={getRandomWord()} />
+	</LetterPageContentContainer>
+</body>
+
+<style>
+    body {
+        background-color: var(--nord-0);
+    }
+</style>
