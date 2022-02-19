@@ -42,17 +42,17 @@
 		margin: 0 0;
 		border: solid;
 		border-color: var(--nord-0);
-		background-color: var(--nord-2);
+		background-color: var(--nord-3);
 
 		color: var(--nord-6);
 		border-radius: 4px;
 	}
 
 	button:hover {
-		background-color: var(--nord-1);
+		background-color: var(--nord-2);
 	}
 
 	button:active {
-		background-color: var(--nord-0);
+		background-color: var(--nord-1);
 	}
 </style>
