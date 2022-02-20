@@ -26,7 +26,6 @@
 		if (complete.length === 0) {
 			return false;
 		}
-		console.log(last);
 		const guess = last.word.map((l: Letter) => l.letter).join('');
 		return guess === answer;
 	};
@@ -191,7 +190,7 @@
 <div class="spacing" />
 <LettuceKeyboard on:keyPress={(event) => handleKeyPress(event.detail.key)} {keyStatuses} />
 <SvelteToast />
-{#if attempt > 5 && !isSuccess}
+{#if attempt > 5 && !success}
 	<div class="answer">{answer}</div>
 {/if}
 
