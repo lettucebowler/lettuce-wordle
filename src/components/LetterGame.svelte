@@ -18,7 +18,18 @@
 		});
 	}
 
-	const isSuccess = (words) => false;
+	const isSuccess = (words: Word[]) => {
+		
+		const complete = words.filter((w: Word) => w.complete);
+		const [last, ...rest] = complete.reverse();
+		if (complete.length === 0) {
+			return false;
+		}
+		console.log(last);
+		const guess = last.word.map((l: Letter) => l.letter).join('');
+		return guess === answer;
+
+	};
 
 	const containsLetter = (letter: Letter, index: number, guess: string, answer: string) => {
 		const guessLocations = guess
@@ -63,46 +74,6 @@
 			word: lettersWithStatuses,
 		};
 	};
-
-	// const getData = (words) => words.map((word) => {
-	// 	const statuses = word.word
-	// 		.padEnd(5)
-	// 		.split('')
-	// 		.map((l, i) => {
-	// 			return { letter: l, status: getLetterStatus(l, i, word.word, answer, word.complete) };
-	// 		});
-	// 	const win =
-	// 		statuses.filter((s) => {
-	// 			return s.status === 'correct';
-	// 		}).length === 5;
-	// 	if (win) {
-	// 		success = true;
-	// 	}
-	// 	return {
-	// 		complete: word.complete,
-	// 		word: statuses
-	// 	};
-	// });
-
-	// $: data = words.map((word) => {
-	// 	const statuses = word.word
-	// 		.padEnd(5)
-	// 		.split('')
-	// 		.map((l, i) => {
-	// 			return { letter: l, status: getLetterStatus(l, i, word.word, answer, word.complete) };
-	// 		});
-	// 	const win =
-	// 		statuses.filter((s) => {
-	// 			return s.status === 'correct';
-	// 		}).length === 5;
-	// 	if (win) {
-	// 		success = true;
-	// 	}
-	// 	return {
-	// 		complete: word.complete,
-	// 		word: statuses
-	// 	};
-	// });
 
 	const processEnterKey = () => {
 		const guess = words[attempt];
