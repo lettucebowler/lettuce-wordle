@@ -4,101 +4,110 @@
 	import LetterGrid from '../components/LetterGrid.svelte';
 	import LettuceKeyboard from '../components/LettuceKeyboard.svelte';
 	import { getDailyWord, isValidWord } from '../util/words';
+	import type { Letter, Word } from '../types/types';
+	import { Status } from '../types/types';
 
 	export let answer = getDailyWord();
 
-	let success = false;
-	let attempt = 0;
-	let words = [
-		{
-			complete: false,
-			word: ''
-		},
-		{
-			complete: false,
-			word: ''
-		},
-		{
-			complete: false,
-			word: ''
-		},
-		{
-			complete: false,
-			word: ''
-		},
-		{
-			complete: false,
-			word: ''
-		},
-		{
-			complete: false,
-			word: ''
-		}
-	];
+	const words: Word[] = [];
 
-	const containsLetter = (letter: string, index: number, guess: string, answer: string) => {
+	for (const i in [...Array(6).keys()]) {
+		words.push({
+			complete: false,
+			word: Array(5).fill(0).map((): Letter => ({letter: '', status: Status.NONE}))
+		});
+	}
+
+	const isSuccess = (words) => false;
+
+	const containsLetter = (letter: Letter, index: number, guess: string, answer: string) => {
 		const guessLocations = guess
 			.split('')
 			.map((l: string, i: number) => ({ letter: l, index: i }))
-			.filter((slot) => slot.letter === letter)
+			.filter((slot) => slot.letter === letter.letter)
 			.map((slot) => slot.index);
 		const answerLocations = answer
 			.split('')
 			.map((l: string, i: number) => ({ letter: l, index: i }))
-			.filter((slot) => slot.letter === letter)
+			.filter((slot) => slot.letter === letter.letter)
 			.map((slot) => slot.index)
 			.filter((index) => !guessLocations.includes(index));
 		return !!answerLocations.length;
 	};
 
-	const getLetterStatus = (letter, i, word, answer, complete) => {
-		const none = !complete || letter === '';
+	const getLetterStatus = (letter: Letter, i: number, word: string, answer: string, complete: boolean) => {
+		const none = !complete || letter.letter === '';
 		const contains = containsLetter(letter, i, word, answer);
-		const correct = answer.split('')[i] === letter;
+		const correct = answer.split('')[i] === letter.letter;
 
 		if (none) {
-			return 'none';
+			return Status.NONE;
 		}
 
 		if (correct) {
-			return 'correct';
+			return Status.CORRECT;
 		}
 
 		if (contains) {
-			return 'contains';
+			return Status.CONTAINS;
 		}
 
-		return 'incorrect';
+		return Status.INCORRECT;
 	};
 
-	$: data = words.map((word) => {
-		const statuses = word.word
-			.padEnd(5)
-			.split('')
-			.map((l, i) => {
-				return { letter: l, status: getLetterStatus(l, i, word.word, answer, word.complete) };
-			});
-		const win =
-			statuses.filter((s) => {
-				return s.status === 'correct';
-			}).length === 5;
-		if (win) {
-			success = true;
-		}
+	const getLetterStatuses = (w: Word): Word => {
+		const guess = w.word.map((l: Letter) => l.letter).join('');
+		const lettersWithStatuses: Letter[] = w.word.map((l: Letter, i: number) => ({ ...l, status: getLetterStatus(l, i, guess, answer, true)}));
 		return {
-			complete: word.complete,
-			word: statuses
+			complete: true,
+			word: lettersWithStatuses,
 		};
-	});
+	};
 
-	$: attempt === 6 && !success && toastError('You lose.');
+	// const getData = (words) => words.map((word) => {
+	// 	const statuses = word.word
+	// 		.padEnd(5)
+	// 		.split('')
+	// 		.map((l, i) => {
+	// 			return { letter: l, status: getLetterStatus(l, i, word.word, answer, word.complete) };
+	// 		});
+	// 	const win =
+	// 		statuses.filter((s) => {
+	// 			return s.status === 'correct';
+	// 		}).length === 5;
+	// 	if (win) {
+	// 		success = true;
+	// 	}
+	// 	return {
+	// 		complete: word.complete,
+	// 		word: statuses
+	// 	};
+	// });
 
-	$: success && toastSuccess('Yay you win!');
+	// $: data = words.map((word) => {
+	// 	const statuses = word.word
+	// 		.padEnd(5)
+	// 		.split('')
+	// 		.map((l, i) => {
+	// 			return { letter: l, status: getLetterStatus(l, i, word.word, answer, word.complete) };
+	// 		});
+	// 	const win =
+	// 		statuses.filter((s) => {
+	// 			return s.status === 'correct';
+	// 		}).length === 5;
+	// 	if (win) {
+	// 		success = true;
+	// 	}
+	// 	return {
+	// 		complete: word.complete,
+	// 		word: statuses
+	// 	};
+	// });
 
 	const processEnterKey = () => {
-		const guess = words[attempt].word;
+		const guess = words[attempt];
 		const valid = isValidWord(guess);
-		const long = guess.length === 5;
+		const long = guess.word.every((l: Letter) => l.letter !== '');
 
 		if (!long) {
 			return toastError('Not enough letters.');
@@ -108,38 +117,27 @@
 			return toastError('No more attempts remaining.');
 		}
 
-		words[attempt].complete = true;
-		attempt++;
+		words[attempt] = getLetterStatuses(words[attempt]);
 	};
 
 	const processBackspaceKey = () => {
-		const complete = words.filter((word) => word.complete);
-		if (complete.length >= 6) {
+		const incomplete = words.slice(attempt);
+		let [current] = incomplete;
+		const index = 4 - current.word.filter((l: Letter) => l.letter === '').length;
+		if (index < 0) {
 			return;
 		}
-		const incomplete = words.filter((word) => !word.complete);
-		let [word, ...rest] = incomplete;
-		if (word) {
-			let w = word.word.split('');
-			w.pop();
-			word.word = w.join('');
-		}
-		words = complete.concat([word]).concat(rest);
+		words[attempt].word[index].letter = '';
 	};
 
-	const processLetterKey = (letter) => {
-		const complete = words.filter((word) => word.complete);
-		const incomplete = words.filter((word) => !word.complete);
-		let [current, ...rest] = incomplete;
-		if (!current) {
+	const processLetterKey = (key: string) => {
+		const incomplete = words.slice(attempt);
+		let [current] = incomplete;
+		const index = current.word.filter((l: Letter) => l.letter !== '').length;
+		if (index > 4) {
 			return;
 		}
-		let { word } = current;
-		if (word?.length < 5) {
-			word = `${word}${letter}`;
-		}
-		current = { ...current, word };
-		words = complete.concat([current]).concat(rest);
+		words[attempt].word[index].letter = key;
 	};
 
 	const handleKeyPress = (key: string) => {
@@ -151,15 +149,23 @@
 		key === 'Backspace' && processBackspaceKey();
 		key.match(/[a-z]/i) && key.length === 1 && processLetterKey(key);
 	};
+
+	$: attempt = words.filter((w: Word) => w.complete).length;
+
+	$: success = isSuccess(words);
+
+	$: attempt === 6 && !success && toastError('You lose.');
+
+	$: success && toastSuccess('Yay you win!');
 </script>
 
 <svelte:window on:keydown={(event) => handleKeyPress(event.key)} />
 <div class="spacing" />
-<LetterGrid {data} />
+<LetterGrid data={words} />
 <div class="spacing" />
-<LettuceKeyboard on:keyPress={(event) => handleKeyPress(event.detail.key)} />
+<!-- <LettuceKeyboard on:keyPress={(event) => handleKeyPress(event.detail.key)} /> -->
 <SvelteToast />
-{#if attempt > 5 && !success}
+{#if attempt > 5 && !isSuccess}
 	<div class="answer">{answer}</div>
 {/if}
 

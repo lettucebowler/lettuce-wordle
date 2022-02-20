@@ -1,4 +1,5 @@
 import gen from 'random-seed';
+import type { Letter, Word } from 'src/types/types';
 
 const answerList = [
 	'aback',
@@ -2327,7 +2328,7 @@ const getDailyWord = () => {
 	return answerList[index];
 };
 
-const isValidWord = (word: string) => answerList.includes(word);
+const isValidWord = (word: Word) => answerList.includes(word.word.map((l: Letter) => l.letter).join(''));
 
 export { answerList, getDailyWord, isValidWord };
 

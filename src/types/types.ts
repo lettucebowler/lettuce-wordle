@@ -16,3 +16,20 @@ export type CellSelectionEvent = {
 		col: number;
 	};
 };
+
+export enum Status {
+	NONE = "none",
+	CONTAINS = "contains",
+	CORRECT = "correct",
+	INCORRECT = "incorrect"
+};
+
+export type Letter = {
+	letter: string;
+	status: Status;
+};
+
+export type Word = {
+	complete: boolean;
+	word: Letter[];
+};
