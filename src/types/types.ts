@@ -18,11 +18,11 @@ export type CellSelectionEvent = {
 };
 
 export enum Status {
-	NONE = "none",
-	CONTAINS = "contains",
-	CORRECT = "correct",
-	INCORRECT = "incorrect"
-};
+	NONE = 'none',
+	CONTAINS = 'contains',
+	CORRECT = 'correct',
+	INCORRECT = 'incorrect'
+}
 
 export type Letter = {
 	letter: string;

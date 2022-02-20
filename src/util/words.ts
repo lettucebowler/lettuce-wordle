@@ -2328,7 +2328,8 @@ const getDailyWord = () => {
 	return answerList[index];
 };
 
-const isValidWord = (word: Word) => answerList.includes(word.word.map((l: Letter) => l.letter).join(''));
+const isValidWord = (word: Word) =>
+	answerList.includes(word.word.map((l: Letter) => l.letter).join(''));
 
 export { answerList, getDailyWord, isValidWord };
 

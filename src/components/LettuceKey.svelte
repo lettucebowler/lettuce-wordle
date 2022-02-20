@@ -23,8 +23,7 @@
 			on:click={() => typeKey(key)}
 			style="aspect-ratio: {width}"
 			disabled={!enabled}
-			class={status}
-		>{key.toLowerCase()}</button
+			class={status}>{key.toLowerCase()}</button
 		>
 	</div>
 {/if}
@@ -34,7 +33,6 @@
 {/if}
 
 <style>
-
 	div {
 		padding: 2px 2px 2px 2px;
 	}
@@ -59,7 +57,6 @@
 	button:active {
 		/* background-color: var(--nord-1); */
 		filter: brightness(80%);
-
 	}
 
 	.none {

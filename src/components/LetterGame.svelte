@@ -11,24 +11,24 @@
 
 	const words: Word[] = [];
 
-	for (const i in [...Array(6).keys()]) {
+	for (let i = 0; i < 6; i++) {
 		words.push({
 			complete: false,
-			word: Array(5).fill(0).map((): Letter => ({letter: '', status: Status.NONE}))
+			word: Array(5)
+				.fill(0)
+				.map((): Letter => ({ letter: '', status: Status.NONE }))
 		});
 	}
 
 	const isSuccess = (words: Word[]) => {
-		
 		const complete = words.filter((w: Word) => w.complete);
-		const [last, ...rest] = complete.reverse();
+		const [last] = complete.reverse();
 		if (complete.length === 0) {
 			return false;
 		}
 		console.log(last);
 		const guess = last.word.map((l: Letter) => l.letter).join('');
 		return guess === answer;
-
 	};
 
 	const containsLetter = (letter: Letter, index: number, guess: string, answer: string) => {
@@ -46,7 +46,13 @@
 		return !!answerLocations.length;
 	};
 
-	const getLetterStatus = (letter: Letter, i: number, word: string, answer: string, complete: boolean) => {
+	const getLetterStatus = (
+		letter: Letter,
+		i: number,
+		word: string,
+		answer: string,
+		complete: boolean
+	) => {
 		const none = !complete || letter.letter === '';
 		const contains = containsLetter(letter, i, word, answer);
 		const correct = answer.split('')[i] === letter.letter;
@@ -68,11 +74,58 @@
 
 	const getLetterStatuses = (w: Word): Word => {
 		const guess = w.word.map((l: Letter) => l.letter).join('');
-		const lettersWithStatuses: Letter[] = w.word.map((l: Letter, i: number) => ({ ...l, status: getLetterStatus(l, i, guess, answer, true)}));
+		const lettersWithStatuses: Letter[] = w.word.map((l: Letter, i: number) => ({
+			...l,
+			status: getLetterStatus(l, i, guess, answer, true)
+		}));
 		return {
 			complete: true,
-			word: lettersWithStatuses,
+			word: lettersWithStatuses
 		};
+	};
+
+	const getKeyStatuses = (words: Word[]) => {
+		const alphabet = Array.from(Array(26))
+			.map((e, i) => i + 65)
+			.map((x) => String.fromCharCode(x))
+			.map((letter: string) => ({
+				[letter.toLowerCase()]: Status.NONE
+			}))
+			.reduce(function (result, currentObject) {
+				for (var key in currentObject) {
+					result[key] = currentObject[key];
+				}
+				return result;
+			}, {});
+		const letters = words.map((word) => word.word).flat();
+		const correct = letters
+			.filter((letter) => letter.status === Status.CORRECT)
+			.map((l: Letter) => ({ [l.letter]: l.status }))
+			.reduce(function (result, currentObject) {
+				for (var key in currentObject) {
+					result[key] = currentObject[key];
+				}
+				return result;
+			}, {});
+		const contains = letters
+			.filter((letter) => letter.status === Status.CONTAINS)
+			.map((l: Letter) => ({ [l.letter]: l.status }))
+			.reduce(function (result, currentObject) {
+				for (var key in currentObject) {
+					result[key] = currentObject[key];
+				}
+				return result;
+			}, {});
+		const incorrect = letters
+			.filter((letter) => letter.status === Status.INCORRECT)
+			.map((l: Letter) => ({ [l.letter]: l.status }))
+			.reduce(function (result, currentObject) {
+				for (var key in currentObject) {
+					result[key] = currentObject[key];
+				}
+				return result;
+			}, {});
+		return { ...alphabet, ...incorrect, ...contains, ...correct };
 	};
 
 	const processEnterKey = () => {
@@ -128,13 +181,15 @@
 	$: attempt === 6 && !success && toastError('You lose.');
 
 	$: success && toastSuccess('Yay you win!');
+
+	$: keyStatuses = getKeyStatuses(words);
 </script>
 
 <svelte:window on:keydown={(event) => handleKeyPress(event.key)} />
 <div class="spacing" />
 <LetterGrid data={words} />
 <div class="spacing" />
-<!-- <LettuceKeyboard on:keyPress={(event) => handleKeyPress(event.detail.key)} /> -->
+<LettuceKeyboard on:keyPress={(event) => handleKeyPress(event.detail.key)} {keyStatuses} />
 <SvelteToast />
 {#if attempt > 5 && !isSuccess}
 	<div class="answer">{answer}</div>
