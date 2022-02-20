@@ -5,6 +5,8 @@
 	import '../app.css';
 </script>
 
+<meta charset="UTF-8">
+
 <body>
 	<LetterPageContentContainer>
 		<LetterGame answer={getRandomWord()} />

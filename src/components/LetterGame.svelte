@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { SvelteToast } from '@zerodevx/svelte-toast';
+	import CopyClipBoard from '../components/CopyClipboard.svelte';
 	import { toastError, toastSuccess } from '../util/toastActions';
 	import LetterGrid from '../components/LetterGrid.svelte';
 	import LettuceKeyboard from '../components/LettuceKeyboard.svelte';
@@ -127,7 +128,42 @@
 		return { ...alphabet, ...incorrect, ...contains, ...correct };
 	};
 
+	const getStatusEmoji = (status: Status) => {
+		const green = '🟩';
+		const yellow = '🟨';
+		const black = '⬛';
+		switch(status) {
+			case Status.CORRECT:
+				return green;
+			case Status.CONTAINS:
+				return yellow;
+			default:
+				return black;
+		}
+	}
+
+	const shareGame = async () => {
+		if (typeof window !== 'undefined') {
+			if (!success) {
+				return toastError('Cannot share game in progress.');
+			}
+			const gameStatus = words.filter((w: Word) => w.complete).map((w: Word) => (w.word.map((l: Letter) => (getStatusEmoji(l.status)))));
+			const today = `Gradle ${new Date().toLocaleDateString()} ${gameStatus.length}/6`;
+			const strings = gameStatus.map((w) => w.join(''));
+			const share = [today, ...strings].join('\n');
+			const clipBoard = new CopyClipBoard({
+				target: document.getElementById('clipboard'),
+				props: { name: share },
+			});
+			clipBoard.$destroy();
+			toastSuccess('Results copied to clipboard');
+		}
+	}
+
 	const processEnterKey = () => {
+		if (success) {
+			return;
+		}
 		const guess = words[attempt];
 		const valid = isValidWord(guess);
 		const long = guess.word.every((l: Letter) => l.letter !== '');
@@ -144,6 +180,9 @@
 	};
 
 	const processBackspaceKey = () => {
+		if (success) {
+			return;
+		}
 		const incomplete = words.slice(attempt);
 		let [current] = incomplete;
 		const index = 4 - current.word.filter((l: Letter) => l.letter === '').length;
@@ -154,6 +193,9 @@
 	};
 
 	const processLetterKey = (key: string) => {
+		if (success) {
+			return;
+		}
 		const incomplete = words.slice(attempt);
 		let [current] = incomplete;
 		const index = current.word.filter((l: Letter) => l.letter !== '').length;
@@ -164,12 +206,10 @@
 	};
 
 	const handleKeyPress = (key: string) => {
-		if (success) {
-			return;
-		}
-
 		key === 'Enter' && processEnterKey();
 		key === 'Backspace' && processBackspaceKey();
+		console.log(key);
+		key === 'Share' && shareGame();
 		key.match(/[a-z]/i) && key.length === 1 && processLetterKey(key);
 	};
 
@@ -190,6 +230,7 @@
 <div class="spacing" />
 <LettuceKeyboard on:keyPress={(event) => handleKeyPress(event.detail.key)} {keyStatuses} />
 <SvelteToast />
+<div id="clipboard"></div>
 {#if attempt > 5 && !success}
 	<div class="answer">{answer}</div>
 {/if}

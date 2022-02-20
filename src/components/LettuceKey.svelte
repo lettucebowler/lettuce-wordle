@@ -45,6 +45,7 @@
 		border-color: transparent;
 		background-color: var(--nord-3);
 		font-size: 1.5rem;
+		font-weight: 700;
 		color: var(--nord-6);
 		border-radius: 4px;
 	}

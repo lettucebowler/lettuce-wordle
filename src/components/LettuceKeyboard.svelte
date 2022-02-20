@@ -1,6 +1,9 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
 	import { Status } from '../types/types';
 	import LettuceKey from '../components/LettuceKey.svelte';
+
+	const dispatch = createEventDispatcher();
 
 	export let keyStatuses;
 
@@ -10,7 +13,7 @@
 		},
 		{
 			key: 'Enter',
-			width: 3,
+			width: 2,
 			enabled: true
 		},
 		{
@@ -240,6 +243,7 @@
 			{#each r1 as key}
 				<LettuceKey key={key.key} width={key.width} enabled={key.enabled} on:keyPress />
 			{/each}
+			<LettuceKey key="Share" width={2} enabled={true} on:keyPress />
 		</div>
 	</div>
 </div>
@@ -255,7 +259,7 @@
 	.r1 {
 		width: 100%;
 		display: grid;
-		grid-template-columns: 1.25fr 3fr 3fr 2.75fr;
+		grid-template-columns: 1.25fr 2fr 3fr 2fr 1.75fr;
 	}
 
 	.r2 {
