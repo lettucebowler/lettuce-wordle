@@ -8,11 +8,12 @@
 	import type { Letter, Word } from '../types/types';
 	import { Status } from '../types/types';
 
-	export let answer = getDailyWord();
+	// export let answer = getDailyWord();
+	export let answer = 'crepe';
 
 	const words: Word[] = [];
 
-	for (let i = 0; i < 6; i++) {
+	for (let i = 0; i < 6 ; i++) {
 		words.push({
 			complete: false,
 			word: Array(5)
@@ -32,6 +33,7 @@
 	};
 
 	const containsLetter = (letter: Letter, index: number, guess: string, answer: string) => {
+		// IF in word but wrong spot AND all correct instances of that letter are not filled AND there isn't a similar letter ahead in the guess.
 		const guessLocations = guess
 			.split('')
 			.map((l: string, i: number) => ({ letter: l, index: i }))
@@ -41,9 +43,18 @@
 			.split('')
 			.map((l: string, i: number) => ({ letter: l, index: i }))
 			.filter((slot) => slot.letter === letter.letter)
+			.map((slot) => slot.index);
+		const correctCount = guessLocations
+			.filter((location) => answerLocations.includes(location))
+			.length;
+		const previousContainsCount = guess.slice(0, index)
+			.split('')
+			.map((l: string, i: number) => ({ letter: l, index: i }))
+			.filter((slot) => slot.letter === letter.letter)
 			.map((slot) => slot.index)
-			.filter((index) => !guessLocations.includes(index));
-		return !!answerLocations.length;
+			.filter((index) => !answerLocations.includes(index))
+			.length;
+		return correctCount + previousContainsCount < answerLocations.length;
 	};
 
 	const getLetterStatus = (
