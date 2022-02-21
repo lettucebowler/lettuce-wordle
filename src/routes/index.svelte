@@ -5,6 +5,8 @@
 </script>
 
 <meta charset="UTF-8">
+<meta name="description" content="Lettuce Wordle">
+<title>Lettuce Wordle</title>
 
 <body>
 	<LetterPageContentContainer>
