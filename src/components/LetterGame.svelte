@@ -8,8 +8,7 @@
 	import type { Letter, Word } from '../types/types';
 	import { Status } from '../types/types';
 
-	// export let answer = getDailyWord();
-	export let answer = 'crepe';
+	export let answer = getDailyWord();
 
 	const words: Word[] = [];
 
