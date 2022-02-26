@@ -1,5 +1,5 @@
 <script>
-    export let answer;
+	export let answer;
 </script>
 
 <h1>{answer}</h1>

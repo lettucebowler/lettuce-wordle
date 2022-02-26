@@ -6,13 +6,13 @@
 	export let answer: string;
 </script>
 
-<meta charset="UTF-8">
-<meta name="description" content="Lettuce Wordle">
+<meta charset="UTF-8" />
+<meta name="description" content="Lettuce Wordle" />
 <title>Lettuce Wordle</title>
 
 <body>
 	<LetterPageContentContainer>
-		<LetterGame answer={answer} />
+		<LetterGame {answer} />
 	</LetterPageContentContainer>
 </body>
 

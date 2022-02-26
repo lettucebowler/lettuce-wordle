@@ -12,7 +12,7 @@
 
 	const words: Word[] = [];
 
-	for (let i = 0; i < 6 ; i++) {
+	for (let i = 0; i < 6; i++) {
 		words.push({
 			complete: false,
 			word: Array(5)
@@ -43,16 +43,16 @@
 			.map((l: string, i: number) => ({ letter: l, index: i }))
 			.filter((slot) => slot.letter === letter.letter)
 			.map((slot) => slot.index);
-		const correctCount = guessLocations
-			.filter((location) => answerLocations.includes(location))
-			.length;
-		const previousContainsCount = guess.slice(0, index)
+		const correctCount = guessLocations.filter((location) =>
+			answerLocations.includes(location)
+		).length;
+		const previousContainsCount = guess
+			.slice(0, index)
 			.split('')
 			.map((l: string, i: number) => ({ letter: l, index: i }))
 			.filter((slot) => slot.letter === letter.letter)
 			.map((slot) => slot.index)
-			.filter((index) => !answerLocations.includes(index))
-			.length;
+			.filter((index) => !answerLocations.includes(index)).length;
 		return correctCount + previousContainsCount < answerLocations.length;
 	};
 
@@ -142,7 +142,7 @@
 		const green = '🟩';
 		const yellow = '🟨';
 		const black = '⬛';
-		switch(status) {
+		switch (status) {
 			case Status.CORRECT:
 				return green;
 			case Status.CONTAINS:
@@ -150,25 +150,27 @@
 			default:
 				return black;
 		}
-	}
+	};
 
 	const shareGame = async () => {
 		if (typeof window !== 'undefined') {
 			if (!success) {
 				return toastError('Cannot share game in progress.');
 			}
-			const gameStatus = words.filter((w: Word) => w.complete).map((w: Word) => (w.word.map((l: Letter) => (getStatusEmoji(l.status)))));
+			const gameStatus = words
+				.filter((w: Word) => w.complete)
+				.map((w: Word) => w.word.map((l: Letter) => getStatusEmoji(l.status)));
 			const today = `Gradle ${new Date().toLocaleDateString()} ${gameStatus.length}/6`;
 			const strings = gameStatus.map((w) => w.join(''));
 			const share = [today, ...strings].join('\n');
 			const clipBoard = new CopyClipBoard({
 				target: document.getElementById('clipboard'),
-				props: { name: share },
+				props: { name: share }
 			});
 			clipBoard.$destroy();
 			toastSuccess('Results copied to clipboard');
 		}
-	}
+	};
 
 	const processEnterKey = () => {
 		if (success) {
@@ -240,7 +242,7 @@
 <div class="spacing" />
 <LettuceKeyboard on:keyPress={(event) => handleKeyPress(event.detail.key)} {keyStatuses} />
 <SvelteToast />
-<div id="clipboard"></div>
+<div id="clipboard" />
 {#if attempt > 5 && !success}
 	<div class="answer">{answer}</div>
 {/if}

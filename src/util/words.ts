@@ -12976,7 +12976,7 @@ const allowedGuesses = [
 	'zygal',
 	'zygon',
 	'zymes',
-	'zymic',
+	'zymic'
 ];
 
 const getDailyWord = () => {

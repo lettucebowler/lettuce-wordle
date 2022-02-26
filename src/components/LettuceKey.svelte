@@ -6,7 +6,7 @@
 	export let key: string;
 	export let width = 1;
 	export let enabled = true;
-	export let status = Status.NONE;
+	export let status: Status = Status.NONE;
 
 	const dispatch = createEventDispatcher();
 

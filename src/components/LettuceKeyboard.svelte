@@ -1,11 +1,10 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
 	import { Status } from '../types/types';
 	import LettuceKey from '../components/LettuceKey.svelte';
 
-	const dispatch = createEventDispatcher();
-
-	export let keyStatuses;
+	export let keyStatuses: {
+		[x: string]: Status;
+	};
 
 	const r1 = [
 		{
