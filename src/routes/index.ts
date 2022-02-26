@@ -1,4 +1,4 @@
-import { getDailyWord } from '../util/words';
+import { getDailyWord } from '$lib/words';
 
 export async function get() {
 	const answer = getDailyWord();

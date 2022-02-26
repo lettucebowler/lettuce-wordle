@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { SvelteToast } from '@zerodevx/svelte-toast';
 	import CopyClipBoard from '../components/CopyClipboard.svelte';
-	import { toastError, toastSuccess } from '../util/toastActions';
-	import { isValidWord } from '../util/words';
+	import { toastError, toastSuccess } from '$lib/toastActions';
+	import { isValidWord } from '$lib/words';
 	import LetterGrid from '../components/LetterGrid.svelte';
 	import LettuceKeyboard from '../components/LettuceKeyboard.svelte';
 	import type { Letter, Word } from '../types/types';
