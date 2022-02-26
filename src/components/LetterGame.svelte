@@ -2,13 +2,13 @@
 	import { SvelteToast } from '@zerodevx/svelte-toast';
 	import CopyClipBoard from '../components/CopyClipboard.svelte';
 	import { toastError, toastSuccess } from '../util/toastActions';
+	import { isValidWord } from '../util/words';
 	import LetterGrid from '../components/LetterGrid.svelte';
 	import LettuceKeyboard from '../components/LettuceKeyboard.svelte';
-	import { getDailyWord, isValidWord } from '../util/words';
 	import type { Letter, Word } from '../types/types';
 	import { Status } from '../types/types';
 
-	export let answer = getDailyWord();
+	export let answer: string;
 
 	const words: Word[] = [];
 

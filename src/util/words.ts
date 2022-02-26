@@ -12988,9 +12988,15 @@ const getDailyWord = () => {
 	return answerList[index];
 };
 
+const getRandomWord = () => {
+	const random = gen();
+	const index = random(answerList.length);
+	return answerList[index];
+};
+
 const isValidWord = (word: Word) =>
 	answerList.concat(allowedGuesses).includes(word.word.map((l: Letter) => l.letter).join(''));
 
-export { answerList, getDailyWord, isValidWord };
+export { answerList, getDailyWord, isValidWord, getRandomWord };
 
 export default answerList;
