@@ -5,6 +5,8 @@ services:
     build: .
     container_name: lettuce-wordle
     restart: unless-stopped
+    environment:
+      - TZ=Asia/Singapore
 networks:
   default:
     external:
