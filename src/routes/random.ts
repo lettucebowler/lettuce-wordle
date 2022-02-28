@@ -1,4 +1,4 @@
-import { getRandomWord } from '$lib/words';
+import { getRandomWord } from '$lib/util/words';
 
 export async function get() {
 	const answer = getRandomWord();

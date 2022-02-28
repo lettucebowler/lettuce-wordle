@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { Status } from '../types/types';
-	import LettuceKey from '../components/LettuceKey.svelte';
+	import { Status } from '$lib/types/types';
+	import LettuceKey from '$lib/components/LettuceKey.svelte';
 
 	export let keyStatuses: {
 		[x: string]: Status;

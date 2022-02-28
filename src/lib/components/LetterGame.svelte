@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { SvelteToast } from '@zerodevx/svelte-toast';
-	import CopyClipBoard from '../components/CopyClipboard.svelte';
-	import { toastError, toastSuccess } from '$lib/toastActions';
-	import { isValidWord } from '$lib/words';
-	import LetterGrid from '../components/LetterGrid.svelte';
-	import LettuceKeyboard from '../components/LettuceKeyboard.svelte';
+	import CopyClipBoard from '$lib/components/CopyClipboard.svelte';
+	import { toastError, toastSuccess } from '$lib/util/toastActions';
+	import { isValidWord } from '$lib/util/words';
+	import LetterGrid from '$lib/components/LetterGrid.svelte';
+	import LettuceKeyboard from '$lib/components/LettuceKeyboard.svelte';
 	import type { Letter, Word } from '../types/types';
-	import { Status } from '../types/types';
+	import { Status } from '$lib/types/types';
 
 	export let answer: string;
 

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import LetterPageContentContainer from '../components/LetterPageContentContainer.svelte';
-	import LetterGame from '../components/LetterGame.svelte';
-	import '../app.css';
+	import LetterPageContentContainer from '$lib/components/LetterPageContentContainer.svelte';
+	import LetterGame from '$lib/components/LetterGame.svelte';
+	import '$lib/styles/app.css';
 
 	export let answer: string;
 </script>

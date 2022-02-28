@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { Status } from '../types/types';
-	import '../app.css';
+	import '$lib/styles/app.css';
 
 	export let key: string;
 	export let width = 1;

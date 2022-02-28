@@ -1,5 +1,5 @@
 import gen from 'random-seed';
-import type { Letter, Word } from 'src/types/types';
+import type { Letter, Word } from '$lib/types/types';
 
 const answerList = [
 	'aback',
