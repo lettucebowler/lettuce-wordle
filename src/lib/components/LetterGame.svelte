@@ -8,7 +8,7 @@
 	import type { Letter, Word } from '../types/types';
 	import { Status } from '$lib/types/types';
 
-	export let answer: string = 'crepe';
+	export let answer: string;
 
 	const words: Word[] = [];
 
@@ -45,8 +45,9 @@
 		const correctCount = guessLocations.filter((location) =>
 			answerLocations.includes(location)
 		).length;
-		const previousContainsCount = getLetterLocations(guess.slice(0, index), letter.letter)
-			.filter((index) => !answerLocations.includes(index)).length;
+		const previousContainsCount = getLetterLocations(guess.slice(0, index), letter.letter).filter(
+			(index) => !answerLocations.includes(index)
+		).length;
 		return correctCount + previousContainsCount < answerLocations.length;
 	};
 
@@ -106,20 +107,20 @@
 			.map((word) => word.word)
 			.flat()
 			.map((l) => JSON.stringify(l));
-		const letters: Letter[]  = Array.from(new Set(letterStrings)).map((s: string) => JSON.parse(s));
+		const letters: Letter[] = Array.from(new Set(letterStrings)).map((s: string) => JSON.parse(s));
 		const correctList = letters
 			.filter((letter) => letter.status === Status.CORRECT)
 			.map((l: Letter) => ({ [l.letter]: l.status }));
-		const correct: {[x: string]: Status} = Object.assign({}, ...correctList);
+		const correct: { [x: string]: Status } = Object.assign({}, ...correctList);
 		const containsList = letters
 			.filter((letter) => letter.status === Status.CONTAINS)
 			.map((l: Letter) => ({ [l.letter]: l.status }));
-		const contains: {[x: string]: Status} = Object.assign({}, ...containsList);
+		const contains: { [x: string]: Status } = Object.assign({}, ...containsList);
 		const incorrectList = letters
 			.filter((letter) => letter.status === Status.INCORRECT)
 			.map((l: Letter) => ({ [l.letter]: l.status }));
-		const incorrect: {[x: string]: Status} = Object.assign({}, ...incorrectList);
-		
+		const incorrect: { [x: string]: Status } = Object.assign({}, ...incorrectList);
+
 		return { ...alphabet, ...incorrect, ...contains, ...correct };
 	};
 
