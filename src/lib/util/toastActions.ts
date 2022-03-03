@@ -6,7 +6,7 @@ const toastTheme = {
 	'--toastBarBackground': 'var(--nord-4)'
 };
 
-const toastError = (message) => {
+const toastError = (message: string) => {
 	toast.push(message, {
 		theme: {
 			'--toastBackground': 'var(--nord-11)',
@@ -15,7 +15,7 @@ const toastError = (message) => {
 	});
 };
 
-const toastSuccess = (message) => {
+const toastSuccess = (message: string) => {
 	toast.push(message, {
 		theme: {
 			'--toastBackground': 'var(--nord-14)',

@@ -1,7 +1,6 @@
-import gen from 'random-seed';
 import type { Letter, Word } from '$lib/types/types';
 
-const answerList = [
+export const answerList = [
 	'aback',
 	'abase',
 	'abate',
@@ -2319,7 +2318,7 @@ const answerList = [
 	'zonal'
 ];
 
-const allowedGuesses = [
+export const allowedGuesses = [
 	'aahed',
 	'aalii',
 	'aargh',
@@ -12979,24 +12978,34 @@ const allowedGuesses = [
 	'zymic'
 ];
 
-const getDailyWord = () => {
+const mulberry32 = (a: any) => {
+    return function() {
+      var t = a += 0x6D2B79F5;
+      t = Math.imul(t ^ t >>> 15, t | 1);
+      t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    }
+}
+
+const getWord = (random: Function) => {
+	return answerList[Math.floor(random() * answerList.length)];
+}
+
+export const getDailyWord = () => {
 	const date = new Date();
 	date.setHours(0, 0, 0, 0);
 	const seed = date.getTime();
-	const random = gen(seed);
-	const index = random(answerList.length);
-	return answerList[index];
+	const random = mulberry32(seed);
+	return getWord(random);
 };
 
-const getRandomWord = () => {
-	const random = gen();
-	const index = random(answerList.length);
-	return answerList[index];
+export const getRandomWord = () => {
+	const seed = new Date().getTime();
+	const random = mulberry32(seed);
+	return getWord(random);
 };
 
-const isValidWord = (word: Word) =>
+export const isValidWord = (word: Word) =>
 	answerList.concat(allowedGuesses).includes(word.word.map((l: Letter) => l.letter).join(''));
-
-export { answerList, getDailyWord, isValidWord, getRandomWord };
 
 export default answerList;
