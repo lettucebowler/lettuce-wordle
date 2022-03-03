@@ -1,7 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
-  '@sveltejs/adapter-node': ^1.0.0-next.70
+  '@sveltejs/adapter-node': next
   '@sveltejs/adapter-static': next
   '@sveltejs/kit': next
   '@typescript-eslint/eslint-plugin': ^5.13.0
