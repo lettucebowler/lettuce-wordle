@@ -1,14 +1,18 @@
-FROM node:17
+FROM node:16
 
 WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm i --no-optional
+COPY package.json pnpm-lock.yaml ./
+
+
+RUN curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm
+RUN pnpm install
+
 
 COPY . .
 
 RUN npm run build
 
-FROM node:17-slim
+FROM node:16-slim
 
 WORKDIR /app
 COPY --from=0 /app .
