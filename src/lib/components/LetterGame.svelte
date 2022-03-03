@@ -8,7 +8,7 @@
 	import type { Letter, Word } from '../types/types';
 	import { Status } from '$lib/types/types';
 
-	export let answer: string;
+	export let answer: string = 'crepe';
 
 	const words: Word[] = [];
 
@@ -31,27 +31,21 @@
 		return guess === answer;
 	};
 
+	const getLetterLocations = (s: string, l: string) => {
+		return s
+			.split('')
+			.map((l: string, i: number) => ({ letter: l, index: i }))
+			.filter((slot) => slot.letter === l)
+			.map((slot) => slot.index);
+	};
+
 	const containsLetter = (letter: Letter, index: number, guess: string, answer: string) => {
-		// IF in word but wrong spot AND all correct instances of that letter are not filled AND there isn't a similar letter ahead in the guess.
-		const guessLocations = guess
-			.split('')
-			.map((l: string, i: number) => ({ letter: l, index: i }))
-			.filter((slot) => slot.letter === letter.letter)
-			.map((slot) => slot.index);
-		const answerLocations = answer
-			.split('')
-			.map((l: string, i: number) => ({ letter: l, index: i }))
-			.filter((slot) => slot.letter === letter.letter)
-			.map((slot) => slot.index);
+		const guessLocations = getLetterLocations(guess, letter.letter);
+		const answerLocations = getLetterLocations(answer, letter.letter);
 		const correctCount = guessLocations.filter((location) =>
 			answerLocations.includes(location)
 		).length;
-		const previousContainsCount = guess
-			.slice(0, index)
-			.split('')
-			.map((l: string, i: number) => ({ letter: l, index: i }))
-			.filter((slot) => slot.letter === letter.letter)
-			.map((slot) => slot.index)
+		const previousContainsCount = getLetterLocations(guess.slice(0, index), letter.letter)
 			.filter((index) => !answerLocations.includes(index)).length;
 		return correctCount + previousContainsCount < answerLocations.length;
 	};
@@ -107,34 +101,25 @@
 				}
 				return result;
 			}, {});
-		const letters = words.map((word) => word.word).flat();
-		const correct = letters
+		const letterStrings = words
+			.filter((w: Word) => w.complete)
+			.map((word) => word.word)
+			.flat()
+			.map((l) => JSON.stringify(l));
+		const letters: Letter[]  = Array.from(new Set(letterStrings)).map((s: string) => JSON.parse(s));
+		const correctList = letters
 			.filter((letter) => letter.status === Status.CORRECT)
-			.map((l: Letter) => ({ [l.letter]: l.status }))
-			.reduce(function (result, currentObject) {
-				for (var key in currentObject) {
-					result[key] = currentObject[key];
-				}
-				return result;
-			}, {});
-		const contains = letters
+			.map((l: Letter) => ({ [l.letter]: l.status }));
+		const correct: {[x: string]: Status} = Object.assign({}, ...correctList);
+		const containsList = letters
 			.filter((letter) => letter.status === Status.CONTAINS)
-			.map((l: Letter) => ({ [l.letter]: l.status }))
-			.reduce(function (result, currentObject) {
-				for (var key in currentObject) {
-					result[key] = currentObject[key];
-				}
-				return result;
-			}, {});
-		const incorrect = letters
+			.map((l: Letter) => ({ [l.letter]: l.status }));
+		const contains: {[x: string]: Status} = Object.assign({}, ...containsList);
+		const incorrectList = letters
 			.filter((letter) => letter.status === Status.INCORRECT)
-			.map((l: Letter) => ({ [l.letter]: l.status }))
-			.reduce(function (result, currentObject) {
-				for (var key in currentObject) {
-					result[key] = currentObject[key];
-				}
-				return result;
-			}, {});
+			.map((l: Letter) => ({ [l.letter]: l.status }));
+		const incorrect: {[x: string]: Status} = Object.assign({}, ...incorrectList);
+		
 		return { ...alphabet, ...incorrect, ...contains, ...correct };
 	};
 
@@ -189,6 +174,7 @@
 		}
 
 		words[attempt] = getLetterStatuses(words[attempt]);
+		keyStatuses = getKeyStatuses(words);
 	};
 
 	const processBackspaceKey = () => {
@@ -220,7 +206,6 @@
 	const handleKeyPress = (key: string) => {
 		key === 'Enter' && processEnterKey();
 		key === 'Backspace' && processBackspaceKey();
-		console.log(key);
 		key === 'Share' && shareGame();
 		key.match(/[a-z]/i) && key.length === 1 && processLetterKey(key);
 	};
@@ -233,7 +218,9 @@
 
 	$: success && toastSuccess('Yay you win!');
 
-	$: keyStatuses = getKeyStatuses(words);
+	let keyStatuses: {
+		[x: string]: Status;
+	} = getKeyStatuses(words);
 </script>
 
 <svelte:window on:keydown={(event) => handleKeyPress(event.key)} />
