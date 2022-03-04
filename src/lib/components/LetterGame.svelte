@@ -90,18 +90,12 @@
 	};
 
 	const getKeyStatuses = (words: Word[]) => {
-		const alphabet = Array.from(Array(26))
+		const alphabet = Object.assign({}, ...Array.from(Array(26))
 			.map((e, i) => i + 65)
 			.map((x) => String.fromCharCode(x))
 			.map((letter: string) => ({
 				[letter.toLowerCase()]: Status.NONE
-			}))
-			.reduce(function (result, currentObject) {
-				for (var key in currentObject) {
-					result[key] = currentObject[key];
-				}
-				return result;
-			}, {});
+			})));
 		const letterStrings = words
 			.filter((w: Word) => w.complete)
 			.map((word) => word.word)
