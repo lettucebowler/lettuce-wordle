@@ -1,8 +1,6 @@
 lockfileVersion: 5.3
 
 specifiers:
-  '@sveltejs/adapter-node': next
-  '@sveltejs/adapter-static': next
   '@sveltejs/kit': next
   '@typescript-eslint/eslint-plugin': ^5.14.0
   '@typescript-eslint/parser': ^5.14.0
@@ -10,7 +8,7 @@ specifiers:
   eslint: ^8.10.0
   eslint-config-prettier: ^8.5.0
   eslint-plugin-svelte3: ^3.4.1
-  lettuce-svelte-adapter-express: ^1.0.0-next.0
+  lettuce-svelte-adapter-express: ^1.0.0-next.1
   prettier: ^2.5.1
   prettier-plugin-svelte: ^2.6.0
   svelte: ^3.46.4
@@ -21,24 +19,22 @@ specifiers:
 
 dependencies:
   '@zerodevx/svelte-toast': 0.6.3
-  lettuce-svelte-adapter-express: 1.0.0-next.0
-  typescript: 4.6.2
 
 devDependencies:
-  '@sveltejs/adapter-node': 1.0.0-next.71
-  '@sveltejs/adapter-static': 1.0.0-next.29
   '@sveltejs/kit': 1.0.0-next.294_svelte@3.46.4
   '@typescript-eslint/eslint-plugin': 5.14.0_f4054b8c3cd621db16ae1b9d571bccc0
   '@typescript-eslint/parser': 5.14.0_eslint@8.10.0+typescript@4.6.2
   eslint: 8.10.0
   eslint-config-prettier: 8.5.0_eslint@8.10.0
   eslint-plugin-svelte3: 3.4.1_eslint@8.10.0+svelte@3.46.4
+  lettuce-svelte-adapter-express: 1.0.0-next.1
   prettier: 2.5.1
   prettier-plugin-svelte: 2.6.0_prettier@2.5.1+svelte@3.46.4
   svelte: 3.46.4
   svelte-check: 2.4.5_svelte@3.46.4
   svelte-preprocess: 4.10.4_svelte@3.46.4+typescript@4.6.2
   tslib: 2.3.1
+  typescript: 4.6.2
 
 packages:
 
@@ -101,18 +97,6 @@ packages:
     dependencies:
       estree-walker: 2.0.2
       picomatch: 2.3.1
-    dev: true
-
-  /@sveltejs/adapter-node/1.0.0-next.71:
-    resolution: {integrity: sha512-ELSQBSyk0IHMRi5Zct95jP+lTUJ0VQ/d7DxPMQTaDYVexpehDBOV6bXDzSNBl9boIIfEv77VD3lA7kgtuJnGdg==}
-    dependencies:
-      tiny-glob: 0.2.9
-    dev: true
-
-  /@sveltejs/adapter-static/1.0.0-next.29:
-    resolution: {integrity: sha512-0hjGnfT3BRyoHnzJ2w0/xL+xICRpKneDTm45ZzggiRrc0r71WJfF6toGeg8N4QUQnj8EJ3Itm453gsS1kt7VUQ==}
-    dependencies:
-      tiny-glob: 0.2.9
     dev: true
 
   /@sveltejs/kit/1.0.0-next.294_svelte@3.46.4:
@@ -938,6 +922,7 @@ packages:
 
   /globalyzer/0.1.0:
     resolution: {integrity: sha512-40oNTM9UfG6aBmuKxk/giHn5nQ8RVz/SS4Ir6zgzOv9/qC3kKZ9v4etGTcJbEl/NyVQH7FGU7d+X1egr57Md2Q==}
+    dev: true
 
   /globby/11.1.0:
     resolution: {integrity: sha512-jhIXaOzy1sb8IyocaruWSn1TjmnBVs8Ayhcy83rmxNJ8q2uWKCAj3CnJY+KpGSXCueAPc0i05kVvVKtP1t9S3g==}
@@ -953,6 +938,7 @@ packages:
 
   /globrex/0.1.2:
     resolution: {integrity: sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==}
+    dev: true
 
   /graceful-fs/4.2.9:
     resolution: {integrity: sha512-NtNxqUcXgpW2iMrfqSfR73Glt39K+BLwWsPs94yR63v45T0Wbej7eRmL5cWfwEgqXnmjQp3zaJTshdRW/qC2ZQ==}
@@ -1058,11 +1044,11 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
-  /lettuce-svelte-adapter-express/1.0.0-next.0:
-    resolution: {integrity: sha512-KnQYSOUN81R3HMp4/sdhe6SI9ibtc7m12vZSF6CEfJZdOUSmxtIEZjYvGBaHxnYOmafqer7drrB4P/t31+oUgQ==}
+  /lettuce-svelte-adapter-express/1.0.0-next.1:
+    resolution: {integrity: sha512-/yZs4CA/idCRi4qpJwjkvpRtDtoyXJpYV8Iz4lGcdikeJ8C+hkhIe3Druu8ExoO4ez5VeyO6Y6nASb5cVSe9qA==}
     dependencies:
       tiny-glob: 0.2.9
-    dev: false
+    dev: true
 
   /levn/0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
@@ -1498,6 +1484,7 @@ packages:
     dependencies:
       globalyzer: 0.1.0
       globrex: 0.1.2
+    dev: true
 
   /to-regex-range/5.0.1:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
@@ -1540,6 +1527,7 @@ packages:
     resolution: {integrity: sha512-HM/hFigTBHZhLXshn9sN37H085+hQGeJHJ/X7LpBWLID/fbc2acUMfU+lGD98X81sKP+pFa9f0DZmCwB9GnbAg==}
     engines: {node: '>=4.2.0'}
     hasBin: true
+    dev: true
 
   /uri-js/4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
