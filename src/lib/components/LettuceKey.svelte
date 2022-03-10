@@ -26,7 +26,7 @@
 {/if}
 
 {#if !enabled}
-	<div style="aspect-ratio: {width}; max-width: calc({10 * width}vw - 4p)" />
+	<div style="aspect-ratio: {width}; max-width: calc({10 * width}vw - 4px)" />
 {/if}
 
 <style>
