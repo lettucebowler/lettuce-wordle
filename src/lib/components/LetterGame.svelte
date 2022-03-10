@@ -228,7 +228,6 @@
 	} = getKeyStatuses(words);
 
 	beforeNavigate((nav) => {
-		console.log('bleh');
 		words = resetWords();
 		toastClear();
 	});
@@ -239,7 +238,6 @@
 <LetterGrid data={words} />
 <div class="spacing" />
 <LettuceKeyboard on:keyPress={(event) => handleKeyPress(event.detail.key)} {keyStatuses} />
-<SvelteToast />
 <div id="clipboard" />
 {#if attempt > 5 && !success}
 	<div class="answer">{answer}</div>
