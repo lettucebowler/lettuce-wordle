@@ -18,6 +18,7 @@
 		font-size: 3rem;
 		border-radius: 4px;
 		color: var(--nord-6);
+		margin: 2px 2px;
 	}
 
 	.none {

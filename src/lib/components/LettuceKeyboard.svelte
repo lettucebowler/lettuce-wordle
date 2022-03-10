@@ -8,7 +8,8 @@
 
 	const r1 = [
 		{
-			enabled: false
+			enabled: false,
+			width: 1.25
 		},
 		{
 			key: 'Enter',
@@ -24,10 +25,8 @@
 
 	$: r2 = [
 		{
-			key: 'z',
-			width: 1,
-			enabled: false,
-			status: Status.NONE
+			width: 0.75,
+			enabled: false
 		},
 		{
 			key: 'z',
@@ -76,7 +75,7 @@
 	$: r3 = [
 		{
 			key: '',
-			width: 1,
+			width: 0.25,
 			enabled: false,
 			status: Status.NONE
 		},
@@ -200,50 +199,48 @@
 	];
 </script>
 
-<div class="border">
-	<div class="board">
-		<div class="r4">
-			{#each r4 as key}
-				<LettuceKey
-					key={key.key}
-					width={key.width}
-					enabled={key.enabled}
-					status={key.status}
-					on:keyPress
-				/>
-			{/each}
-		</div>
+<div class="board">
+	<div class="r4">
+		{#each r4 as key}
+			<LettuceKey
+				key={key.key}
+				width={key.width}
+				enabled={key.enabled}
+				status={key.status}
+				on:keyPress
+			/>
+		{/each}
+	</div>
 
-		<div class="r3">
-			{#each r3 as key}
-				<LettuceKey
-					key={key.key}
-					width={key.width}
-					enabled={key.enabled}
-					status={key.status}
-					on:keyPress
-				/>
-			{/each}
-		</div>
+	<div class="r3">
+		{#each r3 as key}
+			<LettuceKey
+				key={key.key}
+				width={key.width}
+				enabled={key.enabled}
+				status={key.status}
+				on:keyPress
+			/>
+		{/each}
+	</div>
 
-		<div class="r2">
-			{#each r2 as key}
-				<LettuceKey
-					key={key.key}
-					width={key.width}
-					enabled={key.enabled}
-					status={key.status}
-					on:keyPress
-				/>
-			{/each}
-		</div>
+	<div class="r2">
+		{#each r2 as key}
+			<LettuceKey
+				key={key.key}
+				width={key.width}
+				enabled={key.enabled}
+				status={key.status}
+				on:keyPress
+			/>
+		{/each}
+	</div>
 
-		<div class="r1">
-			{#each r1 as key}
-				<LettuceKey key={key.key} width={key.width} enabled={key.enabled} on:keyPress />
-			{/each}
-			<LettuceKey key="Share" width={2} enabled={true} on:keyPress />
-		</div>
+	<div class="r1">
+		{#each r1 as key}
+			<LettuceKey key={key.key} width={key.width} enabled={key.enabled} on:keyPress />
+		{/each}
+		<LettuceKey key="Share" width={2} enabled={true} on:keyPress />
 	</div>
 </div>
 
@@ -251,7 +248,7 @@
 	.board {
 		display: grid;
 		row-gap: 0px;
-
+		max-width: 100vw;
 		grid-template-rows: 1fr 1fr 1fr;
 	}
 

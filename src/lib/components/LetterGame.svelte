@@ -1,25 +1,32 @@
 <script lang="ts">
 	import { SvelteToast } from '@zerodevx/svelte-toast';
 	import CopyClipBoard from '$lib/components/CopyClipboard.svelte';
-	import { toastError, toastSuccess } from '$lib/util/toastActions';
+	import { beforeNavigate } from '$app/navigation';
+	import { toastError, toastSuccess, toastClear } from '$lib/util/toastActions';
 	import { isValidWord } from '$lib/util/words';
 	import LetterGrid from '$lib/components/LetterGrid.svelte';
 	import LettuceKeyboard from '$lib/components/LettuceKeyboard.svelte';
 	import type { Letter, Word } from '../types/types';
 	import { Status } from '$lib/types/types';
+	import { appName } from '$lib/util/store';
+
 
 	export let answer: string;
 
-	const words: Word[] = [];
+	const resetWords = () => {
+		const arr: Word[] = [];
+		for (let i = 0; i < 6; i++) {
+			arr.push({
+				complete: false,
+				word: Array(5)
+					.fill(0)
+					.map((): Letter => ({ letter: '', status: Status.NONE }))
+			});
+		};
+		return arr;
+	};
 
-	for (let i = 0; i < 6; i++) {
-		words.push({
-			complete: false,
-			word: Array(5)
-				.fill(0)
-				.map((): Letter => ({ letter: '', status: Status.NONE }))
-		});
-	}
+	let words: Word[] = resetWords();
 
 	const isSuccess = (words: Word[]) => {
 		const complete = words.filter((w: Word) => w.complete);
@@ -90,12 +97,15 @@
 	};
 
 	const getKeyStatuses = (words: Word[]) => {
-		const alphabet = Object.assign({}, ...Array.from(Array(26))
-			.map((e, i) => i + 65)
-			.map((x) => String.fromCharCode(x))
-			.map((letter: string) => ({
-				[letter.toLowerCase()]: Status.NONE
-			})));
+		const alphabet = Object.assign(
+			{},
+			...Array.from(Array(26))
+				.map((e, i) => i + 65)
+				.map((x) => String.fromCharCode(x))
+				.map((letter: string) => ({
+					[letter.toLowerCase()]: Status.NONE
+				}))
+		);
 		const letterStrings = words
 			.filter((w: Word) => w.complete)
 			.map((word) => word.word)
@@ -140,7 +150,7 @@
 			const gameStatus = words
 				.filter((w: Word) => w.complete)
 				.map((w: Word) => w.word.map((l: Letter) => getStatusEmoji(l.status)));
-			const today = `Gradle ${new Date().toLocaleDateString()} ${gameStatus.length}/6`;
+			const today = `${$appName} ${new Date().toLocaleDateString()} ${gameStatus.length}/6`;
 			const strings = gameStatus.map((w) => w.join(''));
 			const share = [today, ...strings].join('\n');
 			const clipBoard = new CopyClipBoard({
@@ -216,6 +226,12 @@
 	let keyStatuses: {
 		[x: string]: Status;
 	} = getKeyStatuses(words);
+
+	beforeNavigate((nav) => {
+		console.log('bleh');
+		words = resetWords();
+		toastClear();
+	});
 </script>
 
 <svelte:window on:keydown={(event) => handleKeyPress(event.key)} />
@@ -231,7 +247,7 @@
 
 <style>
 	.spacing {
-		padding: 16px 0 16px 0;
+		height: 16px;
 	}
 
 	.answer {

@@ -16,7 +16,7 @@
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 		grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
-		column-gap: 4px;
-		row-gap: 4px;
+		/* column-gap: 4px;
+		row-gap: 4px; */
 	}
 </style>
