@@ -6,12 +6,11 @@
 
 <style>
 	.page {
-		width: 50vh;
+		width: min(100%, 800px);
 		flex-direction: column;
 		height: 100%;
-		text-align: center;
-		margin: auto;
-		padding: 4px 4px;
+		max-height: 100vh;
+		margin: 0 auto;
 	}
 
 	.center {

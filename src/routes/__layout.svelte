@@ -16,7 +16,10 @@
 </svelte:head>
 
 <body>
-    <SvelteToast />
+    <div class="toast">
+		<SvelteToast />
+	</div>
+	<div id="clipboard" />
 	<LetterPageContentContainer>
 		<slot />
 	</LetterPageContentContainer>

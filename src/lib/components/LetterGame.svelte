@@ -235,21 +235,36 @@
 
 <svelte:window on:keydown={(event) => handleKeyPress(event.key)} />
 <div class="spacing" />
-<LetterGrid data={words} />
+<div class="grid">
+	<div class="center">
+		<LetterGrid data={words} />
+	</div>
+</div>
 <div class="spacing" />
-<LettuceKeyboard on:keyPress={(event) => handleKeyPress(event.detail.key)} {keyStatuses} />
-<div id="clipboard" />
-{#if attempt > 5 && !success}
-	<div class="answer">{answer}</div>
-{/if}
+<div class="keyboard">
+	<LettuceKeyboard on:keyPress={(event) => handleKeyPress(event.detail.key)} {keyStatuses} />
+</div>
 
 <style>
 	.spacing {
 		height: 16px;
 	}
 
-	.answer {
-		color: var(--nord-6);
-		font-size: 2rem;
+	.center {
+		margin: 0 auto;
+	}
+
+	.grid {
+		display: s;
+		justify-content: center;
+	}
+
+	.keyboard {
+		width: min(100%, 1000px);
+		height: 100%;
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		margin: 0 auto;
 	}
 </style>

@@ -248,8 +248,12 @@
 	.board {
 		display: grid;
 		row-gap: 0px;
-		max-width: 100vw;
-		grid-template-rows: 1fr 1fr 1fr;
+		margin: 0 auto;
+		grid-template-rows: 1fr 1fr 1fr 1fr;
+		aspect-ratio: 5 / 2;
+		width: 100%;
+		max-width: min(100%, 1000px);
+		max-height: 24vh;
 	}
 
 	.r1 {

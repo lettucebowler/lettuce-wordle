@@ -18,15 +18,15 @@
 </script>
 
 {#if enabled}
-	<div style="aspect-ratio: {width}; max-width: calc({10 * width}vw - 4p)">
-		<button on:click={() => typeKey(key)} disabled={!enabled} class={status}
+	<div style="aspect-ratio: {width}">
+		<button on:click={() => typeKey(key)} disabled={!enabled} class={status} 
 			>{key.toLowerCase()}</button
 		>
 	</div>
 {/if}
 
 {#if !enabled}
-	<div style="aspect-ratio: {width}; max-width: calc({10 * width}vw - 4px)" />
+	<div style="aspect-ratio: {width}" />
 {/if}
 
 <style>
