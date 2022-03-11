@@ -69,4 +69,8 @@
 		justify-content: center;
 		background-color: var(--nord-1);
 	}
+
+	.toast {
+		font-size: 1rem;
+	}
 </style>

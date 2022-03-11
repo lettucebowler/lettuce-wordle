@@ -1,8 +1,18 @@
+<script context="module">
+	export const prerender = true;
+</script>
+
 <script lang="ts">
 	import LetterGame from '$lib/components/LetterGame.svelte';
 	import { getRandomWord } from '$lib/util/words';
-	const answer = getRandomWord();
 	import { appName } from '$lib/util/store';
+	import { onMount } from 'svelte';
+
+	let answer;
+
+	onMount(async () => {
+		answer = getRandomWord();
+	});
 </script>
 
 <meta charset="UTF-8" />

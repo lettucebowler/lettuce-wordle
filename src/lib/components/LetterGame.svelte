@@ -217,7 +217,7 @@
 
 	$: success = isSuccess(words);
 
-	$: attempt === 6 && !success && toastError('You lose.');
+	$: answer && attempt === 6 && !success && toastError(`You lose. The answer is ${answer}`);
 
 	$: success && toastSuccess('Yay you win!');
 
