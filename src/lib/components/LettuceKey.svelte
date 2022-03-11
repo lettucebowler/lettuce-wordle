@@ -19,7 +19,7 @@
 
 {#if enabled}
 	<div style="aspect-ratio: {width}">
-		<button on:click={() => typeKey(key)} disabled={!enabled} class={status} 
+		<button on:click={() => typeKey(key)} disabled={!enabled} class={status}
 			>{key.toLowerCase()}</button
 		>
 	</div>

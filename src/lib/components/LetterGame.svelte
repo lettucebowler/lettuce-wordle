@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { SvelteToast } from '@zerodevx/svelte-toast';
 	import CopyClipBoard from '$lib/components/CopyClipboard.svelte';
 	import { beforeNavigate } from '$app/navigation';
 	import { toastError, toastSuccess, toastClear } from '$lib/util/toastActions';
@@ -9,7 +8,6 @@
 	import type { Letter, Word } from '../types/types';
 	import { Status } from '$lib/types/types';
 	import { appName } from '$lib/util/store';
-
 
 	export let answer: string;
 
@@ -22,7 +20,7 @@
 					.fill(0)
 					.map((): Letter => ({ letter: '', status: Status.NONE }))
 			});
-		};
+		}
 		return arr;
 	};
 
@@ -227,7 +225,7 @@
 		[x: string]: Status;
 	} = getKeyStatuses(words);
 
-	beforeNavigate((nav) => {
+	beforeNavigate(() => {
 		words = resetWords();
 		toastClear();
 	});

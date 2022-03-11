@@ -26,4 +26,4 @@ export const toastSuccess = (message: string) => {
 
 export const toastClear = () => {
 	toast.pop(0);
-}
+};

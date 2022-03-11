@@ -1,41 +1,49 @@
 <script context="module">
 	export const hydrate = false;
-    export const prerender = true;
+	export const prerender = true;
 </script>
 
 <script>
-    import {appName} from '$lib/util/store';
+	import { appName } from '$lib/util/store';
 </script>
 
 <title>About {$appName}</title>
 <main>
-    <h1>Hello I'm Grant!</h1>
-    <p>I wrote this app because the real wordle got blocked on my work network and I wanted to keep playing and sharing scores with my coworkers.</p>
-    <p>This app was created using svelte-kit. You can learn more about svelte-kit <a href="https://kit.svelte.dev" target="_blank">here</a>. Code for this project can be found <a target="_blank" href="https://git.rusondia.net/lettucebowler/lettuce-wordle">here</a>.</p>
+	<h1>Hello I'm Grant!</h1>
+	<p>
+		I wrote this app because the real wordle got blocked on my work network and I wanted to keep
+		playing and sharing scores with my coworkers.
+	</p>
+	<p>
+		This app was created using svelte-kit. You can learn more about svelte-kit <a
+			href="https://kit.svelte.dev"
+			target="_blank">here</a
+		>. Code for this project can be found
+		<a target="_blank" href="https://git.rusondia.net/lettucebowler/lettuce-wordle">here</a>.
+	</p>
 </main>
 
 <style>
-    main {
-        justify-content: center;
-        flex-direction: column;
-        display: flex;
-        padding: 0 30px;
-        text-align: center;
-        min-height: 50vh;
-        color: var(--nord-4);
-    }
+	main {
+		justify-content: center;
+		flex-direction: column;
+		display: flex;
+		padding: 0 30px;
+		text-align: center;
+		min-height: 50vh;
+		color: var(--nord-4);
+	}
 
-    h1 {
-        font-size: 3.75rem;
+	h1 {
+		font-size: 3.75rem;
+	}
 
-    }
+	p {
+		font-size: 1.5rem;
+	}
 
-    p {
-        font-size: 1.5rem;
-    }
-
-    a {
-        text-decoration: none;
-        color: var(--nord-14);
-    }
+	a {
+		text-decoration: none;
+		color: var(--nord-14);
+	}
 </style>
