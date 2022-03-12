@@ -15,11 +15,9 @@
 		playing and sharing scores with my coworkers.
 	</p>
 	<p>
-		This app was created using svelte-kit. You can learn more about svelte-kit <a
-			href="https://kit.svelte.dev"
-			target="_blank">here</a
-		>. Code for this project can be found
-		<a target="_blank" href="https://git.rusondia.net/lettucebowler/lettuce-wordle">here</a>.
+		This app was created using <a href="https://kit.svelte.dev" target="_blank">svelte-kit</a>. Code
+		for this project can be found
+		<a target="_blank" href="https://github.com/lettucebowler/lettuce-wordle">here</a>.
 	</p>
 </main>
 

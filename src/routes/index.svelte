@@ -14,7 +14,7 @@
 
 	onMount(async () => {
 		answer = getDailyWord();
-	})
+	});
 </script>
 
 <svelte:head>

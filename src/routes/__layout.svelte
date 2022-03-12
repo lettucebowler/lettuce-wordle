@@ -1,18 +1,17 @@
 <script lang="ts">
 	import '$lib/styles/app.css';
 	import LetterPageContentContainer from '$lib/components/LetterPageContentContainer.svelte';
-	import { page } from '$app/stores';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
-import Navbar from '$lib/components/Navbar.svelte';
+	import Navbar from '$lib/components/Navbar.svelte';
 
 	const links = [
 		{
 			path: '/',
-			name: 'Daily',
+			name: 'Daily'
 		},
 		{
 			path: '/random',
-			name: 'Random',
+			name: 'Random'
 		},
 		{
 			path: '/about',
@@ -20,7 +19,6 @@ import Navbar from '$lib/components/Navbar.svelte';
 		}
 	];
 </script>
-
 
 <svelte:head>
 	<link rel="icon" type="image/png" href="/favicon.png" />

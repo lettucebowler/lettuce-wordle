@@ -1,13 +1,17 @@
 <script lang="ts">
 	import '$lib/styles/app.css';
 	import { page } from '$app/stores';
-    export let links: {path: string, name: string}[] = [];
+	export let links: { path: string; name: string }[] = [];
 </script>
 
 <nav>
-    {#each links as link}
-        <a sveltekit:prefetch href="{link.path}" class={$page.url.pathname === `${link.path}` ? 'current' : ''}>{link.name}</a>
-    {/each}
+	{#each links as link}
+		<a
+			sveltekit:prefetch
+			href={link.path}
+			class={$page.url.pathname === `${link.path}` ? 'current' : ''}>{link.name}</a
+		>
+	{/each}
 </nav>
 
 <style>
@@ -45,7 +49,7 @@
 		display: flex;
 		justify-content: center;
 		background-color: var(--nord-2);
-		height: calc((100 / 8.5)vh - 8px);
+		height: calc((100 / 8.5) vh - 8px);
 		aspect-ratio: 11;
 		border-radius: 4px;
 		margin: 2px 2px;
