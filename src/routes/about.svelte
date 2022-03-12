@@ -23,12 +23,13 @@
 
 <style>
 	main {
-		justify-content: center;
+		justify-content: start;
 		flex-direction: column;
 		display: flex;
 		padding: 0 30px;
 		text-align: center;
 		min-height: 50vh;
+		height: 100%;
 		color: var(--nord-4);
 	}
 

@@ -9,6 +9,9 @@
 		aspect-ratio: 5 / 8.5;
 		margin: 0 auto;
 		/* background-color: var(--nord-11); */
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
 		min-height: 100%;
 		height: 100vh;
 		max-height: 100vh;

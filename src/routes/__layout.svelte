@@ -38,7 +38,6 @@
 	body {
 		background-color: var(--nord-0);
 		margin: 0px 0px;
-		font-family: 'Courier New', monospace;
 	}
 
 	.toast {

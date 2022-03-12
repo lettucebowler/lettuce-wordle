@@ -41,7 +41,7 @@
 		font-size: 1rem;
 		font-weight: 900;
 		color: var(--nord-6);
-		border-radius: 4px;
+		border-radius: 6px;
 	}
 
 	button:hover {

@@ -16,7 +16,7 @@
 		vertical-align: center;
 		display: inline-flex;
 		font-size: 3rem;
-		border-radius: 4px;
+		border-radius: 6px;
 		color: var(--nord-6);
 		margin: 2px 2px;
 		font-weight: 700;

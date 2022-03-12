@@ -251,6 +251,7 @@
 		margin: 0 auto;
 		grid-template-rows: 1fr 1fr 1fr 1fr;
 		aspect-ratio: 5 / 2;
+		width: 100%;
 	}
 
 	.r1 {
