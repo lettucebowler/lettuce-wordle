@@ -232,16 +232,8 @@
 </script>
 
 <svelte:window on:keydown={(event) => handleKeyPress(event.key)} />
-<div class="spacing" />
-<div class="grid">
-	<div class="center">
-		<LetterGrid data={words} />
-	</div>
-</div>
-<div class="spacing" />
-<div class="keyboard">
-	<LettuceKeyboard on:keyPress={(event) => handleKeyPress(event.detail.key)} {keyStatuses} />
-</div>
+<LetterGrid data={words} />
+<LettuceKeyboard on:keyPress={(event) => handleKeyPress(event.detail.key)} {keyStatuses} />
 
 <style>
 	.spacing {
@@ -253,7 +245,6 @@
 	}
 
 	.grid {
-		display: s;
 		justify-content: center;
 	}
 

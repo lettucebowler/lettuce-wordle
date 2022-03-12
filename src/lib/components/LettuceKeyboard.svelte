@@ -251,9 +251,6 @@
 		margin: 0 auto;
 		grid-template-rows: 1fr 1fr 1fr 1fr;
 		aspect-ratio: 5 / 2;
-		width: 100%;
-		max-width: min(100%, 1000px);
-		max-height: 24vh;
 	}
 
 	.r1 {
@@ -277,6 +274,7 @@
 	.r4 {
 		display: grid;
 		width: 100%;
+		height: 100%;
 		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 	}
 </style>

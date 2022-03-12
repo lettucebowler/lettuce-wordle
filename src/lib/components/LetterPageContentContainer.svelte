@@ -6,11 +6,13 @@
 
 <style>
 	.page {
-		width: min(100%, 800px);
-		flex-direction: column;
-		height: 100%;
-		max-height: 100vh;
+		aspect-ratio: 5 / 8.5;
 		margin: 0 auto;
+		/* background-color: var(--nord-11); */
+		min-height: 100%;
+		height: 100vh;
+		max-height: 100vh;
+		max-width: 100vw;
 	}
 
 	.center {

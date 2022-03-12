@@ -33,13 +33,13 @@
 	button {
 		width: calc(100% - 4px);
 		height: calc(100% - 4px);
-		display: inline-block;
+		display: block;
 		margin: 2px 2px 2px 2px;
 		border: solid;
 		border-color: transparent;
 		background-color: var(--nord-3);
-		font-size: 1.5rem;
-		font-weight: 700;
+		font-size: 1rem;
+		font-weight: 900;
 		color: var(--nord-6);
 		border-radius: 4px;
 	}
