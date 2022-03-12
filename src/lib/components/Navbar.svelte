@@ -44,7 +44,7 @@
 	nav {
 		display: flex;
 		justify-content: center;
-		background-color: var(--nord-1);
+		background-color: var(--nord-2);
 		height: calc((100 / 8.5)vh - 8px);
 		aspect-ratio: 11;
 		border-radius: 4px;

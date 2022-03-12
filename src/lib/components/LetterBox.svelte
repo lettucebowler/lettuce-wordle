@@ -19,6 +19,7 @@
 		border-radius: 4px;
 		color: var(--nord-6);
 		margin: 2px 2px;
+		font-weight: 700;
 	}
 
 	.none {

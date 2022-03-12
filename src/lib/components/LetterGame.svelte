@@ -234,26 +234,3 @@
 <svelte:window on:keydown={(event) => handleKeyPress(event.key)} />
 <LetterGrid data={words} />
 <LettuceKeyboard on:keyPress={(event) => handleKeyPress(event.detail.key)} {keyStatuses} />
-
-<style>
-	.spacing {
-		height: 16px;
-	}
-
-	.center {
-		margin: 0 auto;
-	}
-
-	.grid {
-		justify-content: center;
-	}
-
-	.keyboard {
-		width: min(100%, 1000px);
-		height: 100%;
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
-		margin: 0 auto;
-	}
-</style>
