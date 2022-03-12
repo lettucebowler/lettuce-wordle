@@ -9,7 +9,6 @@
 	import { getDailyWord } from '$lib/util/words';
 	import { onMount } from 'svelte';
 
-	// const answer = getDailyWord();
 	let answer;
 
 	onMount(async () => {

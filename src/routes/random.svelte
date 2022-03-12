@@ -15,7 +15,9 @@
 	});
 </script>
 
-<meta charset="UTF-8" />
-<meta name="description" content="Lettuce Wordle" />
-<title>{$appName} Random</title>
+<svelte:head>
+	<meta charset="UTF-8" />
+	<meta name="description" content="Lettuce Wordle" />
+	<title>{$appName} Random</title>
+</svelte:head>
 <LetterGame {answer} />

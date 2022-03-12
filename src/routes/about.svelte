@@ -7,7 +7,10 @@
 	import { appName } from '$lib/util/store';
 </script>
 
-<title>About {$appName}</title>
+<svelte:head>
+	<title>About {$appName}</title>
+</svelte:head>
+
 <main>
 	<h1>Hello I'm Grant!</h1>
 	<p>
@@ -29,7 +32,7 @@
 		padding: 0 30px;
 		text-align: center;
 		min-height: 50vh;
-		height: 100%;
+		height: 95vh;
 		color: var(--nord-4);
 	}
 
