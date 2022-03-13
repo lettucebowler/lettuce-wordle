@@ -12,7 +12,7 @@
 </svelte:head>
 
 <main>
-	<h1>Hello I'm Grant!</h1>
+	<h1>Hello, I'm Grant!</h1>
 	<p>
 		I wrote this app because the real wordle got blocked on my work network and I wanted to keep
 		playing and sharing scores with my coworkers.
