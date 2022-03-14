@@ -4,7 +4,7 @@
 </script>
 
 <div class={status}>
-	{letter}
+	{letter.toUpperCase()}
 </div>
 
 <style>
