@@ -16,9 +16,7 @@
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 		grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
-		margin: 0 auto;
-		/* max-width: min(600px, 100%); */
-		/* max-height: 60vh; */
+		grid-gap: 4px;
 		width: 100%;
 		aspect-ratio: 5 / 6;
 	}
