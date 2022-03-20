@@ -19,13 +19,13 @@
 		color: var(--nord-6);
 		text-align: center;
 		font-size: 1.5rem;
-		padding: 8px 12px;
+		padding: 3px 12px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		text-decoration: none;
-		margin: 4px 4px;
-		border-radius: 9px;
+		margin: 3px;
+		border-radius: 6px;
 	}
 
 	a:hover {
@@ -51,6 +51,8 @@
 		background-color: var(--nord-2);
 		height: calc((100 / 8.5) vh - 8px);
 		aspect-ratio: 11;
+		padding: 3px;
+		box-sizing: border-box;
 		border-radius: 0px 0px 12px 12px;
 	}
 </style>
