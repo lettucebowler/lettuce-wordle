@@ -14,7 +14,7 @@
 		text-align: center;
 		align-items: center;
 		display: inline-flex;
-		font-size: 3rem;
+		font-size: 2rem;
 		border-radius: 12px;
 		color: var(--nord-6);
 		font-weight: 700;
