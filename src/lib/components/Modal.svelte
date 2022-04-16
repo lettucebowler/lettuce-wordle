@@ -36,16 +36,16 @@
 	</div>
 	<div id="clipboard2" />
 	<h2>Success!</h2>
-	<p>You solved today's WordLettuce in 6 tries. Nice! Come back tomorrow and play again!</p>
-	<button class="share" on:click={() => shareGame()}>Share</button>
+	<p>You solved today's WordLettuce in {words.filter((w) => w.complete).length} attempt{words.filter((w) => w.complete).length > 1 ? 's' : ''}. Come back tomorrow and play again!</p>
 	<div class="button-container">
-		<button on:click={() => dialog.close()}>Close</button>
+    	<button on:click={() => shareGame()}>Share</button>
+		<button class="close" on:click={() => dialog.close()}>Close</button>
 	</div>
 </dialog>
 
 <style>
 	.modal {
-		max-width: 300px;
+        max-width: 300px;
 		width: 100%;
 		border-radius: 12px;
 		border-color: var(--nord-3);
@@ -82,13 +82,15 @@
 	p {
 		color: var(--nord-6);
 		padding: 4px;
+        text-align: center;
 	}
 
 	.button-container {
 		width: 100%;
 		display: flex;
+        gap: 6px;
 		flex-direction: row;
-		justify-content: flex-end;
+		justify-content: space-between;
 		color: var(--text-color);
 	}
 
@@ -97,7 +99,7 @@
 		font-weight: 700;
 	}
 
-	.share {
-		background-color: var(--nord-13);
+	.close {
+		background-color: var(--nord-12);
 	}
 </style>
