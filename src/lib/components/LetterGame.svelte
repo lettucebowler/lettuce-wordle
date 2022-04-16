@@ -1,15 +1,16 @@
 <script lang="ts">
-	import CopyClipBoard from '$lib/components/CopyClipboard.svelte';
 	import { beforeNavigate } from '$app/navigation';
 	import { toastError, toastSuccess, toastClear } from '$lib/util/toastActions';
 	import { isValidWord } from '$lib/util/words';
 	import LetterGrid from '$lib/components/LetterGrid.svelte';
 	import LettuceKeyboard from '$lib/components/LettuceKeyboard.svelte';
+	import Modal from '$lib/components/Modal.svelte';
 	import type { Letter, Word } from '../types/types';
 	import { Status } from '$lib/types/types';
-	import { appName } from '$lib/util/store';
 
 	export let answer: string;
+	$: attempt = words.filter((w: Word) => w.complete).length;
+	$: success = isSuccess(words);
 
 	const resetWords = () => {
 		const arr: Word[] = [];
@@ -126,40 +127,6 @@
 		return { ...alphabet, ...incorrect, ...contains, ...correct };
 	};
 
-	const getStatusEmoji = (status: Status) => {
-		const green = '🟩';
-		const yellow = '🟨';
-		const black = '⬛';
-		switch (status) {
-			case Status.CORRECT:
-				return green;
-			case Status.CONTAINS:
-				return yellow;
-			default:
-				return black;
-		}
-	};
-
-	const shareGame = async () => {
-		if (typeof window !== 'undefined') {
-			if (!success) {
-				return toastError('Cannot share game in progress.');
-			}
-			const gameStatus = words
-				.filter((w: Word) => w.complete)
-				.map((w: Word) => w.word.map((l: Letter) => getStatusEmoji(l.status)));
-			const today = `${$appName} ${new Date().toLocaleDateString()} ${gameStatus.length}/6`;
-			const strings = gameStatus.map((w) => w.join(''));
-			const share = [today, ...strings].join('\n');
-			const clipBoard = new CopyClipBoard({
-				target: document.getElementById('clipboard'),
-				props: { name: share }
-			});
-			clipBoard.$destroy();
-			toastSuccess('Results copied to clipboard');
-		}
-	};
-
 	const processEnterKey = () => {
 		if (success) {
 			return;
@@ -206,24 +173,32 @@
 		words[attempt].word[index].letter = key;
 	};
 
-	const handleKeyPress = (key: string) => {
-		key === 'Enter' && processEnterKey();
-		key === 'Backspace' && processBackspaceKey();
-		key === 'Share' && shareGame();
-		key.match(/[a-z]/i) && key.length === 1 && processLetterKey(key);
+	const showModal = () => {
+		if (success) {
+			modalActions.open();
+		} else {
+			console.log('oopie');
+			toastError('Cannot share an incomplete game.');
+		}
 	};
 
-	$: attempt = words.filter((w: Word) => w.complete).length;
+	const handleKeyPress = (key: string) => {
+		console.log(key);
+		(key === '⮐' || key.toLowerCase() === 'enter') && processEnterKey();
+		(key.toLowerCase() === '⌫' || key.toLowerCase() === 'backspace') && processBackspaceKey();
+		key.toLowerCase().match(/[a-z]/i) && key.length === 1 && processLetterKey(key);
+		if (key === 'SHARE') {
+			showModal();
+		}
+	};
 
-	$: success = isSuccess(words);
+	let modalActions;
 
 	$: answer && attempt === 6 && !success && toastError(`You lose. The answer is ${answer}`);
 
-	$: success && toastSuccess('Yay you win!');
+	$: success && modalActions.open();
 
-	let keyStatuses: {
-		[x: string]: Status;
-	} = getKeyStatuses(words);
+	$: keyStatuses = getKeyStatuses(words);
 
 	beforeNavigate(() => {
 		words = resetWords();
@@ -232,5 +207,6 @@
 </script>
 
 <svelte:window on:keydown={(event) => handleKeyPress(event.key)} />
+<Modal bind:modalActions {words} />
 <LetterGrid data={words} />
 <LettuceKeyboard on:keyPress={(event) => handleKeyPress(event.detail.key)} {keyStatuses} />

@@ -4,8 +4,6 @@
 	import '$lib/styles/app.css';
 
 	export let key: string;
-	export let width = 1;
-	export let enabled = true;
 	export let status: Status = Status.NONE;
 
 	const dispatch = createEventDispatcher();
@@ -15,43 +13,48 @@
 			key
 		});
 	};
+
+	const icons = {
+		'ENTER': 'fa-solid fa-arrow-left',
+		'SHARE': 'fa-solid fa-share-nodes',
+		'DELETE': 'fa-solid fa-delete-left'
+	}
 </script>
 
-{#if enabled}
-	<div style="aspect-ratio: {width}">
-		<button on:click={() => typeKey(key)} disabled={!enabled} class={status}
-			>{key.toLowerCase()}</button
-		>
-	</div>
-{/if}
-
-{#if !enabled}
-	<div style="aspect-ratio: {width}" />
+{#if key in icons}
+	<button aria-label={key} title={key} on:click={() => typeKey(key)} class={status}><i class={icons[key]}></i></button>
+{:else}
+	<button aria-label={key} title={key} on:click={() => typeKey(key)} class={status}>{key}</button>
 {/if}
 
 <style>
 	button {
-		width: calc(100% - 4px);
-		height: calc(100% - 4px);
+		height: 100%;
+		width: 100%;
+		min-height: 40px;
+		aspect-ratio: 0.9;
 		display: block;
-		margin: 2px 2px 2px 2px;
 		border: solid;
 		border-color: transparent;
 		background-color: var(--nord-3);
-		font-size: 1rem;
+		font-size: 0.9rem;
 		font-weight: 900;
 		color: var(--nord-6);
 		border-radius: 6px;
+		text-align: center;
+		padding: 0 0;
 	}
 
 	button:hover {
-		/* background-color: var(--nord-2); */
 		filter: brightness(90%);
 	}
 
 	button:active {
-		/* background-color: var(--nord-1); */
 		filter: brightness(80%);
+	}
+
+	.icon {
+		font-size: 1rem;
 	}
 
 	.none {

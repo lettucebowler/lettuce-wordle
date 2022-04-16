@@ -15,9 +15,9 @@
 	div {
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-		grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
-		grid-gap: 4px;
+		grid-gap: 8px;
 		width: 100%;
-		aspect-ratio: 5 / 6;
+		max-width: 600px;
+		margin: auto auto;
 	}
 </style>

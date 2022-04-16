@@ -49,7 +49,7 @@
 		display: flex;
 		justify-content: center;
 		background-color: var(--nord-2);
-		height: calc((100 / 8.5) vh - 8px);
+		/* height: calc((100 / 8.5) vh - 8px); */
 		aspect-ratio: 11;
 		padding: 3px;
 		box-sizing: border-box;

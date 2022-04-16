@@ -13006,6 +13006,8 @@ export const getRandomWord = () => {
 };
 
 export const isValidWord = (word: Word) =>
-	answerList.concat(allowedGuesses).includes(word.word.map((l: Letter) => l.letter).join(''));
+	answerList
+		.concat(allowedGuesses)
+		.includes(word.word.map((l: Letter) => l.letter.toLowerCase()).join(''));
 
 export default answerList;

@@ -22,12 +22,15 @@
 
 <svelte:head>
 	<link rel="icon" type="image/png" href="/favicon.png" />
+	<link
+		rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css"
+	/>
 </svelte:head>
 <body>
 	<div class="toast">
 		<SvelteToast />
 	</div>
-	<div id="clipboard" />
 	<LetterPageContentContainer>
 		<Navbar {links} />
 		<slot />
