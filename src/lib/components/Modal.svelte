@@ -10,7 +10,6 @@
 	export let words: Word[] = [];
 	export const modalActions = {
 		open() {
-			console.log(dialog);
 			share = getGameStatus($appName, words);
 			dialog.showModal();
 		}

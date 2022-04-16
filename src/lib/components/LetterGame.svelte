@@ -177,13 +177,11 @@
 		if (success) {
 			modalActions.open();
 		} else {
-			console.log('oopie');
 			toastError('Cannot share an incomplete game.');
 		}
 	};
 
 	const handleKeyPress = (key: string) => {
-		console.log(key);
 		(key === '⮐' || key.toLowerCase() === 'enter') && processEnterKey();
 		(key.toLowerCase() === '⌫' || key.toLowerCase() === 'backspace') && processBackspaceKey();
 		key.toLowerCase().match(/[a-z]/i) && key.length === 1 && processLetterKey(key);
