@@ -15,14 +15,16 @@
 	};
 
 	const icons = {
-		'ENTER': 'fa-solid fa-arrow-left',
-		'SHARE': 'fa-solid fa-share-nodes',
-		'DELETE': 'fa-solid fa-delete-left'
-	}
+		ENTER: 'fa-solid fa-arrow-left',
+		SHARE: 'fa-solid fa-share-nodes',
+		DELETE: 'fa-solid fa-delete-left'
+	};
 </script>
 
 {#if key in icons}
-	<button aria-label={key} title={key} on:click={() => typeKey(key)} class={status}><i class={icons[key]}></i></button>
+	<button aria-label={key} title={key} on:click={() => typeKey(key)} class={status}
+		><i class={icons[key]} /></button
+	>
 {:else}
 	<button aria-label={key} title={key} on:click={() => typeKey(key)} class={status}>{key}</button>
 {/if}

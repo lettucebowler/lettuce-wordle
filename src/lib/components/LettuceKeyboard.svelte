@@ -22,7 +22,7 @@
 	<div />
 	<div />
 	<div />
-	{#each [ 'share', 'z', 'x', 'c', 'v', 'b', 'n', 'm', 'ENTER', 'delete'] as key}
+	{#each ['share', 'z', 'x', 'c', 'v', 'b', 'n', 'm', 'ENTER', 'delete'] as key}
 		<div class="key">
 			<LettuceKey key={key.toUpperCase()} status={keyStatuses[key]} on:keyPress />
 		</div>

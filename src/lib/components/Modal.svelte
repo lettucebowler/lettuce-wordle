@@ -16,7 +16,7 @@
 	};
 
 	let dialog;
-	let share: string = '';
+	let share = '';
 
 	const shareGame = () => {
 		share = getGameStatus($appName, words);
@@ -35,16 +35,22 @@
 	</div>
 	<div id="clipboard2" />
 	<h2>Success!</h2>
-	<p>You solved today's WordLettuce in {words.filter((w) => w.complete).length} attempt{words.filter((w) => w.complete).length > 1 ? 's' : ''}. Come back tomorrow and play again!</p>
+	<p>
+		You solved today's WordLettuce in {words.filter((w) => w.complete).length} attempt{words.filter(
+			(w) => w.complete
+		).length > 1
+			? 's'
+			: ''}. Come back tomorrow and play again!
+	</p>
 	<div class="button-container">
-    	<button on:click={() => shareGame()}>Share</button>
+		<button on:click={() => shareGame()}>Share</button>
 		<button class="close" on:click={() => dialog.close()}>Close</button>
 	</div>
 </dialog>
 
 <style>
 	.modal {
-        max-width: 300px;
+		max-width: 300px;
 		width: 100%;
 		border-radius: 12px;
 		border-color: var(--nord-3);
@@ -81,13 +87,13 @@
 	p {
 		color: var(--nord-6);
 		padding: 4px;
-        text-align: center;
+		text-align: center;
 	}
 
 	.button-container {
 		width: 100%;
 		display: flex;
-        gap: 6px;
+		gap: 6px;
 		flex-direction: row;
 		justify-content: space-between;
 		color: var(--text-color);

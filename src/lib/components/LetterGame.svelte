@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { beforeNavigate } from '$app/navigation';
-	import { toastError, toastSuccess, toastClear } from '$lib/util/toastActions';
+	import { toastError, toastClear } from '$lib/util/toastActions';
 	import { isValidWord } from '$lib/util/words';
 	import LetterGrid from '$lib/components/LetterGrid.svelte';
 	import LettuceKeyboard from '$lib/components/LettuceKeyboard.svelte';
