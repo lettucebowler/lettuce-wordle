@@ -183,7 +183,7 @@
 
 	const handleKeyPress = (key: string) => {
 		(key === '⮐' || key.toLowerCase() === 'enter') && processEnterKey();
-		(key.toLowerCase() === '⌫' || key.toLowerCase() === 'backspace') && processBackspaceKey();
+		(key.toLowerCase() === 'delete' || key.toLowerCase() === 'backspace') && processBackspaceKey();
 		key.toLowerCase().match(/[a-z]/i) && key.length === 1 && processLetterKey(key);
 		if (key === 'SHARE') {
 			showModal();
