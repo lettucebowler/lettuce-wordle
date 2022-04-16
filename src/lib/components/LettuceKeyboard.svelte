@@ -34,7 +34,6 @@
 		display: grid;
 		gap: 4px;
 		grid-template-columns: repeat(40, 0.25fr);
-		padding-bottom: 8px;
 	}
 
 	.key {
