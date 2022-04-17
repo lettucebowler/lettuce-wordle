@@ -1,7 +1,7 @@
 version: '3.3'
 
 services:
-  web:
+  lettuce-wordle:
     build: .
     container_name: lettuce-wordle
     restart: unless-stopped
