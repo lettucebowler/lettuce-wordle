@@ -15,15 +15,15 @@
 	};
 
 	const icons = {
-		enter: 'fa-solid fa-arrow-left',
-		share: 'fa-solid fa-share-nodes',
-		delete: 'fa-solid fa-delete-left'
+		enter: 'icon-keyboard_return',
+		share: 'icon-share',
+		delete: 'icon-backspace'
 	};
 </script>
 
 {#if key in icons}
 	<button aria-label={key} title={key} on:click={() => typeKey(key)} class={status}
-		><i class={icons[key]} /></button
+		><span class={icons[key]} /></button
 	>
 {:else}
 	<button aria-label={key} title={key} on:click={() => typeKey(key)} class={status}>{key}</button>
