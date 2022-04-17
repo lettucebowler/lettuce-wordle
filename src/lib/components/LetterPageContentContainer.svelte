@@ -1,11 +1,11 @@
 <div class="center">
-	<div class="page">
+	<main>
 		<slot />
-	</div>
+	</main>
 </div>
 
 <style>
-	.page {
+	main {
 		margin: 0 auto;
 		max-width: 800px;
 		width: 100%;
@@ -13,7 +13,6 @@
 		display: flex;
 		gap: 8px;
 		padding: 0px 8px 8px 8px;
-		justify-content: space-between;
 		flex-direction: column;
 		height: 100%;
 		flex: 1 1 auto;

@@ -127,13 +127,14 @@
 		return { ...alphabet, ...incorrect, ...contains, ...correct };
 	};
 
-	const processEnterKey = () => {
+	const submitWord = () => {
+		console.log('submit');
 		if (success) {
 			return;
 		}
 		const guess = words[attempt];
 		const valid = isValidWord(guess);
-		const long = guess.word.every((l: Letter) => l.letter !== '');
+		const long = guess.word.every((l: Letter) => !!l.letter);
 
 		if (!long) {
 			return toastError('Not enough letters.');
@@ -147,7 +148,7 @@
 		keyStatuses = getKeyStatuses(words);
 	};
 
-	const processBackspaceKey = () => {
+	const deleteLastLetter = () => {
 		if (success) {
 			return;
 		}
@@ -160,7 +161,7 @@
 		words[attempt].word[index].letter = '';
 	};
 
-	const processLetterKey = (key: string) => {
+	const AddLetter = (key: string) => {
 		if (success) {
 			return;
 		}
@@ -177,15 +178,15 @@
 		if (success) {
 			modalActions.open();
 		} else {
-			toastError('Cannot share an incomplete game.');
+			toastError('Game incomplete.');
 		}
 	};
 
 	const handleKeyPress = (key: string) => {
-		(key === '⮐' || key.toLowerCase() === 'enter') && processEnterKey();
-		(key.toLowerCase() === 'delete' || key.toLowerCase() === 'backspace') && processBackspaceKey();
-		key.toLowerCase().match(/[a-z]/i) && key.length === 1 && processLetterKey(key);
-		if (key === 'SHARE') {
+		key.toLowerCase() === 'enter' && submitWord();
+		(key.toLowerCase() === 'delete' || key.toLowerCase() === 'backspace') && deleteLastLetter();
+		key.toLowerCase().match(/[a-z]/i) && key.length === 1 && AddLetter(key.toLowerCase());
+		if (key.toLowerCase() === 'share') {
 			showModal();
 		}
 	};

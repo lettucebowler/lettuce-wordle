@@ -15,9 +15,9 @@
 	};
 
 	const icons = {
-		ENTER: 'fa-solid fa-arrow-left',
-		SHARE: 'fa-solid fa-share-nodes',
-		DELETE: 'fa-solid fa-delete-left'
+		enter: 'fa-solid fa-arrow-left',
+		share: 'fa-solid fa-share-nodes',
+		delete: 'fa-solid fa-delete-left'
 	};
 </script>
 
