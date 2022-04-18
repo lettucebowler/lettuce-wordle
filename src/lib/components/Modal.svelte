@@ -26,9 +26,6 @@
 </script>
 
 <dialog bind:this={dialog} class="modal" open={false}>
-	<div class="toast">
-		<SvelteToast />
-	</div>
 	<div id="clipboard2" />
 	<h2>Success!</h2>
 	<p>
