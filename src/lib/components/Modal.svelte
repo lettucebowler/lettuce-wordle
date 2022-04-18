@@ -4,7 +4,7 @@
 	import type { Word } from '$lib/types/types';
 	import { getGameStatus } from '$lib/util/share';
 	import { appName } from '$lib/util/store';
-	import { toastSuccess } from '$lib/util/toastActions';
+	import { toastError, toastSuccess } from '$lib/util/toastActions';
 	import '$lib/styles/app.css';
 
 	export let words: Word[] = [];
@@ -20,16 +20,12 @@
 
 	const shareGame = () => {
 		share = getGameStatus($appName, words);
-		const clipBoard = new CopyClipBoard({
-			target: document.getElementById('clipboard2'),
-			props: { name: share }
-		});
-		clipBoard.$destroy();
-		toastSuccess('Results copied to clipboard');
-	};
+		console.log(share);
+		!!navigator && navigator.clipboard.writeText(share).then(() => toastSuccess('Results copied to clipboard')).catch(() => toastError('Failed to copy to clipboard.'));
+	}
 </script>
 
-<dialog bind:this={dialog} class="modal">
+<dialog bind:this={dialog} class="modal" open={false}>
 	<div class="toast">
 		<SvelteToast />
 	</div>
@@ -57,6 +53,35 @@
 		box-sizing: border-box;
 		padding: 6px;
 		background-color: var(--nord-1);
+	}
+
+	.modal::backdrop {
+		backdrop-filter: blur(4px);
+		animation: fadein 0.5s forwards;
+	}
+
+	.modal[open] {
+		animation: slidein 0.5s forwards;
+	}
+
+	@keyframes fadein {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
+	@keyframes slidein {
+		from {
+			transform: translateY(+100%);
+			opacity: 0;
+		}
+		to {
+			transform: translateY(0);
+			opacity: 1;
+		}
 	}
 
 	button {

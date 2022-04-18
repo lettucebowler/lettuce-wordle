@@ -33,11 +33,9 @@
 
 <style>
 	button {
-		height: 100%;
 		width: 100%;
-		min-height: 50px;
-		aspect-ratio: 0.9;
-		display: block;
+		aspect-ratio: 0.8;
+		min-height: 40px;
 		border: solid;
 		border-color: transparent;
 		background-color: var(--nord-3);
@@ -47,6 +45,8 @@
 		border-radius: 6px;
 		text-align: center;
 		padding: 0 0;
+		display: grid;
+		place-items: center;
 	}
 
 	button:hover {
