@@ -36,6 +36,7 @@
 		width: 100%;
 		aspect-ratio: 0.8;
 		min-height: 40px;
+		min-width: 32px;
 		border: solid;
 		border-color: transparent;
 		background-color: var(--nord-3);
@@ -47,6 +48,7 @@
 		padding: 0 0;
 		display: grid;
 		place-items: center;
+		cursor: pointer;
 	}
 
 	button:hover {

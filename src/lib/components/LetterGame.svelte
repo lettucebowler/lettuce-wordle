@@ -7,6 +7,7 @@
 	import Modal from '$lib/components/Modal.svelte';
 	import type { Letter, Word } from '../types/types';
 	import { Status } from '$lib/types/types';
+import { SvelteToast } from '@zerodevx/svelte-toast';
 
 	export let answer: string;
 	$: attempt = words.filter((w: Word) => w.complete).length;
@@ -203,9 +204,23 @@
 		words = resetWords();
 		toastClear();
 	});
+
+	let showToast = true;
+
+	const hideToast = () => {
+		showToast = false;
+	};
+	const unHideToast = () => {
+		showToast = true;
+	};
 </script>
 
 <svelte:window on:keydown={(event) => handleKeyPress(event.key)} />
-<Modal bind:modalActions {words} />
+{#if showToast}
+	<div class="toast">
+		<SvelteToast />
+	</div>
+{/if}
+<Modal bind:modalActions {words} on:close={() => unHideToast()} on:cancel={() => unHideToast()}/>
 <LetterGrid data={words} />
 <LettuceKeyboard on:keyPress={(event) => handleKeyPress(event.detail.key)} {keyStatuses} />
