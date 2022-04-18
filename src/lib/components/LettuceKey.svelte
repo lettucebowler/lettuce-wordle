@@ -26,7 +26,9 @@
 		><span class={icons[key]} /></button
 	>
 {:else}
-	<button aria-label={key} title={key} on:click={() => typeKey(key)} class={status}>{key.toUpperCase()}</button>
+	<button aria-label={key} title={key} on:click={() => typeKey(key)} class={status}
+		>{key.toUpperCase()}</button
+	>
 {/if}
 
 <style>
