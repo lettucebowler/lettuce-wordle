@@ -174,7 +174,7 @@
 	};
 
 	const showModal = () => {
-		if (success) {
+		if (success || attempt === 6) {
 			modalActions.open();
 		} else {
 			toastError('Game incomplete.');
@@ -182,8 +182,10 @@
 	};
 
 	const handleKeyPress = (key: string) => {
-		key.toLowerCase() === 'enter' && submitWord();
-		(key.toLowerCase() === 'delete' || key.toLowerCase() === 'backspace') && deleteLastLetter();
+		key.toLowerCase() === 'enter' && attempt < 6 && submitWord();
+		(key.toLowerCase() === 'delete' || key.toLowerCase() === 'backspace') &&
+			attempt < 6 &&
+			deleteLastLetter();
 		key.toLowerCase().match(/[a-z]/i) && key.length === 1 && AddLetter(key.toLowerCase());
 		if (key.toLowerCase() === 'share') {
 			showModal();
