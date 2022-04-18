@@ -30,7 +30,6 @@
 
 	const shareGame = () => {
 		share = getGameStatus($appName, words);
-		console.log(share);
 		message = 'Results Copied to clipboard!';
 		setTimeout(() => clearMessage(), 4000);
 		!!navigator && navigator.clipboard.writeText(share).then(() => setMessage('Results Copied to clipboard!')).catch(() => toastError('Failed to copy to clipboard.')) || toastError('Failed to copy to clipboard.');

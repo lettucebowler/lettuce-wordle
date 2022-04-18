@@ -129,7 +129,6 @@ import { SvelteToast } from '@zerodevx/svelte-toast';
 	};
 
 	const submitWord = () => {
-		console.log('submit');
 		if (success) {
 			return;
 		}
