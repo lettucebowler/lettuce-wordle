@@ -25,6 +25,9 @@
 	<link rel="stylesheet" href="/icomoon.css" />
 </svelte:head>
 <body>
+	<div class="toast">
+		<SvelteToast />
+	</div>
 	<LetterPageContentContainer>
 		<Navbar {links} />
 		<slot />

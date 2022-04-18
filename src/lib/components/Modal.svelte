@@ -1,14 +1,14 @@
 <script lang="ts">
-	import CopyClipBoard from '$lib/components/CopyClipboard.svelte';
-	import { SvelteToast } from '@zerodevx/svelte-toast';
-	import {fly} from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 	import type { Word } from '$lib/types/types';
 	import { getGameStatus } from '$lib/util/share';
 	import { appName } from '$lib/util/store';
-	import { toastError, toastSuccess } from '$lib/util/toastActions';
 	import '$lib/styles/app.css';
 
-	export let words: Word[] = [];
+	export let success: boolean;
+	export let guesses: number;
+	export let words: Word[];
+
 	export const modalActions = {
 		open() {
 			share = getGameStatus($appName, words);
@@ -22,34 +22,42 @@
 
 	const clearMessage = () => {
 		message = '';
-	}
+	};
 
 	const setMessage = (m: string) => {
 		message = m;
-	}
+	};
 
 	const shareGame = () => {
 		share = getGameStatus($appName, words);
 		message = 'Results Copied to clipboard!';
 		setTimeout(() => clearMessage(), 4000);
-		!!navigator && navigator.clipboard.writeText(share).then(() => setMessage('Results Copied to clipboard!')).catch(() => toastError('Failed to copy to clipboard.')) || toastError('Failed to copy to clipboard.');
-	}
+		(!!navigator &&
+			navigator.clipboard
+				.writeText(share)
+				.then(() => setMessage('Results Copied to clipboard!'))
+				.catch(() => setMessage('Failed clipboard copy.'))) ||
+			setMessage('Failed clipboard copy.');
+	};
 </script>
 
 <dialog bind:this={dialog} class="modal" open={false} on:close on:cancel>
-	<div id="clipboard2" />
 	<div class="flex">
-		<h2>Success!</h2>
-		<p>
-			You solved today's WordLettuce in {words.filter((w) => w.complete).length} guess{words.filter(
-				(w) => w.complete
-			).length > 1
-				? 'es'
-				: ''}. Come back tomorrow and play again!
-		</p>
+		<h2>{success ? 'Success' : 'Dang'}!</h2>
+		{#if success}
+			<p>
+				You solved today's WordLettuce in {guesses} guess{guesses > 1 ? 'es' : ''}. Come back
+				tomorrow and play again!
+			</p>
+		{:else}
+			<p>You used up all of your guesses. Come back tomorrow (or refresh) and try again!</p>
+		{/if}
 		<div class="toasty">
 			{#if message}
-				<span in:fly={{duration: 400, y: 50, opacity: 0}} out:fly={{duration: 400, y: 50, opacity: 0}}>{message}</span>
+				<span
+					in:fly={{ duration: 400, y: 50, opacity: 0 }}
+					out:fly={{ duration: 400, y: 50, opacity: 0 }}>{message}</span
+				>
 			{/if}
 		</div>
 		<div class="button-container">
@@ -60,7 +68,6 @@
 </dialog>
 
 <style>
-
 	.flex {
 		display: flex;
 		gap: 12px;
@@ -140,7 +147,8 @@
 		color: var(--nord-6);
 	}
 
-	p, span {
+	p,
+	span {
 		color: var(--nord-6);
 		padding: 4px;
 		text-align: center;

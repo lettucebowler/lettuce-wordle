@@ -8,7 +8,7 @@
 	import { appName } from '$lib/util/store';
 	import { onMount } from 'svelte';
 
-	let answer;
+	let answer: string;
 
 	onMount(async () => {
 		answer = getRandomWord();
