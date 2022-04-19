@@ -6,21 +6,34 @@
 
 <style>
 	main {
-		margin: 0 auto;
+		/* margin: 0 auto;
 		max-width: 800px;
 		width: 100%;
-		box-sizing: border-box;
 		display: flex;
 		gap: 8px;
 		padding: 0px 8px 8px 8px;
 		flex-direction: column;
-		height: 100%;
 		flex: 1 1 auto;
-		margin: 0 auto;
+		margin: 0 auto; */
+		position: relative;
+		bottom: 8px;
+		top: 0px;
+		width: 100%;
+		max-width: 800px;
+		padding: 0 4px 4px 4px;
+		box-sizing: border-box;
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
 	}
 
 	.center {
-		margin: 0 0;
-		height: 100vh;
+		position: absolute;
+		top: 0px;
+		bottom: 0px;
+		right: 0px;
+		left: 0px;
+		display: flex;
+		justify-content: center;
 	}
 </style>

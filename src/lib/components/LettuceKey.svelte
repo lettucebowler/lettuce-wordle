@@ -33,10 +33,7 @@
 
 <style>
 	button {
-		width: 100%;
-		aspect-ratio: 0.8;
-		min-height: 40px;
-		min-width: 32px;
+		width: 100%;		
 		border: solid;
 		border-color: transparent;
 		background-color: var(--nord-3);
@@ -45,7 +42,8 @@
 		color: var(--nord-6);
 		border-radius: 6px;
 		text-align: center;
-		padding: 0 0;
+		height: 100%;
+		padding: 0;
 		display: grid;
 		place-items: center;
 		cursor: pointer;

@@ -13,13 +13,10 @@
 		justify-content: center;
 		text-align: center;
 		align-items: center;
-		display: inline-flex;
 		font-size: 2rem;
 		border-radius: 12px;
 		color: var(--nord-6);
 		font-weight: 700;
-		min-width: 50px;
-		min-height: 50px;
 	}
 
 	.none {
