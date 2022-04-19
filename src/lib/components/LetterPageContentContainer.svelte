@@ -6,15 +6,6 @@
 
 <style>
 	main {
-		/* margin: 0 auto;
-		max-width: 800px;
-		width: 100%;
-		display: flex;
-		gap: 8px;
-		padding: 0px 8px 8px 8px;
-		flex-direction: column;
-		flex: 1 1 auto;
-		margin: 0 auto; */
 		position: relative;
 		bottom: 8px;
 		top: 0px;

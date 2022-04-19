@@ -10,10 +10,13 @@
 <style>
 	div {
 		aspect-ratio: 1;
-		justify-content: center;
-		text-align: center;
-		align-items: center;
+		display: grid;
+		place-items: center;
+		flex-direction: column;
 		font-size: 2rem;
+		text-align: center;
+		vertical-align: center;
+		/* min-height: 4rem; */
 		border-radius: 12px;
 		color: var(--nord-6);
 		font-weight: 700;
