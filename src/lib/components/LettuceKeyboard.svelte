@@ -42,7 +42,6 @@
 </div>
 
 <style>
-
 	.grow {
 		display: flex;
 		flex: 1 1 auto;

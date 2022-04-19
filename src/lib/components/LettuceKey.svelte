@@ -33,7 +33,7 @@
 
 <style>
 	button {
-		width: 100%;		
+		width: 100%;
 		border: solid;
 		border-color: transparent;
 		background-color: var(--nord-3);
