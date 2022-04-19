@@ -12,6 +12,7 @@
 	export const modalActions = {
 		open() {
 			share = getGameStatus($appName, words);
+			visible = true;
 			dialog.showModal();
 		}
 	};
@@ -39,9 +40,31 @@
 				.catch(() => setMessage('Failed clipboard copy.'))) ||
 			setMessage('Failed clipboard copy.');
 	};
+
+	let visible = false;
+	const getClasses = (visible: boolean) => {
+		const classes = [];
+		classes.push('modal');
+		!visible && classes.push('hide');
+		return classes.join(' ');
+	};
+
+	$: classString = getClasses(visible);
+
+	const closeModal = (visible: boolean) => {
+		if (!visible) {
+			dialog.close();
+			visible = false;
+		}
+	};
 </script>
 
-<dialog bind:this={dialog} class="modal" open={false} on:close on:cancel>
+<dialog
+	bind:this={dialog}
+	class={classString}
+	open={false}
+	on:animationend={() => closeModal(visible)}
+>
 	<div class="flex">
 		<h2>{success ? 'Success' : 'Dang'}!</h2>
 		{#if success}
@@ -62,7 +85,12 @@
 		</div>
 		<div class="button-container">
 			<button on:click={() => shareGame()}>Share</button>
-			<button class="close" on:click={() => dialog.close()}>Close</button>
+			<button
+				class="close"
+				on:click={() => {
+					visible = false;
+				}}>Close</button
+			>
 		</div>
 	</div>
 </dialog>
@@ -90,13 +118,23 @@
 		background-color: var(--nord-1);
 	}
 
+	.modal.hide::backdrop {
+		animation: fadeout 0.5s forwards;
+	}
+
 	.modal::backdrop {
 		backdrop-filter: blur(4px);
 		animation: fadein 0.5s forwards;
 	}
 
 	.modal[open] {
+		opacity: 1;
+		pointer-events: auto;
 		animation: slidein 0.5s forwards;
+	}
+
+	.modal.hide[open] {
+		animation: slideout 0.5s forwards;
 	}
 
 	@keyframes fadein {
@@ -108,6 +146,12 @@
 		}
 	}
 
+	@keyframes fadeout {
+		to {
+			opacity: 0;
+		}
+	}
+
 	@keyframes slidein {
 		from {
 			transform: translateY(+100%);
@@ -116,6 +160,17 @@
 		to {
 			transform: translateY(0);
 			opacity: 1;
+		}
+	}
+
+	@keyframes slideout {
+		from {
+			transform: translateY(0);
+			opacity: 1;
+		}
+		to {
+			transform: translateY(+100%);
+			opacity: 0;
 		}
 	}
 
