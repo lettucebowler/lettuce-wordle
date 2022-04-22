@@ -16,7 +16,6 @@
 		font-size: 2rem;
 		text-align: center;
 		vertical-align: center;
-		/* min-height: 4rem; */
 		border-radius: 12px;
 		color: var(--nord-6);
 		font-weight: 700;

@@ -24,7 +24,6 @@
 	<link rel="icon" type="image/png" href="/favicon.png" />
 	<link rel="stylesheet" href="/icomoon.css" />
 </svelte:head>
-<body>
 	<div class="toast">
 		<SvelteToast />
 	</div>
@@ -32,10 +31,9 @@
 		<Navbar {links} />
 		<slot />
 	</LetterPageContentContainer>
-</body>
 
 <style>
-	body {
+	:global(body) {
 		background-color: var(--nord-0);
 		margin: 0px 0px;
 	}
