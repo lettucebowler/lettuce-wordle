@@ -19,19 +19,24 @@
 			playing and sharing scores with my coworkers.
 		</p>
 		<p>
-			This app was created using <a href="https://kit.svelte.dev" target="_blank">svelte-kit</a>. Code
-			for this project can be found
+			This app was created using <a href="https://kit.svelte.dev" target="_blank">svelte-kit</a>.
+			Code for this project can be found
 			<a target="_blank" href="https://github.com/lettucebowler/lettuce-wordle">here</a>.
 		</p>
 	</div>
 </main>
 
 <style>
+
+	/* main {
+		display: flex;
+		flex-direction: column;
+	} */
+
 	.card {
 		justify-content: start;
 		flex-direction: column;
-		padding: 0 30px;
-		text-align: center;
+		padding: 8px 32px;
 		border-radius: 12px;
 		color: var(--nord-4);
 		background-color: var(--nord-1);
@@ -39,6 +44,7 @@
 
 	h1 {
 		font-size: 3.75rem;
+		text-align: center;
 	}
 
 	p {

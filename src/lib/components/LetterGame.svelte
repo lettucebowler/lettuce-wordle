@@ -208,12 +208,22 @@
 
 <svelte:window on:keydown={(event) => handleKeyPress(event.key)} />
 <Modal bind:modalActions guesses={attempt} {success} {words} />
-<LetterGrid data={words} />
-<div class="keyboard">
-	<LettuceKeyboard on:keyPress={(event) => handleKeyPress(event.detail.key)} {keyStatuses} />
-</div>
+	<LetterGrid data={words} />
+	<div class="keyboard">
+		<LettuceKeyboard on:keyPress={(event) => handleKeyPress(event.detail.key)} {keyStatuses} />
+	</div>
+
 
 <style>
+
+	main {
+		display: flex;
+		justify-content: space-between;
+		flex-direction: column;
+		flex: 1 1 auto;
+		gap: 8px;
+	}
+
 	.keyboard {
 		height: 100%;
 		/* aspect-ratio: 10 / 3 */

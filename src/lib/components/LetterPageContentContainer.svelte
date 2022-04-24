@@ -1,11 +1,11 @@
 <div class="center">
-	<main>
+	<div class="page">
 		<slot />
-	</main>
+	</div>
 </div>
 
 <style>
-	main {
+	.page {
 		position: relative;
 		bottom: 8px;
 		top: 0px;

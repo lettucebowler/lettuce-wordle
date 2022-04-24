@@ -22,4 +22,17 @@
 	<title>{$appName} Daily</title>
 </svelte:head>
 
-<LetterGame {answer} />
+	<main>
+		<LetterGame {answer} />
+	</main>
+
+<style>
+	main {
+		padding-top: 8px;
+		display: flex;
+		justify-content: space-between;
+		flex-direction: column;
+		flex: 1 1 auto;
+		gap: 8px;
+	}
+</style>

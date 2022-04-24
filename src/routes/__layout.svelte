@@ -24,13 +24,13 @@
 	<link rel="icon" type="image/png" href="/favicon.png" />
 	<link rel="stylesheet" href="/icomoon.css" />
 </svelte:head>
-	<div class="toast">
-		<SvelteToast />
-	</div>
-	<LetterPageContentContainer>
-		<Navbar {links} />
-		<slot />
-	</LetterPageContentContainer>
+<div class="toast">
+	<SvelteToast />
+</div>
+<LetterPageContentContainer>
+	<Navbar {links} />
+	<slot />
+</LetterPageContentContainer>
 
 <style>
 	:global(body) {
