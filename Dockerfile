@@ -1,4 +1,4 @@
-FROM node:16
+FROM node:18
 
 WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
@@ -12,7 +12,7 @@ COPY . .
 
 RUN npm run build
 
-FROM node:16-slim
+FROM node:18-slim
 
 WORKDIR /app
 COPY --from=0 /app .
