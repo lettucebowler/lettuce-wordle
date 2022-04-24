@@ -22,9 +22,9 @@
 	<title>{$appName} Daily</title>
 </svelte:head>
 
-	<main>
-		<LetterGame {answer} />
-	</main>
+<main>
+	<LetterGame {answer} />
+</main>
 
 <style>
 	main {

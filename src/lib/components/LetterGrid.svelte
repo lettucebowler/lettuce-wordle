@@ -18,13 +18,6 @@
 
 <!-- </div> -->
 <style>
-	.words {
-		display: grid;
-		/* width: 100%; */
-		justify-content: center;
-		margin: auto auto;
-	}
-
 	.grid {
 		display: grid;
 		grid-template-columns: repeat(5, 1fr);
@@ -32,22 +25,5 @@
 		gap: 8px;
 		width: 100%;
 		margin: auto auto;
-		/* height: 100%; */
-	}
-
-	.word {
-		display: flex;
-		flex: 0 1 auto;
-		flex-direction: row;
-		justify-content: center;
-		gap: 8px;
-		height: 100%;
-	}
-
-	.letter {
-		display: flex;
-		flex: 1 1 auto;
-		justify-content: center;
-		flex-direction: column;
 	}
 </style>

@@ -10,10 +10,6 @@
 			name: 'Daily'
 		},
 		{
-			path: '/random',
-			name: 'Random'
-		},
-		{
 			path: '/about',
 			name: 'About'
 		}

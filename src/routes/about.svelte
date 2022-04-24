@@ -27,12 +27,6 @@
 </main>
 
 <style>
-
-	/* main {
-		display: flex;
-		flex-direction: column;
-	} */
-
 	.card {
 		justify-content: start;
 		flex-direction: column;
