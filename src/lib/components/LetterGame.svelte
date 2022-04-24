@@ -215,18 +215,8 @@
 
 
 <style>
-
-	main {
-		display: flex;
-		justify-content: space-between;
-		flex-direction: column;
-		flex: 1 1 auto;
-		gap: 8px;
-	}
-
 	.keyboard {
 		height: 100%;
-		/* aspect-ratio: 10 / 3 */
 		max-height: min(18rem, 30vh);
 	}
 </style>
