@@ -3,7 +3,6 @@
 	import type { Word } from '$lib/types/types';
 	import { getGameStatus } from '$lib/util/share';
 	import { appName } from '$lib/util/store';
-	import '$lib/styles/app.css';
 
 	export let success: boolean;
 	export let guesses: number;

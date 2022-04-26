@@ -1,5 +1,4 @@
 <script lang="ts">
-	import '$lib/styles/app.css';
 	import { page } from '$app/stores';
 	export let links: { path: string; name: string }[] = [];
 </script>
