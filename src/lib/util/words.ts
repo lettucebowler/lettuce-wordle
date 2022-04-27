@@ -96,7 +96,6 @@ export const answerList = [
 	'aorta',
 	'apart',
 	'aphid',
-	'aping',
 	'apnea',
 	'apple',
 	'apply',
@@ -1538,7 +1537,6 @@ export const answerList = [
 	'raise',
 	'rajah',
 	'rally',
-	'ralph',
 	'ramen',
 	'ranch',
 	'randy',
@@ -2319,6 +2317,8 @@ export const answerList = [
 ];
 
 export const allowedGuesses = [
+	'aping',
+	'ralph',
 	'aahed',
 	'aalii',
 	'aargh',
