@@ -1,5 +1,4 @@
 <script lang="ts">
-	import '$lib/styles/app.css';
 	import LetterPageContentContainer from '$lib/components/LetterPageContentContainer.svelte';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
 	import Navbar from '$lib/components/Navbar.svelte';

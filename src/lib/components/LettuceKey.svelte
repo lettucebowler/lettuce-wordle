@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { Status } from '../types/types';
-	import '$lib/styles/app.css';
 
 	export let key: string;
 	export let status: Status = Status.NONE;
