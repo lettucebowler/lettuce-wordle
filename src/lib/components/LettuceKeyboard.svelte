@@ -12,7 +12,7 @@
 		<div class="row">
 			{#each ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'] as key}
 				<div class="key">
-					<LettuceKey {key} status={keyStatuses[key]} on:keyPress />
+					<LettuceKey {key} status={keyStatuses[key]} on:letterTyped />
 				</div>
 			{/each}
 		</div>
@@ -22,7 +22,7 @@
 			<div />
 			{#each ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'] as key}
 				<div class="key">
-					<LettuceKey {key} status={keyStatuses[key]} on:keyPress />
+					<LettuceKey {key} status={keyStatuses[key]} on:letterTyped />
 				</div>
 			{/each}
 			<div />
@@ -34,7 +34,7 @@
 		<div class="row">
 			{#each ['share', 'z', 'x', 'c', 'v', 'b', 'n', 'm', 'enter', 'delete'] as key}
 				<div class="key">
-					<LettuceKey {key} status={keyStatuses[key]} on:keyPress />
+					<LettuceKey {key} status={keyStatuses[key]} on:letterTyped />
 				</div>
 			{/each}
 		</div>

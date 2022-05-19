@@ -181,7 +181,11 @@
 		}
 	};
 
-	const handleKeyPress = (key: string) => {
+	const handleKeyPress = (event) => {
+		console.log(event);
+		const { key } = event;
+		console.log(key);
+		// const {key} = event.detail;
 		key.toLowerCase() === 'enter' && attempt < 6 && submitWord();
 		(key.toLowerCase() === 'delete' || key.toLowerCase() === 'backspace') &&
 			attempt < 6 &&
@@ -206,11 +210,11 @@
 	});
 </script>
 
-<svelte:window on:keydown={(event) => handleKeyPress(event.key)} />
+<svelte:window on:keypress={(event) => handleKeyPress(event)} />
 <Modal bind:modalActions guesses={attempt} {success} {words} />
 <LetterGrid data={words} />
 <div class="keyboard">
-	<LettuceKeyboard on:keyPress={(event) => handleKeyPress(event.detail.key)} {keyStatuses} />
+	<LettuceKeyboard on:letterTyped={(event) => handleKeyPress(event.detail)} {keyStatuses} />
 </div>
 
 <style>

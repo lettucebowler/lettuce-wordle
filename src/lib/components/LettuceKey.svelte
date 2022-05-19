@@ -8,9 +8,16 @@
 	const dispatch = createEventDispatcher();
 
 	const typeKey = (key: string) => {
-		dispatch('keyPress', {
-			key
-		});
+		console.log(key);
+		dispatch(
+			'letterTyped',
+			{
+				key
+			},
+			{
+				cancelable: false
+			}
+		);
 	};
 
 	const icons = {
