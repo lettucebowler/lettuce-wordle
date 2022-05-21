@@ -129,7 +129,7 @@
 
 	const handleKeyPress = (event) => {
 		const { key } = event;
-		key.toLowerCase() === 'enter' && attempt < 6 && handleWordSubmit();
+		key.toLowerCase() === 'enter' && handleWordSubmit();
 		(key.toLowerCase() === 'delete' || key.toLowerCase() === 'backspace') &&
 			attempt < 6 &&
 			deleteLastLetter();
