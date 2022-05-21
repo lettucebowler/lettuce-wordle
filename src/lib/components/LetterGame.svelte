@@ -98,17 +98,17 @@
 	};
 
 	const handleWordSubmit = () => {
-		if (words[attempt > 5 ? 5 : attempt].length !== 5) {
+		if (words[attempt].length !== 5) {
 			toastError('Word too short.');
 			return;
 		}
-		statuses[attempt > 5 ? 5 : attempt] = getLetterStatuses(words[attempt > 5 ? 5 : attempt]);
+		statuses[attempt] = getLetterStatuses(words[attempt]);
 		keyStatuses = getKeyStatuses(words, statuses);
-		success = words[attempt > 5 ? 5 : attempt] === answer;
+		success = words[attempt] === answer;
 		attempt++;
-		if (words.filter(Boolean).length === 6 && !success) {
-			words = words.concat(['']).slice(1);
-			statuses = statuses.concat([['none', 'none', 'none', 'none', 'none']]).slice(1);
+		if (words.filter(Boolean).length > 5 && !success) {
+			words = words.concat(['']);
+			statuses = statuses.concat([['none', 'none', 'none', 'none', 'none']]);
 		}
 	};
 
@@ -149,16 +149,9 @@
 
 	let modalActions;
 
-	export let statuses = [
-		['none', 'none', 'none', 'none', 'none'],
-		['none', 'none', 'none', 'none', 'none'],
-		['none', 'none', 'none', 'none', 'none'],
-		['none', 'none', 'none', 'none', 'none'],
-		['none', 'none', 'none', 'none', 'none'],
-		['none', 'none', 'none', 'none', 'none']
-	];
+	export let statuses;
 
-	let words = ['', '', '', '', '', ''];
+	let words;
 
 	let success = false;
 

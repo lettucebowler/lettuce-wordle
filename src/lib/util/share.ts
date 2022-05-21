@@ -1,6 +1,8 @@
 export const getGameStatus = (appName: string, statuses: string[][]) => {
 	const gameStatus = statuses.filter((l) => l[0] !== 'none');
-	const today = `${appName} ${new Date().toLocaleDateString()} ${gameStatus.length}/6`;
+	const today = `https://word.lettucebowler.net\n${appName} ${new Date().toLocaleDateString()} ${
+		gameStatus.length
+	}/6`;
 	const strings = gameStatus.map((k) => k.map((w) => getStatusEmoji(w)).join(''));
 	const share = [today, ...strings].join('\n');
 	return share;

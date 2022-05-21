@@ -22,10 +22,6 @@
 	export let currentInput = 0;
 
 	const handleSubmit = (i: number) => {
-		if (i > 5 || i !== currentInput) {
-			return;
-		}
-
 		if (!isValidWord(words[i])) {
 			toastError('Not a valid word.');
 			return;
@@ -37,14 +33,14 @@
 		}
 
 		dispatch('wordSubmit', {
-			attempt: currentInput
+			attempt: i
 		});
+
+		inputs[i < 5 ? i + 1 : 5].focus();
 
 		if (i >= 5) {
 			return;
 		}
-
-		inputs[i + 1].focus();
 		currentInput++;
 	};
 
@@ -52,13 +48,13 @@
 </script>
 
 <div class="grid">
-	{#each [0, 1, 2, 3, 4, 5] as i}
+	{#each words.slice(words.length > 6 ? -6 : 0) as word, i}
 		<LetterRow
-			bind:value={words[i]}
+			bind:value={words[words.length - 6 + i]}
 			bind:ref={inputs[i]}
-			on:letterSubmit={() => handleSubmit(i)}
+			on:letterSubmit={() => handleSubmit(words.length - 6 + i)}
 			on:blur={() => inputs[currentInput].focus()}
-			statuses={statuses[i]}
+			statuses={statuses[words.length - 6 + i]}
 		/>
 	{/each}
 </div>
