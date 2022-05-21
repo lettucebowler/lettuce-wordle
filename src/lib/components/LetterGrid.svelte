@@ -6,16 +6,9 @@
 
 	const dispatch = createEventDispatcher();
 
-	export let statuses = [
-		['none', 'none', 'none', 'none', 'none'],
-		['none', 'none', 'none', 'none', 'none'],
-		['none', 'none', 'none', 'none', 'none'],
-		['none', 'none', 'none', 'none', 'none'],
-		['none', 'none', 'none', 'none', 'none'],
-		['none', 'none', 'none', 'none', 'none']
-	];
+	export let statuses;
 
-	export let words = ['', '', '', '', '', ''];
+	export let words;
 
 	let inputs = [null, null, null, null, null, null];
 

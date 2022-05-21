@@ -149,9 +149,16 @@
 
 	let modalActions;
 
-	export let statuses;
+	let statuses = [
+		['none', 'none', 'none', 'none', 'none'],
+		['none', 'none', 'none', 'none', 'none'],
+		['none', 'none', 'none', 'none', 'none'],
+		['none', 'none', 'none', 'none', 'none'],
+		['none', 'none', 'none', 'none', 'none'],
+		['none', 'none', 'none', 'none', 'none']
+	];
 
-	let words;
+	let words = ['', '', '', '', '', ''];
 
 	let success = false;
 
