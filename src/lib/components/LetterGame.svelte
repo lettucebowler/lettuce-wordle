@@ -98,14 +98,18 @@
 	};
 
 	const handleWordSubmit = () => {
-		if (words[attempt].length !== 5) {
+		if (words[attempt > 5 ? 5 : attempt].length !== 5) {
 			toastError('Word too short.');
 			return;
 		}
-		statuses[attempt] = getLetterStatuses(words[attempt]);
+		statuses[attempt > 5 ? 5 : attempt] = getLetterStatuses(words[attempt > 5 ? 5 : attempt]);
 		keyStatuses = getKeyStatuses(words, statuses);
-		success = words[attempt] === answer;
-		attempt === 5 && showModal();
+		success = words[attempt > 5 ? 5 : attempt] === answer;
+		attempt++;
+		if (words.filter(Boolean).length === 6 && !success) {
+			words = words.concat(['']).slice(1);
+			statuses = statuses.concat([['none', 'none', 'none', 'none', 'none']]).slice(1);
+		}
 	};
 
 	const deleteLastLetter = () => {
@@ -162,8 +166,6 @@
 
 	let keyStatuses = getKeyStatuses(words, statuses);
 
-	$: answer && attempt === 6 && !success && showModal();
-
 	$: !!answer && success && showModal();
 
 	beforeNavigate(() => {
@@ -171,7 +173,7 @@
 	});
 </script>
 
-<LetterGrid bind:statuses bind:words on:wordSubmit={handleWordSubmit} bind:currentInput={attempt} />
+<LetterGrid bind:statuses bind:words on:wordSubmit={handleWordSubmit} />
 <Modal bind:modalActions guesses={attempt} {success} {statuses} />
 <div class="keyboard">
 	<LettuceKeyboard on:letterTyped={(event) => handleKeyPress(event.detail)} {keyStatuses} />
