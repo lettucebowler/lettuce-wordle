@@ -1,16 +1,15 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
-	import type { Word } from '$lib/types/types';
 	import { getGameStatus } from '$lib/util/share';
 	import { appName } from '$lib/util/store';
 
 	export let success: boolean;
 	export let guesses: number;
-	export let words: Word[];
+	export let statuses: string[][];
 
 	export const modalActions = {
 		open() {
-			share = getGameStatus($appName, words);
+			share = getGameStatus($appName, statuses);
 			visible = true;
 			dialog.showModal();
 		}
@@ -29,7 +28,7 @@
 	};
 
 	const shareGame = () => {
-		share = getGameStatus($appName, words);
+		share = getGameStatus($appName, statuses);
 		message = 'Results Copied to clipboard!';
 		setTimeout(() => clearMessage(), 4000);
 		(!!navigator &&
@@ -84,12 +83,6 @@
 		</div>
 		<div class="button-container">
 			<button on:click={() => shareGame()}>Share</button>
-			<button
-				class="close"
-				on:click={() => {
-					visible = false;
-				}}>Close</button
-			>
 		</div>
 	</div>
 </dialog>
@@ -108,7 +101,7 @@
 	}
 
 	.modal {
-		max-width: 300px;
+		max-width: 320px;
 		width: 100%;
 		border-radius: 18px;
 		border-color: var(--nord-3);

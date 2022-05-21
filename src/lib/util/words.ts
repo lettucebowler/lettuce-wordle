@@ -1,5 +1,3 @@
-import type { Letter, Word } from '$lib/types/types';
-
 export const answerList = [
 	'aback',
 	'abase',
@@ -13005,9 +13003,6 @@ export const getRandomWord = () => {
 	return getWord(random);
 };
 
-export const isValidWord = (word: Word) =>
-	answerList
-		.concat(allowedGuesses)
-		.includes(word.word.map((l: Letter) => l.letter.toLowerCase()).join(''));
+export const isValidWord = (word: string) => answerList.concat(allowedGuesses).includes(word);
 
 export default answerList;

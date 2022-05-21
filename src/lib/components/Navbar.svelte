@@ -18,12 +18,12 @@
 		color: var(--nord-6);
 		text-align: center;
 		font-size: 1.5rem;
-		padding: 3px 12px;
-		display: flex;
-		justify-content: center;
-		align-items: center;
+		padding: 0.25rem 0.5rem;
+		box-sizing: border-box;
+		display: grid;
+		place-items: center;
+		height: 3rem;
 		text-decoration: none;
-		margin: 3px;
 		border-radius: 6px;
 	}
 
@@ -46,10 +46,11 @@
 
 	nav {
 		display: flex;
+		gap: 0.5rem;
 		justify-content: center;
 		background-color: var(--nord-2);
-		padding: 8px;
-		height: min(5rem, 8vh);
+		padding: 0.5rem;
+		height: 4rem;
 		box-sizing: border-box;
 		border-radius: 0px 0px 12px 12px;
 	}

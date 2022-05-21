@@ -1,14 +1,12 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { Status } from '../types/types';
 
 	export let key: string;
-	export let status: Status = Status.NONE;
+	export let status = 'none';
 
 	const dispatch = createEventDispatcher();
 
 	const typeKey = (key: string) => {
-		console.log(key);
 		dispatch(
 			'letterTyped',
 			{
@@ -22,7 +20,6 @@
 
 	const icons = {
 		enter: 'icon-keyboard_return',
-		share: 'icon-share',
 		delete: 'icon-backspace'
 	};
 </script>

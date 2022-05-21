@@ -1,41 +1,11 @@
 <script lang="ts">
 	import { beforeNavigate } from '$app/navigation';
 	import { toastError, toastClear } from '$lib/util/toastActions';
-	import { isValidWord } from '$lib/util/words';
 	import LetterGrid from '$lib/components/LetterGrid.svelte';
 	import LettuceKeyboard from '$lib/components/LettuceKeyboard.svelte';
 	import Modal from '$lib/components/Modal.svelte';
-	import type { Letter, Word } from '../types/types';
-	import { Status } from '$lib/types/types';
 
 	export let answer: string;
-	$: attempt = words.filter((w: Word) => w.complete).length;
-	$: success = isSuccess(words);
-
-	const resetWords = () => {
-		const arr: Word[] = [];
-		for (let i = 0; i < 6; i++) {
-			arr.push({
-				complete: false,
-				word: Array(5)
-					.fill(0)
-					.map((): Letter => ({ letter: '', status: Status.NONE }))
-			});
-		}
-		return arr;
-	};
-
-	let words: Word[] = resetWords();
-
-	const isSuccess = (words: Word[]) => {
-		const complete = words.filter((w: Word) => w.complete);
-		const [last] = complete.reverse();
-		if (complete.length === 0) {
-			return false;
-		}
-		const guess = last.word.map((l: Letter) => l.letter).join('');
-		return guess === answer;
-	};
 
 	const getLetterLocations = (s: string, l: string) => {
 		return s
@@ -45,148 +15,117 @@
 			.map((slot) => slot.index);
 	};
 
-	const containsLetter = (letter: Letter, index: number, guess: string, answer: string) => {
-		const guessLocations = getLetterLocations(guess, letter.letter);
-		const answerLocations = getLetterLocations(answer, letter.letter);
+	const containsLetter = (letter: string, index: number, guess: string, answer: string) => {
+		const guessLocations = getLetterLocations(guess, letter);
+		const answerLocations = getLetterLocations(answer, letter);
 		const correctCount = guessLocations.filter((location) =>
 			answerLocations.includes(location)
 		).length;
-		const previousContainsCount = getLetterLocations(guess.slice(0, index), letter.letter).filter(
+		const previousContainsCount = getLetterLocations(guess.slice(0, index), letter).filter(
 			(index) => !answerLocations.includes(index)
 		).length;
 		return correctCount + previousContainsCount < answerLocations.length;
 	};
 
 	const getLetterStatus = (
-		letter: Letter,
+		letter: string,
 		i: number,
 		word: string,
 		answer: string,
 		complete: boolean
 	) => {
-		const none = !complete || letter.letter === '';
+		const none = !complete || letter === '';
 		const contains = containsLetter(letter, i, word, answer);
-		const correct = answer.split('')[i] === letter.letter;
+		const correct = answer.split('')[i] === letter;
 
 		if (none) {
-			return Status.NONE;
+			return 'none';
 		}
 
 		if (correct) {
-			return Status.CORRECT;
+			return 'correct';
 		}
 
 		if (contains) {
-			return Status.CONTAINS;
+			return 'contains';
 		}
 
-		return Status.INCORRECT;
+		return 'incorrect';
 	};
 
-	const getLetterStatuses = (w: Word): Word => {
-		const guess = w.word.map((l: Letter) => l.letter).join('');
-		const lettersWithStatuses: Letter[] = w.word.map((l: Letter, i: number) => ({
-			...l,
-			status: getLetterStatus(l, i, guess, answer, true)
-		}));
-		return {
-			complete: true,
-			word: lettersWithStatuses
-		};
+	const getLetterStatuses = (guess: string): string[] => {
+		return guess.split('').map((l, i) => {
+			return getLetterStatus(l, i, guess, answer, true);
+		});
 	};
 
-	const getKeyStatuses = (words: Word[]) => {
+	const getKeyStatuses = (words: string[], statuses: string[][]) => {
 		const alphabet = Object.assign(
 			{},
 			...Array.from(Array(26))
 				.map((e, i) => i + 65)
 				.map((x) => String.fromCharCode(x))
 				.map((letter: string) => ({
-					[letter.toLowerCase()]: Status.NONE
+					[letter.toLowerCase()]: 'none'
 				}))
 		);
-		const letterStrings = words
-			.filter((w: Word) => w.complete)
-			.map((word) => word.word)
-			.flat()
-			.map((l) => JSON.stringify(l));
-		const letters: Letter[] = Array.from(new Set(letterStrings)).map((s: string) => JSON.parse(s));
+		const letters = Array.from(
+			new Set(
+				words
+					.map((w, i) =>
+						w.split('').map((l, j) => ({
+							letter: l,
+							status: statuses[i][j]
+						}))
+					)
+					.flat()
+			)
+		);
 		const correctList = letters
-			.filter((letter) => letter.status === Status.CORRECT)
-			.map((l: Letter) => ({ [l.letter]: l.status }));
-		const correct: { [x: string]: Status } = Object.assign({}, ...correctList);
+			.filter((letter) => letter.status === 'correct')
+			.map((l) => ({ [l.letter]: l.status }));
+		const correct: { [x: string]: string } = Object.assign({}, ...correctList);
 		const containsList = letters
-			.filter((letter) => letter.status === Status.CONTAINS)
-			.map((l: Letter) => ({ [l.letter]: l.status }));
-		const contains: { [x: string]: Status } = Object.assign({}, ...containsList);
+			.filter((letter) => letter.status === 'contains')
+			.map((l) => ({ [l.letter]: l.status }));
+		const contains: { [x: string]: string } = Object.assign({}, ...containsList);
 		const incorrectList = letters
-			.filter((letter) => letter.status === Status.INCORRECT)
-			.map((l: Letter) => ({ [l.letter]: l.status }));
-		const incorrect: { [x: string]: Status } = Object.assign({}, ...incorrectList);
+			.filter((letter) => letter.status === 'incorrect')
+			.map((l) => ({ [l.letter]: l.status }));
+		const incorrect: { [x: string]: string } = Object.assign({}, ...incorrectList);
 
 		return { ...alphabet, ...incorrect, ...contains, ...correct };
 	};
 
-	const submitWord = () => {
-		if (success) {
+	const handleWordSubmit = () => {
+		if (words[attempt].length !== 5) {
+			toastError('Word too short.');
 			return;
 		}
-		const guess = words[attempt];
-		const valid = isValidWord(guess);
-		const long = guess.word.every((l: Letter) => !!l.letter);
-
-		if (!long) {
-			return toastError('Not enough letters.');
-		} else if (!valid) {
-			return toastError('Not in word list.');
-		} else if (attempt > 5) {
-			return toastError('No more attempts remaining.');
-		}
-
-		words[attempt] = getLetterStatuses(words[attempt]);
-		keyStatuses = getKeyStatuses(words);
+		statuses[attempt] = getLetterStatuses(words[attempt]);
+		keyStatuses = getKeyStatuses(words, statuses);
+		success = words[attempt] === answer;
+		attempt === 5 && showModal();
 	};
 
 	const deleteLastLetter = () => {
 		if (success) {
 			return;
 		}
-		const incomplete = words.slice(attempt);
-		let [current] = incomplete;
-		const index = 4 - current.word.filter((l: Letter) => l.letter === '').length;
-		if (index < 0) {
-			return;
-		}
-		words[attempt].word[index].letter = '';
+		words[attempt] = words[attempt].slice(0, -1);
 	};
 
 	const AddLetter = (key: string) => {
-		if (success) {
+		if (success || words[attempt].length > 4) {
 			return;
 		}
-		const incomplete = words.slice(attempt);
-		let [current] = incomplete;
-		const index = current.word.filter((l: Letter) => l.letter !== '').length;
-		if (index > 4) {
-			return;
-		}
-		words[attempt].word[index].letter = key;
-	};
 
-	const showModal = () => {
-		if (success || attempt === 6) {
-			modalActions.open();
-		} else {
-			toastError('Game incomplete.');
-		}
+		words[attempt] = `${words[attempt]}${key}`;
 	};
 
 	const handleKeyPress = (event) => {
-		console.log(event);
 		const { key } = event;
-		console.log(key);
-		// const {key} = event.detail;
-		key.toLowerCase() === 'enter' && attempt < 6 && submitWord();
+		key.toLowerCase() === 'enter' && attempt < 6 && handleWordSubmit();
 		(key.toLowerCase() === 'delete' || key.toLowerCase() === 'backspace') &&
 			attempt < 6 &&
 			deleteLastLetter();
@@ -196,23 +135,44 @@
 		}
 	};
 
+	const showModal = () => {
+		if (success || attempt === 5) {
+			modalActions.open();
+		} else {
+			toastError('Game incomplete.');
+		}
+	};
+
 	let modalActions;
 
-	$: answer && attempt === 6 && !success && modalActions.open();
+	export let statuses = [
+		['none', 'none', 'none', 'none', 'none'],
+		['none', 'none', 'none', 'none', 'none'],
+		['none', 'none', 'none', 'none', 'none'],
+		['none', 'none', 'none', 'none', 'none'],
+		['none', 'none', 'none', 'none', 'none'],
+		['none', 'none', 'none', 'none', 'none']
+	];
 
-	$: success && modalActions.open();
+	let words = ['', '', '', '', '', ''];
 
-	$: keyStatuses = getKeyStatuses(words);
+	let success = false;
+
+	let attempt = 0;
+
+	let keyStatuses = getKeyStatuses(words, statuses);
+
+	$: answer && attempt === 6 && !success && showModal();
+
+	$: !!answer && success && showModal();
 
 	beforeNavigate(() => {
-		words = resetWords();
 		toastClear();
 	});
 </script>
 
-<svelte:window on:keypress={(event) => handleKeyPress(event)} />
-<Modal bind:modalActions guesses={attempt} {success} {words} />
-<LetterGrid data={words} />
+<LetterGrid bind:statuses bind:words on:wordSubmit={handleWordSubmit} bind:currentInput={attempt} />
+<Modal bind:modalActions guesses={attempt} {success} {statuses} />
 <div class="keyboard">
 	<LettuceKeyboard on:letterTyped={(event) => handleKeyPress(event.detail)} {keyStatuses} />
 </div>

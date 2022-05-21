@@ -1,9 +1,8 @@
 <script lang="ts">
-	import type { Status } from '$lib/types/types';
 	import LettuceKey from '$lib/components/LettuceKey.svelte';
 
 	export let keyStatuses: {
-		[x: string]: Status;
+		[x: string]: string;
 	};
 </script>
 
@@ -32,7 +31,10 @@
 	</div>
 	<div class="grow">
 		<div class="row">
-			{#each ['share', 'z', 'x', 'c', 'v', 'b', 'n', 'm', 'enter', 'delete'] as key}
+			<div />
+			<div />
+			<div />
+			{#each ['z', 'x', 'c', 'v', 'b', 'n', 'm', 'enter', 'delete'] as key}
 				<div class="key">
 					<LettuceKey {key} status={keyStatuses[key]} on:letterTyped />
 				</div>
