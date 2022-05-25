@@ -52,6 +52,6 @@
 		padding: 0.5rem;
 		height: 4rem;
 		box-sizing: border-box;
-		border-radius: 0px 0px 12px 12px;
+		border-radius: 0px 0px 22px 22px;
 	}
 </style>

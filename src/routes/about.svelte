@@ -26,7 +26,7 @@
 		justify-content: start;
 		flex-direction: column;
 		padding: 8px 32px;
-		border-radius: 12px;
+		border-radius: 22px;
 		color: var(--nord-4);
 		background-color: var(--nord-1);
 	}
