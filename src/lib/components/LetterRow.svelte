@@ -25,14 +25,17 @@
 
 <div>
 	<form on:submit={handleSubmit} autocomplete="off">
-		<input
-			type="text"
-			maxLength="5"
-			on:beforeinput={(event) => filterInput(event)}
-			bind:value
-			bind:this={ref}
-			on:blur
-		/>
+		<label>
+			hidden input for wordle game. type your guess here
+			<input
+				type="text"
+				maxLength="5"
+				on:beforeinput={(event) => filterInput(event)}
+				bind:value
+				bind:this={ref}
+				on:blur
+			/>
+		</label>
 	</form>
 	<div class="row">
 		{#each [0, 1, 2, 3, 4] as i}
@@ -54,6 +57,10 @@
 		height: 0px;
 		padding: 0px;
 		border: none;
+		opacity: 0;
+	}
+
+	label {
 		opacity: 0;
 	}
 
