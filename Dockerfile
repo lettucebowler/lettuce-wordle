@@ -19,4 +19,4 @@ COPY --from=0 /app .
 COPY . .
 
 EXPOSE 3000
-CMD ["node", "./.svelte-kit"]
+CMD ["node", "build"]
