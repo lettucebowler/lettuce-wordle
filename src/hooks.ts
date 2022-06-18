@@ -6,6 +6,9 @@ export async function handle({ event, resolve }) {
 
 	const state = JSON.parse(cookies.state || JSON.stringify({}));
 
+    console.log('state');
+    console.log(state);
+
 	event.locals = { state };
 
 	const response = await resolve(event);
