@@ -1,14 +1,13 @@
 <script lang="ts">
 	import LetterGame from '$lib/components/LetterGame.svelte';
 	import { appName } from '$lib/util/store';
-	import { getDailyWord } from '$lib/util/words';
-	import { onMount } from 'svelte';
 
-	let answer: string;
-
-	onMount(async () => {
-		answer = getDailyWord();
-	});
+	export let state: {
+		answer: string;
+		words: string[];
+		success: boolean;
+		attempt: number;
+	};
 </script>
 
 <svelte:head>
@@ -18,7 +17,12 @@
 </svelte:head>
 
 <main>
-	<LetterGame {answer} />
+	<LetterGame
+		answer={state.answer}
+		words={state.words}
+		success={state.success}
+		attempt={state.attempt}
+	/>
 </main>
 
 <style>

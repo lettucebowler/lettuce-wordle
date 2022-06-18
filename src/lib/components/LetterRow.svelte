@@ -39,7 +39,7 @@
 	</form>
 	<div class="row">
 		{#each [0, 1, 2, 3, 4] as i}
-			<LetterBox letter={value.charAt(i)} status={statuses[i]} />
+			<LetterBox letter={value.charAt(i)} status={statuses[i] || 'none'} />
 		{/each}
 	</div>
 </div>

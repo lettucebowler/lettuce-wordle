@@ -12,8 +12,6 @@
 
 	let inputs = [null, null, null, null, null, null];
 
-	// export let currentInput = 0;
-
 	const handleSubmit = () => {
 		const i = words.filter(Boolean).length - 1;
 

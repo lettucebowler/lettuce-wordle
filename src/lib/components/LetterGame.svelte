@@ -1,11 +1,11 @@
 <script lang="ts">
+	import Cookies from 'js-cookie';
 	import { beforeNavigate } from '$app/navigation';
+	import { onMount } from 'svelte';
 	import { toastError, toastClear } from '$lib/util/toastActions';
 	import LetterGrid from '$lib/components/LetterGrid.svelte';
 	import LettuceKeyboard from '$lib/components/LettuceKeyboard.svelte';
 	import Modal from '$lib/components/Modal.svelte';
-
-	export let answer: string;
 
 	const getLetterLocations = (s: string, l: string) => {
 		return s
@@ -54,6 +54,9 @@
 	};
 
 	const getLetterStatuses = (guess: string): string[] => {
+		if (!guess) {
+			return ['none', 'none', 'none', 'none', 'none'];
+		}
 		return guess.split('').map((l, i) => {
 			return getLetterStatus(l, i, guess, answer, true);
 		});
@@ -140,33 +143,44 @@
 	};
 
 	const showModal = () => {
-		if (success || attempt === 5) {
-			modalActions.open();
-		} else {
-			toastError('Game incomplete.');
+		if (success) {
+			modalActions?.open && modalActions.open();
 		}
 	};
 
 	let modalActions;
 
-	let statuses = [
-		['none', 'none', 'none', 'none', 'none'],
-		['none', 'none', 'none', 'none', 'none'],
-		['none', 'none', 'none', 'none', 'none'],
-		['none', 'none', 'none', 'none', 'none'],
-		['none', 'none', 'none', 'none', 'none'],
-		['none', 'none', 'none', 'none', 'none']
-	];
+	const saveState = (answer: string, words: string[]) => {
+		const state = JSON.stringify({
+			answer,
+			words,
+			attempt: words.filter(Boolean).length
+		});
 
-	let words = ['', '', '', '', '', ''];
+		Cookies.set('state', state, { expires: 365 });
+	};
 
-	let success = false;
+	export let answer: string;
 
-	let attempt = 0;
+	export let words = ['', '', '', '', '', ''];
+
+	export let success = false;
+
+	let statuses = words.map((word) => getLetterStatuses(word));
+
+	export let attempt = 0;
 
 	let keyStatuses = getKeyStatuses(words, statuses);
 
 	$: !!answer && success && showModal();
+
+	$: saveState(answer, words);
+
+	onMount(() => {
+		if (success) {
+			showModal();
+		}
+	});
 
 	beforeNavigate(() => {
 		toastClear();
