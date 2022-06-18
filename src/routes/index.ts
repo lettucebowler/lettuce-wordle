@@ -3,6 +3,8 @@ import { getDailyWord } from '$lib/util/words';
 export async function get({ locals }) {
 	const { state } = locals;
 
+    console.log(state);
+
 	const dailyword = getDailyWord();
 	const words = state.answer === dailyword ? state.words : ['', '', '', '', '', ''];
 	return {
