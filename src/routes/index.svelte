@@ -8,6 +8,10 @@
 		success: boolean;
 		attempt: number;
 	};
+
+	console.log(state);
+
+	$: console.log(state);
 </script>
 
 <svelte:head>
