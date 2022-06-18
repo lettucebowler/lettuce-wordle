@@ -6,7 +6,7 @@ const config = {
 	preprocess: preprocess(),
 
 	kit: {
-		adapter: adapter({ out: 'build' }),
+		adapter: adapter({ out: '.svelte-kit' }),
 		prerender: {
 			default: false
 		}
