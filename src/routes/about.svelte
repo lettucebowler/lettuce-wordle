@@ -19,6 +19,14 @@
 			<a target="_blank" href="https://github.com/lettucebowler/lettuce-wordle">here</a>.
 		</p>
 	</div>
+	<div class="card">
+		<h2>Recent Updates</h2>
+		<ul>
+			<li>
+				<p>06/18/2022 - store game state in cookie to persist state between visits.</p>
+			</li>
+		</ul>
+	</div>
 </main>
 
 <style>
@@ -29,6 +37,11 @@
 		border-radius: 22px;
 		color: var(--nord-4);
 		background-color: var(--nord-1);
+	}
+
+	h2 {
+		font-size: 2rem;
+		text-align: center;
 	}
 
 	h1 {
@@ -43,5 +56,11 @@
 	a {
 		text-decoration: none;
 		color: var(--nord-14);
+	}
+
+	main {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
 	}
 </style>
