@@ -30,6 +30,9 @@
 			<input
 				type="text"
 				maxLength="5"
+				autocorrect="off"
+				autocapitalize="off"
+				spellcheck="false"
 				on:beforeinput={(event) => filterInput(event)}
 				bind:value
 				bind:this={ref}
