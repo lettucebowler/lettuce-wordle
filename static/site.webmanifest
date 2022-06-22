@@ -15,5 +15,24 @@
 	],
 	"theme_color": "#2e3440",
 	"background_color": "#2e3440",
-	"display": "standalone"
+	"display": "standalone",
+	"start_url": "/",
+	"scope": "/",
+	"shortcuts": [
+		{
+			"name": "Play WordLettuce",
+			"short_name": "Play",
+			"description": "Play WordLettuce",
+			"url": "/",
+			"icons": [{ "src": "/icons/logo_192.png", "sizes": "192x192" }]
+		},
+		{
+			"name": "About WordLettuce",
+			"short_name": "About",
+			"description": "Learn about WordLettuce",
+			"url": "/about",
+			"icons": [{ "src": "/icons/logo_192.png", "sizes": "192x192" }]
+		}
+	],
+	"description": "A bad wordle clone made by Lettucebowler"
 }
