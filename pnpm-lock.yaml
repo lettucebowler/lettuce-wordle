@@ -19,6 +19,7 @@ specifiers:
   svelte-preprocess: ^4.10.7
   tslib: ^2.4.0
   typescript: ^4.7.4
+  vite: ^2.9.13
 
 devDependencies:
   '@sveltejs/adapter-node': 1.0.0-next.78
@@ -39,6 +40,7 @@ devDependencies:
   svelte-preprocess: 4.10.7_lvfi2wesz6u4l5rfbnetbucfmm
   tslib: 2.4.0
   typescript: 4.7.4
+  vite: 2.9.13
 
 packages:
   /@eslint/eslintrc/1.3.0:
