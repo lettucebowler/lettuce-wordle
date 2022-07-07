@@ -4,7 +4,8 @@
 	"scripts": {
 		"dev": "vite dev --host 0.0.0.0",
 		"build": "vite build",
-		"package": "vite package",
+		"package": "svelte-kit package",
+		"prepare": "svelte-kit sync",
 		"preview": "vite preview --host 0.0.0.0 --port=3000",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
