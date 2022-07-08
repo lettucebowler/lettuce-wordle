@@ -7,15 +7,12 @@ COPY package.json pnpm-lock.yaml ./
 # RUN npm install -g pnpm
 # RUN pnpm install
 RUN curl -fsSL https://bun.sh/install | bash
-RUN export BUN_INSTALL="/root/.bun"
-RUN echo $BUN_INSTALL
-RUN export PATH="$BUN_INSTALL/bin:$PATH"
-RUN bun install
+RUN /root/.bun/bin/bun install
 
 
 COPY . .
 
-RUN bun run build
+RUN /root/.bun/bin/bun run build
 
 FROM node:18-slim
 
