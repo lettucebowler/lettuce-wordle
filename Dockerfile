@@ -8,6 +8,8 @@ COPY package.json pnpm-lock.yaml ./
 # RUN pnpm install
 RUN curl -fsSL https://bun.sh/install | bash
 RUN bun install
+RUN export BUN_INSTALL="/root/.bun"
+RUN export PATH="$BUN_INSTALL/bin:$PATH"
 
 
 COPY . .
