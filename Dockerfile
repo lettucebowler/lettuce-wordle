@@ -4,15 +4,12 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 
 
-# RUN npm install -g pnpm
-# RUN pnpm install
-RUN curl -fsSL https://bun.sh/install | bash
-RUN /root/.bun/bin/bun install
-
+RUN npm install -g pnpm
+RUN pnpm install
 
 COPY . .
 
-RUN /root/.bun/bin/bun run build
+RUN pnpm build
 
 FROM node:18-slim
 
