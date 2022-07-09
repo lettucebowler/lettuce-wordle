@@ -113,6 +113,7 @@
 			words = words.concat(['']);
 			statuses = statuses.concat([['none', 'none', 'none', 'none', 'none']]);
 		}
+		saveState(answer, words);
 	};
 
 	const deleteLastLetter = () => {
@@ -173,8 +174,6 @@
 	let keyStatuses = getKeyStatuses(words, statuses);
 
 	$: !!answer && success && showModal();
-
-	$: saveState(answer, words);
 
 	onMount(() => {
 		if (success) {
