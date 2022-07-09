@@ -1,7 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@sveltejs/adapter-node': next
+  '@sveltejs/adapter-node': 1.0.0-next.78
   '@sveltejs/kit': next
   '@typescript-eslint/eslint-plugin': ^5.30.5
   '@typescript-eslint/parser': ^5.30.5
@@ -21,7 +21,7 @@ specifiers:
   vite: ^2.9.14
 
 devDependencies:
-  '@sveltejs/adapter-node': 1.0.0-next.79
+  '@sveltejs/adapter-node': 1.0.0-next.78
   '@sveltejs/kit': 1.0.0-next.367_svelte@3.49.0+vite@2.9.14
   '@typescript-eslint/eslint-plugin': 5.30.5_6zdoc3rn4mpiddqwhppni2mnnm
   '@typescript-eslint/parser': 5.30.5_4x5o4skxv6sl53vpwefgt23khm
@@ -148,10 +148,10 @@ packages:
       picomatch: 2.3.1
     dev: true
 
-  /@sveltejs/adapter-node/1.0.0-next.79:
+  /@sveltejs/adapter-node/1.0.0-next.78:
     resolution:
       {
-        integrity: sha512-cPD28X6qoI53rZzGhaBmE+88vgv4oc/S/jJ1t+rUMpz4d/X2Wo3zuShXpWDhqj8Vix8SbggV0JRCtu4a0hoYQg==
+        integrity: sha512-TXB5Ii0z/7o1B05p/YLsS4t+JUHFHWBzFv1U16TKvM3HMbMUJIx+AhpM2WJfDX8HtAyfd1m9OawGoUB+1ed24A==
       }
     dependencies:
       tiny-glob: 0.2.9
