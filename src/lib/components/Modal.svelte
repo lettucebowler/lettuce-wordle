@@ -17,7 +17,7 @@
 		}
 	};
 
-	let dialog;
+	let dialog: HTMLDialogElement;
 	let share = '';
 	let message = '';
 

@@ -131,12 +131,10 @@
 		words[attempt] = `${words[attempt]}${key}`;
 	};
 
-	const handleKeyPress = (event) => {
+	const handleKeyPress = (event: { key: string }) => {
 		const { key } = event;
 		key.toLowerCase() === 'enter' && handleWordSubmit();
-		(key.toLowerCase() === 'delete' || key.toLowerCase() === 'backspace') &&
-			attempt < 6 &&
-			deleteLastLetter();
+		(key.toLowerCase() === 'delete' || key.toLowerCase() === 'backspace') && deleteLastLetter();
 		key.toLowerCase().match(/[a-z]/i) && key.length === 1 && AddLetter(key.toLowerCase());
 		if (key.toLowerCase() === 'share') {
 			showModal();
@@ -149,7 +147,7 @@
 		}
 	};
 
-	let modalActions;
+	let modalActions: { open(): void };
 
 	const saveState = (answer: string, words: string[]) => {
 		const state = JSON.stringify({
