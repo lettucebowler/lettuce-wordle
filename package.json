@@ -13,9 +13,8 @@
 		"format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. ."
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-node": "1.0.0-next.78",
 		"@sveltejs/adapter-vercel": "1.0.0-next.60",
-		"@sveltejs/kit": "1.0.0-next.370",
+		"@sveltejs/kit": "next",
 		"@typescript-eslint/eslint-plugin": "^5.30.6",
 		"@typescript-eslint/parser": "^5.30.6",
 		"@zerodevx/svelte-toast": "^0.7.2",
