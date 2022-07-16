@@ -1,6 +1,6 @@
 import { getDailyWord } from '$lib/util/words';
 
-export async function get({ locals }) {
+export async function GET({ locals }) {
 	const { state } = locals;
 	const dailyword = getDailyWord();
 	const words = state.answer === dailyword ? state.words : ['', '', '', '', '', ''];
