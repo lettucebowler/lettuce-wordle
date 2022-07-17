@@ -3,7 +3,7 @@
 	export let status: string;
 </script>
 
-<div class={status}>
+<div class={`${status} ${status !== 'none' ? 'animate' : ''}`}>
 	{letter.toUpperCase()}
 </div>
 
@@ -30,28 +30,29 @@
 
 	.correct {
 		background-color: var(--correct);
-		animation: identifier 0.3s 1;
 	}
 
 	.contains {
 		background-color: var(--contains);
-		animation: identifier 0.3s 1;
 	}
 
 	.incorrect {
 		background-color: var(--incorrect);
-		animation: identifier 0.3s 1;
 	}
 
-	@keyframes identifier {
+	.animate {
+		animation: bulge 0.3s 1;
+	}
+
+	@keyframes bulge {
 		0% {
-			transform: scale(1.05);
+			transform: scale(1);
 		}
 		50% {
 			transform: scale(1.05);
 		}
 		100% {
-			transform: scale(1.05);
+			transform: scale(1);
 		}
 	}
 </style>

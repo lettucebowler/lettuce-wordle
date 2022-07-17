@@ -105,13 +105,15 @@
 			toastError('Word too short.');
 			return;
 		}
+
+		const tempStatuses = JSON.parse(JSON.stringify(statuses));
+		tempStatuses[attempt] = getLetterStatuses(words[attempt]);
 		words[attempt].split('').forEach(async (l: string, i: number) => {
 			setTimeout(() => {
-				statuses[attempt - 1][i] = getLetterStatus(l, i, words[attempt], answer, true);
+				statuses[attempt - 1][i] = tempStatuses[attempt - 1][i];
 			}, i * 25);
 		});
-		// statuses[attempt] = getLetterStatuses(words[attempt]);
-		keyStatuses = getKeyStatuses(words, statuses);
+		keyStatuses = getKeyStatuses(words, tempStatuses);
 		success = words[attempt] === answer;
 		attempt++;
 		if (words.filter(Boolean).length > 5 && !success) {
@@ -177,8 +179,6 @@
 	let keyStatuses = getKeyStatuses(words, statuses);
 
 	$: !!answer && success && setTimeout(() => showModal(), 500);
-
-	$: console.log(success);
 
 	onMount(() => {
 		if (success) {
