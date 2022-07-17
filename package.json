@@ -19,7 +19,7 @@
 		"@typescript-eslint/parser": "^5.30.6",
 		"@zerodevx/svelte-toast": "^0.7.2",
 		"cookie": "^0.5.0",
-		"eslint": "^8.19.0",
+		"eslint": "^8.20.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-svelte3": "^4.0.0",
 		"js-cookie": "^3.0.1",

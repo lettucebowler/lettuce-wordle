@@ -1,6 +1,6 @@
-<script>
-	export let letter;
-	export let status;
+<script lang="ts">
+	export let letter: string;
+	export let status: string;
 </script>
 
 <div class={status}>
@@ -30,13 +30,28 @@
 
 	.correct {
 		background-color: var(--correct);
+		animation: identifier 0.3s 1;
 	}
 
 	.contains {
 		background-color: var(--contains);
+		animation: identifier 0.3s 1;
 	}
 
 	.incorrect {
 		background-color: var(--incorrect);
+		animation: identifier 0.3s 1;
+	}
+
+	@keyframes identifier {
+		0% {
+			transform: scale(1.05);
+		}
+		50% {
+			transform: scale(1.05);
+		}
+		100% {
+			transform: scale(1.05);
+		}
 	}
 </style>

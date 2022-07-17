@@ -6,9 +6,9 @@
 
 	const dispatch = createEventDispatcher();
 
-	export let statuses;
+	export let statuses: string[][];
 
-	export let words;
+	export let words: string[];
 
 	let inputs = [null, null, null, null, null, null];
 
@@ -28,8 +28,6 @@
 		dispatch('wordSubmit', {
 			attempt: i
 		});
-
-		inputs[i < 5 ? i + 1 : 5].focus();
 
 		if (i >= 5) {
 			return;
@@ -55,6 +53,7 @@
 			on:letterSubmit={() => handleSubmit()}
 			on:blur={() => inputs[currentInput].focus()}
 			statuses={statuses[words.length - 6 + i]}
+			row={i}
 		/>
 	{/each}
 </div>

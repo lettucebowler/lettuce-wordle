@@ -100,12 +100,17 @@
 		return { ...alphabet, ...incorrect, ...contains, ...correct };
 	};
 
-	const handleWordSubmit = () => {
+	const handleWordSubmit = async () => {
 		if (words[attempt].length !== 5) {
 			toastError('Word too short.');
 			return;
 		}
-		statuses[attempt] = getLetterStatuses(words[attempt]);
+		words[attempt].split('').forEach(async (l: string, i: number) => {
+			setTimeout(() => {
+				statuses[attempt - 1][i] = getLetterStatus(l, i, words[attempt], answer, true);
+			}, i * 25);
+		});
+		// statuses[attempt] = getLetterStatuses(words[attempt]);
 		keyStatuses = getKeyStatuses(words, statuses);
 		success = words[attempt] === answer;
 		attempt++;
@@ -171,7 +176,9 @@
 
 	let keyStatuses = getKeyStatuses(words, statuses);
 
-	$: !!answer && success && showModal();
+	$: !!answer && success && setTimeout(() => showModal(), 500);
+
+	$: console.log(success);
 
 	onMount(() => {
 		if (success) {

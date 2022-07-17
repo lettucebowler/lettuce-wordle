@@ -1,11 +1,12 @@
-<script>
+<script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import LetterBox from '$lib/components/LetterBox.svelte';
 	const dispatch = createEventDispatcher();
 
 	export let value = '';
 	export let ref;
-	export let statuses;
+	export let statuses: string[];
+	export let row: number;
 
 	const filterInput = (event) => {
 		if (!event.data) {
@@ -41,7 +42,7 @@
 		</label>
 	</form>
 	<div class="row">
-		{#each [0, 1, 2, 3, 4] as i}
+		{#each [0, 1, 2, 3, 4] as i (`${row}-${i}`)}
 			<LetterBox letter={value.charAt(i)} status={statuses[i] || 'none'} />
 		{/each}
 	</div>

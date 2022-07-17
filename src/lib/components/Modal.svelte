@@ -11,7 +11,7 @@
 		open() {
 			share = getGameStatus($appName, statuses);
 			visible = true;
-			if (dialog) {
+			if (dialog && !dialog.open) {
 				dialog.showModal();
 			}
 		}
