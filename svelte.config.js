@@ -12,7 +12,8 @@ const config = {
 		}),
 		prerender: {
 			default: false
-		}
+		},
+		inlineStyleThreshold: 16384,
 	}
 };
 

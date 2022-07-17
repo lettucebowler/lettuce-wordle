@@ -3,6 +3,9 @@
 	import { SvelteToast } from '@zerodevx/svelte-toast';
 	import Navbar from '$lib/components/Navbar.svelte';
 
+	import '$lib/assets/app.css';
+	import '$lib/assets/icomoon.css';
+
 	const links = [
 		{
 			path: '/',
@@ -15,10 +18,6 @@
 	];
 </script>
 
-<svelte:head>
-	<link rel="icon" type="image/png" href="/favicon.png" />
-	<link rel="stylesheet" href="/icomoon.css" />
-</svelte:head>
 <div class="toast">
 	<SvelteToast />
 </div>
