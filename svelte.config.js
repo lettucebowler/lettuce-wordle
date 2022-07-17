@@ -13,7 +13,7 @@ const config = {
 		prerender: {
 			default: false
 		},
-		inlineStyleThreshold: 16384,
+		inlineStyleThreshold: 16384
 	}
 };
 

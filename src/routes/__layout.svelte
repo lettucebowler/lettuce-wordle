@@ -32,6 +32,12 @@
 		margin: 0px 0px;
 	}
 
+	:global(body, html) {
+		height: 100%;
+		min-height: 100%;
+		box-sizing: border-box;
+	}
+
 	.toast {
 		font-size: 1rem;
 		font-weight: 700;
