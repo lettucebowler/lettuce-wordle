@@ -8,7 +8,7 @@
 	export let statuses: string[];
 	export let row: number;
 
-	const filterInput = (event: any) => {
+	const filterInput = (event) => {
 		if (!event.data) {
 			return;
 		}
@@ -18,7 +18,7 @@
 		}
 	};
 
-	const handleSubmit = (event: any) => {
+	const handleSubmit = (event) => {
 		event.preventDefault();
 		dispatch('letterSubmit');
 	};
@@ -43,7 +43,7 @@
 	</form>
 	<div class="row">
 		{#each [0, 1, 2, 3, 4] as i (`${row}-${i}`)}
-			<LetterBox letter={value.charAt(i)} status={statuses[i] || 'none'} slot={i} />
+			<LetterBox letter={value.charAt(i)} status={statuses[i] || 'none'} />
 		{/each}
 	</div>
 </div>

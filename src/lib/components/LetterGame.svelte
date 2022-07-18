@@ -100,11 +100,7 @@
 		return { ...alphabet, ...incorrect, ...contains, ...correct };
 	};
 
-	const updateStatuses = async (tempStatuses: string[][]) => {
-		statuses = tempStatuses;
-	};
-
-	const handleWordSubmit = () => {
+	const handleWordSubmit = async () => {
 		if (words[attempt].length !== 5) {
 			toastError('Word too short.');
 			return;
@@ -112,12 +108,11 @@
 
 		const tempStatuses = JSON.parse(JSON.stringify(statuses));
 		tempStatuses[attempt] = getLetterStatuses(words[attempt]);
-		// words[attempt].split('').forEach(async (l: string, i: number) => {
-		// 	setTimeout(() => {
-		// 		statuses[attempt - 1][i] = tempStatuses[attempt - 1][i];
-		// 	}, i * 25);
-		// });
-		updateStatuses(tempStatuses);
+		words[attempt].split('').forEach(async (l: string, i: number) => {
+			setTimeout(() => {
+				statuses[attempt - 1][i] = tempStatuses[attempt - 1][i];
+			}, i * 25);
+		});
 		keyStatuses = getKeyStatuses(words, tempStatuses);
 		success = words[attempt] === answer;
 		attempt++;
