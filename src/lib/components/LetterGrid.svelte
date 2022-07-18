@@ -42,19 +42,23 @@
 
 	$: currentInput = getCurrentInput(statuses);
 
+	$: console.log(currentInput);
+
 	$: inputs[currentInput] && inputs[currentInput].focus();
 </script>
 
 <div class="grid">
-	{#each words.slice(words.length > 6 ? -6 : 0) as word, i}
-		<LetterRow
-			bind:value={words[words.length - 6 + i]}
-			bind:ref={inputs[i]}
-			on:letterSubmit={() => handleSubmit()}
-			on:blur={() => inputs[currentInput].focus()}
-			statuses={statuses[words.length - 6 + i]}
-			row={i}
-		/>
+	{#each words as word, i}
+		{#if i >= words.length - 6}
+			<LetterRow
+				bind:value={words[i]}
+				bind:ref={inputs[i - words.length + 6]}
+				on:letterSubmit={() => handleSubmit()}
+				on:blur={() => inputs[currentInput].focus()}
+				statuses={statuses[i]}
+				row={i}
+			/>
+		{/if}
 	{/each}
 </div>
 
