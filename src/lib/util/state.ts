@@ -8,11 +8,17 @@ export const decodeState = (stateBuffer: string) => {
 	if (!stateBuffer) {
 		return {};
 	}
-	const stateString = atob(stateBuffer);
-	const [answer, ...words] = stateString.split(',');
-	const state = {
-		answer,
-		words
-	};
+	let state = {};
+	try {
+		const stateString = atob(stateBuffer);
+		const [answer, ...words] = stateString.split(',');
+		state = {
+			answer,
+			words
+		};
+	} catch (error) {
+		const stateJson = JSON.parse(stateBuffer);
+		state = stateJson;
+	}
 	return state;
 };
