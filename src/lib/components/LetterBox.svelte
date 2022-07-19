@@ -1,9 +1,14 @@
 <script lang="ts">
 	export let letter: string;
 	export let status: string;
+	export let slot = 0;
+
+	const delay = 0.05;
+	$: style =
+		status !== 'none' ? `animation-delay: ${slot * delay}s;transition-delay: ${slot * delay}s` : '';
 </script>
 
-<div class={`${status} ${status !== 'none' ? 'animate' : ''}`}>
+<div class={`${status} ${status !== 'none' ? 'animate' : ''}`} {style}>
 	{letter.toUpperCase()}
 </div>
 
@@ -38,6 +43,13 @@
 
 	.incorrect {
 		background-color: var(--incorrect);
+	}
+
+	:not(.none) {
+		transition: all 0.15s;
+		border-width: 0px;
+		border-color: transparent;
+		border-style: solid;
 	}
 
 	.animate {

@@ -6,6 +6,7 @@
 	import LetterGrid from '$lib/components/LetterGrid.svelte';
 	import LettuceKeyboard from '$lib/components/LettuceKeyboard.svelte';
 	import Modal from '$lib/components/Modal.svelte';
+	import { encodeState } from '$lib/util/state';
 
 	const getLetterLocations = (s: string, l: string) => {
 		return s
@@ -108,11 +109,12 @@
 
 		const tempStatuses = JSON.parse(JSON.stringify(statuses));
 		tempStatuses[attempt] = getLetterStatuses(words[attempt]);
-		words[attempt].split('').forEach(async (l: string, i: number) => {
-			setTimeout(() => {
-				statuses[attempt - 1][i] = tempStatuses[attempt - 1][i];
-			}, i * 25);
-		});
+		// words[attempt].split('').forEach(async (l: string, i: number) => {
+		// 	setTimeout(() => {
+		// 		statuses[attempt - 1][i] = tempStatuses[attempt - 1][i];
+		// 	}, i * 25);
+		// });
+		statuses = tempStatuses;
 		keyStatuses = getKeyStatuses(words, tempStatuses);
 		success = words[attempt] === answer;
 		attempt++;
@@ -157,18 +159,18 @@
 	let modalActions: { open(): void };
 
 	const saveState = (answer: string, words: string[]) => {
-		const state = JSON.stringify({
+		const state = {
 			answer,
-			words,
-			attempt: words.filter(Boolean).length
-		});
+			words
+		};
 
-		Cookies.set('state', state, { expires: 365 });
+		const stateString = encodeState(state);
+		Cookies.set('state', stateString, { expires: 365 });
 	};
 
 	export let answer: string;
 
-	export let words = ['', '', '', '', '', ''];
+	export let words: string[] = [];
 
 	export let success = false;
 
@@ -178,7 +180,7 @@
 
 	let keyStatuses = getKeyStatuses(words, statuses);
 
-	$: !!answer && success && setTimeout(() => showModal(), 500);
+	$: !!answer && success && setTimeout(() => showModal(), 350);
 
 	onMount(() => {
 		if (success) {
@@ -191,7 +193,7 @@
 	});
 </script>
 
-<LetterGrid bind:statuses bind:words on:wordSubmit={handleWordSubmit} />
+<LetterGrid bind:statuses bind:words on:wordSubmit={handleWordSubmit} {attempt} />
 <Modal bind:modalActions guesses={attempt} {success} {statuses} />
 <div class="keyboard">
 	<LettuceKeyboard on:letterTyped={(event) => handleKeyPress(event.detail)} {keyStatuses} />
