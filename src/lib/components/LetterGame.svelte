@@ -184,7 +184,7 @@
 
 	onMount(() => {
 		if (success) {
-			showModal();
+			setTimeout(() => showModal(), 350);
 		}
 	});
 
@@ -193,7 +193,7 @@
 	});
 </script>
 
-<LetterGrid bind:statuses bind:words on:wordSubmit={handleWordSubmit} {attempt} />
+<LetterGrid bind:statuses bind:words on:wordSubmit={handleWordSubmit} />
 <Modal bind:modalActions guesses={attempt} {success} {statuses} />
 <div class="keyboard">
 	<LettuceKeyboard on:letterTyped={(event) => handleKeyPress(event.detail)} {keyStatuses} />

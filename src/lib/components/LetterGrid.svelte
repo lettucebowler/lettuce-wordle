@@ -10,8 +10,6 @@
 
 	export let words: string[];
 
-	export let attempt: number;
-
 	let inputs = [null, null, null, null, null, null];
 
 	const handleSubmit = () => {
