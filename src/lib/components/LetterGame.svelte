@@ -180,11 +180,11 @@
 
 	let keyStatuses = getKeyStatuses(words, statuses);
 
-	$: !!answer && success && setTimeout(() => showModal(), 350);
+	$: !!answer && success && setTimeout(() => showModal(), 500);
 
 	onMount(() => {
 		if (success) {
-			setTimeout(() => showModal(), 350);
+			setTimeout(() => showModal(), 500);
 		}
 	});
 
