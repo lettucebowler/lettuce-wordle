@@ -1,5 +1,4 @@
-// import adapter from '@sveltejs/adapter-vercel';
-import adapter from 'svelte-adapter-bun';
+import adapter from '@sveltejs/adapter-vercel';
 import preprocess from 'svelte-preprocess';
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -9,12 +8,12 @@ const config = {
 	kit: {
 		adapter: adapter({
 			out: 'build',
-			// edge: true
+			edge: true
 		}),
 		prerender: {
 			default: false
 		},
-		inlineStyleThreshold: 4096,
+		inlineStyleThreshold: 16384
 	}
 };
 
