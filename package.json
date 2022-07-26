@@ -2,7 +2,7 @@
 	"name": "sudoku-svelte",
 	"version": "0.0.1",
 	"scripts": {
-		"dev": "vite dev --host 0.0.0.0",
+		"dev": "vite dev --host 0.0.0.0 --port 3000",
 		"build": "vite build",
 		"package": "svelte-kit package",
 		"prepare": "svelte-kit sync",
