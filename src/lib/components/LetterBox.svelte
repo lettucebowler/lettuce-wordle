@@ -1,14 +1,19 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+
 	export let letter: string;
 	export let status: string;
 	export let slot = 0;
 
 	const delay = 0.05;
+
+	$: classString = status !== 'none' ? `${status} animate` : status;
+
 	$: style =
 		status !== 'none' ? `animation-delay: ${slot * delay}s;transition-delay: ${slot * delay}s` : '';
 </script>
 
-<div class={`${status} ${status !== 'none' ? 'animate' : ''}`} {style}>
+<div class={classString} {style}>
 	{letter.toUpperCase()}
 </div>
 

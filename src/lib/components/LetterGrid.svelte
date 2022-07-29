@@ -1,7 +1,7 @@
 <script lang="ts">
 	import LetterRow from './LetterRow.svelte';
 	import { isValidWord } from '$lib/util/words';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 	import { toastError } from '$lib/util/toastActions';
 
 	const dispatch = createEventDispatcher();
@@ -29,10 +29,10 @@
 			attempt: i
 		});
 
-		if (i >= 5) {
-			return;
+		if (i < 5) {
+			currentInput++;
 		}
-		currentInput++;
+		focusInput(currentInput);
 	};
 
 	const getCurrentInput = (statuses: string[][]) => {
@@ -40,9 +40,17 @@
 		return i > 5 ? 5 : i;
 	};
 
+	const focusInput = (i: number) => {
+		setTimeout(() => inputs[currentInput] && inputs[currentInput].focus(), 1);
+	};
+
 	$: currentInput = getCurrentInput(statuses);
 
-	$: inputs[currentInput] && inputs[currentInput].focus();
+	$: focusInput(currentInput);
+
+	onMount(() => {
+		focusInput(currentInput);
+	});
 </script>
 
 <div class="grid">
@@ -52,7 +60,7 @@
 				bind:value={words[i]}
 				bind:ref={inputs[i - words.length + 6]}
 				on:letterSubmit={() => handleSubmit()}
-				on:blur={() => inputs[currentInput].focus()}
+				on:blur={() => focusInput(currentInput)}
 				statuses={statuses[i]}
 				row={i}
 			/>
