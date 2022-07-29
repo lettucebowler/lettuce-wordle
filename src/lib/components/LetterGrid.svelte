@@ -1,4 +1,6 @@
 <script lang="ts">
+	import autoAnimate from '@formkit/auto-animate';
+
 	import LetterRow from './LetterRow.svelte';
 	import { isValidWord } from '$lib/util/words';
 	import { createEventDispatcher, onMount } from 'svelte';
@@ -53,7 +55,7 @@
 	});
 </script>
 
-<div class="grid">
+<div class="grid" use:autoAnimate>
 	{#each words as word, i}
 		{#if i >= words.length - 6}
 			<LetterRow
