@@ -33,7 +33,7 @@ copy . .
 
 RUN bun run build
 
-from jarredsumner/bun:edge
+FROM node:18-slim
 workdir /app
 copy --from=0 /app .
 copy . .
