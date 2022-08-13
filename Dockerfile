@@ -27,6 +27,11 @@ from jarredsumner/bun:edge
 WORKDIR /app
 COPY package.json bun.lockb ./
 
+FROM node:18-slim
+copy --from=0 / /
+
+WORKDIR /app
+
 RUN bun install
 
 copy . .
