@@ -7,7 +7,8 @@ COPY package.json pnpm-lock.yaml ./
 # RUN npm install -g pnpm
 # RUN pnpm install
 
-curl https://bun.sh/install | bash
+RUN curl https://bun.sh/install | bash
+RUN /root/.bun/bin/bun install
 RUN bun install
 
 COPY . .
