@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-
 	export let letter: string;
 	export let status: string;
 	export let slot = 0;

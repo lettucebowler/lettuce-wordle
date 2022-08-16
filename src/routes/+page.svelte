@@ -2,12 +2,10 @@
 	import LetterGame from '$lib/components/LetterGame.svelte';
 	import { appName } from '$lib/util/store';
 
-	export let state: {
-		answer: string;
-		words: string[];
-		success: boolean;
-		attempt: number;
-	};
+	/** @type {import('./$types').PageData} */
+	export let data;
+
+	$: state = data.state;
 </script>
 
 <svelte:head>
