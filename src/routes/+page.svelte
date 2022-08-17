@@ -2,8 +2,7 @@
 	import LetterGame from '$lib/components/LetterGame.svelte';
 	import { appName } from '$lib/util/store';
 
-	/** @type {import('./$types').PageData} */
-	export let data;
+	export let data: import('./$types').PageData;
 
 	$: state = data.state;
 </script>
