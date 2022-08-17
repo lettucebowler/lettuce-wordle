@@ -1011,7 +1011,6 @@ export const answerList = [
 	'hutch',
 	'hydro',
 	'hyena',
-	'hymen',
 	'hyper',
 	'icily',
 	'icing',
