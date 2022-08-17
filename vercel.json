@@ -1,0 +1,40 @@
+{
+	"headers": [
+		{
+			"source": "/:path*(.)webp",
+			"headers": [
+				{
+					"key": "Cache-Control",
+					"value": "public, max-age=2592000000"
+				}
+			]
+		},
+		{
+			"source": "/:path*(.)css",
+			"headers": [
+				{
+					"key": "Cache-Control",
+					"value": "public, max-age=2592000000"
+				}
+			]
+		},
+		{
+			"source": "/:path*(.)png",
+			"headers": [
+				{
+					"key": "Cache-Control",
+					"value": "public, max-age=2592000000"
+				}
+			]
+		},
+		{
+			"source": "/:path*(.)js",
+			"headers": [
+				{
+					"key": "Cache-Control",
+					"value": "public, max-age=2592000000"
+				}
+			]
+		}
+	]
+}
