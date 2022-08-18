@@ -1,57 +1,19 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import classnames from 'classnames';
 	export let links: { path: string; name: string }[] = [];
+
+	const linkStyle = 'text-snow-300 text-3xl text-center pt-1 pb-1 pl-2 pr-2 box-border grid place-items-center h-12 rounded-md hover:text-snow-100 hover:bg-polar-200 active:bg-polar-100';
 </script>
 
-<nav class="">
+<nav class="flex flex-row gap-2 p-2 h-16 box-border bg-polar-300 justify-center rounded-b-2xl">
 	{#each links as link}
 		<a
 			sveltekit:prefetch
 			href={link.path}
-			class={$page.url.pathname === `${link.path}` ? 'current' : ''}>{link.name}</a
+			class={classnames(linkStyle, {'bg-polar-100': $page.url.pathname === link.path})}
 		>
+			{link.name}
+		</a>
 	{/each}
 </nav>
-
-<!-- <style>
-	a {
-		color: var(--nord-6);
-		text-align: center;
-		font-size: 1.5rem;
-		padding: 0.25rem 0.5rem;
-		box-sizing: border-box;
-		display: grid;
-		place-items: center;
-		height: 3rem;
-		text-decoration: none;
-		border-radius: 6px;
-	}
-
-	a:hover {
-		color: var(--nord-4);
-		background-color: var(--nord-1);
-	}
-
-	.current {
-		background-color: var(--nord-0);
-	}
-
-	.current:hover {
-		background-color: var(--nord-0);
-	}
-
-	a:active {
-		background-color: var(--nord-0);
-	}
-
-	nav {
-		display: flex;
-		gap: 0.5rem;
-		justify-content: center;
-		background-color: var(--nord-2);
-		padding: 0.5rem;
-		height: 4rem;
-		box-sizing: border-box;
-		border-radius: 0px 0px 22px 22px;
-	}
-</style> -->
