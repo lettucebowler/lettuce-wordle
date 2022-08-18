@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
 	--nord-0: #2e3440;
 	--nord-1: #3b4252;

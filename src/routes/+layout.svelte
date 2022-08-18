@@ -8,7 +8,6 @@
 	import safariPinnedTabIcon from '$lib/assets/safari-pinned-tab.svg';
 
 	import '$lib/assets/app.css';
-	import '$lib/assets/icomoon.css';
 
 	const links = [
 		{

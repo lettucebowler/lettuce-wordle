@@ -1,6 +1,6 @@
 import { getDailyWord } from '$lib/util/words';
 
-export async function load({ locals }) {
+export const load: import('./$types').PageServerLoad = ({ locals }) => {
 	const { state } = locals;
 	const dailyword = getDailyWord();
 	const words = state.answer === dailyword ? state.words : ['', '', '', '', '', ''];
@@ -12,4 +12,4 @@ export async function load({ locals }) {
 			attempt: words.filter(Boolean).length || 0
 		}
 	};
-}
+};
