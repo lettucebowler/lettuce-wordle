@@ -3,7 +3,7 @@ import { prerendering } from '$app/env';
 import { decodeState } from '$lib/util/state';
 
 /** @type {import('@sveltejs/kit').Handle} */
-export async function handle({ event, resolve }) {
+export const handle: import('@sveltejs/kit').Handle = async ({ event, resolve }) => {
 	if (!prerendering) {
 		const cookies = cookie.parse(event.request.headers.get('cookie') || '');
 
@@ -17,4 +17,4 @@ export async function handle({ event, resolve }) {
 	const response = await resolve(event);
 
 	return response;
-}
+};

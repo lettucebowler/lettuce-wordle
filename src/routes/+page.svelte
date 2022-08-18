@@ -2,23 +2,28 @@
 	import LetterGame from '$lib/components/LetterGame.svelte';
 	import { appName } from '$lib/util/store';
 
-	export let data: import('./$types').PageData;
-
-	$: state = data.state;
+	export let data: import('./$types').PageData = {
+		state: {
+			answer: '',
+			words: ['', '', '', '', '', ''],
+			success: true,
+			attempt: 0
+		}
+	};
 </script>
 
 <svelte:head>
 	<meta charset="UTF-8" />
-	<meta name="description" content="Lettuce Wordle" />
+	<meta name="description" content="Lettuce Wordle`" />
 	<title>{$appName} Daily</title>
 </svelte:head>
 
 <main>
 	<LetterGame
-		answer={state.answer}
-		words={state.words}
-		success={state.success}
-		attempt={state.attempt}
+		answer={data?.state?.answer}
+		words={data?.state?.words}
+		success={data?.state.success}
+		attempt={data?.state.attempt}
 	/>
 </main>
 
