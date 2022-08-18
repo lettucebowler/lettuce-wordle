@@ -3,7 +3,7 @@
 	export let links: { path: string; name: string }[] = [];
 </script>
 
-<nav>
+<nav class="">
 	{#each links as link}
 		<a
 			sveltekit:prefetch
@@ -13,7 +13,7 @@
 	{/each}
 </nav>
 
-<style>
+<!-- <style>
 	a {
 		color: var(--nord-6);
 		text-align: center;
@@ -54,4 +54,4 @@
 		box-sizing: border-box;
 		border-radius: 0px 0px 22px 22px;
 	}
-</style>
+</style> -->

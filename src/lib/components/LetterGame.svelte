@@ -109,11 +109,6 @@
 
 		const tempStatuses = JSON.parse(JSON.stringify(statuses));
 		tempStatuses[attempt] = getLetterStatuses(words[attempt]);
-		// words[attempt].split('').forEach(async (l: string, i: number) => {
-		// 	setTimeout(() => {
-		// 		statuses[attempt - 1][i] = tempStatuses[attempt - 1][i];
-		// 	}, i * 25);
-		// });
 		statuses = tempStatuses;
 		keyStatuses = getKeyStatuses(words, tempStatuses);
 		success = words[attempt] === answer;

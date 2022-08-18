@@ -12,7 +12,7 @@
 
 	export let words: string[];
 
-	let inputs = [null, null, null, null, null, null];
+	let inputs: HTMLInputElement[] = [];
 
 	const handleSubmit = () => {
 		const i = words.filter(Boolean).length - 1;
@@ -43,7 +43,7 @@
 	};
 
 	const focusInput = (i: number) => {
-		setTimeout(() => inputs[currentInput] && inputs[currentInput].focus(), 1);
+		setTimeout(() => inputs[currentInput] && inputs[currentInput]?.focus(), 1);
 	};
 
 	$: currentInput = getCurrentInput(statuses);
