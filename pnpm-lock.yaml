@@ -29,20 +29,18 @@ specifiers:
   typescript: ^4.7.4
   vite: 3.0.2
 
-dependencies:
-  classnames: 2.3.1
-
 devDependencies:
   '@formkit/auto-animate': 1.0.0-beta.1
   '@sveltejs/adapter-node': 1.0.0-next.86
   '@sveltejs/adapter-vercel': 1.0.0-next.66
-  '@sveltejs/kit': 1.0.0-next.422_svelte@3.49.0+vite@3.0.2
+  '@sveltejs/kit': 1.0.0-next.423_svelte@3.49.0+vite@3.0.2
   '@types/cookie': 0.5.1
   '@types/js-cookie': 3.0.2
   '@typescript-eslint/eslint-plugin': 5.33.1_vsoshirnpb7xw6mr7xomgfas2i
   '@typescript-eslint/parser': 5.33.1_4rv7y5c6xz3vfxwhbrcxxi73bq
   '@zerodevx/svelte-toast': 0.7.2
   autoprefixer: 10.4.8_postcss@8.4.16
+  classnames: 2.3.1
   cookie: 0.5.0
   eslint: 8.22.0
   eslint-config-prettier: 8.5.0_eslint@8.22.0
@@ -250,10 +248,10 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/kit/1.0.0-next.422_svelte@3.49.0+vite@3.0.2:
+  /@sveltejs/kit/1.0.0-next.423_svelte@3.49.0+vite@3.0.2:
     resolution:
       {
-        integrity: sha512-P8zu4tqwpWj2SdulV+eQhHxJ1EUJREl0xOL55oGGNOSeGfK05hUBMrCxH9xDle0q04Wzh9I+muqtasUEM0NSEA==
+        integrity: sha512-AL2jLelCXRUpaL5AMccaMJfUIgbOooRG/arxYudqj8DT9bBsyPFzxEl7yLKE91bD+FCFLICKTZOsvjKiHxTjhg==
       }
     engines: { node: '>=16.9' }
     hasBin: true
@@ -758,7 +756,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001378
-      electron-to-chromium: 1.4.224
+      electron-to-chromium: 1.4.225
       node-releases: 2.0.6
       update-browserslist-db: 1.0.5_browserslist@4.21.3
     dev: true
@@ -835,7 +833,7 @@ packages:
       {
         integrity: sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==
       }
-    dev: false
+    dev: true
 
   /color-convert/2.0.1:
     resolution:
@@ -1031,10 +1029,10 @@ packages:
       esutils: 2.0.3
     dev: true
 
-  /electron-to-chromium/1.4.224:
+  /electron-to-chromium/1.4.225:
     resolution:
       {
-        integrity: sha512-dOujC5Yzj0nOVE23iD5HKqrRSDj2SD7RazpZS/b/WX85MtO6/LzKDF4TlYZTBteB+7fvSg5JpWh0sN7fImNF8w==
+        integrity: sha512-ICHvGaCIQR3P88uK8aRtx8gmejbVJyC6bB4LEC3anzBrIzdzC7aiZHY4iFfXhN4st6I7lMO0x4sgBHf/7kBvRw==
       }
     dev: true
 
@@ -2698,10 +2696,10 @@ packages:
       estree-walker: 0.6.1
     dev: true
 
-  /rollup/2.78.0:
+  /rollup/2.78.1:
     resolution:
       {
-        integrity: sha512-4+YfbQC9QEVvKTanHhIAFVUFSRsezvQF8vFOJwtGfb9Bb+r014S+qryr9PSmw8x6sMnPkmFBGAvIFVQxvJxjtg==
+        integrity: sha512-VeeCgtGi4P+o9hIg+xz4qQpRl6R401LWEXBmxYKOV4zlF82lyhgh2hTZnheFUbANE8l2A41F458iwj2vEYaXJg==
       }
     engines: { node: '>=10.0.0' }
     hasBin: true
@@ -3256,7 +3254,7 @@ packages:
       esbuild: 0.14.54
       postcss: 8.4.16
       resolve: 1.22.1
-      rollup: 2.78.0
+      rollup: 2.78.1
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
