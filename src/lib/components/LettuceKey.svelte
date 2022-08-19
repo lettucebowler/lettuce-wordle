@@ -1,4 +1,5 @@
 <script lang="ts">
+	import classNames from 'classnames';
 	import { createEventDispatcher } from 'svelte';
 
 	export let key: string;
@@ -30,61 +31,25 @@
 	]);
 </script>
 
-{#if icons.get(key)}
-	<button aria-label={key} title={key} on:click={() => typeKey(key)} class={status}>
+<button
+	aria-label={key}
+	title={key}
+	on:click={() => typeKey(key)}
+	class={classNames(
+		'w-full border-solid border-transparent font-bold text-snow-300 rounded-md text-center h-full grid place-items-center cursor-pointer hover:brightness-90 active:brightness-50',
+		{
+			'bg-polar-400': status === 'none',
+			'bg-aurora-300': status === 'contains',
+			'bg-aurora-400': status === 'correct',
+			'bg-polar-200': status === 'incorrect'
+		}
+	)}
+>
+	{#if icons.get(key)}
 		<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
 			<path fill-rule="evenodd" d={icons.get(key.toLowerCase())} clip-rule="evenodd" />
 		</svg>
-	</button>
-{:else}
-	<button aria-label={key} title={key} on:click={() => typeKey(key)} class={status}
-		>{key.toUpperCase()}</button
-	>
-{/if}
-
-<style>
-	button {
-		width: 100%;
-		border: solid;
-		border-color: transparent;
-		background-color: var(--nord-3);
-		font-size: 1rem;
-		font-weight: 900;
-		color: var(--nord-6);
-		border-radius: 6px;
-		text-align: center;
-		height: 100%;
-		padding: 0;
-		display: grid;
-		place-items: center;
-		cursor: pointer;
-	}
-
-	button:hover {
-		filter: brightness(90%);
-	}
-
-	button:active {
-		filter: brightness(80%);
-	}
-
-	.icon {
-		font-size: 1rem;
-	}
-
-	.none {
-		background-color: var(--incorrect);
-	}
-
-	.correct {
-		background-color: var(--correct);
-	}
-
-	.contains {
-		background-color: var(--contains);
-	}
-
-	.incorrect {
-		background-color: var(--nord-1);
-	}
-</style>
+	{:else}
+		{key.toUpperCase()}
+	{/if}
+</button>
