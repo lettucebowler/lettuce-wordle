@@ -2,7 +2,6 @@
 	import { fly } from 'svelte/transition';
 	import { getGameStatus } from '$lib/util/share';
 	import { appName } from '$lib/util/store';
-	import classnames from 'classnames';
 
 	export let success: boolean;
 	export let guesses: number;
@@ -33,7 +32,7 @@
 	const shareGame = () => {
 		share = getGameStatus($appName, statuses);
 		message = 'Results Copied to clipboard!';
-		// setTimeout(() => clearMessage(), 4000);
+		setTimeout(() => clearMessage(), 4000);
 		(!!navigator &&
 			navigator.clipboard
 				.writeText(share)
