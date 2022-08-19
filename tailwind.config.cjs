@@ -1,3 +1,5 @@
+const { transform } = require('typescript');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
@@ -27,6 +29,15 @@ module.exports = {
 				300: '#EBCB8B',
 				400: '#A3BE8C',
 				500: '#B48EAD'
+			}
+		},
+		animation: {
+			bulge: 'bulge 0.3s linear 1'
+		},
+		keyframes: {
+			bulge: {
+				'50%': { transform: 'scale(1.05) translateY(-5%)' },
+				'0%, 100%': { transform: 'scale(1)' }
 			}
 		}
 	},

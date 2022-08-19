@@ -190,13 +190,6 @@
 
 <LetterGrid bind:statuses bind:words on:wordSubmit={handleWordSubmit} />
 <Modal bind:modalActions guesses={attempt} {success} {statuses} />
-<div class="keyboard">
+<div class="h-full max-h-[min(18rem,_30vh)]">
 	<LettuceKeyboard on:letterTyped={(event) => handleKeyPress(event.detail)} {keyStatuses} />
 </div>
-
-<style>
-	.keyboard {
-		height: 100%;
-		max-height: min(18rem, 30vh);
-	}
-</style>

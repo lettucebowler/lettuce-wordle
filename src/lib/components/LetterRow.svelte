@@ -8,7 +8,7 @@
 	export let statuses: string[];
 	export let row: number;
 
-	const filterInput = (event) => {
+	const filterInput = (event: any) => {
 		if (!event.data) {
 			return;
 		}
@@ -18,15 +18,15 @@
 		}
 	};
 
-	const handleSubmit = (event) => {
+	const handleSubmit = (event: any) => {
 		event.preventDefault();
 		dispatch('letterSubmit');
 	};
 </script>
 
 <div>
-	<form on:submit={handleSubmit} autocomplete="off">
-		<label>
+	<form on:submit={handleSubmit} autocomplete="off" class="w-full box-border h-0">
+		<label class="opacity-0">
 			hidden input for wordle game. type your guess here
 			<input
 				type="text"
@@ -38,39 +38,13 @@
 				bind:value
 				bind:this={ref}
 				on:blur
+				class="w-full box-border h-0 p-0 border-none opacity-0"
 			/>
 		</label>
 	</form>
-	<div class="row">
+	<div class="grid grid-cols-5 gap-2">
 		{#each [0, 1, 2, 3, 4] as i (`${row}-${i}`)}
 			<LetterBox letter={value.charAt(i)} status={statuses[i] || 'none'} slot={i} />
 		{/each}
 	</div>
 </div>
-
-<style>
-	form {
-		width: 100%;
-		box-sizing: border-box;
-		height: 0px;
-	}
-
-	input {
-		width: 100%;
-		box-sizing: border-box;
-		height: 0px;
-		padding: 0px;
-		border: none;
-		opacity: 0;
-	}
-
-	label {
-		opacity: 0;
-	}
-
-	.row {
-		display: grid;
-		grid-template-columns: repeat(5, 1fr);
-		gap: 8px;
-	}
-</style>

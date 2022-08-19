@@ -55,7 +55,10 @@
 	});
 </script>
 
-<div class="grid" use:autoAnimate>
+<div
+	class="flex flex-col justify-center max-w-[min(700px,_55vh)] h-auto gap-2 w-full m-auto"
+	use:autoAnimate
+>
 	{#each words as word, i}
 		{#if i >= words.length - 6}
 			<LetterRow
@@ -69,16 +72,3 @@
 		{/if}
 	{/each}
 </div>
-
-<style>
-	.grid {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		max-width: min(700px, 55vh);
-		height: auto;
-		gap: 8px;
-		width: 100%;
-		margin: auto auto;
-	}
-</style>

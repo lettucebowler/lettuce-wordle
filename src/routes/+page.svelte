@@ -18,7 +18,7 @@
 	<title>{$appName} Daily</title>
 </svelte:head>
 
-<main>
+<main class="flex justify-between flex-col flex-auto gap-2">
 	<LetterGame
 		answer={data?.state?.answer}
 		words={data?.state?.words}
@@ -26,13 +26,3 @@
 		attempt={data?.state.attempt}
 	/>
 </main>
-
-<style>
-	main {
-		display: flex;
-		justify-content: space-between;
-		flex-direction: column;
-		flex: 1 1 auto;
-		gap: 8px;
-	}
-</style>

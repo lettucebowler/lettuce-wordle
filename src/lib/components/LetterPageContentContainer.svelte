@@ -1,30 +1,5 @@
-<div class="center">
-	<div class="page">
+<div class="absolute top-0 bottom-0 right-0 left-0 flex justify-center bg-polar-100">
+	<div class="relative bottom-2 top-0 w-full max-w-[800px] p-1 pt-0 flex gap-2 flex-col">
 		<slot />
 	</div>
 </div>
-
-<style>
-	.page {
-		position: relative;
-		bottom: 8px;
-		top: 0px;
-		width: 100%;
-		max-width: 800px;
-		padding: 0 4px 4px 4px;
-		box-sizing: border-box;
-		display: flex;
-		flex-direction: column;
-		gap: 8px;
-	}
-
-	.center {
-		position: absolute;
-		top: 0px;
-		bottom: 0px;
-		right: 0px;
-		left: 0px;
-		display: flex;
-		justify-content: center;
-	}
-</style>
