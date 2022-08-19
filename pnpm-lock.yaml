@@ -33,7 +33,7 @@ devDependencies:
   '@formkit/auto-animate': 1.0.0-beta.1
   '@sveltejs/adapter-node': 1.0.0-next.86
   '@sveltejs/adapter-vercel': 1.0.0-next.66
-  '@sveltejs/kit': 1.0.0-next.423_svelte@3.49.0+vite@3.0.2
+  '@sveltejs/kit': 1.0.0-next.427_svelte@3.49.0+vite@3.0.2
   '@types/cookie': 0.5.1
   '@types/js-cookie': 3.0.2
   '@typescript-eslint/eslint-plugin': 5.33.1_vsoshirnpb7xw6mr7xomgfas2i
@@ -248,10 +248,10 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/kit/1.0.0-next.423_svelte@3.49.0+vite@3.0.2:
+  /@sveltejs/kit/1.0.0-next.427_svelte@3.49.0+vite@3.0.2:
     resolution:
       {
-        integrity: sha512-AL2jLelCXRUpaL5AMccaMJfUIgbOooRG/arxYudqj8DT9bBsyPFzxEl7yLKE91bD+FCFLICKTZOsvjKiHxTjhg==
+        integrity: sha512-HUt1knOXaEM18y7E3k0CvhTxmoNhp0KbgfbLPmuRvSrQxRMsTnTpupZwW5mmU0VZkm4HHsf8mwftGy4WR8qf1Q==
       }
     engines: { node: '>=16.9' }
     hasBin: true
@@ -1635,14 +1635,14 @@ packages:
       }
     engines: { node: ^10.12.0 || >=12.0.0 }
     dependencies:
-      flatted: 3.2.6
+      flatted: 3.2.7
       rimraf: 3.0.2
     dev: true
 
-  /flatted/3.2.6:
+  /flatted/3.2.7:
     resolution:
       {
-        integrity: sha512-0sQoMh9s0BYsm+12Huy/rkKxVu4R1+r96YX5cG44rHV0pQ6iC3Q+mkoMFaGWObMFYQxCVT+ssG1ksneA2MI9KQ==
+        integrity: sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==
       }
     dev: true
 

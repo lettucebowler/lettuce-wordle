@@ -9,7 +9,7 @@
 </script>
 
 <div
-	style={`animation-delay: ${slot * delay}s;transition-delay: ${slot * delay}ss;`}
+	style={`animation-delay: ${slot * delay}s;transition-delay: ${slot * delay}s;`}
 	class={classnames(
 		`grid place-items-center flex aspect-square font-bold text-3xl text-snow-300 rounded-xl`,
 		{
