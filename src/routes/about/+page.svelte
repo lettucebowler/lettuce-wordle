@@ -1,5 +1,8 @@
 <script>
 	import { appName } from '$lib/util/store';
+	import P from '@lettucebowler/lettuce-ui/components/P.svelte';
+	import A from '@lettucebowler/lettuce-ui/components/A.svelte';
+	import Card from '@lettucebowler/lettuce-ui/components/Card.svelte';
 </script>
 
 <svelte:head>
@@ -7,47 +10,16 @@
 </svelte:head>
 
 <main>
-	<div class="card">
-		<h1>Hello, I'm Grant!</h1>
-		<p>
+	<Card>
+		<h1 class="text-6xl m-0 font-bold text-center">Hello, I'm Grant!</h1>
+		<P>
 			I wrote this app because the real wordle got blocked on my work network and I wanted to keep
 			playing and sharing scores with my coworkers.
-		</p>
-		<p>
-			This app was created using <a href="https://kit.svelte.dev" target="_blank">svelte-kit</a>.
+		</P>
+		<P>
+			This app was created using <A href="https://kit.svelte.dev" target="_blank">svelte-kit</A>.
 			Code for this project can be found
-			<a target="_blank" href="https://github.com/lettucebowler/lettuce-wordle">here</a>.
-		</p>
-	</div>
+			<A target="_blank" href="https://github.com/lettucebowler/lettuce-wordle">here</A>.
+		</P>
+	</Card>
 </main>
-
-<style>
-	.card {
-		justify-content: start;
-		flex-direction: column;
-		padding: 8px 32px;
-		border-radius: 22px;
-		color: var(--nord-4);
-		background-color: var(--nord-1);
-	}
-
-	h1 {
-		font-size: 3.75rem;
-		text-align: center;
-	}
-
-	p {
-		font-size: 1.5rem;
-	}
-
-	a {
-		text-decoration: none;
-		color: var(--nord-14);
-	}
-
-	main {
-		display: flex;
-		flex-direction: column;
-		gap: 8px;
-	}
-</style>
