@@ -1,7 +1,7 @@
 <script lang="ts">
 	import LetterPageContentContainer from '$lib/components/LetterPageContentContainer.svelte';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
-	import Navbar from '$lib/components/Navbar.svelte';
+	import Navbar from '$lib/components/util/Navbar.svelte';
 	import smallFavicon from '$lib/assets/favicon-16x16.png';
 	import bigFavicon from '$lib/assets/favicon-32x32.png';
 	import appleTouchIcon from '$lib/assets/apple-touch-icon.png';
