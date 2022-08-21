@@ -1,8 +1,8 @@
 <script>
 	import { appName } from '$lib/util/store';
-	import P from '@lettucebowler/lettuce-ui/components/P.svelte';
-	import A from '@lettucebowler/lettuce-ui/components/A.svelte';
-	import Card from '@lettucebowler/lettuce-ui/components/Card.svelte';
+	import P from '$lib/components/P.svelte';
+	import A from '$lib/components/A.svelte';
+	import Card from '$lib/components/Card.svelte';
 </script>
 
 <svelte:head>
