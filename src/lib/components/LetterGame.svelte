@@ -98,7 +98,7 @@
 			.map((l) => ({ [l.letter]: l.status }));
 		const incorrect: { [x: string]: string } = Object.assign({}, ...incorrectList);
 
-		return { ...alphabet, ...incorrect, ...contains, ...correct };
+		return { ...alphabet, ...incorrect, ...contains, ...correct, enter: 'none', delete: 'none' };
 	};
 
 	const handleWordSubmit = async () => {
