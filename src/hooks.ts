@@ -1,5 +1,5 @@
 import cookie from 'cookie';
-import { prerendering } from '$app/env';
+import { prerendering } from '$app/environment';
 import { decodeState } from '$lib/util/state';
 
 /** @type {import('@sveltejs/kit').Handle} */
