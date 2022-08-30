@@ -4,8 +4,6 @@
 	export let keyStatuses: {
 		[x: string]: string;
 	};
-
-	$: console.log(keyStatuses);
 </script>
 
 <div class="flex flex-col w-full gap-1 h-full justify-end">
