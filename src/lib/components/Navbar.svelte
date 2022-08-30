@@ -10,7 +10,7 @@
 <nav class="flex flex-row gap-2 p-2 h-16 box-border bg-polar-400 justify-center rounded-b-2xl">
 	{#each links as link}
 		<a
-			sveltekit:prefetch
+			data-sveltekit-prefetch
 			href={link.path}
 			class={classnames(linkStyle, { 'bg-polar-300': $page.url.pathname === link.path })}
 		>
