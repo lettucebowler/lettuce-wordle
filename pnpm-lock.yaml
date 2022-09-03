@@ -29,7 +29,7 @@ specifiers:
 
 devDependencies:
   '@sveltejs/adapter-vercel': 1.0.0-next.72
-  '@sveltejs/kit': 1.0.0-next.464_u52deetbc43d2ykwspbr4jh6pa
+  '@sveltejs/kit': 1.0.0-next.465_u52deetbc43d2ykwspbr4jh6pa
   '@types/cookie': 0.5.1
   '@types/js-cookie': 3.0.2
   '@typescript-eslint/eslint-plugin': 5.36.1_lbwfnm54o3pmr3ypeqp3btnera
@@ -242,10 +242,10 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/kit/1.0.0-next.464_u52deetbc43d2ykwspbr4jh6pa:
+  /@sveltejs/kit/1.0.0-next.465_u52deetbc43d2ykwspbr4jh6pa:
     resolution:
       {
-        integrity: sha512-QV0IE8ShRC5ndP0fQN4/3bg8PMkjnhvLo0C4gULJ14LFPw5fgDbwuVM4uXmM+nfzT8hTkf9F27J3uZSoJmHaeg==
+        integrity: sha512-eOQEV13d0uQVUiZoB4tLX0Hp/7EddjDynfXSOI6QN0CENNCA6FySH+jq5b3tIjWP9GRNa729adldXev49Yf9kA==
       }
     engines: { node: '>=16.14' }
     hasBin: true
