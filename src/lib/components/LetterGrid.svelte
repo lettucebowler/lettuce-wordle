@@ -1,10 +1,10 @@
 <script lang="ts">
-	import autoAnimate from '@formkit/auto-animate';
-
 	import LetterRow from './LetterRow.svelte';
 	import { isValidWord } from '$lib/util/words';
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { toastError } from '$lib/util/toastActions';
+	import { fly, fade } from 'svelte/transition';
+	import { flip } from 'svelte/animate';
 
 	const dispatch = createEventDispatcher();
 
@@ -55,20 +55,23 @@
 	});
 </script>
 
-<div
-	class="flex flex-col justify-center max-w-[min(700px,_55vh)] h-auto gap-2 w-full m-auto"
-	use:autoAnimate
->
-	{#each words as word, i}
-		{#if i >= words.length - 6}
+<div class="flex flex-col justify-center max-w-[min(700px,_55vh)] h-auto gap-2 w-full m-auto">
+	{#each words
+		.map((word, i) => ({ word, i }))
+		.filter((word) => word.i >= words.length - 6) as word (`${word.i}`)}
+		<div
+			animate:flip={{ duration: 150, delay: 150 }}
+			in:fly={{ y: 100, duration: 150, delay: 150 }}
+			out:fly={{ x: 100, duration: 150 }}
+		>
 			<LetterRow
-				bind:value={words[i]}
-				bind:ref={inputs[i - words.length + 6]}
+				bind:value={words[word.i]}
+				bind:ref={inputs[word.i - words.length + 6]}
 				on:letterSubmit={() => handleSubmit()}
 				on:blur={() => focusInput(currentInput)}
-				statuses={statuses[i]}
-				row={i}
+				statuses={statuses[word.i]}
+				row={word.i}
 			/>
-		{/if}
+		</div>
 	{/each}
 </div>

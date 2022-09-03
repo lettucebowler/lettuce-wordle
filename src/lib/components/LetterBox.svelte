@@ -5,7 +5,7 @@
 	export let status: string;
 	export let slot = 0;
 
-	const delay = 0.05;
+	const delay = 0.03;
 </script>
 
 <div

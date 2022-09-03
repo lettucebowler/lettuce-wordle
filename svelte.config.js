@@ -14,9 +14,6 @@ const config = {
 			out: 'build',
 			edge: true
 		}),
-		prerender: {
-			default: false
-		},
 		inlineStyleThreshold: 2048
 	}
 };
