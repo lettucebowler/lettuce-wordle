@@ -9,7 +9,6 @@ specifiers:
   '@typescript-eslint/parser': ^5.36.1
   '@zerodevx/svelte-toast': ^0.7.2
   autoprefixer: ^10.4.8
-  classnames: ^2.3.1
   cookie: ^0.5.0
   eslint: ^8.23.0
   eslint-config-prettier: ^8.5.0
@@ -29,14 +28,13 @@ specifiers:
 
 devDependencies:
   '@sveltejs/adapter-vercel': 1.0.0-next.72
-  '@sveltejs/kit': 1.0.0-next.465_u52deetbc43d2ykwspbr4jh6pa
+  '@sveltejs/kit': 1.0.0-next.468_u52deetbc43d2ykwspbr4jh6pa
   '@types/cookie': 0.5.1
   '@types/js-cookie': 3.0.2
   '@typescript-eslint/eslint-plugin': 5.36.1_lbwfnm54o3pmr3ypeqp3btnera
   '@typescript-eslint/parser': 5.36.1_yqf6kl63nyoq5megxukfnom5rm
   '@zerodevx/svelte-toast': 0.7.2
   autoprefixer: 10.4.8_postcss@8.4.16
-  classnames: 2.3.1
   cookie: 0.5.0
   eslint: 8.23.0
   eslint-config-prettier: 8.5.0_eslint@8.23.0
@@ -242,10 +240,10 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/kit/1.0.0-next.465_u52deetbc43d2ykwspbr4jh6pa:
+  /@sveltejs/kit/1.0.0-next.468_u52deetbc43d2ykwspbr4jh6pa:
     resolution:
       {
-        integrity: sha512-eOQEV13d0uQVUiZoB4tLX0Hp/7EddjDynfXSOI6QN0CENNCA6FySH+jq5b3tIjWP9GRNa729adldXev49Yf9kA==
+        integrity: sha512-IH1lQfSbY4efDtV8/gtVTv1cBbp8IPTeW25BN0e/ImT6xeThiODWMKHlr+zxLDHbI3jQ70uTJMZ+pFWpk5ZOtg==
       }
     engines: { node: '>=16.14' }
     hasBin: true
@@ -821,13 +819,6 @@ packages:
         integrity: sha512-bIomtDF5KGpdogkLd9VspvFzk9KfpyyGlS8YFVZl7TGPBHL5snIOnxeshwVgPteQ9b4Eydl+pVbIyE1DcvCWgQ==
       }
     engines: { node: '>=10' }
-    dev: true
-
-  /classnames/2.3.1:
-    resolution:
-      {
-        integrity: sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==
-      }
     dev: true
 
   /color-convert/2.0.1:

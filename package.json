@@ -20,7 +20,6 @@
 		"@typescript-eslint/parser": "^5.36.1",
 		"@zerodevx/svelte-toast": "^0.7.2",
 		"autoprefixer": "^10.4.8",
-		"classnames": "^2.3.1",
 		"cookie": "^0.5.0",
 		"eslint": "^8.23.0",
 		"eslint-config-prettier": "^8.5.0",

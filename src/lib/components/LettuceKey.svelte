@@ -1,5 +1,4 @@
 <script lang="ts">
-	import classNames from 'classnames';
 	import { createEventDispatcher } from 'svelte';
 
 	export let key: string;
@@ -35,15 +34,11 @@
 	aria-label={key}
 	title={key}
 	on:click={() => typeKey(key)}
-	class={classNames(
-		'w-full border-solid border-transparent font-bold text-snow-300 rounded-md text-center h-full grid place-items-center cursor-pointer hover:brightness-90 active:brightness-50',
-		{
-			'bg-polar-400': status === 'none',
-			'bg-aurora-300': status === 'contains',
-			'bg-aurora-400': status === 'correct',
-			'bg-polar-200': status === 'incorrect'
-		}
-	)}
+	class="w-full border-solid border-transparent font-bold text-snow-300 rounded-md text-center h-full grid place-items-center cursor-pointer hover:brightness-90 active:brightness-50"
+	class:bg-polar-400={status === 'none'}
+	class:bg-aurora-300={status === 'contains'}
+	class:bg-aurora-400={status === 'correct'}
+	class:bg-polar-200={status === 'incorrect'}
 >
 	{#if icons.get(key)}
 		<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">

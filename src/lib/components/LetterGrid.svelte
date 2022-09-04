@@ -61,8 +61,8 @@
 		.filter((word) => word.i >= words.length - 6) as word (`${word.i}`)}
 		<div
 			animate:flip={{ duration: 150 }}
-			in:fade={{ duration: 150 }}
-			out:fly={{ y: -100, duration: 150 }}
+			in:fade|local={{ duration: 150 }}
+			out:fly|local={{ y: -100, duration: 150 }}
 		>
 			<LetterRow
 				bind:value={words[word.i]}
