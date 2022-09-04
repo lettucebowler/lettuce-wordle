@@ -1,6 +1,6 @@
 export const getGameStatus = (appName: string, statuses: string[][]) => {
 	const gameStatus = statuses.filter((l) => l[0] !== 'none');
-	const today = `https://word.lettucebowler.net\n${appName} ${new Date().toLocaleDateString()} ${
+	const today = `https://word.lettucebowler.net\n${appName} ${new Date().toUTCString()} ${
 		gameStatus.length
 	}/6`;
 	const strings = gameStatus.map((k) => k.map((w) => getStatusEmoji(w)).join(''));

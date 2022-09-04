@@ -12988,10 +12988,16 @@ const getWord = (random: () => number) => {
 };
 
 export const getDailyWord = () => {
-	const date = new Date();
-	date.setHours(0, 0, 0, 0);
-	const seed = date.getTime();
-	const random = mulberry32(seed);
+	const dateLocal = new Date();
+	const utcDate = Date.UTC(
+		dateLocal.getUTCFullYear(),
+		dateLocal.getUTCMonth(),
+		dateLocal.getUTCDate(),
+		0,
+		0,
+		0
+	);
+	const random = mulberry32(utcDate);
 	return getWord(random);
 };
 
