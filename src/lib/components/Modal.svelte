@@ -2,6 +2,7 @@
 	import { fly } from 'svelte/transition';
 	import { getGameStatus } from '$lib/util/share';
 	import { appName } from '$lib/util/store';
+	import { onMount } from 'svelte';
 
 	export let success: boolean;
 	export let guesses: number;
@@ -49,6 +50,31 @@
 			visible = false;
 		}
 	};
+
+	const formatTime = (secondsUntil: number) => {
+		const hours = Math.floor(secondsUntil / 3600);
+		const minutes = Math.floor((secondsUntil % 3600) / 60);
+		const seconds = secondsUntil % 60;
+		return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds
+			.toString()
+			.padStart(2, '0')}`;
+	};
+
+	const getTimeUntilReset = () => {
+		const now = new Date().getTime();
+		const tomorrow = new Date();
+		tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
+		tomorrow.setUTCHours(0, 0, 0, 0);
+		return Math.floor((tomorrow.getTime() - now) / 1000);
+	};
+
+	let timeUntil: number = getTimeUntilReset();
+
+	onMount(() => {
+		setInterval(() => {
+			timeUntil = getTimeUntilReset();
+		}, 1000);
+	});
 </script>
 
 <dialog
@@ -75,6 +101,9 @@
 					out:fly={{ duration: 400, y: 50, opacity: 0 }}>{message}</span
 				>
 			{/if}
+		</div>
+		<div class="grid place-items-center text-snow-300 p-2 text-center font-bold">
+			Next word in {formatTime(timeUntil)}
 		</div>
 		<div class="w-full flex gap-3 flex-row justify-center">
 			<button
