@@ -3,6 +3,7 @@
 	import { getGameStatus } from '$lib/util/share';
 	import { appName } from '$lib/util/store';
 	import { onMount } from 'svelte';
+	import { browser } from '$app/environment';
 
 	export let success: boolean;
 	export let guesses: number;
@@ -65,7 +66,11 @@
 		const tomorrow = new Date();
 		tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
 		tomorrow.setUTCHours(0, 0, 0, 0);
-		return Math.floor((tomorrow.getTime() - now) / 1000);
+		const secondsUntil = Math.floor((tomorrow.getTime() - now) / 1000);
+		if (browser && secondsUntil === 0) {
+			location.reload();
+		}
+		return secondsUntil;
 	};
 
 	let timeUntil: number = getTimeUntilReset();
