@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@formkit/auto-animate': 1.0.0-beta.3
   '@sveltejs/adapter-vercel': next
   '@sveltejs/kit': next
   '@types/js-cookie': ^3.0.2
@@ -25,6 +26,7 @@ specifiers:
   vite: ^3.1.3
 
 devDependencies:
+  '@formkit/auto-animate': 1.0.0-beta.3
   '@sveltejs/adapter-vercel': 1.0.0-next.77
   '@sveltejs/kit': 1.0.0-next.503_svelte@3.49.0+vite@3.1.3
   '@types/js-cookie': 3.0.2
@@ -91,6 +93,13 @@ packages:
       strip-json-comments: 3.1.1
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /@formkit/auto-animate/1.0.0-beta.3:
+    resolution:
+      {
+        integrity: sha512-glsi+ytwQpxT/Ctr9GtcIfVr4dO6mJ04mQbNU8MFSdCdqMopHtyfU5Fib0+9lNFIeR0luY4/0NW95/2R5pKsag==
+      }
     dev: true
 
   /@humanwhocodes/config-array/0.10.5:
@@ -315,10 +324,10 @@ packages:
       }
     dev: true
 
-  /@types/node/18.7.20:
+  /@types/node/18.7.21:
     resolution:
       {
-        integrity: sha512-adzY4vLLr5Uivmx8+zfSJ5fbdgKxX8UMtjtl+17n0B1q1Nz8JEmE151vefMdpD+1gyh+77weN4qEhej/O7budQ==
+        integrity: sha512-rLFzK5bhM0YPyCoTC8bolBjMk7bwnZ8qeZUBslBfjZQou2ssJdWslx9CZ8DGM+Dx7QXQiiTVZ/6QO6kwtHkZCA==
       }
     dev: true
 
@@ -335,7 +344,7 @@ packages:
         integrity: sha512-BPdoIt1lfJ6B7rw35ncdwBZrAssjcwzI5LByIrYs+tpXlj/CAkuVdRsgZDdP4lq5EjyWzwxZCqAoFyHKFwp32g==
       }
     dependencies:
-      '@types/node': 18.7.20
+      '@types/node': 18.7.21
     dev: true
 
   /@typescript-eslint/eslint-plugin/5.38.0_4gkcvl6qsi23tqqawfqgcwtp54:

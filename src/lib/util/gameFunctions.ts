@@ -79,8 +79,7 @@ export const applyWord = (
 	const guess = guessLetters.join('');
 	const metadata = {
 		invalid: false,
-		success: false,
-		failure: false
+		success: false
 	};
 	let updatedGame = game;
 	if (guess.length !== 5 || !isValidWord(guess)) {
@@ -99,8 +98,6 @@ export const applyWord = (
 
 	if (statuses === 'xxxxx') {
 		metadata.success = true;
-	} else if (updatedAnswers.length === 6) {
-		metadata.failure = true;
 	}
 
 	updatedGame = {

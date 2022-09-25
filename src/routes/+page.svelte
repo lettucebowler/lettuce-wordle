@@ -1,5 +1,7 @@
 <script lang="ts">
 	import Modal from '$lib/components/Modal.svelte';
+	import { fly, fade } from 'svelte/transition';
+	import { flip } from 'svelte/animate';
 	import { appName } from '$lib/util/store';
 	import { onMount } from 'svelte';
 	import { enhance } from '$app/forms';
@@ -27,6 +29,7 @@
 
 	const handleKey = (key: string) => {
 		form = { ...form, invalid: false };
+		console.log(current_guess);
 		const guess = data.state.guesses[current_guess] || '';
 		if (key.toLowerCase() === 'backspace') {
 			const [_, ...rest] = guess.split('').reverse();
@@ -43,10 +46,17 @@
 		Cookies.set('wordLettuceState', gameState, { expires: 365, secure: false });
 	};
 
+	const getRealIndex = (i: number, guesses: string[]) => {
+		const realIndex =
+			guesses.filter((g, j) => g.length === 5 && answers[j]?.length === 5).length < 6
+				? i
+				: guesses.filter((g, j) => g.length === 5 && answers[j]?.length === 5).length - 5 + i;
+		return realIndex;
+	};
+
 	onMount(() => {
-		const attempts = data?.state?.answers?.length || 0;
 		const lastAnswer = data?.state?.answers?.at(-1) || '_____';
-		if (lastAnswer === 'xxxxx' || attempts === 6) {
+		if (lastAnswer === 'xxxxx') {
 			openModal(data?.state?.answers, data?.state?.guesses?.length || 0, lastAnswer === 'xxxxx');
 		}
 	});
@@ -54,15 +64,11 @@
 	$: guesses = data?.state?.guesses;
 	$: answers = data?.state?.answers;
 	$: answer = data?.state?.answer;
-
-	$: current_guess = data?.state.answers?.length || 0;
+	$: current_guess = answers.length || 0;
 
 	$: {
 		if (form?.success) {
 			openModal(data?.state?.answers, data?.state?.guesses?.length || 0, true);
-		}
-		if (form?.failure) {
-			openModal(data?.state?.answers, data?.state?.guesses?.length || 0, false);
 		}
 
 		if (form?.invalid) {
@@ -101,27 +107,34 @@
 			const { metadata, updatedGame } = applyWord(game, guess);
 			form = metadata;
 			updateData(updatedGame);
-
 			cancel();
 		}}
-		class="grid gap-2 grid-cols-5 h-full m-auto max-w-[min(700px,_55vh)] h-auto"
+		class="grid gap-2 h-full m-auto max-w-[min(700px,_55vh)] h-auto"
 	>
-		{#each rows as _, i}
-			{@const current = i === current_guess}
-			{#each columns as _, j}
-				{@const answer = (answers[i] || '_____')[j]}
-				{@const letter = guesses?.at(i)?.at(j) || ''}
-				<LetterBox
-					{answer}
-					{letter}
-					slot={j}
-					name={current ? 'guess' : ''}
-					bulge={i === current_guess - 1 &&
-						guesses?.at(-1)?.length === 5 &&
-						!!answers?.at(guesses.length - 1)}
-					wiggle={invalidForm && i === current_guess}
-				/>
-			{/each}
+		{#each rows as _, i (getRealIndex(i, guesses))}
+			{@const realIndex = getRealIndex(i, guesses)}
+			{@const current = realIndex === current_guess}
+			<div
+				animate:flip={{ duration: 150 }}
+				in:fade|local={{ duration: 150 }}
+				out:fly|local={{ y: -100, duration: 150 }}
+				class="grid grid-cols-5 gap-2"
+			>
+				{#each columns as _, j}
+					{@const answer = (answers[realIndex] || '_____')[j]}
+					{@const letter = guesses[realIndex]?.at(j) || ''}
+
+					<LetterBox
+						{answer}
+						{letter}
+						slot={j}
+						name={current ? 'guess' : ''}
+						bulge={realIndex ===
+							guesses.filter((g, j) => g.length === 5 && answers[j]?.length === 5).length - 1}
+						wiggle={invalidForm && realIndex === current_guess}
+					/>
+				{/each}
+			</div>
 		{/each}
 	</form>
 	<div class="h-full max-h-[min(18rem,_30vh)]">
