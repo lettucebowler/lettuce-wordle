@@ -1,4 +1,4 @@
-export const getGameStatus = (appName: string, statuses: string[][]) => {
+export const getGameStatus = (appName: string, statuses: string[]) => {
 	const gameStatus = statuses.filter((l) => l[0] !== 'none');
 	const initialDate = new Date('2022-02-01T00:00:00Z');
 	const todayDate = new Date();
@@ -6,7 +6,12 @@ export const getGameStatus = (appName: string, statuses: string[][]) => {
 	const gameNum = (todayDate.getTime() - initialDate.getTime()) / 1000 / 60 / 60 / 24;
 
 	const today = `https://word.lettucebowler.net\n${appName} ${gameNum} ${gameStatus.length}/6`;
-	const strings = gameStatus.map((k) => k.map((w) => getStatusEmoji(w)).join(''));
+	const strings = gameStatus.map((k) =>
+		k
+			.split('')
+			.map((w) => getStatusEmoji(w))
+			.join('')
+	);
 	const share = [today, ...strings].join('\n');
 	return share;
 };
@@ -16,9 +21,9 @@ const getStatusEmoji = (status: string) => {
 	const yellow = '🟨';
 	const black = '⬛';
 	switch (status) {
-		case 'correct':
+		case 'x':
 			return green;
-		case 'contains':
+		case 'c':
 			return yellow;
 		default:
 			return black;

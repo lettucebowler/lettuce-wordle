@@ -5,13 +5,11 @@
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 
-	export let success: boolean;
-	export let guesses: number;
-	export let statuses: string[][];
-
 	export const modalActions = {
-		open() {
-			share = getGameStatus($appName, statuses);
+		open(answers: string[], guesses: number, success: boolean) {
+			share = getGameStatus($appName, answers);
+			attempts = guesses;
+			won = success;
 			visible = true;
 			if (dialog && !dialog.open) {
 				dialog.showModal();
@@ -21,6 +19,9 @@
 
 	let dialog: HTMLDialogElement;
 	let share = '';
+	let attempts: number;
+	let won: boolean;
+	let statuses;
 	let message = '';
 
 	const clearMessage = () => {
@@ -32,7 +33,6 @@
 	};
 
 	const shareGame = () => {
-		share = getGameStatus($appName, statuses);
 		message = 'Results Copied to clipboard!';
 		setTimeout(() => clearMessage(), 4000);
 		(!!navigator &&
@@ -89,13 +89,13 @@
 	on:animationend={() => closeModal(visible)}
 >
 	<div class="flex flex-col gap-3">
-		<h2 class="text-center mt-0 text-snow-300">{success ? 'Success' : 'Dang'}!</h2>
+		<h2 class="text-center mt-0 text-snow-300">{won ? 'Success' : 'Dang'}!</h2>
 		<p class="text-snow-300 p-2 text-center">
-			{#if success}
-				You solved today's WordLettuce in {guesses} guess{guesses > 1 ? 'es' : ''}. Come back
+			{#if won}
+				You solved today's WordLettuce in {attempts} guess{attempts > 1 ? 'es' : ''}. Come back
 				tomorrow and play again!
 			{:else}
-				You used up all of your guesses. Come back tomorrow (or refresh) and try again!
+				You used up all of your guesses. Come back tomorrow (or delete your cookies) and try again!
 			{/if}
 		</p>
 		<div class="h-8 grid place-items-center">

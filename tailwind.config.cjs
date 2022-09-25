@@ -34,13 +34,21 @@ module.exports = {
 				500: '#B48EAD'
 			}
 		},
-		animation: {
-			bulge: 'bulge 0.3s linear 1'
-		},
-		keyframes: {
-			bulge: {
-				'50%': { transform: 'scale(1.05) translateY(-5%)' },
-				'0%, 100%': { transform: 'scale(1)' }
+		extend: {
+			animation: {
+				bulge: 'bulge 0.3s linear 1',
+				wiggle: 'wiggle 0.15s linear 1'
+			},
+			keyframes: {
+				bulge: {
+					'50%': { transform: 'scale(1.05) translateY(-5%)' },
+					'0%, 100%': { transform: 'scale(1)' }
+				},
+				wiggle: {
+					'0%, 100%': { transform: 'translateX(0%)' },
+					'25%': { transform: 'translateX(-10%)' },
+					'75%': { transform: 'translateX(10%)' }
+				}
 			}
 		}
 	},

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import LetterPageContentContainer from '$lib/components/LetterPageContentContainer.svelte';
-	import { SvelteToast } from '@zerodevx/svelte-toast';
 	import Navbar from '$lib/components/Navbar.svelte';
+	import Modal from '$lib/components/Modal.svelte';
 	import smallFavicon from '$lib/assets/favicon-16x16.png';
 	import bigFavicon from '$lib/assets/favicon-32x32.png';
 	import appleTouchIcon from '$lib/assets/apple-touch-icon.png';
@@ -27,9 +27,6 @@
 	<link rel="mask-icon" href={safariPinnedTabIcon} color="#a3be8c" />
 </svelte:head>
 
-<div class="toast">
-	<SvelteToast />
-</div>
 <LetterPageContentContainer>
 	<Navbar {links} />
 	<slot />
@@ -45,10 +42,5 @@
 		height: 100%;
 		min-height: 100%;
 		box-sizing: border-box;
-	}
-
-	.toast {
-		font-size: 1rem;
-		font-weight: 700;
 	}
 </style>

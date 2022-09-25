@@ -1,23 +1,29 @@
 <script lang="ts">
 	export let letter: string;
-	export let status: string;
+	export let answer: string;
+	export let name: string;
 	export let slot = 0;
+	export let bulge = false;
+	export let wiggle = false;
 
 	const delay = 0.03;
-	const delayTime = `${slot * delay}s`;
+	$: delayTime = wiggle ? '0s' : `${slot * delay}s`;
 </script>
 
-<div
-	class="grid place-items-center flex aspect-square font-bold text-3xl text-snow-300 rounded-xl"
-	class:border-polar-300={status === 'none'}
-	class:border-4={status === 'none'}
-	class:border-solid={status === 'none'}
-	class:bg-aurora-400={status === 'correct'}
-	class:bg-aurora-300={status === 'contains'}
-	class:bg-polar-300={status === 'incorrect'}
-	class:animate-bulge={status !== 'none'}
+<input
+	readonly
+	class="aspect-square font-bold text-3xl text-snow-300 rounded-xl text-center"
+	class:border-polar-300={answer === '_'}
+	class:border-4={answer === '_'}
+	class:border-solid={answer === '_'}
+	class:bg-aurora-400={answer === 'x'}
+	class:bg-aurora-300={answer === 'c'}
+	class:bg-polar-300={answer === 'i'}
+	class:bg-transparent={answer === '_'}
+	class:animate-bulge={bulge}
+	class:animate-wiggle={wiggle}
 	style:animation-delay={delayTime}
 	style:transition-delay={delayTime}
->
-	{letter.toUpperCase()}
-</div>
+	value={letter.toUpperCase()}
+	{name}
+/>

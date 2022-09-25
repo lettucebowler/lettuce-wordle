@@ -1,195 +1,82 @@
 <script lang="ts">
-	import Cookies from 'js-cookie';
-	import { beforeNavigate } from '$app/navigation';
-	import { onMount } from 'svelte';
-	import { toastError, toastClear } from '$lib/util/toastActions';
-	import LetterGrid from '$lib/components/LetterGrid.svelte';
+	import { enhance } from '$app/forms';
 	import LettuceKeyboard from '$lib/components/LettuceKeyboard.svelte';
-	import Modal from '$lib/components/Modal.svelte';
-	import { encodeState } from '$lib/util/state';
+	import LetterBox from '$lib/components/LetterBox.svelte';
 
-	const getLetterLocations = (s: string, l: string) => {
-		return s
-			.split('')
-			.map((l: string, i: number) => ({ letter: l, index: i }))
-			.filter((slot) => slot.letter === l)
-			.map((slot) => slot.index);
-	};
+	const rows = Array(6);
+	const columns = Array(5);
+	export let guesses: string[];
+	export let answers: string[];
+	export let invalid = false;
 
-	const containsLetter = (letter: string, index: number, guess: string, answer: string) => {
-		const guessLocations = getLetterLocations(guess, letter);
-		const answerLocations = getLetterLocations(answer, letter);
-		const correctCount = guessLocations.filter((location) =>
-			answerLocations.includes(location)
-		).length;
-		const previousContainsCount = getLetterLocations(guess.slice(0, index), letter).filter(
-			(index) => !answerLocations.includes(index)
-		).length;
-		return correctCount + previousContainsCount < answerLocations.length;
-	};
+	$: current_guess = answers.length;
 
-	const getLetterStatus = (
-		letter: string,
-		i: number,
-		word: string,
-		answer: string,
-		complete: boolean
-	) => {
-		const none = !complete || letter === '';
-		const contains = containsLetter(letter, i, word, answer);
-		const correct = answer.split('')[i] === letter;
+	let keys = {};
 
-		if (none) {
-			return 'none';
-		}
-
-		if (correct) {
-			return 'correct';
-		}
-
-		if (contains) {
-			return 'contains';
-		}
-
-		return 'incorrect';
-	};
-
-	const getLetterStatuses = (guess: string): string[] => {
-		if (!guess) {
-			return ['none', 'none', 'none', 'none', 'none'];
-		}
-		return guess.split('').map((l, i) => {
-			return getLetterStatus(l, i, guess, answer, true);
-		});
-	};
-
-	const getKeyStatuses = (words: string[], statuses: string[][]) => {
-		const alphabet = Object.assign(
-			{},
-			...Array.from(Array(26))
-				.map((e, i) => i + 65)
-				.map((x) => String.fromCharCode(x))
-				.map((letter: string) => ({
-					[letter.toLowerCase()]: 'none'
-				}))
-		);
+	const getKeyStatuses = (words: string[], statuses: string[]) => {
 		const letters = Array.from(
 			new Set(
 				words
 					.map((w, i) =>
 						w.split('').map((l, j) => ({
 							letter: l,
-							status: statuses[i][j]
+							status: statuses[i]?.[j] || '_'
 						}))
 					)
 					.flat()
 			)
 		);
 		const correctList = letters
-			.filter((letter) => letter.status === 'correct')
+			.filter((letter) => letter.status === 'x')
 			.map((l) => ({ [l.letter]: l.status }));
 		const correct: { [x: string]: string } = Object.assign({}, ...correctList);
 		const containsList = letters
-			.filter((letter) => letter.status === 'contains')
+			.filter((letter) => letter.status === 'c')
 			.map((l) => ({ [l.letter]: l.status }));
 		const contains: { [x: string]: string } = Object.assign({}, ...containsList);
 		const incorrectList = letters
-			.filter((letter) => letter.status === 'incorrect')
+			.filter((letter) => letter.status === 'i')
 			.map((l) => ({ [l.letter]: l.status }));
 		const incorrect: { [x: string]: string } = Object.assign({}, ...incorrectList);
 
-		return { ...alphabet, ...incorrect, ...contains, ...correct, enter: 'none', delete: 'none' };
+		return { ...incorrect, ...contains, ...correct };
 	};
 
-	const handleWordSubmit = async () => {
-		if (words[attempt].length !== 5) {
-			toastError('Word too short.');
-			return;
-		}
-
-		const tempStatuses = JSON.parse(JSON.stringify(statuses));
-		tempStatuses[attempt] = getLetterStatuses(words[attempt]);
-		statuses = tempStatuses;
-		keyStatuses = getKeyStatuses(words, tempStatuses);
-		success = words[attempt] === answer;
-		attempt++;
-		if (words.filter(Boolean).length > 5 && !success) {
-			words = words.concat(['']);
-			statuses = statuses.concat([['none', 'none', 'none', 'none', 'none']]);
-		}
-		saveState(answer, words);
-	};
-
-	const deleteLastLetter = () => {
-		if (success) {
-			return;
-		}
-		words[attempt] = words[attempt].slice(0, -1);
-	};
-
-	const AddLetter = (key: string) => {
-		if (success || words[attempt].length > 4) {
-			return;
-		}
-
-		words[attempt] = `${words[attempt]}${key}`;
-	};
-
-	const handleKeyPress = (event: { key: string }) => {
-		const { key } = event;
-		key.toLowerCase() === 'enter' && handleWordSubmit();
-		(key.toLowerCase() === 'delete' || key.toLowerCase() === 'backspace') && deleteLastLetter();
-		key.toLowerCase().match(/[a-z]/i) && key.length === 1 && AddLetter(key.toLowerCase());
-		if (key.toLowerCase() === 'share') {
-			showModal();
-		}
-	};
-
-	const showModal = () => {
-		if (success) {
-			modalActions?.open && modalActions.open();
-		}
-	};
-
-	let modalActions: { open(): void };
-
-	const saveState = (answer: string, words: string[]) => {
-		const state = {
-			answer,
-			words
-		};
-
-		const stateString = encodeState(state);
-		Cookies.set('state', stateString, { expires: 365 });
-	};
-
-	export let answer: string;
-
-	export let words: string[] = [];
-
-	export let success = false;
-
-	let statuses = words.map((word) => getLetterStatuses(word));
-
-	export let attempt = 0;
-
-	let keyStatuses = getKeyStatuses(words, statuses);
-
-	$: !!answer && success && setTimeout(() => showModal(), 500);
-
-	onMount(() => {
-		if (success) {
-			setTimeout(() => showModal(), 500);
-		}
-	});
-
-	beforeNavigate(() => {
-		toastClear();
-	});
+	$: {
+		keys = {};
+		keys = getKeyStatuses(guesses, answers);
+	}
 </script>
 
-<LetterGrid bind:statuses bind:words on:wordSubmit={handleWordSubmit} />
-<Modal bind:modalActions guesses={attempt} {success} {statuses} />
+<form
+	method="POST"
+	action="?/enter"
+	id="game"
+	use:enhance={({ data, cancel }) => {
+		console.log('bleh');
+		console.log(data.getAll('guess'));
+		cancel();
+	}}
+	class="grid gap-2 grid-cols-5 h-full m-auto max-w-[min(700px,_55vh)] h-auto"
+>
+	{#each rows as _, i}
+		{@const current = i === current_guess}
+		{#each columns as _, j}
+			{@const answer = (answers[i] || '_____')[j]}
+			{@const letter = guesses?.at(i)?.at(j) || ''}
+			<LetterBox
+				{answer}
+				{letter}
+				slot={j}
+				name={current ? 'guess' : ''}
+				bulge={i === current_guess - 1 &&
+					guesses?.at(-1)?.length === 5 &&
+					!!answers?.at(guesses.length - 1)}
+				wiggle={invalid && i === current_guess}
+			/>
+		{/each}
+	{/each}
+</form>
 <div class="h-full max-h-[min(18rem,_30vh)]">
-	<LettuceKeyboard on:letterTyped={(event) => handleKeyPress(event.detail)} {keyStatuses} />
+	<LettuceKeyboard on:key answers={keys} />
 </div>
