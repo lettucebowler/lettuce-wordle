@@ -16,7 +16,7 @@ export const load: import('./$types').PageServerLoad = ({ locals, cookies }: any
 		};
 	}
 
-	cookies.set('wordLettuceState', encodeState(gameState));
+	cookies.set('wordLettuceState', encodeState(gameState), { httpOnly: false });
 
 	return {
 		state: gameState
@@ -43,7 +43,7 @@ export const actions: import('./$types').Actions = {
 			}
 			guesses[current_row] = `${guesses[current_row] ? guesses[current_row] : ''}${key}`;
 		}
-		cookies.set('wordLettuceState', encodeState({ answer, guesses, answers }));
+		cookies.set('wordLettuceState', encodeState({ answer, guesses, answers }), { httpOnly: false });
 		const form = {
 			invalid: false,
 			success: false,
@@ -64,7 +64,7 @@ export const actions: import('./$types').Actions = {
 		if (metadata.invalid) {
 			return invalid(400, metadata);
 		}
-		cookies.set('wordLettuceState', encodeState(updatedGame));
+		cookies.set('wordLettuceState', encodeState(updatedGame), { httpOnly: false });
 		return metadata;
 	}
 };
