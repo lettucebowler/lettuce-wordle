@@ -41,7 +41,6 @@
 		const gameState = encodeState(gameData);
 		console.log(gameState);
 		Cookies.set('wordLettuceState', gameState, { expires: 365, secure: false });
-		Cookies.set('bleh', gameState, { expires: 365, secure: false });
 	};
 
 	onMount(() => {
