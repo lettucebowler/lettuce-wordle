@@ -82,10 +82,16 @@ export const applyWord = (
 		success: false
 	};
 	let updatedGame = game;
+	if (updatedGame.answers.at(-1) === 'xxxxx') {
+		return {
+			updatedGame,
+			metadata
+		};
+	}
 	if (guess.length !== 5 || !isValidWord(guess)) {
 		metadata.invalid = true;
 		return {
-			updatedGame: game,
+			updatedGame,
 			metadata
 		};
 	}
