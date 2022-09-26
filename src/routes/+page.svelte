@@ -130,7 +130,9 @@
 						slot={j}
 						name={current ? 'guess' : ''}
 						bulge={realIndex ===
-							guesses.filter((g, j) => g.length === 5 && answers[j]?.length === 5).length - 1}
+							guesses.filter((g, j) => g.length === 5 && answers[j]?.length === 5).length - 1 &&
+							guesses.at(-1)?.length === 5 &&
+							answers.at(guesses.length - 1)?.length === 5}
 						wiggle={invalidForm && realIndex === current_guess}
 					/>
 				{/each}
