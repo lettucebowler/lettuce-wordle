@@ -67,6 +67,29 @@ export const getKeyStatuses = (words: string[], statuses: string[]) => {
 	return { ...incorrect, ...contains, ...correct };
 };
 
+export const applyKey = (key: string, guesses: string[], answers: string[]) => {
+	const keyTest = /^[a-zA-Z]{1}$/;
+	const isLetter = keyTest.test(key);
+	const current_guess = answers.length;
+	const guess = guesses.at(current_guess) || '';
+	if (
+		(!isLetter && key.toLowerCase() !== 'backspace') ||
+		(key.toLowerCase() === 'backspace' && guess.length === 0) ||
+		(isLetter && guess.length >= 5)
+	) {
+		return guesses;
+	}
+
+	let updatedGuesses = guesses;
+	if (key.toLowerCase() === 'backspace') {
+		const [_, ...rest] = guess.split('').reverse();
+		updatedGuesses[current_guess] = rest.reverse().join('');
+	} else {
+		updatedGuesses[current_guess] = guess + key.toLowerCase();
+	}
+	return updatedGuesses;
+};
+
 export const applyWord = (
 	game: {
 		answer: string;

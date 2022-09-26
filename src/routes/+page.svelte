@@ -7,7 +7,7 @@
 	import { enhance } from '$app/forms';
 	import LettuceKeyboard from '$lib/components/LettuceKeyboard.svelte';
 	import LetterBox from '$lib/components/LetterBox.svelte';
-	import { applyWord, getKeyStatuses } from '$lib/util/gameFunctions';
+	import { applyKey, applyWord, getKeyStatuses } from '$lib/util/gameFunctions';
 	import { encodeState } from '$lib/util/state';
 	import Cookies from 'js-cookie';
 
@@ -28,15 +28,12 @@
 	};
 
 	const handleKey = (key: string) => {
-		form = { ...form, invalid: false };
-		console.log(current_guess);
-		const guess = data.state.guesses[current_guess] || '';
-		if (key.toLowerCase() === 'backspace') {
-			const [_, ...rest] = guess.split('').reverse();
-			data.state.guesses[current_guess] = rest.reverse().join('');
-		} else {
-			data.state.guesses[current_guess] = guess + key;
+		if (form?.success || answers.at(-1) === 'xxxxx') {
+			return;
 		}
+		form = { invalid: false, success: false };
+		const updatedGuesses = applyKey(key, guesses, answers);
+		data.state.guesses = updatedGuesses;
 	};
 
 	const updateData = (gameData: any) => {
