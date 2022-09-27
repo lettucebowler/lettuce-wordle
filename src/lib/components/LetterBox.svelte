@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
+
 	export let letter: string;
 	export let answer: string;
 	export let name: string;
@@ -7,6 +9,15 @@
 	export let wiggle = false;
 
 	const delay = 0.03;
+
+	let doBulge = false;
+
+	$: {
+		if (browser) {
+			doBulge = bulge;
+		}
+	}
+
 	$: delayTime = wiggle ? '0s' : `${slot * delay}s`;
 </script>
 
@@ -20,7 +31,7 @@
 	class:bg-aurora-300={answer === 'c'}
 	class:bg-polar-300={answer === 'i'}
 	class:bg-transparent={answer === '_'}
-	class:animate-bulge={bulge}
+	class:animate-bulge={doBulge}
 	class:animate-wiggle={wiggle}
 	style:animation-delay={delayTime}
 	style:transition-delay={delayTime}

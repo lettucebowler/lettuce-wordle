@@ -28,9 +28,6 @@
 	};
 
 	const handleKey = (key: string) => {
-		if (form?.success || answers.at(-1) === 'xxxxx') {
-			return;
-		}
 		form = { invalid: false, success: false };
 		const updatedGuesses = applyKey(key, guesses, answers);
 		data.state.guesses = updatedGuesses;
@@ -39,16 +36,21 @@
 	const updateData = (gameData: any) => {
 		data = { state: gameData };
 		const gameState = encodeState(gameData);
-		console.log(gameState);
 		Cookies.set('wordLettuceState', gameState, { expires: 365, secure: false });
 	};
 
-	const getRealIndex = (i: number, guesses: string[]) => {
-		const realIndex =
-			guesses.filter((g, j) => g.length === 5 && answers[j]?.length === 5).length < 6
-				? i
-				: guesses.filter((g, j) => g.length === 5 && answers[j]?.length === 5).length - 5 + i;
-		return realIndex;
+	const getRealIndex = (i: number, guesses: string[], answers: string[]) => {
+		const filteredLength = guesses.filter(
+			(g, j) => g.length === 5 && answers[j]?.length === 5
+		).length;
+
+		if (filteredLength < 6) {
+			return i;
+		} else if (answers.at(-1) === 'xxxxx') {
+			return filteredLength - 6 + i;
+		} else {
+			return filteredLength - 5 + i;
+		}
 	};
 
 	onMount(() => {
@@ -83,8 +85,6 @@
 </script>
 
 <svelte:head>
-	<meta charset="UTF-8" />
-	<meta name="description" content="Lettuce Wordle`" />
 	<title>{$appName} Daily</title>
 </svelte:head>
 
@@ -108,8 +108,8 @@
 		}}
 		class="grid gap-2 h-full m-auto max-w-[min(700px,_55vh)] h-auto"
 	>
-		{#each rows as _, i (getRealIndex(i, guesses))}
-			{@const realIndex = getRealIndex(i, guesses)}
+		{#each rows as _, i (getRealIndex(i, guesses, answers))}
+			{@const realIndex = getRealIndex(i, guesses, answers)}
 			{@const current = realIndex === current_guess}
 			<div
 				animate:flip={{ duration: 150 }}
@@ -126,10 +126,7 @@
 						{letter}
 						slot={j}
 						name={current ? 'guess' : ''}
-						bulge={realIndex ===
-							guesses.filter((g, j) => g.length === 5 && answers[j]?.length === 5).length - 1 &&
-							guesses.at(-1)?.length === 5 &&
-							answers.at(guesses.length - 1)?.length === 5}
+						bulge={answers[realIndex]?.length === 5}
 						wiggle={invalidForm && realIndex === current_guess}
 					/>
 				{/each}

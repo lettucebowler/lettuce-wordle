@@ -68,6 +68,9 @@ export const getKeyStatuses = (words: string[], statuses: string[]) => {
 };
 
 export const applyKey = (key: string, guesses: string[], answers: string[]) => {
+	if (answers.at(-1) === 'xxxxx') {
+		return guesses;
+	}
 	const keyTest = /^[a-zA-Z]{1}$/;
 	const isLetter = keyTest.test(key);
 	const current_guess = answers.length;
