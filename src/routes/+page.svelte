@@ -4,12 +4,13 @@
 	import { flip } from 'svelte/animate';
 	import { appName } from '$lib/util/store';
 	import { onMount } from 'svelte';
-	import { enhance } from '$app/forms';
+	import { applyAction, enhance } from '$app/forms';
 	import LettuceKeyboard from '$lib/components/LettuceKeyboard.svelte';
 	import LetterBox from '$lib/components/LetterBox.svelte';
 	import { applyKey, applyWord, getKeyStatuses } from '$lib/util/gameFunctions';
 	import { encodeState } from '$lib/util/state';
 	import Cookies from 'js-cookie';
+	import { invalidateAll } from '$app/navigation';
 
 	export let data: import('./$types').PageData;
 	export let form: import('./$types').ActionData;
@@ -65,6 +66,8 @@
 	$: answer = data?.state?.answer;
 	$: current_guess = answers.length || 0;
 
+	let loading = false;
+
 	$: {
 		if (form?.success) {
 			openModal(data?.state?.answers, data?.state?.guesses?.length || 0, true);
@@ -95,16 +98,23 @@
 		id="game"
 		use:enhance={({ data, cancel }) => {
 			// @ts-ignore
-			const guess = data.getAll('guess').map((l) => l.toLowerCase());
-			const game = {
-				answers,
-				guesses,
-				answer
+			// const guess = data.getAll('guess').map((l) => l.toLowerCase());
+			// const game = {
+			// 	answers,
+			// 	guesses,
+			// 	answer
+			// };
+			// const { metadata, updatedGame } = applyWord(game, guess);
+			// form = metadata;
+			// updateData(updatedGame);
+			// cancel();
+			loading = true;
+			return async ({ result }) => {
+				console.log(result);
+				await invalidateAll();
+				await applyAction(result);
+				loading = false;
 			};
-			const { metadata, updatedGame } = applyWord(game, guess);
-			form = metadata;
-			updateData(updatedGame);
-			cancel();
 		}}
 		class="m-auto grid h-full h-auto max-w-[min(700px,_55vh)] gap-2"
 	>
@@ -127,7 +137,8 @@
 						slot={j}
 						name={current ? 'guess' : ''}
 						bulge={answers[realIndex]?.length === 5}
-						wiggle={invalidForm && realIndex === current_guess}
+						wiggle={invalidForm && current}
+						loading={loading && current}
 					/>
 				{/each}
 			</div>
