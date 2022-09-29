@@ -66,10 +66,7 @@
 	$: answer = data?.state?.answer;
 	$: current_guess = answers.length || 0;
 
-	let loading = false;
-
 	$: {
-		loading = false;
 		if (form?.success) {
 			openModal(data?.state?.answers, data?.state?.guesses?.length || 0, true);
 		}
@@ -99,23 +96,16 @@
 		id="game"
 		use:enhance={({ data, cancel }) => {
 			// @ts-ignore
-			// const guess = data.getAll('guess').map((l) => l.toLowerCase());
-			// const game = {
-			// 	answers,
-			// 	guesses,
-			// 	answer
-			// };
-			// const { metadata, updatedGame } = applyWord(game, guess);
-			// form = metadata;
-			// updateData(updatedGame);
-			// cancel();
-			loading = true;
-			// return async ({ result }) => {
-			// 	console.log(result);
-			// 	applyAction(result);
-			// 	await invalidateAll();
-			// 	loading = false;
-			// };
+			const guess = data.getAll('guess').map((l) => l.toLowerCase());
+			const game = {
+				answers,
+				guesses,
+				answer
+			};
+			const { metadata, updatedGame } = applyWord(game, guess);
+			form = metadata;
+			updateData(updatedGame);
+			cancel();
 		}}
 		class="m-auto grid h-full h-auto max-w-[min(700px,_55vh)] grid-rows-[repeat(6,_1fr)] gap-2"
 	>
@@ -139,7 +129,6 @@
 						name={current ? 'guess' : ''}
 						bulge={answers[realIndex]?.length === 5}
 						wiggle={invalidForm && current}
-						loading={loading && current}
 					/>
 				{/each}
 			</div>
