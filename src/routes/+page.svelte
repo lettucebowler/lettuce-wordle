@@ -111,12 +111,12 @@
 			loading = true;
 			return async ({ result }) => {
 				console.log(result);
+				applyAction(result);
 				await invalidateAll();
-				await applyAction(result);
 				loading = false;
 			};
 		}}
-		class="m-auto grid h-full h-auto max-w-[min(700px,_55vh)] gap-2"
+		class="m-auto grid h-full h-auto max-w-[min(700px,_55vh)] grid-rows-[repeat(6,_1fr)] gap-2"
 	>
 		{#each rows as _, i (getRealIndex(i, guesses, answers))}
 			{@const realIndex = getRealIndex(i, guesses, answers)}
@@ -125,7 +125,7 @@
 				animate:flip={{ duration: 150 }}
 				in:fade|local={{ duration: 150 }}
 				out:fly|local={{ y: -100, duration: 150 }}
-				class="grid grid-cols-5 gap-2"
+				class="grid grid-cols-[repeat(5,_1fr)] gap-2"
 			>
 				{#each columns as _, j}
 					{@const answer = (answers[realIndex] || '_____')[j]}
