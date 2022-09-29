@@ -11,7 +11,7 @@
 
 <main>
 	<Card>
-		<h1 class="text-6xl m-0 font-bold text-center">Hello, I'm Grant!</h1>
+		<h1 class="m-0 text-center text-6xl font-bold">Hello, I'm Grant!</h1>
 		<P>
 			I wrote this app because the real wordle got blocked on my work network and I wanted to keep
 			playing and sharing scores with my coworkers.

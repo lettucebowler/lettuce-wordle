@@ -27,13 +27,13 @@
 		}
 	}}
 >
-	<div class="flex flex-col w-full gap-1 h-full justify-end">
+	<div class="flex h-full w-full flex-col justify-end gap-1">
 		{#each ['q,w,e,r,t,y,u,i,o,p', ',a,s,d,f,g,h,j,k,l', ',,,z,x,c,v,b,n,m'] as row, i}
-			<div class="flex w-full flex-col justify-center flex-auto">
-				<div class="grid gap-1 flex-auto grid-cols-[repeat(40,_0.25fr)]">
+			<div class="flex w-full flex-auto flex-col justify-center">
+				<div class="grid flex-auto grid-cols-[repeat(40,_0.25fr)] gap-1">
 					{#each row.split(',') as letter}
 						{#if letter}
-							<div class="col-span-4 place-items-center grid">
+							<div class="col-span-4 grid place-items-center">
 								<LettuceKey key={letter} status={answers[letter] || '_'} />
 							</div>
 						{:else}
@@ -41,10 +41,10 @@
 						{/if}
 					{/each}
 					{#if i == 2}
-						<div class="col-span-4 place-items-center grid">
+						<div class="col-span-4 grid place-items-center">
 							<LettuceKey key="enter" status="_" form="game" action="enter" />
 						</div>
-						<div class="col-span-4 place-items-center grid">
+						<div class="col-span-4 grid place-items-center">
 							<LettuceKey key="backspace" status="_" />
 						</div>
 					{/if}

@@ -1,3 +1,3 @@
-<p class="p-4 text-lg text-left">
+<p class="p-4 text-left text-lg">
 	<slot />
 </p>

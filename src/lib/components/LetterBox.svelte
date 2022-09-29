@@ -23,7 +23,7 @@
 
 <input
 	readonly
-	class="aspect-square font-bold text-3xl text-snow-300 rounded-xl text-center"
+	class="aspect-square rounded-xl text-center text-3xl font-bold text-snow-300"
 	class:border-polar-300={answer === '_'}
 	class:border-4={answer === '_'}
 	class:border-solid={answer === '_'}

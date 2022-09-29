@@ -88,7 +88,7 @@
 	<title>{$appName} Daily</title>
 </svelte:head>
 
-<main class="flex justify-between flex-col flex-auto gap-2">
+<main class="flex flex-auto flex-col justify-between gap-2">
 	<form
 		method="POST"
 		action="?/enter"
@@ -106,7 +106,7 @@
 			updateData(updatedGame);
 			cancel();
 		}}
-		class="grid gap-2 h-full m-auto max-w-[min(700px,_55vh)] h-auto"
+		class="m-auto grid h-full h-auto max-w-[min(700px,_55vh)] gap-2"
 	>
 		{#each rows as _, i (getRealIndex(i, guesses, answers))}
 			{@const realIndex = getRealIndex(i, guesses, answers)}

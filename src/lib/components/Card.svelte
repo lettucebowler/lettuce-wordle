@@ -1,3 +1,3 @@
-<div class="bg-polar-200 rounded-2xl p-2 text-snow-300">
+<div class="rounded-2xl bg-polar-200 p-2 text-snow-300">
 	<slot />
 </div>

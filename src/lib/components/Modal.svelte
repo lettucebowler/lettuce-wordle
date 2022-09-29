@@ -84,13 +84,13 @@
 
 <dialog
 	bind:this={dialog}
-	class="w-full max-w-xs rounded-2xl p-2 bg-polar-200 box-border open:opacity-1 backdrop:backdrop-blur-sm open:pointer-events-auto"
+	class="open:opacity-1 box-border w-full max-w-xs rounded-2xl bg-polar-200 p-2 backdrop:backdrop-blur-sm open:pointer-events-auto"
 	open={false}
 	on:animationend={() => closeModal(visible)}
 >
 	<div class="flex flex-col gap-3">
-		<h2 class="text-center mt-0 text-snow-300">{won ? 'Success' : 'Dang'}!</h2>
-		<p class="text-snow-300 p-2 text-center">
+		<h2 class="mt-0 text-center text-snow-300">{won ? 'Success' : 'Dang'}!</h2>
+		<p class="p-2 text-center text-snow-300">
 			{#if won}
 				You solved today's WordLettuce in {attempts} guess{attempts > 1 ? 'es' : ''}. Come back
 				tomorrow and play again!
@@ -98,24 +98,24 @@
 				You used up all of your guesses. Come back tomorrow (or delete your cookies) and try again!
 			{/if}
 		</p>
-		<div class="h-8 grid place-items-center">
+		<div class="grid h-8 place-items-center">
 			{#if message}
 				<span
-					class="text-snow-300 p-2 text-center -z-10"
+					class="-z-10 p-2 text-center text-snow-300"
 					in:fly={{ duration: 400, y: 50, opacity: 0 }}
 					out:fly={{ duration: 400, y: 50, opacity: 0 }}>{message}</span
 				>
 			{/if}
 		</div>
-		<div class="grid place-items-center text-snow-300 p-2 text-center font-bold">
+		<div class="grid place-items-center p-2 text-center font-bold text-snow-300">
 			Next word in {formatTime(timeUntil)}
 		</div>
-		<div class="w-full flex gap-3 flex-row justify-center">
+		<div class="flex w-full flex-row justify-center gap-3">
 			<button
 				on:click={() => shareGame()}
-				class="rounded-lg border-transparent bg-frost-400 font-bold p-0 text-snow-300 cursor-pointer h-12 w-full active:brightness-90"
+				class="h-12 w-full cursor-pointer rounded-lg border-transparent bg-frost-400 p-0 font-bold text-snow-300 active:brightness-90"
 				><div
-					class="hover:backdrop-filter hover:backdrop-brightness-90 duration-500 h-full grid items-center"
+					class="grid h-full items-center duration-500 hover:backdrop-brightness-90 hover:backdrop-filter"
 				>
 					Share
 				</div></button

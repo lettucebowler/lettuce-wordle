@@ -22,7 +22,7 @@
 	formaction={`?/${action}&key=${key}`}
 	{form}
 	data-key={`${key.toLowerCase()}`}
-	class="w-full border-solid border-transparent font-bold text-snow-300 rounded-md text-center h-full grid place-items-center cursor-pointer hover:brightness-[90%] active:brightness-[75%]"
+	class="grid h-full w-full cursor-pointer place-items-center rounded-md border-solid border-transparent text-center font-bold text-snow-300 hover:brightness-[90%] active:brightness-[75%]"
 	class:bg-polar-400={status === '_'}
 	class:bg-aurora-300={status === 'c'}
 	class:bg-aurora-400={status === 'x'}
