@@ -69,6 +69,7 @@
 	let loading = false;
 
 	$: {
+		loading = false;
 		if (form?.success) {
 			openModal(data?.state?.answers, data?.state?.guesses?.length || 0, true);
 		}
@@ -109,12 +110,12 @@
 			// updateData(updatedGame);
 			// cancel();
 			loading = true;
-			return async ({ result }) => {
-				console.log(result);
-				applyAction(result);
-				await invalidateAll();
-				loading = false;
-			};
+			// return async ({ result }) => {
+			// 	console.log(result);
+			// 	applyAction(result);
+			// 	await invalidateAll();
+			// 	loading = false;
+			// };
 		}}
 		class="m-auto grid h-full h-auto max-w-[min(700px,_55vh)] grid-rows-[repeat(6,_1fr)] gap-2"
 	>
