@@ -83,10 +83,9 @@ export const applyKey = (key: string, guesses: string[], answers: string[]) => {
 		return guesses;
 	}
 
-	let updatedGuesses = guesses;
+	const updatedGuesses = guesses;
 	if (key.toLowerCase() === 'backspace') {
-		const [_, ...rest] = guess.split('').reverse();
-		updatedGuesses[current_guess] = rest.reverse().join('');
+		updatedGuesses[current_guess] = updatedGuesses[current_guess].slice(0, -1);
 	} else {
 		updatedGuesses[current_guess] = guess + key.toLowerCase();
 	}
@@ -123,7 +122,7 @@ export const applyWord = (
 	}
 	const statuses = checkWord(guessLetters, game?.answer);
 	const updatedAnswers = [...(game.answers || []), statuses];
-	let updatedGuesses = game?.guesses || [];
+	const updatedGuesses = game?.guesses || [];
 	if (game?.guesses?.length < updatedAnswers.length) {
 		updatedGuesses.push(guess);
 	}

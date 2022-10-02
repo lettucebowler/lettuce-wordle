@@ -3,8 +3,8 @@ import { encodeState, decodeState } from '$lib/util/state';
 import { applyWord, applyKey } from '$lib/util/gameFunctions';
 import { invalid } from '@sveltejs/kit';
 
-export const load: import('./$types').PageServerLoad = ({ locals, cookies }: any) => {
-	const cookie = cookies.get('wordLettuceState');
+export const load: import('./$types').PageServerLoad = ({ cookies }) => {
+	const cookie = cookies.get('wordLettuceState') || '';
 	let gameState = decodeState(cookie);
 	const dailyWord = getDailyWord();
 	const isStateForToday = gameState?.answer === dailyWord;
@@ -27,7 +27,7 @@ export const actions: import('./$types').Actions = {
 	keyboard: async ({ url, cookies }) => {
 		const key: string = url.searchParams.get('key') || '';
 		const game = decodeState(cookies.get('wordLettuceState') || '') || {};
-		let guesses = game?.guesses || [];
+		const guesses = game?.guesses || [];
 		const { answer } = game;
 
 		const answers = game?.answers || [];
@@ -48,8 +48,7 @@ export const actions: import('./$types').Actions = {
 		const data = await request.formData();
 
 		const game = decodeState(cookie);
-		// @ts-ignore
-		const guess = data.getAll('guess').map((l: string) => l.toLowerCase());
+		const guess = data.getAll('guess').map((l) => l.toString().toLowerCase());
 
 		const { metadata, updatedGame } = applyWord(game, guess);
 		if (metadata.invalid) {

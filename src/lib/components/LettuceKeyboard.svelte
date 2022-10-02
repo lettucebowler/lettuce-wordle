@@ -6,14 +6,13 @@
 	export let answers: { [x: string]: string } = {};
 
 	const dispatch = createEventDispatcher();
+
+	const clickKey = (key: string) => {
+		(document.querySelector(`[data-key="${key}"]`) as HTMLButtonElement)?.click();
+	};
 </script>
 
-<svelte:window
-	on:keydown={(event) => {
-		// @ts-ignore
-		document.querySelector(`[data-key="${event.key.toLowerCase()}"]`)?.click();
-	}}
-/>
+<svelte:window on:keydown={(event) => clickKey(event.key.toLowerCase())} />
 
 <form
 	method="POST"

@@ -4,13 +4,12 @@
 	import { flip } from 'svelte/animate';
 	import { appName } from '$lib/util/store';
 	import { onMount } from 'svelte';
-	import { applyAction, enhance } from '$app/forms';
+	import { enhance } from '$app/forms';
 	import LettuceKeyboard from '$lib/components/LettuceKeyboard.svelte';
 	import LetterBox from '$lib/components/LetterBox.svelte';
 	import { applyKey, applyWord, getKeyStatuses } from '$lib/util/gameFunctions';
 	import { encodeState } from '$lib/util/state';
 	import Cookies from 'js-cookie';
-	import { invalidateAll } from '$app/navigation';
 
 	export let data: import('./$types').PageData;
 	export let form: import('./$types').ActionData;
@@ -34,7 +33,7 @@
 		data.state.guesses = updatedGuesses;
 	};
 
-	const updateData = (gameData: any) => {
+	const updateData = (gameData: { answer: string; guesses: string[]; answers: string[] }) => {
 		data = { state: gameData };
 		const gameState = encodeState(gameData);
 		Cookies.set('wordLettuceState', gameState, { expires: 365, secure: false });
@@ -95,8 +94,7 @@
 		action="?/enter"
 		id="game"
 		use:enhance={({ data, cancel }) => {
-			// @ts-ignore
-			const guess = data.getAll('guess').map((l) => l.toLowerCase());
+			const guess = data.getAll('guess').map((l) => l.toString().toLowerCase());
 			const game = {
 				answers,
 				guesses,

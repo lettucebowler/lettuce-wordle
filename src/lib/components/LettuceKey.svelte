@@ -1,8 +1,8 @@
 <script lang="ts">
 	export let key: string;
 	export let status = 'none';
-	export let form: string = 'keyboard';
-	export let action: string = 'keyboard';
+	export let form = 'keyboard';
+	export let action = 'keyboard';
 
 	const icons: Map<string, string> = new Map([
 		[

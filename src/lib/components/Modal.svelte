@@ -21,7 +21,6 @@
 	let share = '';
 	let attempts: number;
 	let won: boolean;
-	let statuses;
 	let message = '';
 
 	const clearMessage = () => {
