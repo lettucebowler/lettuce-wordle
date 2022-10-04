@@ -37,7 +37,9 @@ module.exports = {
 		extend: {
 			animation: {
 				bulge: 'bulge 0.3s linear 1',
-				wiggle: 'wiggle 0.15s linear 1'
+				wiggle: 'wiggle 0.15s linear 1',
+				flyup: 'flyup 0.5s ease-in 1',
+				fadein: 'fadein 0.5s ease-in 1'
 			},
 			keyframes: {
 				bulge: {
@@ -48,6 +50,24 @@ module.exports = {
 					'0%, 100%': { transform: 'translateX(0%)' },
 					'25%': { transform: 'translateX(-10%)' },
 					'75%': { transform: 'translateX(10%)' }
+				},
+				flyup: {
+					'0%': {
+						transform: 'translateY(+100%)',
+						opacity: '0'
+					},
+					'100%': {
+						transform: 'translateY(0)',
+						opacity: '1'
+					}
+				},
+				fadein: {
+					'0%': {
+						opacity: '0'
+					},
+					'50%': {
+						opacity: '1'
+					}
 				}
 			}
 		}

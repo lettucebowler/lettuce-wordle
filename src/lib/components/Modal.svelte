@@ -83,7 +83,7 @@
 
 <dialog
 	bind:this={dialog}
-	class="open:opacity-1 box-border w-full max-w-xs rounded-2xl bg-polar-200 p-2 backdrop:backdrop-blur-sm open:pointer-events-auto"
+	class="open:opacity-1 box-border w-full max-w-xs rounded-2xl bg-polar-200 p-2 backdrop:animate-fadein backdrop:backdrop-blur-sm open:pointer-events-auto open:animate-flyup"
 	open={false}
 	on:animationend={() => closeModal(visible)}
 >
@@ -122,50 +122,3 @@
 		</div>
 	</div>
 </dialog>
-
-<style>
-	dialog::backdrop {
-		animation: fadein 0.5s forwards;
-	}
-
-	dialog[open] {
-		animation: slidein 0.5s forwards;
-	}
-
-	@keyframes fadein {
-		from {
-			opacity: 0;
-		}
-		to {
-			opacity: 1;
-		}
-	}
-
-	@keyframes fadeout {
-		to {
-			opacity: 0;
-		}
-	}
-
-	@keyframes slidein {
-		from {
-			transform: translateY(+100%);
-			opacity: 0;
-		}
-		to {
-			transform: translateY(0);
-			opacity: 1;
-		}
-	}
-
-	@keyframes slideout {
-		from {
-			transform: translateY(0);
-			opacity: 1;
-		}
-		to {
-			transform: translateY(+100%);
-			opacity: 0;
-		}
-	}
-</style>
