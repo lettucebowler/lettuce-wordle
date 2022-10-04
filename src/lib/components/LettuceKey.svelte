@@ -3,6 +3,7 @@
 	export let status = 'none';
 	export let form = 'keyboard';
 	export let action = 'keyboard';
+	export let button: HTMLButtonElement;
 
 	const icons: Map<string, string> = new Map([
 		[
@@ -21,7 +22,7 @@
 	title={key}
 	formaction={`?/${action}&key=${key}`}
 	{form}
-	data-key={`${key.toLowerCase()}`}
+	bind:this={button}
 	class="grid h-full w-full cursor-pointer place-items-center rounded-md border-solid border-transparent text-center font-bold text-snow-300 hover:brightness-[90%] active:brightness-[75%]"
 	class:bg-polar-400={status === '_'}
 	class:bg-aurora-300={status === 'c'}

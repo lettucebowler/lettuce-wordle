@@ -7,8 +7,12 @@
 
 	const dispatch = createEventDispatcher();
 
+	let keys: {
+		[x: string]: HTMLButtonElement;
+	} = {};
+
 	const clickKey = (key: string) => {
-		(document.querySelector(`[data-key="${key}"]`) as HTMLButtonElement)?.click();
+		keys[key]?.click();
 	};
 </script>
 
@@ -33,7 +37,11 @@
 					{#each row.split(',') as letter}
 						{#if letter}
 							<div class="col-span-4 grid place-items-center">
-								<LettuceKey key={letter} status={answers[letter] || '_'} />
+								<LettuceKey
+									key={letter}
+									status={answers[letter] || '_'}
+									bind:button={keys[letter]}
+								/>
 							</div>
 						{:else}
 							<div />
@@ -41,10 +49,16 @@
 					{/each}
 					{#if i == 2}
 						<div class="col-span-4 grid place-items-center">
-							<LettuceKey key="enter" status="_" form="game" action="enter" />
+							<LettuceKey
+								key="enter"
+								status="_"
+								form="game"
+								action="enter"
+								bind:button={keys['enter']}
+							/>
 						</div>
 						<div class="col-span-4 grid place-items-center">
-							<LettuceKey key="backspace" status="_" />
+							<LettuceKey key="backspace" status="_" bind:button={keys['backspace']} />
 						</div>
 					{/if}
 				</div>
