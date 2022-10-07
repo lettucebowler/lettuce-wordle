@@ -11,12 +11,12 @@
 
 	const links = [
 		{
-			path: '/about',
-			name: 'About'
+			path: '/',
+			name: 'Home'
 		},
 		{
-			path: '/',
-			name: 'Daily'
+			path: '/about',
+			name: 'About'
 		}
 	];
 </script>
@@ -31,38 +31,30 @@
 </svelte:head>
 
 <LetterPageContentContainer>
-	<nav
-		class="box-border grid h-16 grid-cols-3 flex-row justify-between gap-2 rounded-b-2xl bg-polar-400 p-2"
-	>
+	<nav class="box-border flex h-16 justify-between gap-1 rounded-b-2xl bg-polar-400 p-1">
 		{#each links as link}
-			<div>
-				<a
-					data-sveltekit-prefetch
-					href={link.path}
-					class="box-border flex h-12 flex-auto justify-center rounded-lg pt-1 pb-1 pl-2 pr-2 text-center text-3xl text-snow-300 transition duration-150 ease-in-out hover:bg-polar-300 active:bg-polar-200"
-					class:bg-polar-300={$page.url.pathname === link.path}
-				>
-					{link.name}
-				</a>
-			</div>
+			<a
+				data-sveltekit-prefetch
+				href={link.path}
+				class="box-border flex h-full items-center justify-center rounded-xl pr-2 pl-2 text-center text-3xl text-snow-300 transition duration-150 ease-in-out hover:bg-polar-300 active:bg-polar-200"
+				class:bg-polar-300={$page.url.pathname === link.path}
+			>
+				{link.name}
+			</a>
 		{/each}
-		<div
-			class="ml-auto flex h-12 gap-1 rounded-lg transition duration-150 ease-in-out hover:bg-polar-300 active:bg-polar-200"
+		<a
+			href={!data.props.user ? '/login' : '/logout'}
+			class="ml-auto box-border flex h-full items-center justify-center gap-2 rounded-xl p-1 text-center text-3xl text-snow-300 transition duration-150 ease-in-out hover:bg-polar-300 active:bg-polar-200"
 		>
 			{#if data.props.avatar}
 				<img
 					src={data.props.avatar}
-					class="m-1 box-border flex aspect-square rounded-md"
+					class="box-border flex aspect-square h-full rounded-md"
 					alt="user avatar"
 				/>
 			{/if}
-			<a
-				href={!data.props.user ? '/login' : '/logout'}
-				class="box-border h-12 rounded-lg pt-1 pb-1 pl-2 pr-2 text-center text-3xl text-snow-300 "
-			>
-				{!data.props.user ? 'Login' : 'Logout'}
-			</a>
-		</div>
+			<span class="m-1 hidden sm:inline">{data.props.user || 'Login'}</span>
+		</a>
 	</nav>
 	<slot />
 </LetterPageContentContainer>
