@@ -14,13 +14,16 @@
 	"devDependencies": {
 		"@sveltejs/adapter-vercel": "next",
 		"@sveltejs/kit": "next",
+		"@types/cookie": "^0.5.1",
 		"@types/js-cookie": "^3.0.2",
 		"@typescript-eslint/eslint-plugin": "^5.39.0",
 		"@typescript-eslint/parser": "^5.39.0",
 		"autoprefixer": "^10.4.12",
+		"cookie": "^0.5.0",
 		"eslint": "^8.24.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-svelte3": "^4.0.0",
+		"itty-fetcher": "^0.6.0",
 		"js-cookie": "^3.0.1",
 		"postcss": "^8.4.17",
 		"prettier": "^2.7.1",
@@ -33,7 +36,7 @@
 		"tailwindcss": "^3.1.8",
 		"tslib": "^2.4.0",
 		"typescript": "^4.8.4",
-		"vite": "^3.1.4"
+		"vite": "^3.1.6"
 	},
 	"type": "module"
 }
