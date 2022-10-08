@@ -5,6 +5,7 @@
 	export let answer: string;
 	export let name: string;
 	export let slot = 0;
+	export let row = 0;
 	export let bulge = false;
 	export let wiggle = false;
 	export let loading = false;
@@ -36,11 +37,13 @@
 	style:animation-delay={delayTime}
 	style:transition-delay={delayTime}
 >
+	<label for={`input-${row}-${slot}`} class="invisible">{`row ${row} col ${slot}`}</label>
 	<input
 		readonly
 		class="row-start-2 w-full bg-transparent text-center"
 		style:animation-delay={delayTime}
 		value={letter.toUpperCase()}
+		id={`input-${row}-${slot}`}
 		{name}
 	/>
 	<svg

@@ -144,7 +144,6 @@
 				{#each columns as _, j}
 					{@const answer = (answers[realIndex] || '_____')[j]}
 					{@const letter = guesses[realIndex]?.at(j) || ''}
-
 					<LetterBox
 						{answer}
 						{letter}
@@ -153,6 +152,7 @@
 						bulge={answers[realIndex]?.length === 5}
 						wiggle={invalidForm && current}
 						loading={loading && current}
+						row={i}
 					/>
 				{/each}
 			</div>
