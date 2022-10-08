@@ -124,8 +124,9 @@
 			loading = true;
 
 			return async ({ result }) => {
-				await invalidateAll();
+				const loadup = invalidateAll();
 				applyAction(result);
+				await loadup;
 				loading = false;
 			};
 		}}
