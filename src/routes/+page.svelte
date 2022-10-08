@@ -148,7 +148,7 @@
 						{answer}
 						{letter}
 						slot={j}
-						name={current ? 'guess' : ''}
+						name={current ? 'guess' : 'not'}
 						bulge={answers[realIndex]?.length === 5}
 						wiggle={invalidForm && current}
 						loading={loading && current}

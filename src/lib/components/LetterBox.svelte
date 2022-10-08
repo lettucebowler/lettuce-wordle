@@ -37,7 +37,7 @@
 	style:animation-delay={delayTime}
 	style:transition-delay={delayTime}
 >
-	<label for={`input-${row}-${slot}`} class="invisible">{`row ${row} col ${slot}`}</label>
+	<label for={name} class="invisible">{`row ${row} col ${slot}`}</label>
 	<input
 		readonly
 		class="row-start-2 w-full bg-transparent text-center"
