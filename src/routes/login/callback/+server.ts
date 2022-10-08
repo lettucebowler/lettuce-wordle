@@ -38,13 +38,11 @@ export const GET: import('./$types').RequestHandler = async (event) => {
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
 	event.locals.wordLettuceUser = user.login;
-	event.cookies.set('wordLettuceUser', user.login, { httpOnly: true, path: '/' });
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
 	event.locals.profile = user.avatar_url;
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
-	event.cookies.set('profile_url', user.avatar_url, { httpOnly: true, path: '/' });
 	event.cookies.set(SESSION_COOKIE_NAME, accessToken, { httpOnly: true, path: '/' });
 	throw redirect(302, '/');
 };
