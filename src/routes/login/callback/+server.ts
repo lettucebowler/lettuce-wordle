@@ -1,6 +1,7 @@
 import { redirect } from '@sveltejs/kit';
 import { fetcher } from 'itty-fetcher';
 import { CLIENT_ID, CLIENT_SECRET, SESSION_COOKIE_NAME } from '$env/static/private';
+import { stashProfile } from '$lib/util/redis';
 
 import { getUser } from '$lib/util/auth';
 const tokenUrl = 'https://github.com/login/oauth/access_token';
@@ -33,6 +34,7 @@ export const GET: import('./$types').RequestHandler = async (event) => {
 	const code = event.url.searchParams.get('code');
 	const accessToken = await getAccessToken(code || '');
 	const user = await getUser(accessToken);
+	await stashProfile(accessToken, user);
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
 	event.locals.wordLettuceUser = user.login;
