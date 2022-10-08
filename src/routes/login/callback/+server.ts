@@ -1,9 +1,9 @@
 import { redirect } from '@sveltejs/kit';
 import { fetcher } from 'itty-fetcher';
-const tokenUrl = 'https://github.com/login/oauth/access_token';
+import { CLIENT_ID, CLIENT_SECRET, SESSION_COOKIE_NAME } from '$env/static/private';
 
-const clientId = import.meta.env.VITE_CLIENT_ID;
-const secret = import.meta.env.VITE_CLIENT_SECRET;
+import { getUser } from '$lib/util/auth';
+const tokenUrl = 'https://github.com/login/oauth/access_token';
 
 const auth = fetcher();
 
@@ -15,8 +15,8 @@ const getAccessToken = async (code: string): Promise<string> => {
 	} = await auth.post(
 		tokenUrl,
 		{
-			client_id: clientId,
-			client_secret: secret,
+			client_id: CLIENT_ID,
+			client_secret: CLIENT_SECRET,
 			code
 		},
 		{
@@ -27,24 +27,6 @@ const getAccessToken = async (code: string): Promise<string> => {
 	);
 	const access_token = response.access_token;
 	return access_token as string;
-};
-
-const userURL = 'https://api.github.com/user';
-
-const getUser = async (accessToken: string) => {
-	const user = await auth.get(
-		userURL,
-		{},
-		{
-			headers: {
-				['Accept']: 'application/json',
-				['Authorization']: `Bearer ${accessToken}`
-			}
-		}
-	);
-	return user as {
-		login: string;
-	};
 };
 
 export const GET: import('./$types').RequestHandler = async (event) => {
@@ -61,5 +43,6 @@ export const GET: import('./$types').RequestHandler = async (event) => {
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
 	event.cookies.set('profile_url', user.avatar_url, { httpOnly: true, path: '/' });
+	event.cookies.set(SESSION_COOKIE_NAME, accessToken, { httpOnly: true, path: '/' });
 	throw redirect(302, '/');
 };

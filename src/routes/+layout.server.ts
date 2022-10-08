@@ -1,16 +1,13 @@
 export const load: import('./$types').LayoutServerLoad = async (event) => {
+	const { login, avatar_url }: { login: string; avatar_url: string } = event.locals?.user || {};
+
 	return {
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
-		user: event.locals?.wordLettuceUser
-			? {
-					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-					// @ts-ignore
-					login: event.locals?.wordLettuceUser,
-					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-					// @ts-ignore
-					avatar: event.locals?.profile_url
-			  }
-			: null
+		user:
+			login && avatar_url
+				? {
+						login,
+						avatar: avatar_url
+				  }
+				: null
 	};
 };

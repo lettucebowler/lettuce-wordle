@@ -2,6 +2,9 @@
 	import { page } from '$app/stores';
 	import { slide } from 'svelte/transition';
 
+	import white from '$lib/assets/white.png';
+	import { onMount } from 'svelte';
+
 	export let user: {
 		login?: string;
 		avatar?: string;
@@ -9,11 +12,20 @@
 	export let links: {
 		path: string;
 		name: string;
-		margin: string;
+		margin?: string;
 		enabled: string;
 	}[] = [];
 
 	let showDropdown = false;
+	let avatarHref = white;
+
+	onMount(() => {
+		console.log('mount');
+		if (user?.avatar) {
+			avatarHref = user.avatar;
+			console.log('bleh');
+		}
+	});
 
 	const toggleDropDown = () => {
 		showDropdown = !showDropdown;
@@ -39,7 +51,7 @@
 		>
 			{#if user.avatar}
 				<img
-					src={user.avatar}
+					src={avatarHref}
 					class="max-x-full box-border flex aspect-square h-full rounded-lg object-contain"
 					alt="user avatar"
 				/>

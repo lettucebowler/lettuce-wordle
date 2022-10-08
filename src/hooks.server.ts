@@ -1,8 +1,14 @@
+import { SESSION_COOKIE_NAME } from '$env/static/private';
+import { getUser } from '$lib/util/auth';
+
 export const handle: import('@sveltejs/kit').Handle = async ({ event, resolve }) => {
-	const wordLettuceUser = event.cookies.get('wordLettuceUser');
-	const profile_url = event.cookies.get('profile_url');
-	event.locals.profile_url = profile_url;
-	event.locals.wordLettuceUser = wordLettuceUser;
+	const session = event.cookies.get(SESSION_COOKIE_NAME) || '';
+
+	if (session) {
+		const user = await getUser(session);
+		console.log(user);
+		event.locals.user = user;
+	}
 	const response = await resolve(event);
 	return response;
 };
