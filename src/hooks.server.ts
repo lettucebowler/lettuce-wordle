@@ -6,7 +6,6 @@ export const handle: import('@sveltejs/kit').Handle = async ({ event, resolve })
 
 	if (session) {
 		const user = await getUser(session);
-		console.log(user);
 		event.locals.user = user;
 	}
 	const response = await resolve(event);

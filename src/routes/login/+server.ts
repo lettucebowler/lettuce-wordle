@@ -1,6 +1,5 @@
-import { error, redirect } from '@sveltejs/kit';
+import { redirect } from '@sveltejs/kit';
 const ghAuthURL = 'https://github.com/login/oauth/authorize';
-// const clientId = import.meta.env.VITE_CLIENT_ID;
 import { CLIENT_ID } from '$env/static/private';
 
 export async function GET() {

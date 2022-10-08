@@ -13,17 +13,15 @@
 		path: string;
 		name: string;
 		margin?: string;
-		enabled: string;
+		enabled: boolean;
 	}[] = [];
 
 	let showDropdown = false;
 	let avatarHref = white;
 
 	onMount(() => {
-		console.log('mount');
 		if (user?.avatar) {
 			avatarHref = user.avatar;
-			console.log('bleh');
 		}
 	});
 
@@ -44,7 +42,7 @@
 			{link.name}
 		</a>
 	{/each}
-	{#if user}
+	{#if user.login}
 		<button
 			on:click={toggleDropDown}
 			class="ml-auto box-border flex h-full items-center justify-center gap-1 rounded-xl p-1 text-center text-3xl text-snow-300 transition duration-150 ease-in-out hover:bg-polar-300 active:bg-polar-200"

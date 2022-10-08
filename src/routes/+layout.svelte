@@ -7,9 +7,21 @@
 	import safariPinnedTabIcon from '$lib/assets/safari-pinned-tab.svg';
 	import '$lib/assets/app.css';
 
-	export let data: import('./$types').LayoutData;
+	export let data: import('./$types').LayoutData = {
+		user: {
+			login: '',
+			avatar: ''
+		}
+	};
 
 	$: user = data.user;
+
+	let links: {
+		path: string;
+		name: string;
+		margin?: string;
+		enabled: boolean;
+	}[];
 
 	$: links = [
 		{
@@ -25,7 +37,7 @@
 		{
 			path: '/login',
 			name: 'Login',
-			enabled: !user,
+			enabled: !user.login,
 			margin: 'left'
 		}
 	];
