@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Modal from '$lib/components/Modal.svelte';
-	import { fly, fade } from 'svelte/transition';
+	import { fly, fade, slide } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
 	import { appName } from '$lib/util/store';
 	import { onMount } from 'svelte';

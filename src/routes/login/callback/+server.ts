@@ -51,9 +51,15 @@ export const GET: import('./$types').RequestHandler = async (event) => {
 	const code = event.url.searchParams.get('code');
 	const accessToken = await getAccessToken(code || '');
 	const user = await getUser(accessToken);
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
 	event.locals.wordLettuceUser = user.login;
 	event.cookies.set('wordLettuceUser', user.login, { httpOnly: true, path: '/' });
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
 	event.locals.profile = user.avatar_url;
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
 	event.cookies.set('profile_url', user.avatar_url, { httpOnly: true, path: '/' });
 	throw redirect(302, '/');
 };

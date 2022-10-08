@@ -11,12 +11,13 @@
 		[x: string]: HTMLButtonElement;
 	} = {};
 
-	const clickKey = (key: string) => {
+	const clickKey = (event: KeyboardEvent) => {
+		const key = event.key.toLowerCase();
 		keys[key]?.click();
 	};
 </script>
 
-<svelte:window on:keydown={(event) => clickKey(event.key.toLowerCase())} />
+<svelte:window on:keydown={clickKey} />
 
 <form
 	method="POST"
