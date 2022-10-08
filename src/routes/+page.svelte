@@ -10,7 +10,7 @@
 	import { applyKey, getKeyStatuses } from '$lib/util/gameFunctions';
 	// import { encodeState } from '$lib/util/state';
 	// import Cookies from 'js-cookie';
-	import { invalidateAll } from '$app/navigation';
+	import { invalidate } from '$app/navigation';
 
 	export let data: import('./$types').PageData;
 	export let form: import('./$types').ActionData;
@@ -124,9 +124,8 @@
 			loading = true;
 
 			return async ({ result }) => {
-				const loadup = invalidateAll();
 				applyAction(result);
-				await loadup;
+				await invalidate('/');
 				loading = false;
 			};
 		}}

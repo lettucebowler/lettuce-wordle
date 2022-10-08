@@ -3,7 +3,9 @@ import { encodeState, decodeState } from '$lib/util/state';
 import { applyWord, applyKey } from '$lib/util/gameFunctions';
 import { invalid } from '@sveltejs/kit';
 
-export const load: import('./$types').PageServerLoad = ({ cookies }) => {
+export const load: import('./$types').PageServerLoad = ({ cookies, depends }) => {
+	depends('/');
+
 	const cookie = cookies.get('wordLettuceState') || '';
 	let gameState = decodeState(cookie);
 	const dailyWord = getDailyWord();
