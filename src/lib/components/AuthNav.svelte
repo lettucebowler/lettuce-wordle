@@ -54,7 +54,7 @@
 					alt="user avatar"
 				/>
 			{/if}
-			<span class="m-1 hidden sm:inline">{user.login}</span>
+			<span class="m-1 hidden md:inline">{user.login}</span>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				fill="none"
