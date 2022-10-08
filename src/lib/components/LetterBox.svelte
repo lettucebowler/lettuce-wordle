@@ -37,7 +37,6 @@
 	style:animation-delay={delayTime}
 	style:transition-delay={delayTime}
 >
-	<label for={name} class="opacity-0">{`row ${row} col ${slot}`}</label>
 	<input
 		readonly
 		class="row-start-2 w-full bg-transparent text-center"
