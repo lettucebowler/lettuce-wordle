@@ -12,7 +12,9 @@ const redis = fetcher({
 	}
 });
 
-export const getProfile = async (accessToken: string) => {
+export const getProfile = async (
+	accessToken: string
+): Promise<{ login?: string; profile_url?: string }> => {
 	const profileResult: { result: string } = await redis.get(`/get/${accessToken}`);
 	const { result } = profileResult;
 	let profile = {};

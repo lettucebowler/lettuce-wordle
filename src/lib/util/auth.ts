@@ -3,12 +3,13 @@ import { fetcher } from 'itty-fetcher';
 const userURL = 'https://api.github.com/user';
 const auth = fetcher();
 
-export const getUser = async (accessToken: string) => {
-	let user = {
-		login: '',
-		avatar: ''
-	};
-	user = await auth
+export type WordLettuceUser = {
+	login?: string;
+	avatar?: string;
+};
+
+export const getUser = async (accessToken: string): Promise<WordLettuceUser> => {
+	const user = await auth
 		.get(
 			userURL,
 			{},
@@ -20,7 +21,9 @@ export const getUser = async (accessToken: string) => {
 			}
 		)
 		.catch(({ status, message }) => {});
-	return user as {
-		login: string;
+	const { login, avatar_url } = user;
+	return {
+		login: login || '',
+		avatar: avatar_url || ''
 	};
 };
