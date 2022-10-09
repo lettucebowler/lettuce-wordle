@@ -37,12 +37,6 @@ export const GET: import('./$types').RequestHandler = async (event) => {
 	await stashProfile(accessToken, user);
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
-	event.locals.wordLettuceUser = user.login;
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
-	event.locals.profile = user.avatar_url;
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
 	event.cookies.set(SESSION_COOKIE_NAME, accessToken, { httpOnly: true, path: '/' });
 	throw redirect(302, '/');
 };

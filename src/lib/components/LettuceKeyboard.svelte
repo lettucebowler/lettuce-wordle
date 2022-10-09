@@ -21,7 +21,7 @@
 
 <form
 	method="POST"
-	class="flex h-full flex-col gap-1"
+	class="grid h-full grid-rows-3 gap-1"
 	id="keyboard"
 	use:enhance={({ action, cancel }) => {
 		const url = new URL(action);

@@ -44,11 +44,9 @@
 
 	let visible = false;
 
-	const closeModal = (visible: boolean) => {
-		if (!visible) {
-			dialog.close();
-			visible = false;
-		}
+	const closeModal = () => {
+		dialog.close();
+		visible = false;
 	};
 
 	const formatTime = (secondsUntil: number) => {
@@ -85,17 +83,12 @@
 	bind:this={dialog}
 	class="open:opacity-1 box-border w-full max-w-xs rounded-2xl bg-polar-200 p-2 backdrop:animate-fadein backdrop:backdrop-blur-sm open:pointer-events-auto open:animate-flyup"
 	open={false}
-	on:animationend={() => closeModal(visible)}
 >
 	<div class="flex flex-col gap-3">
-		<h2 class="mt-0 text-center text-snow-300">{won ? 'Success' : 'Dang'}!</h2>
+		<h2 class="mt-0 text-center text-2xl text-snow-300">Success!</h2>
 		<p class="p-2 text-center text-snow-300">
-			{#if won}
-				You solved today's WordLettuce in {attempts} guess{attempts > 1 ? 'es' : ''}. Come back
-				tomorrow and play again!
-			{:else}
-				You used up all of your guesses. Come back tomorrow (or delete your cookies) and try again!
-			{/if}
+			You solved today's WordLettuce in {attempts} guess{attempts > 1 ? 'es' : ''}. Come back
+			tomorrow and play again!
 		</p>
 		<div class="grid h-8 place-items-center">
 			{#if message}

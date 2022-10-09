@@ -1,15 +1,15 @@
 <script lang="ts">
 	import Modal from '$lib/components/Modal.svelte';
-	import { fly, fade } from 'svelte/transition';
+	import { slide } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
 	import { appName } from '$lib/util/store';
 	import { onMount } from 'svelte';
 	import { enhance, applyAction } from '$app/forms';
 	import LettuceKeyboard from '$lib/components/LettuceKeyboard.svelte';
 	import LetterBox from '$lib/components/LetterBox.svelte';
-	import { applyKey, getKeyStatuses } from '$lib/util/gameFunctions';
-	// import { encodeState } from '$lib/util/state';
-	// import Cookies from 'js-cookie';
+	import { applyKey, getKeyStatuses, applyWord } from '$lib/util/gameFunctions';
+	import { encodeState } from '$lib/util/state';
+	import Cookies from 'js-cookie';
 	import { invalidate } from '$app/navigation';
 
 	export let data: import('./$types').PageData;
@@ -34,12 +34,12 @@
 		data.state.guesses = updatedGuesses;
 	};
 
-	// const updateData = (gameData: { answer: string; guesses: string[]; answers: string[] }) => {
-	// 	data.state = gameData;
-	// 	data = data;
-	// 	const gameState = encodeState(gameData);
-	// 	Cookies.set('wordLettuceState', gameState, { expires: 365, secure: false });
-	// };
+	const updateData = (gameData: { answer: string; guesses: string[]; answers: string[] }) => {
+		data.state = gameData;
+		data = data;
+		const gameState = encodeState(gameData);
+		Cookies.set('wordLettuceState', gameState, { expires: 365, secure: false });
+	};
 
 	const getRealIndex = (i: number, guesses: string[], answers: string[]) => {
 		const filteredLength = guesses.filter(
@@ -64,7 +64,7 @@
 
 	$: guesses = data?.state?.guesses;
 	$: answers = data?.state?.answers;
-	// $: answer = data?.state?.answer;
+	$: answer = data?.state?.answer;
 	$: current_guess = answers.length || 0;
 
 	$: {
@@ -84,21 +84,6 @@
 		keys = {};
 		keys = getKeyStatuses(data?.state?.guesses, data?.state?.answers);
 	}
-
-	// use:enhance={({ data, cancel }) => {
-	// 		const guess = data.getAll('guess').map((l) => l.toString().toLowerCase());
-	// 		const game = {
-	// 			answers,
-	// 			guesses,
-	// 			answer
-	// 		};
-	// 		const { metadata, updatedGame } = applyWord(game, guess);
-	// 		form = metadata;
-	// 		updateData(updatedGame);
-	// 		cancel();
-	// 	}}
-
-	let loading = false;
 </script>
 
 <svelte:head>
@@ -111,7 +96,21 @@
 		action="?/enter"
 		id="game"
 		use:enhance={({ data, cancel }) => {
-			const guess = data.getAll('guess').join('').toLowerCase();
+			const guess = data.getAll('guess').map((l) => l.toString().toLowerCase());
+			const game = {
+				answers,
+				guesses,
+				answer
+			};
+			const { metadata, updatedGame } = applyWord(game, guess);
+			form = metadata;
+			updateData(updatedGame);
+
+			if (!metadata.success) {
+				cancel();
+				return;
+			}
+
 			if (guess.length < 5) {
 				cancel();
 				invalidForm = true;
@@ -121,12 +120,9 @@
 				return;
 			}
 
-			loading = true;
-
 			return async ({ result }) => {
 				applyAction(result);
 				await invalidate('/');
-				loading = false;
 			};
 		}}
 		class="m-auto grid h-full h-auto max-w-[min(700px,_55vh)] grid-rows-[repeat(6,_1fr)] gap-2"
@@ -136,8 +132,7 @@
 			{@const current = realIndex === current_guess}
 			<div
 				animate:flip={{ duration: 150 }}
-				in:fade|local={{ duration: 150 }}
-				out:fly|local={{ y: -100, duration: 150 }}
+				out:slide|local={{ duration: 150 }}
 				class="grid grid-cols-[repeat(5,_1fr)] gap-2"
 			>
 				{#each columns as _, j}
@@ -150,8 +145,6 @@
 						name={current ? 'guess' : 'not'}
 						bulge={answers[realIndex]?.length === 5}
 						wiggle={invalidForm && current}
-						loading={loading && current}
-						row={i}
 					/>
 				{/each}
 			</div>

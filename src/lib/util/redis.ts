@@ -26,6 +26,6 @@ export const getProfile = async (accessToken: string) => {
 
 export const stashProfile = async (accessToken: string, profile: any) => {
 	const encoded = btoa(JSON.stringify(profile));
-	const status = await redis.post(`/set/${accessToken}?EX=3600`, encoded);
+	const status = await redis.post(`/set/${accessToken}?EX=86400`, encoded);
 	return status;
 };
