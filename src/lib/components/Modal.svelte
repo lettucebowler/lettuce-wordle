@@ -85,7 +85,24 @@
 	open={false}
 >
 	<div class="flex flex-col gap-3">
-		<h2 class="mt-0 text-center text-2xl text-snow-300">Success!</h2>
+		<div class="flex h-8 justify-between">
+			<div class="aspect-square h-full" />
+			<h2 class="col-start-2 mt-0 flex-auto text-center text-2xl text-snow-300">&nbsp;Success!</h2>
+			<button
+				on:click={closeModal}
+				class="aspect-square h-8 rounded p-1 text-snow-300 transition transition-all hover:bg-polar-100 hover:p-0"
+				><svg
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke-width="1.5"
+					stroke="currentColor"
+					class="box-border aspect-square h-full "
+				>
+					<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+				</svg>
+			</button>
+		</div>
 		<p class="p-2 text-center text-snow-300">
 			You solved today's WordLettuce in {attempts} guess{attempts > 1 ? 'es' : ''}. Come back
 			tomorrow and play again!
