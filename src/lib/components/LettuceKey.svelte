@@ -23,7 +23,7 @@
 	formaction={`?/${action}&key=${key}`}
 	{form}
 	bind:this={button}
-	class="grid h-full w-full cursor-pointer place-items-center rounded-md border-solid border-transparent text-center font-bold text-snow-300 hover:brightness-[90%] active:brightness-[75%]"
+	class="grid h-full w-full cursor-pointer place-items-center rounded-md border-solid border-transparent text-center text-sm font-bold text-snow-300 hover:brightness-[90%] active:brightness-[75%] xl:text-base"
 	class:bg-polar-400={status === '_'}
 	class:bg-aurora-300={status === 'c'}
 	class:bg-aurora-400={status === 'x'}

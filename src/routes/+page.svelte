@@ -91,66 +91,70 @@
 </svelte:head>
 
 <main class="flex flex-auto flex-col justify-between gap-2">
-	<form
-		method="POST"
-		action="?/enter"
-		id="game"
-		use:enhance={({ data, cancel }) => {
-			const guess = data.getAll('guess').map((l) => l.toString().toLowerCase());
-			const game = {
-				answers,
-				guesses,
-				answer
-			};
-			const { metadata, updatedGame } = applyWord(game, guess);
-			form = metadata;
-			updateData(updatedGame);
+	<div class="flex h-auto flex-auto flex-col">
+		<form
+			method="POST"
+			action="?/enter"
+			id="game"
+			use:enhance={({ data, cancel }) => {
+				const guess = data.getAll('guess').map((l) => l.toString().toLowerCase());
+				const game = {
+					answers,
+					guesses,
+					answer
+				};
+				const { metadata, updatedGame } = applyWord(game, guess);
+				form = metadata;
+				updateData(updatedGame);
 
-			if (!metadata.success) {
-				cancel();
-				return;
-			}
+				if (!metadata.success) {
+					cancel();
+					return;
+				}
 
-			if (guess.length < 5) {
-				cancel();
-				invalidForm = true;
-				setTimeout(() => {
-					invalidForm = false;
-				}, 150);
-				return;
-			}
+				if (guess.length < 5) {
+					cancel();
+					invalidForm = true;
+					setTimeout(() => {
+						invalidForm = false;
+					}, 150);
+					return;
+				}
 
-			return async ({ result }) => {
-				applyAction(result);
-				await invalidate('/');
-			};
-		}}
-		class="m-auto grid h-full h-auto max-w-[min(700px,_55vh)] grid-rows-[repeat(6,_1fr)] gap-2"
-	>
-		{#each rows as _, i (getRealIndex(i, guesses, answers))}
-			{@const realIndex = getRealIndex(i, guesses, answers)}
-			{@const current = realIndex === current_guess}
-			<div
-				animate:flip={{ duration: 150 }}
-				out:slide|local={{ duration: 150 }}
-				class="grid grid-cols-[repeat(5,_1fr)] gap-2"
-			>
-				{#each columns as _, j}
-					{@const answer = (answers[realIndex] || '_____')[j]}
-					{@const letter = guesses[realIndex]?.at(j) || ''}
-					<LetterBox
-						{answer}
-						{letter}
-						slot={j}
-						name={current ? 'guess' : 'not'}
-						bulge={answers[realIndex]?.length === 5}
-						wiggle={invalidForm && current}
-					/>
+				return async ({ result }) => {
+					applyAction(result);
+					await invalidate('/');
+				};
+			}}
+			class="m-auto flex max-w-[min(700px,_55vh)]"
+		>
+			<div class="grid w-full grid-rows-[repeat(6,_1fr)] gap-2">
+				{#each rows as _, i (getRealIndex(i, guesses, answers))}
+					{@const realIndex = getRealIndex(i, guesses, answers)}
+					{@const current = realIndex === current_guess}
+					<div
+						animate:flip={{ duration: 150 }}
+						out:slide|local={{ duration: 150 }}
+						class="grid w-full grid-cols-[repeat(5,_1fr)] gap-2"
+					>
+						{#each columns as _, j}
+							{@const answer = (answers[realIndex] || '_____')[j]}
+							{@const letter = guesses[realIndex]?.at(j) || ''}
+							<LetterBox
+								{answer}
+								{letter}
+								slot={j}
+								name={current ? 'guess' : 'not'}
+								bulge={answers[realIndex]?.length === 5}
+								wiggle={invalidForm && current}
+							/>
+						{/each}
+					</div>
 				{/each}
 			</div>
-		{/each}
-	</form>
-	<div class="h-full max-h-[min(18rem,_30vh)]">
+		</form>
+	</div>
+	<div class="flex-0 flex h-full max-h-[min(20rem,_30vh)] flex-col">
 		<LettuceKeyboard on:key={(e) => handleKey(e.detail)} answers={keys} />
 	</div>
 </main>
