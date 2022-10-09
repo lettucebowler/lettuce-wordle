@@ -21,6 +21,8 @@ export const getUser = async (accessToken: string): Promise<WordLettuceUser> => 
 			}
 		)
 		.catch(({ status, message }) => {});
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
 	const { login, avatar_url } = user;
 	return {
 		login: login || '',

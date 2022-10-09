@@ -14,6 +14,8 @@ export const handle: import('@sveltejs/kit').Handle = async ({ event, resolve })
 		if (!user.login) {
 			event.cookies.set(SESSION_COOKIE_NAME, '', { httpOnly: true, path: '/' });
 		}
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
 		event.locals.user = user;
 	}
 	const response = await resolve(event);
