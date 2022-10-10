@@ -54,8 +54,6 @@ export const actions: import('./$types').Actions = {
 	},
 
 	enter: async (event) => {
-		console.log('bleh');
-		await getAuthUser(event);
 		const cookie = event.cookies.get('wordLettuceState') || '';
 		const data = await event.request.formData();
 
