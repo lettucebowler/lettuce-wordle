@@ -13,7 +13,6 @@ export const getAuthUser = async (event: ServerLoadEvent | RequestEvent) => {
 		let user = await getProfile(session);
 		if (!user.login) {
 			// grab from origin if cache miss
-			console.log('get user');
 			user = await getUser(session);
 			refresh = true;
 		}
