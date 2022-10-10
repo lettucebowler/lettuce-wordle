@@ -2,7 +2,8 @@ import { getDailyWord } from '$lib/util/words';
 import { encodeState, decodeState } from '$lib/util/state';
 import { applyWord, applyKey } from '$lib/util/gameFunctions';
 import { invalid } from '@sveltejs/kit';
-import { getAuthUser } from '$lib/util/auth';
+import { getResults, saveGameResults } from '$lib/client/planetscale';
+import { getGameNum } from '$lib/util/share';
 
 export const load: import('./$types').PageServerLoad = ({ cookies, depends }) => {
 	depends('/');
@@ -64,6 +65,15 @@ export const actions: import('./$types').Actions = {
 		if (metadata.invalid) {
 			return invalid(400, metadata);
 		}
+
+		if (event.locals.user) {
+			const user = event.locals.user;
+			const gameNum = getGameNum();
+			const results = await saveGameResults(user.login, gameNum, updatedGame.answers);
+			console.log(results);
+		}
+
+		// const results = await getResults();
 		event.cookies.set('wordLettuceState', encodeState(updatedGame), {
 			httpOnly: false,
 			path: '/',

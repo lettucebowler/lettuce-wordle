@@ -1,9 +1,6 @@
 export const getGameStatus = (appName: string, statuses: string[]) => {
 	const gameStatus = statuses.filter((l) => l[0] !== 'none');
-	const initialDate = new Date('2022-02-01T00:00:00Z');
-	const todayDate = new Date();
-	todayDate.setUTCHours(0, 0, 0, 0);
-	const gameNum = (todayDate.getTime() - initialDate.getTime()) / 1000 / 60 / 60 / 24;
+	const gameNum = getGameNum();
 
 	const today = `https://word.lettucebowler.net\n${appName} ${gameNum} ${gameStatus.length}/6`;
 	const strings = gameStatus.map((k) =>
@@ -28,4 +25,12 @@ const getStatusEmoji = (status: string) => {
 		default:
 			return black;
 	}
+};
+
+export const getGameNum = () => {
+	const initialDate = new Date('2022-02-01T00:00:00Z');
+	const todayDate = new Date();
+	todayDate.setUTCHours(0, 0, 0, 0);
+	const gameNum = (todayDate.getTime() - initialDate.getTime()) / 1000 / 60 / 60 / 24;
+	return gameNum;
 };

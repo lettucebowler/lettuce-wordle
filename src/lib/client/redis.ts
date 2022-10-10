@@ -24,11 +24,11 @@ export const getProfile = async (
 	if (!accessToken) return {};
 
 	let profile = {};
-	const before = new Date();
-	// const profileResult: { result: string } = await redis.get(`/get/${accessToken}`);
+	const beforeProfile = new Date();
 	profile = (await redis.get(`${accessToken}`)) || profile;
-	const after = new Date();
-	console.log(after.getTime() - before.getTime());
+	const afterProfile = new Date();
+	const profileDuration = afterProfile.getTime() - beforeProfile.getTime();
+	console.log(`getting cached profile: ${profileDuration}`);
 	return profile;
 };
 

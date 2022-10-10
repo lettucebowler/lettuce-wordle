@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@planetscale/database': ^1.4.0
   '@sveltejs/adapter-vercel': next
   '@sveltejs/kit': next
   '@types/cookie': ^0.5.1
@@ -32,6 +33,7 @@ dependencies:
   '@upstash/redis': 1.14.0
 
 devDependencies:
+  '@planetscale/database': 1.4.0
   '@sveltejs/adapter-vercel': 1.0.0-next.77
   '@sveltejs/kit': 1.0.0-next.512_svelte@3.49.0+vite@3.1.6
   '@types/cookie': 0.5.1
@@ -206,6 +208,14 @@ packages:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.13.0
+    dev: true
+
+  /@planetscale/database/1.4.0:
+    resolution:
+      {
+        integrity: sha512-lva57Z/Nz57ocB3dwaWPDGMbb+dj5HtooVB9c0DPcAF9SHbQyfovDyGK5bDgcmCMVoonfblcYv7fr+WBLc3xNw==
+      }
+    engines: { node: '>=16' }
     dev: true
 
   /@polka/url/1.0.0-next.21:
