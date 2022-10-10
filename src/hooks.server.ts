@@ -8,6 +8,7 @@ export const handle: import('@sveltejs/kit').Handle = async ({ event, resolve })
 	if (session) {
 		let user = await getProfile(session);
 		if (!user.login) {
+			console.log('user');
 			user = await getUser(session);
 			await stashProfile(session, user);
 		}

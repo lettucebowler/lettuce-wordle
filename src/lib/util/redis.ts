@@ -15,11 +15,12 @@ const redis = fetcher({
 export const getProfile = async (
 	accessToken: string
 ): Promise<{ login?: string; profile_url?: string }> => {
+	if (!accessToken) return {};
 	const profileResult: { result: string } = await redis.get(`/get/${accessToken}`);
 	const { result } = profileResult;
 	let profile = {};
 	try {
-		profile = JSON.parse(result.split('').slice(1, -1).join(''));
+		profile = JSON.parse(result);
 	} catch {
 		return profile;
 	}
@@ -27,7 +28,6 @@ export const getProfile = async (
 };
 
 export const stashProfile = async (accessToken: string, profile: any) => {
-	const encoded = JSON.stringify(profile);
-	const status = await redis.post(`/set/${accessToken}?EX=86400`, encoded);
+	const status = await redis.post(`/set/${accessToken}?EX=86400`, profile);
 	return status;
 };
