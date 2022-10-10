@@ -8,6 +8,7 @@ export const getAuthUser = async (event: ServerLoadEvent | RequestEvent) => {
 	const session = event.cookies.get(SESSION_COOKIE_NAME) || '';
 
 	if (session && !event.locals.user) {
+		console.log('getting cached profile');
 		let refresh = false;
 		// try and grab caches profile
 		let user = await getProfile(session);
