@@ -35,3 +35,8 @@ export const stashProfile = async (accessToken: string, profile: any) => {
 	const status = await redis.post(`/set/${accessToken}?EX=86400`, profile);
 	return status;
 };
+
+export const cleanupProfile = async (accessToken: string) => {
+	const status = await redis.get(`/del/${accessToken}`);
+	return status;
+};
