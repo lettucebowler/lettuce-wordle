@@ -16,7 +16,10 @@ export const getProfile = async (
 	accessToken: string
 ): Promise<{ login?: string; profile_url?: string }> => {
 	if (!accessToken) return {};
+	const before = new Date();
 	const profileResult: { result: string } = await redis.get(`/get/${accessToken}`);
+	const after = new Date();
+	console.log(after.getTime() - before.getTime());
 	const { result } = profileResult;
 	let profile = {};
 
