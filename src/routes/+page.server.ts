@@ -2,6 +2,7 @@ import { getDailyWord } from '$lib/util/words';
 import { encodeState, decodeState } from '$lib/util/state';
 import { applyWord, applyKey } from '$lib/util/gameFunctions';
 import { invalid } from '@sveltejs/kit';
+import { getAuthUser } from '$lib/util/auth';
 
 export const load: import('./$types').PageServerLoad = ({ cookies, depends }) => {
 	depends('/');
@@ -52,9 +53,11 @@ export const actions: import('./$types').Actions = {
 		return form;
 	},
 
-	enter: async ({ request, cookies }) => {
-		const cookie = cookies.get('wordLettuceState') || '';
-		const data = await request.formData();
+	enter: async (event) => {
+		console.log('bleh');
+		await getAuthUser(event);
+		const cookie = event.cookies.get('wordLettuceState') || '';
+		const data = await event.request.formData();
 
 		const game = decodeState(cookie);
 		const guess = data.getAll('guess').map((l) => l.toString().toLowerCase());
@@ -63,7 +66,7 @@ export const actions: import('./$types').Actions = {
 		if (metadata.invalid) {
 			return invalid(400, metadata);
 		}
-		cookies.set('wordLettuceState', encodeState(updatedGame), {
+		event.cookies.set('wordLettuceState', encodeState(updatedGame), {
 			httpOnly: false,
 			path: '/',
 			maxAge: 86400,

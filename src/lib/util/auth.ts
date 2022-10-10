@@ -1,32 +1,31 @@
-import { fetcher } from 'itty-fetcher';
+import type { RequestEvent, ServerLoadEvent } from '@sveltejs/kit';
+import { SESSION_COOKIE_NAME } from '$env/static/private';
 
-const userURL = 'https://api.github.com/user';
-const auth = fetcher();
+import { getProfile, stashProfile } from '$lib/client/redis';
+import { getUser } from '$lib/client/oauth';
 
-export type WordLettuceUser = {
-	login?: string;
-	avatar?: string;
-};
+export const getAuthUser = async (event: ServerLoadEvent | RequestEvent) => {
+	const session = event.cookies.get(SESSION_COOKIE_NAME) || '';
 
-export const getUser = async (accessToken: string): Promise<WordLettuceUser> => {
-	const user = await auth
-		.get(
-			userURL,
-			{},
-			{
-				headers: {
-					['Accept']: 'application/json',
-					['Authorization']: `Bearer ${accessToken}`
-				}
-			}
-		)
-		.catch(({ status, message }) => {});
-	if (!user) return {};
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
-	const { login, avatar_url } = user;
-	return {
-		login: login || '',
-		avatar: avatar_url || ''
-	};
+	if (session && !event.locals.user) {
+		let refresh = false;
+		// try and grab caches profile
+		let user = await getProfile(session);
+		if (!user.login) {
+			// grab from origin if cache miss
+			user = await getUser(session);
+			refresh = true;
+		}
+		// cache profile again if found
+		if (refresh) {
+			await stashProfile(session, user);
+		}
+		// clear session cookie if no profile is available with it any longer
+		if (!user.login) {
+			event.cookies.delete(SESSION_COOKIE_NAME);
+		}
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
+		event.locals.user = user;
+	}
 };

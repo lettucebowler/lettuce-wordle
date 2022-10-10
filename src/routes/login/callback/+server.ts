@@ -1,9 +1,9 @@
 import { redirect } from '@sveltejs/kit';
 import { fetcher } from 'itty-fetcher';
 import { CLIENT_ID, CLIENT_SECRET, SESSION_COOKIE_NAME } from '$env/static/private';
-import { stashProfile } from '$lib/util/redis';
+import { stashProfile } from '$lib/client/redis';
 
-import { getUser } from '$lib/util/auth';
+import { getUser } from '$lib/client/oauth';
 const tokenUrl = 'https://github.com/login/oauth/access_token';
 
 const auth = fetcher();
