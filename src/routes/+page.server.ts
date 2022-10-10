@@ -18,7 +18,12 @@ export const load: import('./$types').PageServerLoad = ({ cookies, depends }) =>
 		};
 	}
 
-	cookies.set('wordLettuceState', encodeState(gameState), { httpOnly: false });
+	cookies.set('wordLettuceState', encodeState(gameState), {
+		httpOnly: false,
+		path: '/',
+		maxAge: 86400,
+		secure: false
+	});
 
 	return {
 		state: gameState
@@ -35,7 +40,9 @@ export const actions: import('./$types').Actions = {
 		const answers = game?.answers || [];
 		const updatedGuesses = applyKey(key, guesses, answers);
 		cookies.set('wordLettuceState', encodeState({ answer, guesses: updatedGuesses, answers }), {
-			httpOnly: false
+			httpOnly: false,
+			path: '/',
+			maxAge: 86400
 		});
 		const form = {
 			invalid: false,
@@ -56,7 +63,12 @@ export const actions: import('./$types').Actions = {
 		if (metadata.invalid) {
 			return invalid(400, metadata);
 		}
-		cookies.set('wordLettuceState', encodeState(updatedGame), { httpOnly: false });
+		cookies.set('wordLettuceState', encodeState(updatedGame), {
+			httpOnly: false,
+			path: '/',
+			maxAge: 86400,
+			secure: false
+		});
 		return metadata;
 	}
 };

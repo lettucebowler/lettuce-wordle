@@ -37,6 +37,10 @@ export const GET: import('./$types').RequestHandler = async (event) => {
 	await stashProfile(accessToken, user);
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
-	event.cookies.set(SESSION_COOKIE_NAME, accessToken, { httpOnly: true, path: '/' });
+	event.cookies.set(SESSION_COOKIE_NAME, accessToken, {
+		httpOnly: true,
+		path: '/',
+		maxAge: 86400 * 7
+	});
 	throw redirect(302, '/');
 };

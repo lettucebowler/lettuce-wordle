@@ -12,7 +12,7 @@ export const handle: import('@sveltejs/kit').Handle = async ({ event, resolve })
 			await stashProfile(session, user);
 		}
 		if (!user.login) {
-			event.cookies.set(SESSION_COOKIE_NAME, '', { httpOnly: true, path: '/' });
+			event.cookies.delete(SESSION_COOKIE_NAME);
 		}
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore

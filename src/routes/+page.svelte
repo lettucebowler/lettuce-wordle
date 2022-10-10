@@ -38,7 +38,12 @@
 		data.state = gameData;
 		data = data;
 		const gameState = encodeState(gameData);
-		Cookies.set('wordLettuceState', gameState, { expires: 365, secure: false });
+		Cookies.set('wordLettuceState', gameState, {
+			httpOnly: false,
+			path: '',
+			expires: 1,
+			secure: false
+		});
 	};
 
 	const getRealIndex = (i: number, guesses: string[], answers: string[]) => {
