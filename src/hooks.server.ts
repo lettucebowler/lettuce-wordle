@@ -6,12 +6,17 @@ export const handle: import('@sveltejs/kit').Handle = async ({ event, resolve })
 	const session = event.cookies.get(SESSION_COOKIE_NAME) || '';
 
 	if (session) {
+		// try and grab caches profile
 		let user = await getProfile(session);
 		if (!user.login) {
-			console.log('user');
+			// grab from origin if cache miss
 			user = await getUser(session);
+		}
+		// cache profile again if found
+		if (user.login) {
 			await stashProfile(session, user);
 		}
+		// clear session cookie if no profile is available with it any longer
 		if (!user.login) {
 			event.cookies.delete(SESSION_COOKIE_NAME);
 		}

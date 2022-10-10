@@ -19,6 +19,10 @@ export const getProfile = async (
 	const profileResult: { result: string } = await redis.get(`/get/${accessToken}`);
 	const { result } = profileResult;
 	let profile = {};
+
+	if (!result) {
+		return profile;
+	}
 	try {
 		profile = JSON.parse(result);
 	} catch {
