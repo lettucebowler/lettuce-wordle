@@ -6,7 +6,7 @@ export const encodeState = (state: {
 	const stateString = `${state.answer || ''}_${state?.guesses?.join(',') || ''}_${
 		state?.answers?.join(',') || ''
 	}`;
-	const encoded = btoa(stateString);
+	const encoded = stateString;
 	return encoded;
 };
 
@@ -23,7 +23,12 @@ export const decodeState = (stateBuffer: string) => {
 	if (!stateBuffer) {
 		return state;
 	}
-	const stateString = atob(stateBuffer);
+	let stateString;
+	try {
+		stateString = atob(stateBuffer);
+	} catch {
+		stateString = stateBuffer;
+	}
 	const [answer, guesses, answers] = stateString.split('_');
 	const words = guesses ? guesses.split(',') : [];
 	const statuses = answers ? answers.split(',') : [];
