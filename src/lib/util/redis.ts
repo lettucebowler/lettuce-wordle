@@ -19,7 +19,7 @@ export const getProfile = async (
 	const { result } = profileResult;
 	let profile = {};
 	try {
-		profile = JSON.parse(atob(result.split('').slice(1, -1).join('')));
+		profile = JSON.parse(result.split('').slice(1, -1).join(''));
 	} catch {
 		return profile;
 	}
@@ -27,7 +27,7 @@ export const getProfile = async (
 };
 
 export const stashProfile = async (accessToken: string, profile: any) => {
-	const encoded = btoa(JSON.stringify(profile));
+	const encoded = JSON.stringify(profile);
 	const status = await redis.post(`/set/${accessToken}?EX=86400`, encoded);
 	return status;
 };
