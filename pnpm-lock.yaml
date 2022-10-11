@@ -34,8 +34,8 @@ dependencies:
 
 devDependencies:
   '@planetscale/database': 1.4.0
-  '@sveltejs/adapter-vercel': 1.0.0-next.77
-  '@sveltejs/kit': 1.0.0-next.512_svelte@3.49.0+vite@3.1.7
+  '@sveltejs/adapter-vercel': 1.0.0-next.78
+  '@sveltejs/kit': 1.0.0-next.513_svelte@3.49.0+vite@3.1.7
   '@types/cookie': 0.5.1
   '@types/js-cookie': 3.0.2
   '@typescript-eslint/eslint-plugin': 5.40.0_25sstg4uu2sk4pm7xcyzuov7xq
@@ -236,10 +236,10 @@ packages:
       picomatch: 2.3.1
     dev: true
 
-  /@sveltejs/adapter-vercel/1.0.0-next.77:
+  /@sveltejs/adapter-vercel/1.0.0-next.78:
     resolution:
       {
-        integrity: sha512-r4MqtP+lzx83HfcvI8PU0Yxzmxt6WQq9nzZETLboJouJzhSBUFIN5RmNZfEn6nNIlUwZbGQUEK/FxsRnnxI/Ig==
+        integrity: sha512-K7zOlVwX/MV/b6iUbrY7QVn+v8ABBSEi6rjIfYiXCZc+j0nS5WNrcH1/Qdk/pzxK+7O5OuaNZAw3QylJDV5CZw==
       }
     dependencies:
       '@vercel/nft': 0.22.1
@@ -249,10 +249,10 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/kit/1.0.0-next.512_svelte@3.49.0+vite@3.1.7:
+  /@sveltejs/kit/1.0.0-next.513_svelte@3.49.0+vite@3.1.7:
     resolution:
       {
-        integrity: sha512-/KywzSMXdNxYGujJfdlAbLgV9m0TSSKqC8XluZ46M6oPAM1fUsjfBBtukU/Vx3hP7ldR8d/vpKX3amENAMw50g==
+        integrity: sha512-aqIMcpQpXaLXDcI+0mqmn6FZOtOC/pt0CCqaidd/+Zh0KgM0zXn3FDKzPNfCkWEQPV2tPHyjiCNsbX0ib92Vpg==
       }
     engines: { node: '>=16.14' }
     hasBin: true
@@ -762,7 +762,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001418
-      electron-to-chromium: 1.4.276
+      electron-to-chromium: 1.4.277
       node-releases: 2.0.6
       update-browserslist-db: 1.0.10_browserslist@4.21.4
     dev: true
@@ -1030,10 +1030,10 @@ packages:
       esutils: 2.0.3
     dev: true
 
-  /electron-to-chromium/1.4.276:
+  /electron-to-chromium/1.4.277:
     resolution:
       {
-        integrity: sha512-EpuHPqu8YhonqLBXHoU6hDJCD98FCe6KDoet3/gY1qsQ6usjJoHqBH2YIVs8FXaAtHwVL8Uqa/fsYao/vq9VWQ==
+        integrity: sha512-Ej4VyUfGdVY5D2J5WHAVNqrEFBKgeNcX7p/bBQU4x/VKwvnyEvGd62NEkIK3lykLEe9Cg4MCcoWAa+u97o0u/A==
       }
     dev: true
 

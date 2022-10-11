@@ -33,7 +33,9 @@ export const getGameResults = async (
 	currentGameNum: number
 ): Promise<{ user: string; gamenum: number; answers: string }[]> => {
 	const before = new Date();
-	const results = await conn.execute(`select * from gameresults where user = '${user}'`);
+	const results = await conn.execute(
+		`select * from gameresults where user = '${user}' and gamenum > ${currentGameNum - 7}`
+	);
 	const after = new Date();
 	const duration = after.getTime() - before.getTime();
 	console.log(`time fetching game results: ${duration}`);

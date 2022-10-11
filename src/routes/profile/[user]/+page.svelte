@@ -8,9 +8,7 @@
 </script>
 
 <div class="flex w-full flex-col items-center gap-4">
-	<div
-		class="ml-auto mr-auto flex w-full max-w-[360px] flex-col items-center justify-center gap-2 rounded-3xl border-4 border-solid border-polar-300 p-2"
-	>
+	<div class="ml-auto mr-auto flex w-full max-w-[360px] flex-col items-center justify-center gap-2">
 		<figure class="flex flex-col gap-2">
 			<img
 				class="flex aspect-square flex-[0_1_240px] rounded-xl object-contain"
@@ -30,10 +28,12 @@
 
 	<h1 class="text-center text-3xl font-bold text-snow-300">Play History</h1>
 
-	<div class="grid w-full grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+	<div class="flex w-full flex-wrap justify-center gap-4">
 		{#each gameResults.sort((a, b) => b.gamenum - a.gamenum) as gameResult (gameResult.gamenum)}
-			<div class="grid w-full gap-2 rounded-2xl border-2 border-solid border-polar-300 p-2">
-				<h2 class="flex justify-between text-center text-xl text-snow-300">
+			<div
+				class="flex w-full flex-[0_1_400px] flex-col gap-2 rounded-2xl border-4 border-solid border-polar-300 p-2 sm:flex-[0_1_240px]"
+			>
+				<h2 class="flex justify-between text-center text-xl font-medium text-snow-300">
 					<span class="text-left">#{gameResult.gamenum}</span><span class="text-right"
 						>{gameResult.answers.length / 5}</span
 					>
@@ -57,6 +57,8 @@
 		{/each}
 	</div>
 	{#if !gameResults.length}
-		<p class="rounded-xl p-2 text-center text-center text-xl text-snow-300">No wins yet...</p>
+		<p class="rounded-xl p-2 text-center text-center text-xl text-snow-300">
+			No wins in the last seven days...
+		</p>
 	{/if}
 </div>
