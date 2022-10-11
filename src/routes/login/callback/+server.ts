@@ -35,6 +35,10 @@ const getAccessToken = async (code: string): Promise<string> => {
 
 export const GET: import('./$types').RequestHandler = async (event) => {
 	const code = event.url.searchParams.get('code');
+	const error = event.url.searchParams.get('error');
+	if (error) {
+		throw redirect(307, '/');
+	}
 	const accessToken = await getAccessToken(code || '');
 	const user = await getUser(accessToken);
 	await stashProfile(accessToken, user);
@@ -51,5 +55,5 @@ export const GET: import('./$types').RequestHandler = async (event) => {
 		path: '/',
 		maxAge: 86400 * 7
 	});
-	throw redirect(302, '/');
+	throw redirect(307, '/');
 };
