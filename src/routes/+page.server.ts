@@ -4,7 +4,6 @@ import { applyWord, applyKey } from '$lib/util/gameFunctions';
 import { invalid } from '@sveltejs/kit';
 import { saveGameResults } from '$lib/client/planetscale';
 import { getGameNum } from '$lib/util/share';
-import type { WordLettuceUser } from '$lib/client/oauth';
 
 export const load: import('./$types').PageServerLoad = ({ cookies, depends, locals }) => {
 	depends('/');
@@ -75,7 +74,6 @@ export const actions: import('./$types').Actions = {
 			saveGameResults(user.login, gameNum, updatedGame.answers);
 		}
 
-		// const results = await getResults();
 		event.cookies.set('wordLettuceState', encodeState(updatedGame), {
 			httpOnly: false,
 			path: '/',

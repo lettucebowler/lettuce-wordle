@@ -32,6 +32,19 @@
 		}
 	}
 
+	$: subnavItems = [
+		{
+			path: user ? `/profile/${user.login}` : '/profile',
+			name: 'Profile',
+			prefetch: true
+		},
+		{
+			path: '/logout',
+			name: 'Logout',
+			prefetch: false
+		}
+	];
+
 	const eventuallyCloseDropdown = () => {
 		setTimeout(() => {
 			dropdownVisible = false;
@@ -107,17 +120,17 @@
 				class="mt-1 flex w-full justify-evenly rounded-xl bg-polar-300 p-1 transition transition-all duration-150"
 				class:hidden={!dropdownVisible && !jsEnabled}
 			>
-				<a
-					href={user?.login ? `/profile/${user.login}` : '/profile'}
-					data-sveltekit-prefetch
-					class="box-border items-center justify-center rounded-xl p-1 pr-2 pl-2 text-center text-lg font-medium text-snow-300 transition duration-150 ease-in-out hover:bg-polar-200 active:bg-polar-100"
-					>Profile</a
-				>
-				<a
-					href="/logout"
-					class="box-border items-center justify-center rounded-xl p-1 pr-2 pl-2 text-center text-lg font-medium text-snow-300 transition duration-150 ease-in-out hover:bg-polar-200 active:bg-polar-100"
-					>Log out</a
-				>
+				{#each subnavItems as subnavItem}
+					<a
+						href={subnavItem.path}
+						data-sveltekit-prefetch={subnavItem.prefetch ? '' : null}
+						class="box-border items-center justify-center overflow-hidden rounded-lg bg-polar-300 text-center text-lg font-medium text-snow-300 transition duration-150 ease-in-out active:brightness-90 "
+						><span
+							class="grid h-full w-full place-items-center p-2 text-center duration-500 hover:backdrop-brightness-90 hover:backdrop-filter"
+							>{subnavItem.name}</span
+						></a
+					>
+				{/each}
 			</nav>
 		{/if}
 	</nav>
