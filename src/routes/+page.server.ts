@@ -2,11 +2,14 @@ import { getDailyWord } from '$lib/util/words';
 import { encodeState, decodeState } from '$lib/util/state';
 import { applyWord, applyKey } from '$lib/util/gameFunctions';
 import { invalid } from '@sveltejs/kit';
-import { getResults, saveGameResults } from '$lib/client/planetscale';
+import { saveGameResults } from '$lib/client/planetscale';
 import { getGameNum } from '$lib/util/share';
+import type { WordLettuceUser } from '$lib/client/oauth';
 
-export const load: import('./$types').PageServerLoad = ({ cookies, depends }) => {
+export const load: import('./$types').PageServerLoad = ({ cookies, depends, locals }) => {
 	depends('/');
+
+	const { user }: { user: WordLettuceUser } = locals;
 
 	const cookie = cookies.get('wordLettuceState') || '';
 	let gameState = decodeState(cookie);
@@ -18,6 +21,10 @@ export const load: import('./$types').PageServerLoad = ({ cookies, depends }) =>
 			guesses: [],
 			answers: []
 		};
+	}
+
+	if (gameState?.answers?.at(-1) === 'xxxxx' && user?.login) {
+		saveGameResults(user.login, getGameNum(), gameState.answers);
 	}
 
 	cookies.set('wordLettuceState', encodeState(gameState), {
