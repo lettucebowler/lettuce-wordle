@@ -14,6 +14,7 @@ export const getProfile = async (
 	let profile = {};
 	const beforeProfile = new Date();
 	profile = (await redis.get(`${accessToken}`)) || profile;
+	redis.expire(accessToken, 900);
 	const afterProfile = new Date();
 	const profileDuration = afterProfile.getTime() - beforeProfile.getTime();
 	console.log(`getting cached profile: ${profileDuration}`);
@@ -21,7 +22,7 @@ export const getProfile = async (
 };
 
 export const stashProfile = async (accessToken: string, profile: any) => {
-	const status = await redis.set(`${accessToken}`, profile, { ex: 3600 });
+	const status = await redis.set(`${accessToken}`, profile, { ex: 900 });
 
 	return status;
 };
