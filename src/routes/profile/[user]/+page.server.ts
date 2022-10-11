@@ -9,10 +9,12 @@ const userInfo = fetcher({
 export const load: import('./$types').PageServerLoad = async (event) => {
 	const user = event.params.user;
 	const userProfile = await userInfo.get(`/${user}`);
-	console.log(user);
-	console.log(userProfile);
 	if (userProfile.login === 'epatts') {
 		userProfile.bio = 'bad at wordle';
+		return {
+			gameResults: [],
+			userProfile
+		};
 	} else if (userProfile.login === 'daniellelecocq') {
 		userProfile.bio = 'abandoner';
 	}
