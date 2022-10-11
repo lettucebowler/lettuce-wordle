@@ -10,5 +10,15 @@ export const load: import('./$types').PageServerLoad = async (event) => {
 	const user = event.params.user;
 	const userProfile = await userInfo.get(`/${user}`);
 	const results = await getGameResults(user, getGameNum());
-	return { gameResults: results, userProfile };
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
+	const { login, bio, avatar_url } = userProfile;
+	return {
+		gameResults: results,
+		userProfile: {
+			login,
+			bio,
+			avatar: avatar_url
+		}
+	};
 };

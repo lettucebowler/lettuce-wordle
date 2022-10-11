@@ -1,10 +1,12 @@
 <script lang="ts">
+	import type { WordLettuceUser } from '$lib/client/oauth';
 	export let data: import('./$types').PageData;
+
+	let userProfile: WordLettuceUser;
+	const cells = Array(30);
 
 	$: gameResults = data.gameResults;
 	$: userProfile = data.userProfile;
-
-	const cells = Array(30);
 </script>
 
 <div class="flex w-full flex-col items-center gap-4">
@@ -12,7 +14,7 @@
 		<figure class="flex flex-col gap-2">
 			<img
 				class="flex aspect-square flex-[0_1_240px] rounded-xl object-contain"
-				src={userProfile.avatar_url}
+				src={userProfile.avatar}
 				alt={userProfile.login}
 			/>
 			<figcaption class="text-center text-2xl font-medium text-snow-300">

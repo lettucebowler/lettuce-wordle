@@ -5,6 +5,7 @@
 
 	import white from '$lib/assets/white.png';
 	import { onMount } from 'svelte';
+	import { afterNavigate } from '$app/navigation';
 
 	export let user: {
 		login?: string;
@@ -31,15 +32,19 @@
 		}
 	}
 
-	$: console.log(showDropdown);
-	$: avatarHref = user.avatar || white;
-
-	const toggleDropDown = () => {
-		showDropdown = !showDropdown;
+	const eventuallyCloseDropdown = () => {
+		setTimeout(() => {
+			dropdownVisible = false;
+		}, 1500);
 	};
 
 	onMount(() => {
 		jsEnabled = true;
+		eventuallyCloseDropdown();
+	});
+
+	afterNavigate(() => {
+		eventuallyCloseDropdown();
 	});
 </script>
 
@@ -76,7 +81,7 @@
 			>
 				{#if user.avatar}
 					<img
-						src={avatarHref}
+						src={user.avatar || white}
 						class="max-x-full box-border flex aspect-square h-full rounded-lg object-contain"
 						alt="user avatar"
 					/>

@@ -6,6 +6,7 @@ const auth = fetcher();
 export type WordLettuceUser = {
 	login?: string;
 	avatar?: string;
+	bio?: string;
 };
 
 export const getUser = async (accessToken: string): Promise<WordLettuceUser> => {
