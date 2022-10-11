@@ -37,5 +37,7 @@ export const getGameResults = async (
 	const duration = after.getTime() - before.getTime();
 	console.log(`time fetching game results: ${duration}`);
 	const { rows } = results;
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
 	return rows || [];
 };

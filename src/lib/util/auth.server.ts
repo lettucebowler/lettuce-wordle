@@ -1,13 +1,13 @@
 import type { RequestEvent, ServerLoadEvent } from '@sveltejs/kit';
 import { SESSION_COOKIE_NAME } from '$env/static/private';
 
-import type { WordLettuceUser } from '$lib/client/oauth';
 import { getProfile, stashProfile } from '$lib/client/redis';
 import { getUser } from '$lib/client/oauth';
 
 export const getAuthUser = async (event: ServerLoadEvent | RequestEvent) => {
 	const session = event.cookies.get(SESSION_COOKIE_NAME) || '';
-
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
 	if (session && !event.locals.user) {
 		let refresh = false;
 		// try and grab caches profile
