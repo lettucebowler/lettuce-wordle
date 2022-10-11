@@ -76,7 +76,7 @@
 			class="ml-4 mr-4 mt-2 flex justify-evenly rounded-xl bg-polar-300 p-1"
 		>
 			<a
-				href="/profile"
+				href={user?.login ? `/profile/${user.login}` : '/profile'}
 				data-sveltekit-prefetch
 				class="box-border items-center justify-center rounded-xl p-1 pr-2 pl-2 text-center text-lg font-medium text-snow-300 transition duration-150 ease-in-out hover:bg-polar-200 active:bg-polar-100"
 				>Profile</a

@@ -11,8 +11,9 @@ export type WordLettuceUser = {
 export const getUser = async (accessToken: string): Promise<WordLettuceUser> => {
 	const empty = {
 		login: '',
-		avatar: '',
-	}
+		avatar: ''
+	};
+	const before = new Date();
 	const user = await auth
 		.get(
 			userURL,
@@ -25,7 +26,9 @@ export const getUser = async (accessToken: string): Promise<WordLettuceUser> => 
 			}
 		)
 		.catch(({ status, message }) => {});
-	
+	const after = new Date();
+	const duration = after.getTime() - before.getTime();
+	console.log(`time fetching user from oauth2 provider: ${duration}`);
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
 	const { login, avatar_url } = user;
