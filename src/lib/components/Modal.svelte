@@ -7,6 +7,8 @@
 
 	export const modalActions = {
 		open(answers: string[], guesses: number, success: boolean, user: string = '') {
+			console.log(user);
+			authenticated = !!user;
 			share = getGameStatus($appName, answers);
 			attempts = guesses;
 			won = success;
@@ -22,7 +24,7 @@
 	let attempts: number;
 	let won: boolean;
 	let message = '';
-	let user = '';
+	let authenticated = false;
 
 	const clearMessage = () => {
 		message = '';
@@ -121,7 +123,7 @@
 		<div class="grid place-items-center p-2 text-center font-bold text-snow-300">
 			Next word in {formatTime(timeUntil)}
 		</div>
-		{#if !user}
+		{#if !authenticated}
 			<div class="flex w-full flex-row justify-center gap-3">
 				<a
 					class="h-12 w-full cursor-pointer rounded-lg border-transparent bg-aurora-200 p-0 font-bold text-snow-300 active:brightness-90"

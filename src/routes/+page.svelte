@@ -15,7 +15,9 @@
 	export let data: import('./$types').PageData;
 	export let form: import('./$types').ActionData;
 
-	let modalActions: { open(answers: string[], guesses: number, success: boolean): void };
+	let modalActions: {
+		open(answers: string[], guesses: number, success: boolean, user: string): void;
+	};
 	let invalidForm = false;
 	let answers: string[];
 	let guesses: string[];
@@ -63,7 +65,12 @@
 	onMount(() => {
 		const lastAnswer = data?.state?.answers?.at(-1) || '_____';
 		if (lastAnswer === 'xxxxx') {
-			openModal(data?.state?.answers, data?.state?.guesses?.length || 0, lastAnswer === 'xxxxx');
+			openModal(
+				data?.state?.answers,
+				data?.state?.guesses?.length || 0,
+				lastAnswer === 'xxxxx',
+				data?.user?.login || ''
+			);
 		}
 	});
 
@@ -74,7 +81,12 @@
 
 	$: {
 		if (form?.success) {
-			openModal(data?.state?.answers, data?.state?.guesses?.length || 0, true);
+			openModal(
+				data?.state?.answers,
+				data?.state?.guesses?.length || 0,
+				true,
+				data?.user?.login || ''
+			);
 		}
 
 		if (form?.invalid) {

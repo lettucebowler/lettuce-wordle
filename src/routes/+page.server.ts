@@ -72,8 +72,7 @@ export const actions: import('./$types').Actions = {
 		const { user } = event.locals;
 		if (user) {
 			const gameNum = getGameNum();
-			const results = await saveGameResults(user.login, gameNum, updatedGame.answers);
-			console.log(results);
+			saveGameResults(user.login, gameNum, updatedGame.answers);
 		}
 
 		// const results = await getResults();

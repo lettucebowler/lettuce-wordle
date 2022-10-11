@@ -9,17 +9,6 @@ const config = {
 
 const conn = connect(config);
 
-export const getResults = async () => {
-	console.log('get results');
-	const before = new Date();
-	const results = await conn.execute('select 1 from dual where 1=?', [1]);
-	const after = new Date();
-	const duration = after.getTime() - before.getTime();
-	console.log(duration);
-	console.log(results);
-	return results;
-};
-
 export const saveGameResults = async (user: string, gamenum: number, answers: string[]) => {
 	const answerString = answers.join('');
 	const results = await conn.execute(

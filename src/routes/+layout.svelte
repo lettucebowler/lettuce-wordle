@@ -11,8 +11,7 @@
 		user: {
 			login: '',
 			avatar: ''
-		},
-		showSubnav: true
+		}
 	};
 
 	$: user = data.user;
@@ -48,12 +47,6 @@
 			type: 'secondary'
 		}
 	];
-
-	// onMount(() => {
-	// 	setTimeout(() => {
-	// 		data.showSubnav = false;
-	// 	}, 2500);
-	// });
 </script>
 
 <svelte:head>
@@ -66,7 +59,7 @@
 </svelte:head>
 
 <LetterPageContentContainer>
-	<AuthNav {links} {user} showDropdown={data.showSubnav} />
+	<AuthNav {links} {user} />
 	<slot />
 </LetterPageContentContainer>
 
