@@ -49,15 +49,6 @@
 					{link.name}
 				</span></a
 			>
-			<!-- <a
-				data-sveltekit-prefetch
-				href={link.path}
-				class="box-border flex h-12 items-center justify-center rounded-xl pr-2 pl-2 text-center text-3xl text-snow-300 transition duration-150 ease-in-out hover:bg-polar-300 active:bg-polar-200"
-				class:ml-auto={link.margin === 'left'}
-				class:bg-polar-200={$page.url.pathname === link.path}
-			>
-				{link.name}
-			</a> -->
 		{/each}
 		{#if user.login}
 			<button
