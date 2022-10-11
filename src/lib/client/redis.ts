@@ -34,7 +34,7 @@ export const getProfile = async (
 
 export const stashProfile = async (accessToken: string, profile: any) => {
 	// const status = await redis.post(`/set/${accessToken}?EX=86400`, profile);
-	const status = await redis.set(`${accessToken}`, profile, { ex: 86400 });
+	const status = await redis.set(`${accessToken}`, profile, { ex: 3600 });
 
 	return status;
 };

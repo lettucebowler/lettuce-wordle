@@ -11,8 +11,8 @@ export const getAuthUser = async (event: ServerLoadEvent | RequestEvent) => {
 	if (session && !event.locals.user) {
 		let refresh = false;
 		// try and grab caches profile
-		// let user = await getProfile(session);
-		let user: WordLettuceUser = { login: '', avatar: '' };
+		let user = await getProfile(session);
+		// let user: WordLettuceUser = { login: '', avatar: '' };
 		if (!user.login) {
 			// grab from origin if cache miss
 			user = await getUser(session);
