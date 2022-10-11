@@ -1,6 +1,7 @@
 import type { RequestEvent, ServerLoadEvent } from '@sveltejs/kit';
 import { SESSION_COOKIE_NAME } from '$env/static/private';
 
+import type {WordLettuceUser} from '$lib/client/oauth';
 import { getProfile, stashProfile } from '$lib/client/redis';
 import { getUser } from '$lib/client/oauth';
 
@@ -10,7 +11,8 @@ export const getAuthUser = async (event: ServerLoadEvent | RequestEvent) => {
 	if (session && !event.locals.user) {
 		let refresh = false;
 		// try and grab caches profile
-		let user = await getProfile(session);
+		// let user = await getProfile(session);
+		let user: WordLettuceUser = {login: '', avatar: ''};
 		if (!user.login) {
 			// grab from origin if cache miss
 			user = await getUser(session);

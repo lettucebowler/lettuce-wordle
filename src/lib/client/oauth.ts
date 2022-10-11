@@ -9,6 +9,10 @@ export type WordLettuceUser = {
 };
 
 export const getUser = async (accessToken: string): Promise<WordLettuceUser> => {
+	const empty = {
+		login: '',
+		avatar: '',
+	}
 	const user = await auth
 		.get(
 			userURL,
@@ -21,10 +25,11 @@ export const getUser = async (accessToken: string): Promise<WordLettuceUser> => 
 			}
 		)
 		.catch(({ status, message }) => {});
-	if (!user) return {};
+	
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
 	const { login, avatar_url } = user;
+	if (!user || !login || !avatar_url) return empty;
 	return {
 		login: login || '',
 		avatar: avatar_url || ''
