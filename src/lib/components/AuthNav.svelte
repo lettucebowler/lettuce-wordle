@@ -23,11 +23,11 @@
 		showDropdown = !showDropdown;
 	};
 
-	afterNavigate(() => {
-		setTimeout(() => {
-			showDropdown = false;
-		}, 250);
-	});
+	// afterNavigate(() => {
+	// 	setTimeout(() => {
+	// 		showDropdown = false;
+	// 	}, 250);
+	// });
 </script>
 
 <div>
