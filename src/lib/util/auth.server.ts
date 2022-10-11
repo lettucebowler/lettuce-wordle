@@ -3,6 +3,7 @@ import { SESSION_COOKIE_NAME } from '$env/static/private';
 
 import { getProfile, stashProfile } from '$lib/client/redis';
 import { getUser } from '$lib/client/oauth';
+import { readKV } from '$lib/client/kv';
 
 export const getAuthUser = async (event: ServerLoadEvent | RequestEvent) => {
 	const session = event.cookies.get(SESSION_COOKIE_NAME) || '';
@@ -12,6 +13,7 @@ export const getAuthUser = async (event: ServerLoadEvent | RequestEvent) => {
 		let refresh = false;
 		// try and grab caches profile
 		let user = await getProfile(session);
+		user = await readKV(session);
 		// let user: WordLettuceUser = { login: '', avatar: '' };
 		if (!user.login) {
 			// grab from origin if cache miss

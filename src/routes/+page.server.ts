@@ -66,8 +66,10 @@ export const actions: import('./$types').Actions = {
 			return invalid(400, metadata);
 		}
 
-		if (event.locals.user) {
-			const user = event.locals.user;
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
+		const { user } = event.locals;
+		if (user) {
 			const gameNum = getGameNum();
 			const results = await saveGameResults(user.login, gameNum, updatedGame.answers);
 			console.log(results);

@@ -25,6 +25,7 @@ export const saveGameResults = async (user: string, gamenum: number, answers: st
 	const results = await conn.execute(
 		`insert into gameresults (user, gamenum, answers) values ('${user}', ${gamenum}, '${answerString}') on duplicate key update answers='${answerString}'`
 	);
+	return results;
 };
 
 export const getGameResults = async (
