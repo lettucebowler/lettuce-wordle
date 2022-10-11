@@ -24,8 +24,8 @@
 	const rows = Array(6);
 	const columns = Array(5);
 
-	const openModal = (answers: string[], guesses: number, success: boolean) => {
-		setTimeout(() => modalActions?.open(answers, guesses, success), 500);
+	const openModal = (answers: string[], guesses: number, success: boolean, user: string = '') => {
+		setTimeout(() => modalActions?.open(answers, guesses, success, user), 500);
 	};
 
 	const handleKey = (key: string) => {

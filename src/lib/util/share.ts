@@ -1,8 +1,8 @@
-export const getGameStatus = (appName: string, statuses: string[]) => {
+export const getGameStatus = (appName: string, statuses: string[], user: string = '') => {
 	const gameStatus = statuses.filter((l) => l[0] !== 'none');
 	const gameNum = getGameNum();
 
-	const today = `https://word.lettucebowler.net\n${appName} ${gameNum} ${gameStatus.length}/6`;
+	const today = `${appName} ${gameNum} ${gameStatus.length}/6`;
 	const strings = gameStatus.map((k) =>
 		k
 			.split('')

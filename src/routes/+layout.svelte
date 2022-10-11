@@ -27,18 +27,24 @@
 		{
 			path: '/',
 			name: 'Home',
-			enabled: true
+			enabled: true,
+			prefetch: true,
+			type: 'primary'
 		},
 		{
 			path: '/about',
 			name: 'About',
-			enabled: true
+			enabled: true,
+			prefetch: true,
+			type: 'primary'
 		},
 		{
 			path: '/login',
 			name: 'Login',
 			enabled: !user.login,
-			margin: 'left'
+			margin: 'left',
+			prefetch: false,
+			type: 'secondary'
 		}
 	];
 </script>

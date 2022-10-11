@@ -9,8 +9,6 @@ import type { WordLettuceUser } from '$lib/client/oauth';
 export const load: import('./$types').PageServerLoad = ({ cookies, depends, locals }) => {
 	depends('/');
 
-	const { user }: { user: WordLettuceUser } = locals;
-
 	const cookie = cookies.get('wordLettuceState') || '';
 	let gameState = decodeState(cookie);
 	const dailyWord = getDailyWord();
@@ -21,10 +19,6 @@ export const load: import('./$types').PageServerLoad = ({ cookies, depends, loca
 			guesses: [],
 			answers: []
 		};
-	}
-
-	if (gameState?.answers?.at(-1) === 'xxxxx' && user?.login) {
-		saveGameResults(user.login, getGameNum(), gameState.answers);
 	}
 
 	cookies.set('wordLettuceState', encodeState(gameState), {

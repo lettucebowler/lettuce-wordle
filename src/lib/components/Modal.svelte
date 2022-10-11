@@ -6,7 +6,7 @@
 	import { browser } from '$app/environment';
 
 	export const modalActions = {
-		open(answers: string[], guesses: number, success: boolean) {
+		open(answers: string[], guesses: number, success: boolean, user: string = '') {
 			share = getGameStatus($appName, answers);
 			attempts = guesses;
 			won = success;
@@ -22,6 +22,7 @@
 	let attempts: number;
 	let won: boolean;
 	let message = '';
+	let user = '';
 
 	const clearMessage = () => {
 		message = '';
@@ -84,7 +85,7 @@
 	class="open:opacity-1 box-border w-full max-w-xs rounded-2xl bg-polar-200 p-2 backdrop:animate-fadein backdrop:backdrop-blur-sm open:pointer-events-auto open:animate-flyup"
 	open={false}
 >
-	<div class="flex flex-col gap-3">
+	<div class="flex flex-col gap-2">
 		<div class="flex h-8 justify-between">
 			<div class="aspect-square h-full" />
 			<h2 class="col-start-2 mt-0 flex-auto text-center text-2xl text-snow-300">&nbsp;Success!</h2>
@@ -107,6 +108,7 @@
 			You solved today's WordLettuce in {attempts} guess{attempts > 1 ? 'es' : ''}. Come back
 			tomorrow and play again!
 		</p>
+
 		<div class="grid h-8 place-items-center">
 			{#if message}
 				<span
@@ -119,15 +121,28 @@
 		<div class="grid place-items-center p-2 text-center font-bold text-snow-300">
 			Next word in {formatTime(timeUntil)}
 		</div>
+		{#if !user}
+			<div class="flex w-full flex-row justify-center gap-3">
+				<a
+					class="h-12 w-full cursor-pointer rounded-lg border-transparent bg-aurora-200 p-0 font-bold text-snow-300 active:brightness-90"
+					href="/login"
+					><span
+						class="grid h-full items-center text-center duration-500 hover:backdrop-brightness-90 hover:backdrop-filter"
+					>
+						Sign in to save your results
+					</span></a
+				>
+			</div>
+		{/if}
 		<div class="flex w-full flex-row justify-center gap-3">
 			<button
 				on:click={() => shareGame()}
 				class="h-12 w-full cursor-pointer rounded-lg border-transparent bg-frost-400 p-0 font-bold text-snow-300 active:brightness-90"
-				><div
+				><span
 					class="grid h-full items-center duration-500 hover:backdrop-brightness-90 hover:backdrop-filter"
 				>
 					Share
-				</div></button
+				</span></button
 			>
 		</div>
 	</div>

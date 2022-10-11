@@ -13,7 +13,9 @@
 		path: string;
 		name: string;
 		margin?: string;
+		prefetch?: boolean;
 		enabled: boolean;
+		type?: string;
 	}[] = [];
 
 	let showDropdown = false;
@@ -34,6 +36,20 @@
 	<nav class="box-border flex h-14 justify-between gap-1 rounded-b-2xl bg-polar-400 p-1">
 		{#each links.filter((link) => link.enabled) as link}
 			<a
+				class="flex h-12 cursor-pointer overflow-hidden rounded-xl border-transparent p-0 text-3xl font-medium text-snow-300 active:brightness-90"
+				class:ml-auto={link.margin === 'left'}
+				class:brightness-90={link.path === $page.url.pathname}
+				class:bg-frost-400={link.type === 'secondary'}
+				class:bg-polar-400={link.type === 'primary'}
+				href={link.path}
+				data-sveltekit-prefetch={link.prefetch}
+				><span
+					class="grid h-full w-full place-items-center pr-2 pl-2 text-center duration-500 hover:backdrop-brightness-90 hover:backdrop-filter"
+				>
+					{link.name}
+				</span></a
+			>
+			<!-- <a
 				data-sveltekit-prefetch
 				href={link.path}
 				class="box-border flex h-12 items-center justify-center rounded-xl pr-2 pl-2 text-center text-3xl text-snow-300 transition duration-150 ease-in-out hover:bg-polar-300 active:bg-polar-200"
@@ -41,7 +57,7 @@
 				class:bg-polar-200={$page.url.pathname === link.path}
 			>
 				{link.name}
-			</a>
+			</a> -->
 		{/each}
 		{#if user.login}
 			<button
