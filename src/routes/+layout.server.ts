@@ -7,6 +7,7 @@ export const load: import('./$types').LayoutServerLoad = async (event) => {
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
 	let user: WordLettuceUser = event.locals.user || {};
+	console.log('running layout.server.js');
 	const { login, avatar } = user;
 
 	return {
