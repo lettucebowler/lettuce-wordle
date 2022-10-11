@@ -3,6 +3,7 @@
 	import { slide } from 'svelte/transition';
 
 	import white from '$lib/assets/white.png';
+	import { afterNavigate } from '$app/navigation';
 
 	export let user: {
 		login?: string;
@@ -21,6 +22,12 @@
 	const toggleDropDown = () => {
 		showDropdown = !showDropdown;
 	};
+
+	afterNavigate(() => {
+		setTimeout(() => {
+			showDropdown = false;
+		}, 250);
+	});
 </script>
 
 <div>
@@ -70,6 +77,7 @@
 		>
 			<a
 				href="/profile"
+				data-sveltekit-prefetch
 				class="box-border items-center justify-center rounded-xl p-1 pr-2 pl-2 text-center text-lg font-medium text-snow-300 transition duration-150 ease-in-out hover:bg-polar-200 active:bg-polar-100"
 				>Profile</a
 			>

@@ -17,7 +17,6 @@
 			doBulge = bulge;
 		}
 	}
-
 	$: delayTime = wiggle ? '0s' : `${slot * delay}s`;
 </script>
 

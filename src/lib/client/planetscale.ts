@@ -27,7 +27,10 @@ export const saveGameResults = async (user: string, gamenum: number, answers: st
 	);
 };
 
-export const getGameResults = async (user: string, currentGameNum: number) => {
+export const getGameResults = async (
+	user: string,
+	currentGameNum: number
+): Promise<{ user: string; gamenum: number; answers: string }[]> => {
 	const before = new Date();
 	const results = await conn.execute(`select * from gameresults where user = '${user}'`);
 	const after = new Date();
