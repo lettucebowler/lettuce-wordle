@@ -1,7 +1,6 @@
 import { fetcher } from 'itty-fetcher';
 
 const userURL = 'https://api.github.com/user';
-const auth = fetcher();
 
 export type WordLettuceUser = {
 	login?: string;
@@ -9,7 +8,11 @@ export type WordLettuceUser = {
 	bio?: string;
 };
 
-export const getUser = async (accessToken: string): Promise<WordLettuceUser> => {
+export const getUser = async (
+	accessToken: string,
+	fetchImplementation: any = fetch
+): Promise<WordLettuceUser> => {
+	const auth = fetcher({ fetch: fetchImplementation });
 	const empty = {
 		login: '',
 		avatar: ''
