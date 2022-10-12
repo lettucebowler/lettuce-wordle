@@ -54,11 +54,11 @@
 
 	onMount(() => {
 		jsEnabled = true;
-		eventuallyCloseDropdown();
+		dropdownVisible = false;
 	});
 
 	afterNavigate(() => {
-		eventuallyCloseDropdown();
+		if (dropdownVisible) eventuallyCloseDropdown();
 	});
 </script>
 
