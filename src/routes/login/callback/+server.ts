@@ -9,9 +9,8 @@ import { getUser } from '$lib/client/oauth';
 import { saveGameResults } from '$lib/client/planetscale';
 const tokenUrl = 'https://github.com/login/oauth/access_token';
 
-const auth = fetcher();
-
-const getAccessToken = async (code: string): Promise<string> => {
+const getAccessToken = async (code: string, fetchImplementation: any = fetch): Promise<string> => {
+	const auth = fetcher({ fetch: fetchImplementation });
 	const response: {
 		access_token: string;
 		token_type: string;
@@ -39,7 +38,7 @@ export const GET: import('./$types').RequestHandler = async (event) => {
 	if (error) {
 		throw redirect(307, '/');
 	}
-	const accessToken = await getAccessToken(code || '');
+	const accessToken = await getAccessToken(code || '', event.fetch);
 	const user = await getUser(accessToken);
 	await stashProfile(accessToken, user);
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
