@@ -35,7 +35,7 @@ export const getUser = async (
 	console.log(`time fetching user from oauth2 provider: ${duration}`);
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
-	const { login, avatar_url } = user;
+	const { login, avatar_url } = user || empty;
 	if (!user || !login || !avatar_url) return empty;
 	return {
 		login: login || '',

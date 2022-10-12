@@ -14,7 +14,7 @@ export const saveGameResults = async (user: string, gamenum: number, answers: st
 	const results = await conn.execute(
 		`insert into gameresults (user, gamenum, answers, attempts) values ('${user}', ${gamenum}, '${answerString}', '${Math.floor(
 			answerString.length / 5
-		)}') on duplicate key update answers='${answerString}'`
+		)}') on duplicate key update answers='${answerString}', attempts='${answers.length}'`
 	);
 	return results;
 };
@@ -44,12 +44,11 @@ export const getInfoForLeaderBoard = async (
 		const [user, sum, count, score] = Object.values(row);
 		return {
 			user,
-			sum,
-			count,
-			score
+			sum: parseInt(sum),
+			count: parseInt(count),
+			score: parseInt(score)
 		};
 	});
-	console.log(scores);
 	return scores;
 };
 
