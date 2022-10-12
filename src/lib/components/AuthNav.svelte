@@ -64,7 +64,7 @@
 
 <div>
 	<nav
-		class="box-border flex h-14 flex-wrap justify-between gap-x-1 rounded-b-2xl bg-polar-400 p-1"
+		class="box-border flex flex-wrap justify-between gap-x-1 rounded-b-2xl bg-polar-400 p-1"
 		id="primary-nav"
 	>
 		{#each links.filter((link) => link.enabled) as link}
