@@ -29,22 +29,27 @@
 			name: 'Home',
 			enabled: true,
 			prefetch: true,
-			type: 'primary'
+			icon: 'home'
+		},
+		{
+			path: '/leaderboard',
+			name: 'Rankings',
+			enabled: true,
+			prefetch: true,
+			icon: 'trophy'
 		},
 		{
 			path: '/about',
 			name: 'About',
 			enabled: true,
-			prefetch: true,
-			type: 'primary'
+			prefetch: true
 		},
 		{
 			path: '/login',
 			name: 'Login',
 			enabled: !user.login,
 			margin: 'left',
-			prefetch: false,
-			type: 'secondary'
+			prefetch: false
 		}
 	];
 </script>

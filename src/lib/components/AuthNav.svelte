@@ -2,6 +2,7 @@
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
 	import { slide } from 'svelte/transition';
+	import Icon from '$lib/components/Icon.svelte';
 
 	import white from '$lib/assets/white.png';
 	import { onMount } from 'svelte';
@@ -17,7 +18,7 @@
 		margin?: string;
 		prefetch?: boolean;
 		enabled: boolean;
-		type?: string;
+		icon?: string;
 	}[] = [];
 
 	let showDropdown = true;
@@ -63,7 +64,7 @@
 
 <div>
 	<nav
-		class="box-border flex flex-wrap justify-between gap-x-1 rounded-b-2xl bg-polar-400 p-1"
+		class="box-border flex h-14 flex-wrap justify-between gap-x-1 rounded-b-2xl bg-polar-400 p-1"
 		id="primary-nav"
 	>
 		{#each links.filter((link) => link.enabled) as link}
@@ -76,7 +77,12 @@
 				><span
 					class="grid h-full w-full place-items-center pr-2 pl-2 text-center duration-500 hover:backdrop-brightness-90 hover:backdrop-filter"
 				>
-					{link.name}
+					<span class="flex items-center gap-2">
+						{#if link.icon}
+							<span><Icon name={link.icon} /></span>
+						{/if}
+						<span class:hidden={link.icon} class:sm:inline={link.icon}>{link.name}</span>
+					</span>
 				</span></a
 			>
 		{/each}
