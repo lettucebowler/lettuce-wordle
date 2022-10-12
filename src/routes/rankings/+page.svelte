@@ -9,9 +9,10 @@
 	<div class="h-8" />
 	<h1 class="text-center text-3xl font-bold text-snow-300">LeaderBoard</h1>
 	<div class="h-8" />
-	<p class="pr-4 pl-4 text-center font-medium text-snow-300">
-		Score for one game is calculated as 7 - guesses taken. 1 guess is 6 points. 6 guesses is 1
-		point. 10 guesses is -3 points. Total score is running total for the last 7 days. Highest wins.
+	<p class="pr-8 pl-8 text-center font-medium text-snow-300">
+		Score for one game is calculated as 7 mainus the number of guesses taken. 1 guess is 6 points. 6
+		guesses is 1 point. 10 guesses is -3 points. Total score is running total for the last 7 days.
+		Highest wins.
 	</p>
 	<div class="h-8" />
 	<table class="grid w-full max-w-2xl gap-2 text-snow-300">
@@ -24,7 +25,7 @@
 		</thead>
 		<tbody class="grid gap-2">
 			{#each scores as score, i (i)}
-				{@const position = i + 1}
+				{@const position = scores.filter((s) => s.score > score.score).length + 1}
 				<a href={`/profile/${score.user}`}>
 					<tr
 						class="grid w-full grid-cols-3 items-center rounded-2xl p-2 text-xl font-medium"
@@ -39,7 +40,7 @@
 							{/if}</td
 						>
 						<td class="text-left">{score.user}</td>
-						<td class="text-right">{score.sum}</td>
+						<td class="text-right">{score.score}</td>
 					</tr></a
 				>
 			{/each}

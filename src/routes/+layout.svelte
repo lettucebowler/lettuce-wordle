@@ -32,7 +32,7 @@
 			icon: 'home'
 		},
 		{
-			path: '/leaderboard',
+			path: '/rankings',
 			name: 'Rankings',
 			enabled: true,
 			prefetch: true,

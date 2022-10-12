@@ -6,7 +6,7 @@
 
 	import white from '$lib/assets/white.png';
 	import { onMount } from 'svelte';
-	import { afterNavigate } from '$app/navigation';
+	import { afterNavigate, beforeNavigate } from '$app/navigation';
 
 	export let user: {
 		login?: string;
@@ -46,8 +46,10 @@
 		}
 	];
 
+	let timeout: NodeJS.Timeout;
+
 	const eventuallyCloseDropdown = () => {
-		setTimeout(() => {
+		timeout = setTimeout(() => {
 			dropdownVisible = false;
 		}, 1500);
 	};
@@ -55,6 +57,12 @@
 	onMount(() => {
 		jsEnabled = true;
 		dropdownVisible = false;
+	});
+
+	beforeNavigate(() => {
+		if (timeout) {
+			clearTimeout(timeout);
+		}
 	});
 
 	afterNavigate(() => {

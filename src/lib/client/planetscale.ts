@@ -31,9 +31,9 @@ export const getInfoForLeaderBoard = async (
 > => {
 	const before = new Date();
 	const results = await conn.execute(
-		`select user, sum(attempts), count(attempts), 42 - sum(attempts) from gameresults where gamenum > (${
+		`select user, sum(attempts), count(attempts), (count(attempts) * 7) - sum(attempts) from gameresults where gamenum > (${
 			gameNum - 7
-		}) group by user order by 42 - sum(attempts) limit 10`
+		}) group by user order by (count(attempts) * 7) - sum(attempts) desc limit 10`
 	);
 	const after = new Date();
 	const duration = after.getTime() - before.getTime();
@@ -49,6 +49,7 @@ export const getInfoForLeaderBoard = async (
 			score
 		};
 	});
+	console.log(scores);
 	return scores;
 };
 
