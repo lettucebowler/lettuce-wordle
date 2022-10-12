@@ -14,7 +14,7 @@ specifiers:
   eslint: ^8.25.0
   eslint-config-prettier: ^8.5.0
   eslint-plugin-svelte3: ^4.0.0
-  itty-fetcher: 0.6.1
+  itty-fetcher: ^0.7.0
   js-cookie: ^3.0.1
   postcss: ^8.4.17
   prettier: ^2.7.1
@@ -29,9 +29,6 @@ specifiers:
   typescript: ^4.8.4
   vite: ^3.1.7
 
-dependencies:
-  '@upstash/redis': 1.14.0
-
 devDependencies:
   '@planetscale/database': 1.4.0
   '@sveltejs/adapter-vercel': 1.0.0-next.78
@@ -40,12 +37,13 @@ devDependencies:
   '@types/js-cookie': 3.0.2
   '@typescript-eslint/eslint-plugin': 5.40.0_25sstg4uu2sk4pm7xcyzuov7xq
   '@typescript-eslint/parser': 5.40.0_z4bbprzjrhnsfa24uvmcbu7f5q
+  '@upstash/redis': 1.14.0
   autoprefixer: 10.4.12_postcss@8.4.17
   cookie: 0.5.0
   eslint: 8.25.0
   eslint-config-prettier: 8.5.0_eslint@8.25.0
   eslint-plugin-svelte3: 4.0.0_6h4zki45sujwa22jozzvnassle
-  itty-fetcher: 0.6.1
+  itty-fetcher: 0.7.0
   js-cookie: 3.0.1
   postcss: 8.4.17
   prettier: 2.7.1
@@ -510,7 +508,7 @@ packages:
       isomorphic-fetch: 3.0.0
     transitivePeerDependencies:
       - encoding
-    dev: false
+    dev: true
 
   /@vercel/nft/0.22.1:
     resolution:
@@ -762,7 +760,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001418
-      electron-to-chromium: 1.4.278
+      electron-to-chromium: 1.4.279
       node-releases: 2.0.6
       update-browserslist-db: 1.0.10_browserslist@4.21.4
     dev: true
@@ -1030,10 +1028,10 @@ packages:
       esutils: 2.0.3
     dev: true
 
-  /electron-to-chromium/1.4.278:
+  /electron-to-chromium/1.4.279:
     resolution:
       {
-        integrity: sha512-i+0+t/UVCqp9khP+hswZQbG31LnsYWGwyI9zhqZkyPok7k57W0UhMaxODMp3TeoNFhyUtB5OI4ppO/OSD9gaYg==
+        integrity: sha512-xs7vEuSZ84+JsHSTFqqG0TE3i8EAivHomRQZhhcRvsmnjsh5C2KdhwNKf4ZRYtzq75wojpFyqb62m32Oam57wA==
       }
     dev: true
 
@@ -1935,12 +1933,12 @@ packages:
       whatwg-fetch: 3.6.2
     transitivePeerDependencies:
       - encoding
-    dev: false
+    dev: true
 
-  /itty-fetcher/0.6.1:
+  /itty-fetcher/0.7.0:
     resolution:
       {
-        integrity: sha512-LtTkeEDRP8Z9DQQrXxml2/LRk+y6uaRhcil9zEQjjomADqScICoNkZZXpKbYkYpC7fG7RL/xeACftrjYBu6geQ==
+        integrity: sha512-mqrrxpFiwS3GwY1eolzOQ4MCoTO4IS6v1mA1PtQy2LcgGtu8X1A+HnhwNwvNvNJlGeVQkt1V08VwaJoY82jRTA==
       }
     dev: true
 
@@ -2229,6 +2227,7 @@ packages:
         optional: true
     dependencies:
       whatwg-url: 5.0.0
+    dev: true
 
   /node-gyp-build/4.5.0:
     resolution:
@@ -3128,6 +3127,7 @@ packages:
       {
         integrity: sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==
       }
+    dev: true
 
   /tslib/1.14.1:
     resolution:
@@ -3258,13 +3258,14 @@ packages:
       {
         integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==
       }
+    dev: true
 
   /whatwg-fetch/3.6.2:
     resolution:
       {
         integrity: sha512-bJlen0FcuU/0EMLrdbJ7zOnW6ITZLrZMIarMUVmdKtsGvZna8vxKYaexICWPfZ8qwf9fzNq+UEIZrnSaApt6RA==
       }
-    dev: false
+    dev: true
 
   /whatwg-url/5.0.0:
     resolution:
@@ -3274,6 +3275,7 @@ packages:
     dependencies:
       tr46: 0.0.3
       webidl-conversions: 3.0.1
+    dev: true
 
   /which/2.0.2:
     resolution:
