@@ -51,7 +51,7 @@
 	const eventuallyCloseDropdown = () => {
 		timeout = setTimeout(() => {
 			dropdownVisible = false;
-		}, 1500);
+		}, 0);
 	};
 
 	onMount(() => {
@@ -59,15 +59,15 @@
 		dropdownVisible = false;
 	});
 
-	beforeNavigate(() => {
-		if (timeout) {
-			clearTimeout(timeout);
-		}
-	});
+	// beforeNavigate(() => {
+	// 	if (timeout) {
+	// 		clearTimeout(timeout);
+	// 	}
+	// });
 
-	afterNavigate(() => {
-		if (dropdownVisible) eventuallyCloseDropdown();
-	});
+	// afterNavigate(() => {
+	// 	if (dropdownVisible) eventuallyCloseDropdown();
+	// });
 </script>
 
 <div>
@@ -77,13 +77,13 @@
 	>
 		{#each links.filter((link) => link.enabled) as link}
 			<a
-				class="flex h-12 cursor-pointer overflow-hidden rounded-xl border-transparent bg-polar-400 p-0 text-3xl font-medium text-snow-300 active:brightness-90"
+				class="flex h-14 cursor-pointer overflow-hidden rounded-xl border-transparent bg-polar-400 p-0 text-3xl font-medium text-snow-300 active:brightness-90"
 				class:ml-auto={link.margin === 'left'}
 				class:brightness-90={link.path === $page.url.pathname}
 				href={link.path}
 				data-sveltekit-prefetch={link.prefetch ? '' : null}
 				><span
-					class="grid h-full w-full place-items-center pr-2 pl-2 text-center duration-500 hover:backdrop-brightness-90 hover:backdrop-filter"
+					class="grid h-full w-full place-items-center p-2 text-center duration-500 hover:backdrop-brightness-90 hover:backdrop-filter"
 				>
 					<span class="flex items-center gap-2">
 						{#if link.icon}
@@ -104,12 +104,12 @@
 			/>
 			<label
 				for="subnav"
-				class="ml-auto box-border flex h-12 select-none items-center justify-center gap-1 rounded-xl p-1 text-center text-3xl text-snow-300 transition duration-150 ease-in-out hover:bg-polar-300 active:bg-polar-200"
+				class="ml-auto box-border flex h-14 select-none items-center justify-center gap-1 rounded-xl p-2 text-center text-3xl text-snow-300 transition duration-150 ease-in-out hover:bg-polar-300 active:bg-polar-200"
 			>
 				{#if user.avatar}
 					<img
 						src={user.avatar || white}
-						class="max-x-full box-border flex aspect-square h-full rounded-lg object-contain"
+						class="box-border aspect-square h-full rounded-lg object-contain"
 						alt="user avatar"
 					/>
 				{/if}
@@ -138,9 +138,9 @@
 					<a
 						href={subnavItem.path}
 						data-sveltekit-prefetch={subnavItem.prefetch ? '' : null}
-						class="box-border items-center justify-center overflow-hidden rounded-lg bg-polar-300 text-center text-lg font-medium text-snow-300 transition duration-150 ease-in-out active:brightness-90 "
+						class="box-border h-12 items-center justify-center overflow-hidden rounded-lg bg-polar-300 text-center text-lg font-medium text-snow-300 transition duration-150 ease-in-out active:brightness-90"
 						><span
-							class="grid h-full w-full place-items-center p-2 text-center duration-500 hover:backdrop-brightness-90 hover:backdrop-filter"
+							class="grid h-full w-full place-items-center p-2 pl-4 pr-4 text-center duration-500 hover:backdrop-brightness-90 hover:backdrop-filter"
 							>{subnavItem.name}</span
 						></a
 					>
