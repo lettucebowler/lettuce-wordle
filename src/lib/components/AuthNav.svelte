@@ -70,9 +70,9 @@
 	// });
 </script>
 
-<div>
+<div id="big-papa-nav">
 	<nav
-		class="box-border flex flex-wrap justify-between gap-x-1 rounded-b-2xl bg-polar-400 p-1"
+		class="box-border flex justify-between gap-x-1 rounded-b-2xl bg-polar-400 p-1"
 		id="primary-nav"
 	>
 		{#each links.filter((link) => link.enabled) as link}
@@ -95,13 +95,6 @@
 			>
 		{/each}
 		{#if user.login}
-			<input
-				type="checkbox"
-				class="hidden"
-				name="subnav"
-				id="subnav"
-				bind:checked={dropdownVisible}
-			/>
 			<label
 				for="subnav"
 				class="ml-auto box-border flex h-14 select-none items-center justify-center gap-1 rounded-xl p-2 text-center text-3xl text-snow-300 transition duration-150 ease-in-out hover:bg-polar-300 active:bg-polar-200"
@@ -127,33 +120,46 @@
 				</svg>
 			</label>
 		{/if}
-		{#if showDropdown}
-			<nav
-				transition:slide={{ duration: 150 }}
-				id="subnav-content"
-				class="mt-1 flex w-full justify-evenly rounded-xl bg-polar-300 p-1 transition transition-all duration-150"
-				class:hidden={!dropdownVisible && !jsEnabled}
-			>
-				{#each subnavItems as subnavItem}
-					<a
-						href={subnavItem.path}
-						data-sveltekit-prefetch={subnavItem.prefetch ? '' : null}
-						class="box-border h-12 items-center justify-center overflow-hidden rounded-lg bg-polar-300 text-center text-lg font-medium text-snow-300 transition duration-150 ease-in-out active:brightness-90"
-						><span
-							class="grid h-full w-full place-items-center p-2 pl-4 pr-4 text-center duration-500 hover:backdrop-brightness-90 hover:backdrop-filter"
-							>{subnavItem.name}</span
-						></a
-					>
-				{/each}
-			</nav>
-		{/if}
 	</nav>
+	<input type="checkbox" class="hidden" name="subnav" id="subnav" bind:checked={dropdownVisible} />
+	{#if showDropdown}
+		<nav
+			transition:slide={{ duration: 150 }}
+			id="subnav-content"
+			class="mt-2 ml-4 mr-4 flex justify-evenly rounded-xl bg-polar-300 p-1 font-medium transition transition-all duration-150"
+			class:hidden={!dropdownVisible && !jsEnabled}
+		>
+			{#each subnavItems as subnavItem}
+				<a
+					href={subnavItem.path}
+					data-sveltekit-prefetch={subnavItem.prefetch ? '' : null}
+					class="box-border h-10 items-center justify-center overflow-hidden rounded-lg bg-polar-300 text-center text-lg font-medium text-snow-300 transition duration-150 ease-in-out active:brightness-90"
+					><span
+						class="grid h-full w-full place-items-center pl-4 pr-4 text-center font-medium duration-500 hover:backdrop-brightness-90 hover:backdrop-filter"
+						>{subnavItem.name}</span
+					></a
+				>
+			{/each}
+		</nav>
+	{/if}
 </div>
 
 <style>
+	/* nav:has(input[type='checkbox'][name^='subnav']:checked) ~ nav {
+		display: flex;
+	} */
+
 	input[type='checkbox'][name^='subnav']:checked ~ nav {
 		display: flex;
 	}
+
+	/* nav input[type='checkbox'][name^='subnav']:checked ~ nav {
+		display: flex;
+	}
+
+	#big-papa-nav > input[type='checkbox'][name^='subnav']:checked:last-child {
+
+	} */
 
 	input[type='checkbox'][name^='subnav']:checked ~ label svg {
 		--tw-rotate: 180deg;

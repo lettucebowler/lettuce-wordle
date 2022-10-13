@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Icon from '$lib/components/Icon.svelte';
+	import P from '$lib/components/P.svelte';
 
 	export let data: import('./$types').PageData;
 	$: scores = data.scores;
@@ -9,11 +10,13 @@
 	<div class="h-8" />
 	<h1 class="text-center text-3xl font-bold text-snow-300">LeaderBoard</h1>
 	<div class="h-8" />
-	<p class="pr-8 pl-8 text-center font-medium text-snow-300">
-		Score for one game is calculated as 7 minus the number of guesses taken. 1 guess is 6 points. 6
-		guesses is 1 point. 10 guesses is -3 points. Total score is running total for the last 7 days.
-		Highest wins.
-	</p>
+	<div class="ml-4 mr-4">
+		<P>
+			Score for one game is calculated as 7 minus the number of guesses taken. 1 guess is 6 points.
+			6 guesses is 1 point. 10 guesses is -3 points. Total score is running total for the last 7
+			days. Highest wins.
+		</P>
+	</div>
 	<div class="h-8" />
 	<table class="grid w-full max-w-2xl gap-2 text-snow-300">
 		<thead>

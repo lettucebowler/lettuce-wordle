@@ -107,8 +107,8 @@
 	<title>{$appName} Daily</title>
 </svelte:head>
 
-<main class="flex flex-auto flex-col justify-between gap-2">
-	<div class="flex h-auto flex-auto flex-col">
+<main class="flex flex-auto flex-col items-center justify-between gap-2">
+	<div class="flex h-auto w-full flex-auto flex-col items-center">
 		<form
 			method="POST"
 			action="?/enter"
@@ -171,7 +171,7 @@
 			</div>
 		</form>
 	</div>
-	<div class="flex-0 flex h-full max-h-[min(20rem,_30vh)] flex-col">
+	<div class="h-full max-h-[min(20rem,_30vh)] w-full">
 		<LettuceKeyboard on:key={(e) => handleKey(e.detail)} answers={keys} />
 	</div>
 </main>
