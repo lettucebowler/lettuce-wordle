@@ -1,4 +1,3 @@
-import { prerendering } from '$app/environment';
 import type { WordLettuceUser } from '$lib/client/oauth';
 
 export const prerender = false;
