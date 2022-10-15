@@ -51,7 +51,7 @@
 	const eventuallyCloseDropdown = () => {
 		timeout = setTimeout(() => {
 			dropdownVisible = false;
-		}, 0);
+		}, 2500);
 	};
 
 	onMount(() => {
@@ -59,15 +59,15 @@
 		dropdownVisible = false;
 	});
 
-	// beforeNavigate(() => {
-	// 	if (timeout) {
-	// 		clearTimeout(timeout);
-	// 	}
-	// });
+	beforeNavigate(() => {
+		if (timeout) {
+			clearTimeout(timeout);
+		}
+	});
 
-	// afterNavigate(() => {
-	// 	if (dropdownVisible) eventuallyCloseDropdown();
-	// });
+	afterNavigate(() => {
+		if (dropdownVisible) eventuallyCloseDropdown();
+	});
 </script>
 
 <div id="big-papa-nav">
