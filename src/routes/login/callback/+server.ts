@@ -3,7 +3,7 @@ import { fetcher } from 'itty-fetcher';
 import { CLIENT_ID, CLIENT_SECRET, SESSION_COOKIE_NAME } from '$env/static/private';
 import { stashProfile } from '$lib/client/redis';
 import { getGameNum } from '$lib/util/share';
-import { decodeState } from '$lib/util/state';
+import { getGameFromCookie } from '$lib/util/state';
 
 import { getUser } from '$lib/client/oauth';
 import { saveGameResults } from '$lib/client/planetscale';
@@ -28,20 +28,6 @@ const getAccessToken = async (code: string, fetchImplementation: any = fetch): P
 			}
 		}
 	);
-	// const options = {
-	// 	method: 'POST',
-	// 	body: JSON.stringify({
-	// 		client_id: CLIENT_ID,
-	// 		client_secret: CLIENT_SECRET,
-	// 		code
-	// 	}),
-	// 	headers: {
-	// 		accept: 'application/json',
-	// 		'content-type': 'application/json'
-	// 	}
-	// };
-	// const tokenResponse = await fetchImplementation(tokenUrl, options);
-	// const response = await tokenResponse.json();
 	const access_token = response.access_token;
 	return access_token as string;
 };
@@ -55,13 +41,10 @@ export const GET: import('./$types').RequestHandler = async (event) => {
 	const accessToken = await getAccessToken(code || '', event.fetch);
 	const user = await getUser(accessToken, event.fetch);
 	await stashProfile(accessToken, user);
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
-	const gameState = event.cookies.get('wordLettuceState') || '';
-	const decoded = decodeState(gameState || '');
-	const answers = decoded?.answers || [];
-	if (gameState && user.login && answers.length && answers.at(-1) === 'xxxxx') {
-		await saveGameResults(user.login, getGameNum(), answers);
+	const wordLettuceState = event.cookies.get('wordLettuceState') || '';
+	const gameState = getGameFromCookie(wordLettuceState);
+	if (user.login && gameState.answers.length && gameState.answers.at(-1) === 'xxxxx') {
+		await saveGameResults(user.login, getGameNum(), gameState.answers);
 	}
 	event.cookies.set(SESSION_COOKIE_NAME, accessToken, {
 		httpOnly: true,

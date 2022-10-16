@@ -1,5 +1,4 @@
-import { getDailyWord } from '$lib/util/words';
-import { encodeState, decodeState } from '$lib/util/state';
+import { encodeState, getGameFromCookie } from '$lib/util/state';
 import { applyWord, applyKey } from '$lib/util/gameFunctions';
 import { invalid } from '@sveltejs/kit';
 import { saveGameResults } from '$lib/client/planetscale';
@@ -8,17 +7,8 @@ import { getGameNum } from '$lib/util/share';
 export const load: import('./$types').PageServerLoad = ({ cookies, depends, locals }) => {
 	depends('/');
 
-	const cookie = cookies.get('wordLettuceState') || '';
-	let gameState = decodeState(cookie);
-	const dailyWord = getDailyWord();
-	const isStateForToday = gameState?.answer === dailyWord;
-	if (!isStateForToday) {
-		gameState = {
-			answer: dailyWord,
-			guesses: [],
-			answers: []
-		};
-	}
+	const wordLettuceState = cookies.get('wordLettuceState') || '';
+	let gameState = getGameFromCookie(wordLettuceState);
 
 	cookies.set('wordLettuceState', encodeState(gameState), {
 		httpOnly: false,
@@ -35,11 +25,12 @@ export const load: import('./$types').PageServerLoad = ({ cookies, depends, loca
 export const actions: import('./$types').Actions = {
 	keyboard: async ({ url, cookies }) => {
 		const key: string = url.searchParams.get('key') || '';
-		const game = decodeState(cookies.get('wordLettuceState') || '') || {};
-		const guesses = game?.guesses || [];
-		const { answer } = game;
+		const wordLettuceState = cookies.get('wordLettuceState') || '';
+		const gameState = getGameFromCookie(wordLettuceState);
+		const guesses = gameState?.guesses || [];
+		const { answer } = gameState;
 
-		const answers = game?.answers || [];
+		const answers = gameState?.answers || [];
 		const updatedGuesses = applyKey(key, guesses, answers);
 		cookies.set('wordLettuceState', encodeState({ answer, guesses: updatedGuesses, answers }), {
 			httpOnly: false,
@@ -55,13 +46,13 @@ export const actions: import('./$types').Actions = {
 	},
 
 	enter: async (event) => {
-		const cookie = event.cookies.get('wordLettuceState') || '';
+		const wordLettuceState = event.cookies.get('wordLettuceState') || '';
 		const data = await event.request.formData();
 
-		const game = decodeState(cookie);
+		const gameState = getGameFromCookie(wordLettuceState);
 		const guess = data.getAll('guess').map((l) => l.toString().toLowerCase());
 
-		const { metadata, updatedGame } = applyWord(game, guess);
+		const { metadata, updatedGame } = applyWord(gameState, guess);
 		if (metadata.invalid) {
 			return invalid(400, metadata);
 		}

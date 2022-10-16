@@ -1,3 +1,5 @@
+import { getDailyWord } from './words';
+
 export const encodeState = (state: {
 	answer: string;
 	guesses: string[];
@@ -10,7 +12,7 @@ export const encodeState = (state: {
 	return encoded;
 };
 
-export const decodeState = (stateBuffer: string) => {
+const decodeState = (stateBuffer: string) => {
 	let state: {
 		answer: string;
 		guesses: string[];
@@ -36,4 +38,18 @@ export const decodeState = (stateBuffer: string) => {
 		answers: statuses
 	};
 	return state;
+};
+
+export const getGameFromCookie = (wordLettuceState: string) => {
+	const gameState = decodeState(wordLettuceState);
+	const dailyWord = getDailyWord();
+	const isStateForToday = gameState?.answer === dailyWord;
+	if (!isStateForToday) {
+		return {
+			answer: dailyWord,
+			guesses: [],
+			answers: []
+		};
+	}
+	return gameState;
 };
