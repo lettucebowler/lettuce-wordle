@@ -3,7 +3,6 @@ import { fetcher } from 'itty-fetcher';
 import { CLIENT_ID, CLIENT_SECRET, SESSION_COOKIE_NAME } from '$env/static/private';
 import { stashProfile } from '$lib/client/redis';
 import { getGameNum } from '$lib/util/share';
-import { getGameFromCookie } from '$lib/util/state';
 
 import { getUser } from '$lib/client/oauth';
 import { saveGameResults } from '$lib/client/planetscale';
@@ -41,8 +40,7 @@ export const GET: import('./$types').RequestHandler = async (event) => {
 	const accessToken = await getAccessToken(code || '', event.fetch);
 	const user = await getUser(accessToken, event.fetch);
 	await stashProfile(accessToken, user);
-	const wordLettuceState = event.cookies.get('wordLettuceState') || '';
-	const gameState = getGameFromCookie(wordLettuceState);
+	const gameState = event.locals.gameState;
 	if (user.login && gameState.answers.length && gameState.answers.at(-1) === 'xxxxx') {
 		await saveGameResults(user.login, getGameNum(), gameState.answers);
 	}
