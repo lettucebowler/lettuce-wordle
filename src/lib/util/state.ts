@@ -44,7 +44,7 @@ export const getGameFromCookie = (wordLettuceState: string) => {
 	const gameState = decodeState(wordLettuceState);
 	const dailyWord = getDailyWord();
 	const isStateForToday = gameState?.answer === dailyWord;
-	if (!isStateForToday) {
+	if (!isStateForToday || !gameState?.answers || !gameState?.guesses) {
 		return {
 			answer: dailyWord,
 			guesses: [],
