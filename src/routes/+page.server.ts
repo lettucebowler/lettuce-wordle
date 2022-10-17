@@ -26,11 +26,10 @@ export const actions: import('./$types').Actions = {
 		const key: string = url.searchParams.get('key') || '';
 		const gameState = locals.gameState;
 		const guesses = gameState?.guesses || [];
-		const { answer } = gameState;
 
 		const answers = gameState?.answers || [];
 		const updatedGuesses = applyKey(key, guesses, answers);
-		cookies.set('wordLettuceState', encodeState({ answer, guesses: updatedGuesses, answers }), {
+		cookies.set('wordLettuceState', encodeState({ guesses: updatedGuesses, answers }), {
 			httpOnly: false,
 			path: '/',
 			maxAge: 86400

@@ -36,7 +36,7 @@
 		data.state.guesses = updatedGuesses;
 	};
 
-	const updateData = (gameData: { answer: string; guesses: string[]; answers: string[] }) => {
+	const updateData = (gameData: { guesses: string[]; answers: string[] }) => {
 		data.state = gameData;
 		data = data;
 		const gameState = encodeState(gameData);
@@ -76,7 +76,6 @@
 
 	$: guesses = data?.state?.guesses;
 	$: answers = data?.state?.answers;
-	$: answer = data?.state?.answer;
 	$: current_guess = answers.length || 0;
 
 	$: {
@@ -117,8 +116,7 @@
 				const guess = data.getAll('guess').map((l) => l.toString().toLowerCase());
 				const game = {
 					answers,
-					guesses,
-					answer
+					guesses
 				};
 				const { metadata, updatedGame } = applyWord(game, guess);
 				form = metadata;

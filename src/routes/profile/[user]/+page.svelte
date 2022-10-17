@@ -31,6 +31,7 @@
 
 <div class="flex w-full flex-wrap justify-center gap-4">
 	{#each gameResults.sort((a, b) => b.gamenum - a.gamenum) as gameResult (gameResult.gamenum)}
+		{@const answers = gameResult.answers.split('').slice(-30).join('')}
 		<div
 			class="flex w-full flex-[0_1_400px] flex-col gap-2 rounded-2xl border-4 border-solid border-polar-300 p-2 sm:flex-[0_1_240px]"
 		>
@@ -41,7 +42,7 @@
 			</h2>
 			<div class="grid grid-cols-5 gap-1 ">
 				{#each cells as _, i}
-					{@const answer = gameResult.answers.split('').slice(-30).join('').charAt(i) || '_'}
+					{@const answer = answers.charAt(i) || '_'}
 					<div
 						class="box-border grid aspect-square w-full grid-rows-3 rounded-lg text-center text-2xl font-bold text-snow-300 sm:text-3xl"
 						class:border-polar-300={answer === '_'}

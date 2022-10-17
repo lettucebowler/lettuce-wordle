@@ -1,4 +1,4 @@
-import { isValidWord } from './words';
+import { getDailyWord, isValidWord } from './words';
 
 const getLetterLocations = (s: string, l: string) => {
 	return s
@@ -94,12 +94,12 @@ export const applyKey = (key: string, guesses: string[], answers: string[]) => {
 
 export const applyWord = (
 	game: {
-		answer: string;
 		guesses: string[];
 		answers: string[];
 	},
 	data: string[]
 ) => {
+	const answer = getDailyWord();
 	const guessLetters = data.map((l: string) => l.toLowerCase());
 	const guess = guessLetters.join('');
 	const metadata = {
@@ -120,7 +120,7 @@ export const applyWord = (
 			metadata
 		};
 	}
-	const statuses = checkWord(guessLetters, game?.answer);
+	const statuses = checkWord(guessLetters, answer);
 	const updatedAnswers = [...(game.answers || []), statuses];
 	const updatedGuesses = game?.guesses || [];
 	if (game?.guesses?.length < updatedAnswers.length) {
