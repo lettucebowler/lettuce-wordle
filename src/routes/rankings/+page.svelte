@@ -19,17 +19,15 @@
 	</div>
 	<div class="h-8" />
 	<div class="grid w-full max-w-2xl gap-2 text-snow-300">
-		<thead>
-			<div class="grid w-full grid-cols-3 rounded-2xl bg-polar-400 p-2 text-xl font-medium">
-				<div class="text-left">Rank</div>
-				<div class="text-left">User</div>
-				<div class="text-right">score</div>
-			</div>
-		</thead>
+		<div class="grid w-full grid-cols-3 rounded-2xl bg-polar-400 p-2 text-xl font-medium">
+			<div class="text-left">Rank</div>
+			<div class="text-left">User</div>
+			<div class="text-right">score</div>
+		</div>
 		<div class="grid gap-2">
 			{#each scores as score, i (i)}
 				{@const position = scores.filter((s) => s.score > score.score).length + 1}
-				<a href={`/profile/${score.user}`}>
+				<a href={`/profile/${score.user}`} data-sveltekit-prefetch>
 					<div
 						class="grid w-full grid-cols-3 items-center rounded-2xl p-2 text-xl font-medium"
 						class:bg-polar-300={i % 2 == 1}
