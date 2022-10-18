@@ -7,10 +7,12 @@
 	import { enhance, applyAction } from '$app/forms';
 	import LettuceKeyboard from '$lib/components/LettuceKeyboard.svelte';
 	import LetterBox from '$lib/components/LetterBox.svelte';
-	import { applyKey, getKeyStatuses, applyWord } from '$lib/util/gameFunctions';
+	import { applyKey, getKeyStatuses, applyWord, checkWords } from '$lib/util/gameFunctions';
 	import { encodeState } from '$lib/util/state';
 	import Cookies from 'js-cookie';
 	import { invalidate } from '$app/navigation';
+	import { getDailyWord } from '$lib/util/words';
+	import { browser } from '$app/environment';
 
 	export let data: import('./$types').PageData;
 	export let form: import('./$types').ActionData;
@@ -19,8 +21,8 @@
 		open(answers: string[], guesses: number, success: boolean, user: string): void;
 	};
 	let invalidForm = false;
-	let answers: string[];
-	let guesses: string[];
+	let guesses: any = [];
+	let answers: any = [];
 	let keys = {};
 
 	const rows = Array(6);
@@ -32,15 +34,15 @@
 
 	const handleKey = (key: string) => {
 		form = { invalid: false, success: false };
-		const updatedGuesses = applyKey(key, guesses, answers);
-		data.state.guesses = updatedGuesses;
+		const updatedGuesses = applyKey(key, guesses);
+		guesses = updatedGuesses;
 	};
 
-	const updateData = (gameData: { guesses: string[]; answers: string[] }) => {
+	const updateData = (gameData: { guess: string; complete: boolean }[]) => {
 		data.state = gameData;
 		data = data;
 		const gameState = encodeState(gameData);
-		Cookies.set('wordLettuceState', gameState, {
+		Cookies.set('wordLettuce', gameState, {
 			httpOnly: false,
 			path: '',
 			expires: 1,
@@ -48,9 +50,13 @@
 		});
 	};
 
-	const getRealIndex = (i: number, guesses: string[], answers: string[]) => {
+	const getRealIndex = (
+		i: number,
+		guesses: { guess: string; complete: boolean }[],
+		answers: string[]
+	) => {
 		const filteredLength = guesses.filter(
-			(g, j) => g.length === 5 && answers[j]?.length === 5
+			(g, j) => g.guess.length === 5 && answers[j]?.length === 5
 		).length;
 
 		if (filteredLength < 6) {
@@ -63,29 +69,19 @@
 	};
 
 	onMount(() => {
-		const lastAnswer = data?.state?.answers?.at(-1) || '_____';
+		const lastAnswer = answers?.at(-1) || '_____';
 		if (lastAnswer === 'xxxxx') {
-			openModal(
-				data?.state?.answers,
-				data?.state?.guesses?.length || 0,
-				lastAnswer === 'xxxxx',
-				data?.user?.login || ''
-			);
+			openModal(answers, guesses?.length || 0, lastAnswer === 'xxxxx', data?.user?.login || '');
 		}
 	});
 
-	$: guesses = data?.state?.guesses;
-	$: answers = data?.state?.answers;
+	$: guesses = data?.state;
+	$: answers = checkWords(guesses, getDailyWord());
 	$: current_guess = answers.length || 0;
 
 	$: {
-		if (form?.success) {
-			openModal(
-				data?.state?.answers,
-				data?.state?.guesses?.length || 0,
-				true,
-				data?.user?.login || ''
-			);
+		if (form?.success && browser) {
+			openModal(answers, guesses?.length || 0, true, data?.user?.login || '');
 		}
 
 		if (form?.invalid) {
@@ -98,7 +94,7 @@
 
 	$: {
 		keys = {};
-		keys = getKeyStatuses(data?.state?.guesses, data?.state?.answers);
+		keys = getKeyStatuses(guesses, answers);
 	}
 </script>
 
@@ -114,13 +110,9 @@
 			id="game"
 			use:enhance={({ data, cancel }) => {
 				const guess = data.getAll('guess').map((l) => l.toString().toLowerCase());
-				const game = {
-					answers,
-					guesses
-				};
-				const { metadata, updatedGame } = applyWord(game, guess);
+				const { metadata, updatedGuesses } = applyWord(guesses, guess);
 				form = metadata;
-				updateData(updatedGame);
+				updateData(updatedGuesses);
 
 				if (!metadata.success) {
 					cancel();
@@ -154,7 +146,7 @@
 					>
 						{#each columns as _, j}
 							{@const answer = (answers[realIndex] || '_____')[j]}
-							{@const letter = guesses[realIndex]?.at(j) || ''}
+							{@const letter = guesses[realIndex]?.guess?.at(j) || ''}
 							<LetterBox
 								{answer}
 								{letter}

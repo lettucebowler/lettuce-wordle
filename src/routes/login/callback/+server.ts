@@ -6,6 +6,8 @@ import { getGameNum } from '$lib/util/share';
 
 import { getUser } from '$lib/client/oauth';
 import { saveGameResults } from '$lib/client/planetscale';
+import { checkWords } from '$lib/util/gameFunctions';
+import { getDailyWord } from '$lib/util/words';
 const tokenUrl = 'https://github.com/login/oauth/access_token';
 
 const getAccessToken = async (code: string, fetchImplementation: any = fetch): Promise<string> => {
@@ -41,8 +43,12 @@ export const GET: import('./$types').RequestHandler = async (event) => {
 	const user = await getUser(accessToken, event.fetch);
 	await stashProfile(accessToken, user);
 	const gameState = event.locals.gameState;
-	if (user.login && gameState.answers.length && gameState.answers.at(-1) === 'xxxxx') {
-		await saveGameResults(user.login, getGameNum(), gameState.answers);
+	let answers: string[] = [];
+	if (gameState.length) {
+		answers = checkWords(gameState, getDailyWord());
+	}
+	if (user.login && answers.length && answers.at(-1) === 'xxxxx') {
+		await saveGameResults(user.login, getGameNum(), answers);
 	}
 	event.cookies.set(SESSION_COOKIE_NAME, accessToken, {
 		httpOnly: true,

@@ -28,7 +28,7 @@ const AuthenticateSession = async (event: RequestEvent) => {
 };
 
 const addGameStateToSession = (event: RequestEvent) => {
-	const wordLettuceState = event.cookies.get('wordLettuceState') || '';
+	const wordLettuceState = event.cookies.get('wordLettuce') || '';
 	const gameState = getGameFromCookie(wordLettuceState);
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore

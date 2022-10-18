@@ -38,12 +38,26 @@ export const checkWord = (word: string[], answer: string) => {
 	return statuses.join('');
 };
 
-export const getKeyStatuses = (words: string[], statuses: string[]) => {
+export const checkWords = (guesses: { guess: string; complete: boolean }[], answer: string) => {
+	return guesses
+		.filter((guess) => guess.guess.length === 5 && guess.complete)
+		.map((guess) => {
+			return checkWord(guess.guess.split(''), answer);
+		});
+};
+
+export const getKeyStatuses = (
+	words: {
+		guess: string;
+		complete: boolean;
+	}[],
+	statuses: string[]
+) => {
 	const letters = Array.from(
 		new Set(
 			words
 				.map((w, i) =>
-					w.split('').map((l, j) => ({
+					w.guess.split('').map((l, j) => ({
 						letter: l,
 						status: statuses[i]?.[j] || '_'
 					}))
@@ -67,36 +81,50 @@ export const getKeyStatuses = (words: string[], statuses: string[]) => {
 	return { ...incorrect, ...contains, ...correct };
 };
 
-export const applyKey = (key: string, guesses: string[], answers: string[]) => {
-	if (answers.at(-1) === 'xxxxx') {
-		return guesses;
-	}
+export const applyKey = (
+	key: string,
+	guesses: {
+		guess: string;
+		complete: boolean;
+	}[]
+) => {
+	const answer = getDailyWord();
+	const answers = checkWords(guesses, answer);
 	const keyTest = /^[a-zA-Z]{1}$/;
 	const isLetter = keyTest.test(key);
 	const current_guess = answers.length;
-	const guess = guesses.at(current_guess) || '';
+	const guess = guesses.at(current_guess) || {
+		guess: '',
+		complete: false
+	};
 	if (
 		(!isLetter && key.toLowerCase() !== 'backspace') ||
-		(key.toLowerCase() === 'backspace' && guess.length === 0) ||
-		(isLetter && guess.length >= 5)
+		(key.toLowerCase() === 'backspace' && guess.guess.length === 0) ||
+		(isLetter && guess.guess.length >= 5)
 	) {
 		return guesses;
 	}
 
 	const updatedGuesses = guesses;
 	if (key.toLowerCase() === 'backspace') {
-		updatedGuesses[current_guess] = updatedGuesses[current_guess].slice(0, -1);
+		updatedGuesses[current_guess] = {
+			guess: updatedGuesses[current_guess]?.guess?.slice(0, -1),
+			complete: false
+		};
 	} else {
-		updatedGuesses[current_guess] = guess + key.toLowerCase();
+		updatedGuesses[current_guess] = {
+			guess: (updatedGuesses[current_guess]?.guess || '') + key.toLowerCase(),
+			complete: false
+		};
 	}
 	return updatedGuesses;
 };
 
 export const applyWord = (
-	game: {
-		guesses: string[];
-		answers: string[];
-	},
+	guesses: {
+		guess: string;
+		complete: boolean;
+	}[],
 	data: string[]
 ) => {
 	const answer = getDailyWord();
@@ -106,38 +134,42 @@ export const applyWord = (
 		invalid: false,
 		success: false
 	};
-	let updatedGame = game;
-	if (updatedGame.answers.at(-1) === 'xxxxx') {
+	let updatedGuesses = guesses;
+	const answers = checkWords(updatedGuesses, answer);
+	if (answers.at(-1) === 'xxxxx') {
+		metadata.success = true;
 		return {
-			updatedGame,
-			metadata
+			updatedGuesses,
+			metadata,
+			updatedAnswers: answers
 		};
 	}
 	if (guess.length !== 5 || !isValidWord(guess)) {
 		metadata.invalid = true;
 		return {
-			updatedGame,
-			metadata
+			updatedGuesses,
+			metadata,
+			updatedAnswers: answers
 		};
 	}
 	const statuses = checkWord(guessLetters, answer);
-	const updatedAnswers = [...(game.answers || []), statuses];
-	const updatedGuesses = game?.guesses || [];
-	if (game?.guesses?.length < updatedAnswers.length) {
-		updatedGuesses.push(guess);
+	const updatedAnswers = [...answers, statuses];
+	if (guesses?.length < updatedAnswers.length) {
+		updatedGuesses.push({
+			guess,
+			complete: true
+		});
 	}
+
+	updatedGuesses.at(-1).complete = true;
 
 	if (statuses === 'xxxxx') {
 		metadata.success = true;
 	}
 
-	updatedGame = {
-		...updatedGame,
-		guesses: updatedGuesses,
-		answers: updatedAnswers
-	};
 	return {
-		updatedGame,
-		metadata
+		updatedGuesses,
+		metadata,
+		updatedAnswers
 	};
 };

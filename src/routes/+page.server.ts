@@ -9,7 +9,7 @@ export const load: import('./$types').PageServerLoad = ({ cookies, depends, loca
 
 	const gameState = locals.gameState;
 
-	cookies.set('wordLettuceState', encodeState(gameState), {
+	cookies.set('wordLettuce', encodeState(gameState), {
 		httpOnly: false,
 		path: '/',
 		maxAge: 86400,
@@ -25,11 +25,10 @@ export const actions: import('./$types').Actions = {
 	keyboard: async ({ url, cookies, locals }) => {
 		const key: string = url.searchParams.get('key') || '';
 		const gameState = locals.gameState;
-		const guesses = gameState?.guesses || [];
+		const guesses = gameState || [];
 
-		const answers = gameState?.answers || [];
-		const updatedGuesses = applyKey(key, guesses, answers);
-		cookies.set('wordLettuceState', encodeState({ guesses: updatedGuesses, answers }), {
+		const updatedGuesses = applyKey(key, guesses);
+		cookies.set('wordLettuce', encodeState(updatedGuesses), {
 			httpOnly: false,
 			path: '/',
 			maxAge: 86400
@@ -48,7 +47,7 @@ export const actions: import('./$types').Actions = {
 		const gameState = event.locals.gameState;
 		const guess = data.getAll('guess').map((l) => l.toString().toLowerCase());
 
-		const { metadata, updatedGame } = applyWord(gameState, guess);
+		const { metadata, updatedGuesses, updatedAnswers } = applyWord(gameState, guess);
 		if (metadata.invalid) {
 			return invalid(400, metadata);
 		}
@@ -58,10 +57,10 @@ export const actions: import('./$types').Actions = {
 		const { user } = event.locals;
 		if (user) {
 			const gameNum = getGameNum();
-			saveGameResults(user.login, gameNum, updatedGame.answers);
+			saveGameResults(user.login, gameNum, updatedAnswers);
 		}
 
-		event.cookies.set('wordLettuceState', encodeState(updatedGame), {
+		event.cookies.set('wordLettuce', encodeState(updatedGuesses), {
 			httpOnly: false,
 			path: '/',
 			maxAge: 86400,

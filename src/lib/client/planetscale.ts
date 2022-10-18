@@ -10,12 +10,16 @@ const config = {
 const conn = connect(config);
 
 export const saveGameResults = async (user: string, gamenum: number, answers: string[]) => {
+	const before = new Date();
 	const answerString = answers.join('');
 	const results = await conn.execute(
 		`insert into gameresults (user, gamenum, answers, attempts) values ('${user}', ${gamenum}, '${answerString}', '${Math.floor(
 			answerString.length / 5
 		)}') on duplicate key update answers='${answerString}', attempts='${answers.length}'`
 	);
+	const after = new Date();
+	const duration = after.getTime() - before.getTime();
+	console.log(`time to save game results: ${duration}`);
 	return results;
 };
 
