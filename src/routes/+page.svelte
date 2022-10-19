@@ -8,7 +8,7 @@
 	import LettuceKeyboard from '$lib/components/LettuceKeyboard.svelte';
 	import LetterBox from '$lib/components/LetterBox.svelte';
 	import { applyKey, getKeyStatuses, applyWord, checkWords } from '$lib/util/gameFunctions';
-	import { encodeState } from '$lib/util/state';
+	import { getCookieFromGameState } from '$lib/util/state';
 	import Cookies from 'js-cookie';
 	import { invalidate } from '$app/navigation';
 	import { getDailyWord } from '$lib/util/words';
@@ -21,14 +21,14 @@
 		open(answers: string[], guesses: number, success: boolean, user: string): void;
 	};
 	let invalidForm = false;
-	let guesses: any = [];
-	let answers: any = [];
+	let guesses: { guess: string; complete: boolean }[] = [];
+	let answers: string[] = [];
 	let keys = {};
 
 	const rows = Array(6);
 	const columns = Array(5);
 
-	const openModal = (answers: string[], guesses: number, success: boolean, user: string = '') => {
+	const openModal = (answers: string[], guesses: number, success: boolean, user = '') => {
 		setTimeout(() => modalActions?.open(answers, guesses, success, user), 500);
 	};
 
@@ -41,7 +41,7 @@
 	const updateData = (gameData: { guess: string; complete: boolean }[]) => {
 		data.state = gameData;
 		data = data;
-		const gameState = encodeState(gameData);
+		const gameState = getCookieFromGameState(gameData);
 		Cookies.set('wordLettuce', gameState, {
 			httpOnly: false,
 			path: '',

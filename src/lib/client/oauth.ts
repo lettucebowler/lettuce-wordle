@@ -10,7 +10,10 @@ export type WordLettuceUser = {
 
 export const getUser = async (
 	accessToken: string,
-	fetchImplementation: any = fetch
+	fetchImplementation: (
+		input: RequestInfo | URL,
+		init?: RequestInit | undefined
+	) => Promise<Response> = fetch
 ): Promise<WordLettuceUser> => {
 	const auth = fetcher({ fetch: fetchImplementation });
 	const empty = {
@@ -29,7 +32,7 @@ export const getUser = async (
 				}
 			}
 		)
-		.catch(({ status, message }) => {});
+		.catch((e) => console.log(e));
 	const after = new Date();
 	const duration = after.getTime() - before.getTime();
 	console.log(`time fetching user from oauth2 provider: ${duration}`);

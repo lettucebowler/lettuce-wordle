@@ -6,8 +6,7 @@
 	import { browser } from '$app/environment';
 
 	export const modalActions = {
-		open(answers: string[], guesses: number, success: boolean, user: string = '') {
-			console.log(user);
+		open(answers: string[], guesses: number, success: boolean, user = '') {
 			authenticated = !!user;
 			share = getGameStatus($appName, answers);
 			attempts = guesses;

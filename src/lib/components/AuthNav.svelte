@@ -46,7 +46,7 @@
 		}
 	];
 
-	let timeout: NodeJS.Timeout;
+	let timeout = setTimeout(() => null);
 
 	const eventuallyCloseDropdown = () => {
 		timeout = setTimeout(() => {

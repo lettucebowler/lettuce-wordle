@@ -32,7 +32,7 @@ const addGameStateToSession = (event: RequestEvent) => {
 	const gameState = getGameFromCookie(wordLettuceState);
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
-	event.locals.gameState = gameState;
+	event.locals.gameState = gameState?.guesses;
 };
 
 export const handle: import('@sveltejs/kit').Handle = async ({ event, resolve }) => {

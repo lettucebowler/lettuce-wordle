@@ -1,4 +1,4 @@
-import { encodeState } from '$lib/util/state';
+import { getCookieFromGameState } from '$lib/util/state';
 import { applyWord, applyKey } from '$lib/util/gameFunctions';
 import { invalid } from '@sveltejs/kit';
 import { saveGameResults } from '$lib/client/planetscale';
@@ -7,9 +7,11 @@ import { getGameNum } from '$lib/util/share';
 export const load: import('./$types').PageServerLoad = ({ cookies, depends, locals }) => {
 	depends('/');
 
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
 	const gameState = locals.gameState;
 
-	cookies.set('wordLettuce', encodeState(gameState), {
+	cookies.set('wordLettuce', getCookieFromGameState(gameState), {
 		httpOnly: false,
 		path: '/',
 		maxAge: 86400,
@@ -24,11 +26,13 @@ export const load: import('./$types').PageServerLoad = ({ cookies, depends, loca
 export const actions: import('./$types').Actions = {
 	keyboard: async ({ url, cookies, locals }) => {
 		const key: string = url.searchParams.get('key') || '';
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
 		const gameState = locals.gameState;
 		const guesses = gameState || [];
 
 		const updatedGuesses = applyKey(key, guesses);
-		cookies.set('wordLettuce', encodeState(updatedGuesses), {
+		cookies.set('wordLettuce', getCookieFromGameState(updatedGuesses), {
 			httpOnly: false,
 			path: '/',
 			maxAge: 86400
@@ -44,6 +48,8 @@ export const actions: import('./$types').Actions = {
 	enter: async (event) => {
 		const data = await event.request.formData();
 
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
 		const gameState = event.locals.gameState;
 		const guess = data.getAll('guess').map((l) => l.toString().toLowerCase());
 
@@ -60,7 +66,7 @@ export const actions: import('./$types').Actions = {
 			saveGameResults(user.login, gameNum, updatedAnswers);
 		}
 
-		event.cookies.set('wordLettuce', encodeState(updatedGuesses), {
+		event.cookies.set('wordLettuce', getCookieFromGameState(updatedGuesses), {
 			httpOnly: false,
 			path: '/',
 			maxAge: 86400,

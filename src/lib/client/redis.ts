@@ -1,14 +1,14 @@
 import { Redis } from '@upstash/redis';
 import { AUTH_REDIS_REST_TOKEN, AUTH_REDIS_URL } from '$env/static/private';
 
+type Profile = { login?: string; profile_url?: string };
+
 const redis = new Redis({
 	url: AUTH_REDIS_URL,
 	token: AUTH_REDIS_REST_TOKEN
 });
 
-export const getProfile = async (
-	accessToken: string
-): Promise<{ login?: string; profile_url?: string }> => {
+export const getProfile = async (accessToken: string): Promise<Profile> => {
 	if (!accessToken) return {};
 
 	let profile = {};
@@ -21,7 +21,7 @@ export const getProfile = async (
 	return profile;
 };
 
-export const stashProfile = async (accessToken: string, profile: any) => {
+export const stashProfile = async (accessToken: string, profile: Profile) => {
 	const status = await redis.set(`${accessToken}`, profile, { ex: 900 });
 
 	return status;

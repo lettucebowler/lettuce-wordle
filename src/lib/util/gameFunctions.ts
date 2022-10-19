@@ -161,7 +161,13 @@ export const applyWord = (
 		});
 	}
 
-	updatedGuesses.at(-1).complete = true;
+	if (updatedGuesses.length) {
+		const [last, ...rest] = updatedGuesses.reverse();
+		if (last) {
+			last.complete = true;
+			updatedGuesses = [last, ...rest].reverse();
+		}
+	}
 
 	if (statuses === 'xxxxx') {
 		metadata.success = true;
