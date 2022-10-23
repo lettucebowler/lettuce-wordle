@@ -41,7 +41,7 @@ const decodeState = (stateBuffer: string) => {
 	try {
 		const stateString = atob(stateBuffer);
 		const parsed = JSON.parse(stateString);
-		if (!parsed.gameNum || parsed.gameNum !== getGameNum()) {
+		if (!parsed.guesses) {
 			return state;
 		}
 		state = parsed;
