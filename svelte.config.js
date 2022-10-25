@@ -13,10 +13,7 @@ const config = {
 		adapter: adapter({
 			out: 'build'
 		}),
-		inlineStyleThreshold: 2048,
-		paths: {
-			assets: 'https://wordlettuce-assets.b-cdn.net'
-		}
+		inlineStyleThreshold: 2048
 	}
 };
 
