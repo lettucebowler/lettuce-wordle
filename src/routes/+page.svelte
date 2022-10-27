@@ -110,14 +110,14 @@
 			id="game"
 			use:enhance={({ data, cancel }) => {
 				const guess = data.getAll('guess').map((l) => l.toString().toLowerCase());
-				// const { metadata, updatedGuesses } = applyWord(guesses, guess);
-				// form = metadata;
-				// updateData(updatedGuesses);
+				const { metadata, updatedGuesses } = applyWord(guesses, guess);
+				form = metadata;
+				updateData(updatedGuesses);
 
-				// if (!metadata.success) {
-				// 	cancel();
-				// 	return;
-				// }
+				if (!metadata.success) {
+					cancel();
+					return;
+				}
 
 				if (guess.length < 5) {
 					cancel();
