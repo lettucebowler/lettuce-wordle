@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Trophy, Home } from '@steeze-ui/heroicons';
 	import AuthNav from '$lib/components/AuthNav.svelte';
 	import LetterPageContentContainer from '$lib/components/LetterPageContentContainer.svelte';
 	import smallFavicon from '$lib/assets/favicon-16x16.png';
@@ -29,14 +30,14 @@
 			name: 'Home',
 			enabled: true,
 			prefetch: true,
-			icon: 'home'
+			icon: Home
 		},
 		{
 			path: '/rankings',
 			name: 'Rankings',
 			enabled: true,
 			prefetch: true,
-			icon: 'trophy'
+			icon: Trophy
 		},
 		{
 			path: '/about',

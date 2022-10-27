@@ -1,24 +1,34 @@
 <script lang="ts">
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { ArrowUturnRight, Backspace } from '@steeze-ui/heroicons';
+	import type { IconSource } from '@steeze-ui/svelte-icon/types';
+
 	export let key: string;
 	export let status = 'none';
 	export let form = 'keyboard';
 	export let action = 'keyboard';
 	export let button: HTMLButtonElement;
 
-	const icons: Map<string, string> = new Map([
+	const icons: Map<string, { src: IconSource; theme: string; class: string }> = new Map([
 		[
 			'enter',
-			'M7.707 3.293a1 1 0 010 1.414L5.414 7H11a7 7 0 017 7v2a1 1 0 11-2 0v-2a5 5 0 00-5-5H5.414l2.293 2.293a1 1 0 11-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z'
+			{
+				src: ArrowUturnRight,
+				theme: 'mini',
+				class: 'h-5 w-5 rotate-180'
+			}
 		],
 		[
 			'backspace',
-			'M6.707 4.879A3 3 0 018.828 4H15a3 3 0 013 3v6a3 3 0 01-3 3H8.828a3 3 0 01-2.12-.879l-4.415-4.414a1 1 0 010-1.414l4.414-4.414zm4 2.414a1 1 0 00-1.414 1.414L10.586 10l-1.293 1.293a1 1 0 101.414 1.414L12 11.414l1.293 1.293a1 1 0 001.414-1.414L13.414 10l1.293-1.293a1 1 0 00-1.414-1.414L12 8.586l-1.293-1.293z'
-		],
-		[
-			'reset',
-			'M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z'
+			{
+				src: Backspace,
+				theme: 'mini',
+				class: 'h-5 w-5'
+			}
 		]
 	]);
+
+	$: icon = icons.get(key);
 </script>
 
 <button
@@ -33,10 +43,8 @@
 	class:bg-aurora-400={status === 'x'}
 	class:bg-polar-200={status === 'i'}
 >
-	{#if icons.get(key)}
-		<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-			<path fill-rule="evenodd" d={icons.get(key.toLowerCase())} clip-rule="evenodd" />
-		</svg>
+	{#if icon}
+		<Icon {...icon} />
 	{:else}
 		{key.toUpperCase()}
 	{/if}

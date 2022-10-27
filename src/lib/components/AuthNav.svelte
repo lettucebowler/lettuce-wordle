@@ -2,11 +2,13 @@
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
 	import { slide } from 'svelte/transition';
-	import Icon from '$lib/components/Icon.svelte';
-
-	import white from '$lib/assets/white.png';
 	import { onMount } from 'svelte';
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { ChevronDown } from '@steeze-ui/heroicons';
+	import type { IconSource } from '@steeze-ui/svelte-icon/types';
+
+	import white from '$lib/assets/white.png';
 
 	export let user: {
 		login?: string;
@@ -18,7 +20,7 @@
 		margin?: string;
 		prefetch?: boolean;
 		enabled: boolean;
-		icon?: string;
+		icon?: IconSource;
 	}[] = [];
 
 	let showDropdown = true;
@@ -87,7 +89,7 @@
 				>
 					<span class="flex items-center gap-2">
 						{#if link.icon}
-							<span><Icon name={link.icon} /></span>
+							<span><Icon src={link.icon} theme="solid" class="h-10" /></span>
 						{/if}
 						<span class:hidden={link.icon} class:sm:inline={link.icon}>{link.name}</span>
 					</span>
@@ -107,17 +109,11 @@
 					/>
 				{/if}
 				<span class="m-1 hidden md:inline">{user.login}</span>
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					viewBox="0 0 24 24"
-					stroke-width="1.5"
-					stroke="currentColor"
-					class="h-6 w-6"
-					class:transition-transform={jsEnabled}
-				>
-					<path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-				</svg>
+				<Icon
+					src={ChevronDown}
+					theme="solid"
+					class={`h-6 w-6 transition-transform ${dropdownVisible ? 'rotate-180' : ''}`}
+				/>
 			</label>
 		{/if}
 	</nav>
@@ -145,26 +141,7 @@
 </div>
 
 <style>
-	/* nav:has(input[type='checkbox'][name^='subnav']:checked) ~ nav {
-		display: flex;
-	} */
-
 	input[type='checkbox'][name^='subnav']:checked ~ nav {
 		display: flex;
-	}
-
-	/* nav input[type='checkbox'][name^='subnav']:checked ~ nav {
-		display: flex;
-	}
-
-	#big-papa-nav > input[type='checkbox'][name^='subnav']:checked:last-child {
-
-	} */
-
-	input[type='checkbox'][name^='subnav']:checked ~ label svg {
-		--tw-rotate: 180deg;
-		transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate))
-			skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x))
-			scaleY(var(--tw-scale-y));
 	}
 </style>
