@@ -29,7 +29,7 @@
 
 <h1 class="text-center text-3xl font-bold text-snow-300">Play History</h1>
 
-<div class="flex w-full flex-wrap justify-center gap-4">
+<div class="flex w-full flex-wrap justify-center gap-2 pb-2">
 	{#each gameResults.sort((a, b) => b.gamenum - a.gamenum) as gameResult (gameResult.gamenum)}
 		{@const answers = gameResult.answers.split('').slice(-30).join('')}
 		<div
