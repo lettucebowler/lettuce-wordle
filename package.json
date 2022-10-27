@@ -20,7 +20,7 @@
 		"@types/js-cookie": "^3.0.2",
 		"@typescript-eslint/eslint-plugin": "^5.41.0",
 		"@typescript-eslint/parser": "^5.41.0",
-		"@upstash/redis": "^1.15.0",
+		"@upstash/redis": "^1.15.1",
 		"autoprefixer": "^10.4.12",
 		"cookie": "^0.5.0",
 		"eslint": "^8.26.0",
@@ -39,7 +39,7 @@
 		"tailwindcss": "^3.2.1",
 		"tslib": "^2.4.0",
 		"typescript": "^4.8.4",
-		"vite": "^3.1.8"
+		"vite": "^3.2.0"
 	},
 	"type": "module"
 }
