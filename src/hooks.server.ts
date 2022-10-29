@@ -38,6 +38,7 @@ const addGameStateToSession = (event: RequestEvent) => {
 export const handle: import('@sveltejs/kit').Handle = async ({ event, resolve }) => {
 	await AuthenticateSession(event);
 	addGameStateToSession(event);
+	console.log(event);
 	const response = await resolve(event);
 	return response;
 };

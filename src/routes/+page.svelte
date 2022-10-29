@@ -43,8 +43,8 @@
 		data = data;
 		const gameState = getCookieFromGameState(gameData);
 		Cookies.set('wordLettuce', gameState, {
+			path: '/',
 			httpOnly: false,
-			path: '',
 			expires: 1,
 			secure: false
 		});
