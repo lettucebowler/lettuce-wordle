@@ -42,10 +42,5 @@
 		"typescript": "^4.8.4",
 		"vite": "^3.2.1"
 	},
-	"type": "module",
-	"pnpm": {
-		"overrides": {
-			"undici": "5.11.0"
-		}
-	}
+	"type": "module"
 }
