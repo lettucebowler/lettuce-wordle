@@ -5,7 +5,7 @@ specifiers:
   '@steeze-ui/heroicons': ^2.1.0
   '@steeze-ui/svelte-icon': ^1.3.2
   '@sveltejs/adapter-vercel': next
-  '@sveltejs/kit': 1.0.0-next.529
+  '@sveltejs/kit': next
   '@types/cookie': ^0.5.1
   '@types/js-cookie': ^3.0.2
   '@typescript-eslint/eslint-plugin': ^5.42.0
@@ -27,7 +27,7 @@ specifiers:
   svelte-preprocess: ^4.10.7
   svelte2tsx: ^0.5.20
   tailwindcss: ^3.2.1
-  tslib: ^2.4.0
+  tslib: ^2.4.1
   typescript: ^4.8.4
   vite: ^3.2.2
 
@@ -36,7 +36,7 @@ devDependencies:
   '@steeze-ui/heroicons': 2.1.0
   '@steeze-ui/svelte-icon': 1.3.2
   '@sveltejs/adapter-vercel': 1.0.0-next.81
-  '@sveltejs/kit': 1.0.0-next.529_svelte@3.49.0+vite@3.2.2
+  '@sveltejs/kit': 1.0.0-next.531_svelte@3.49.0+vite@3.2.2
   '@types/cookie': 0.5.1
   '@types/js-cookie': 3.0.2
   '@typescript-eslint/eslint-plugin': 5.42.0_6xw5wg2354iw4zujk2f3vyfrzu
@@ -58,7 +58,7 @@ devDependencies:
   svelte-preprocess: 4.10.7_gzvm22yp67wc7gl6l3xcwwnovi
   svelte2tsx: 0.5.20_kphlhxuojc72cocg52rresljpy
   tailwindcss: 3.2.1_postcss@8.4.18
-  tslib: 2.4.0
+  tslib: 2.4.1
   typescript: 4.8.4
   vite: 3.2.2
 
@@ -254,10 +254,10 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/kit/1.0.0-next.529_svelte@3.49.0+vite@3.2.2:
+  /@sveltejs/kit/1.0.0-next.531_svelte@3.49.0+vite@3.2.2:
     resolution:
       {
-        integrity: sha512-wM9Y38m8GVNT2YDQo41XNNa55OwTiGE+4fEuuhQnQY4nOSihXGllPsdIulnVsrxcSw9jKLkzwJdFr+i2y2y+OQ==
+        integrity: sha512-8uBJF5BweIFoyw+Kqv0jsDSfndNw2mTF222qi8rDuptOy7gjoWXYFy2F0kd8orNeZUnjFrHE+g/qDNHq7zzEJg==
       }
     engines: { node: '>=16.14' }
     hasBin: true
@@ -2058,7 +2058,7 @@ packages:
         integrity: sha512-7fm3l3NAF9WfN6W3JOmf5drwpVqX78JtoGJ3A6W0a6ZnldM41w2fV5D490psKFTpMds8TJse/eHLFFsNHHjHgg==
       }
     dependencies:
-      tslib: 2.4.0
+      tslib: 2.4.1
     dev: true
 
   /lru-cache/6.0.0:
@@ -2245,7 +2245,7 @@ packages:
       }
     dependencies:
       lower-case: 2.0.2
-      tslib: 2.4.0
+      tslib: 2.4.1
     dev: true
 
   /node-fetch/2.6.7:
@@ -2394,7 +2394,7 @@ packages:
       }
     dependencies:
       no-case: 3.0.4
-      tslib: 2.4.0
+      tslib: 2.4.1
     dev: true
 
   /path-exists/4.0.0:
@@ -3171,10 +3171,10 @@ packages:
       }
     dev: true
 
-  /tslib/2.4.0:
+  /tslib/2.4.1:
     resolution:
       {
-        integrity: sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==
+        integrity: sha512-tGyy4dAjRIEwI7BzsB0lynWgOpfqjUdq91XXAlIWD2OwKBH7oCl/GZG/HT4BOHrTlPMOASlMQ7veyTqpmRcrNA==
       }
     dev: true
 
