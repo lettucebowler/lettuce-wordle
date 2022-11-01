@@ -714,7 +714,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.21.4
-      caniuse-lite: 1.0.30001427
+      caniuse-lite: 1.0.30001429
       fraction.js: 4.2.0
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -774,7 +774,7 @@ packages:
     engines: { node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7 }
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001427
+      caniuse-lite: 1.0.30001429
       electron-to-chromium: 1.4.284
       node-releases: 2.0.6
       update-browserslist-db: 1.0.10_browserslist@4.21.4
@@ -813,10 +813,10 @@ packages:
     engines: { node: '>= 6' }
     dev: true
 
-  /caniuse-lite/1.0.30001427:
+  /caniuse-lite/1.0.30001429:
     resolution:
       {
-        integrity: sha512-lfXQ73oB9c8DP5Suxaszm+Ta2sr/4tf8+381GkIm1MLj/YdLf+rEDyDSRCzeltuyTVGm+/s18gdZ0q+Wmp8VsQ==
+        integrity: sha512-511ThLu1hF+5RRRt0zYCf2U2yRr9GPF6m5y90SBCWsvSoYoW7yAGlv/elyPaNfvGCkp6kj/KFZWU0BMA69Prsg==
       }
     dev: true
 
@@ -883,10 +883,7 @@ packages:
     dev: true
 
   /concat-map/0.0.1:
-    resolution:
-      {
-        integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==
-      }
+    resolution: { integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s= }
     dev: true
 
   /console-control-strings/1.1.0:
