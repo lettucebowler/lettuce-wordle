@@ -83,7 +83,7 @@
 				class:ml-auto={link.margin === 'left'}
 				class:brightness-90={link.path === $page.url.pathname}
 				href={link.path}
-				data-sveltekit-reload={link.prefetch ? '' : null}
+				data-sveltekit-prefetch={link.prefetch ? '' : null}
 				><span
 					class="grid h-full w-full place-items-center p-2 text-center duration-500 hover:backdrop-brightness-90 hover:backdrop-filter"
 				>
@@ -129,7 +129,7 @@
 			{#each subnavItems as subnavItem}
 				<a
 					href={subnavItem.path}
-					data-sveltekit-reload={subnavItem.prefetch ? '' : null}
+					data-sveltekit-prefetch={subnavItem.prefetch ? '' : null}
 					class="box-border h-10 items-center justify-center overflow-hidden rounded-lg bg-polar-300 text-center text-lg font-medium text-snow-300 transition duration-150 ease-in-out active:brightness-90"
 					><span
 						class="grid h-full w-full place-items-center pl-4 pr-4 text-center font-medium duration-500 hover:backdrop-brightness-90 hover:backdrop-filter"
