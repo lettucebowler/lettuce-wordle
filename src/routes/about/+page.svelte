@@ -8,8 +8,8 @@
 	<title>About {$appName}</title>
 </svelte:head>
 
-<main class="text-md ml-4 mr-4 text-snow-300">
-	<h1 class="m-0 text-center text-3xl font-bold">Hello, I'm Grant!</h1>
+<main class="mt-8 grid gap-8 px-8">
+	<h1 class="text-center text-3xl font-bold text-snow-300">About {$appName}</h1>
 	<P>
 		I wrote this app because the real wordle got blocked on my work network and I wanted to keep
 		playing and sharing scores with my coworkers.

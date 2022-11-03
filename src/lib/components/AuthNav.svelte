@@ -74,7 +74,7 @@
 
 <div id="big-papa-nav">
 	<nav
-		class="box-border flex justify-between gap-x-1 rounded-b-2xl bg-polar-400 p-1"
+		class="mt-1 box-border flex justify-between gap-x-1 rounded-2xl bg-polar-400 p-1"
 		id="primary-nav"
 	>
 		{#each links.filter((link) => link.enabled) as link}
@@ -85,7 +85,7 @@
 				href={link.path}
 				data-sveltekit-prefetch={link.prefetch ? '' : null}
 				><span
-					class="grid h-full w-full place-items-center p-2 text-center duration-500 hover:backdrop-brightness-90 hover:backdrop-filter"
+					class="grid h-full w-full place-items-center p-2 text-center duration-150 hover:backdrop-brightness-90 hover:backdrop-filter"
 				>
 					<span class="flex items-center gap-2">
 						{#if link.icon}
