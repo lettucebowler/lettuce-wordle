@@ -8,7 +8,7 @@
 	<title>About {$appName}</title>
 </svelte:head>
 
-<main class="mt-8 grid gap-8">
+<main class="grid gap-8">
 	<h1 class="text-center text-3xl font-bold text-snow-300">About {$appName}</h1>
 	<P>
 		I wrote this app because the real wordle got blocked on my work network and I wanted to keep

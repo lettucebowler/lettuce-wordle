@@ -7,7 +7,7 @@
 	$: scores = data.scores;
 </script>
 
-<main class="mt-8 grid gap-8">
+<main class="grid gap-8">
 	<h1 class="text-center text-3xl font-bold text-snow-300">LeaderBoard</h1>
 	<P>
 		Score for one game is calculated as 7 minus the number of guesses taken. 1 guess is 6 points. 6

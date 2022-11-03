@@ -2,6 +2,6 @@
 	export let mode = 'content';
 </script>
 
-<div class="flex flex-col items-center" class:flex-auto={mode === 'game'}>
+<div class="flex flex-col items-center pt-6" class:flex-auto={mode === 'game'}>
 	<slot />
 </div>
