@@ -74,7 +74,7 @@
 
 <div id="big-papa-nav">
 	<nav
-		class="mt-1 box-border flex justify-between gap-x-1 rounded-2xl bg-polar-400 p-1"
+		class="box-border flex justify-between gap-x-1 rounded-2xl bg-polar-400 p-1"
 		id="primary-nav"
 	>
 		{#each links.filter((link) => link.enabled) as link}

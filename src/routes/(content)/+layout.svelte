@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Trophy, Home } from '@steeze-ui/heroicons';
 	import AuthNav from '$lib/components/AuthNav.svelte';
+	import ContentContainer from '$lib/components/ContentContainer.svelte';
 	import LetterPageContentContainer from '$lib/components/LetterPageContentContainer.svelte';
 	import smallFavicon from '$lib/assets/favicon-16x16.png';
 	import bigFavicon from '$lib/assets/favicon-32x32.png';
@@ -64,10 +65,10 @@
 	<meta name="description" content="Lettuce Wordle`" />
 </svelte:head>
 
-<LetterPageContentContainer>
+<ContentContainer>
 	<AuthNav {links} {user} />
 	<slot />
-</LetterPageContentContainer>
+</ContentContainer>
 
 <style>
 	:global(body) {
