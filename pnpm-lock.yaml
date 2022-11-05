@@ -26,7 +26,7 @@ specifiers:
   svelte-check: ^2.9.2
   svelte-preprocess: ^4.10.7
   svelte2tsx: ^0.5.20
-  tailwindcss: ^3.2.1
+  tailwindcss: ^3.2.2
   tslib: ^2.4.1
   typescript: ^4.8.4
   vite: ^3.2.2
@@ -36,7 +36,7 @@ devDependencies:
   '@steeze-ui/heroicons': 2.1.0
   '@steeze-ui/svelte-icon': 1.3.2
   '@sveltejs/adapter-vercel': 1.0.0-next.81
-  '@sveltejs/kit': 1.0.0-next.532_svelte@3.49.0+vite@3.2.2
+  '@sveltejs/kit': 1.0.0-next.535_svelte@3.49.0+vite@3.2.2
   '@types/cookie': 0.5.1
   '@types/js-cookie': 3.0.2
   '@typescript-eslint/eslint-plugin': 5.42.0_6xw5wg2354iw4zujk2f3vyfrzu
@@ -57,7 +57,7 @@ devDependencies:
   svelte-check: 2.9.2_ybhih7hmceldbudr626jxijaom
   svelte-preprocess: 4.10.7_gzvm22yp67wc7gl6l3xcwwnovi
   svelte2tsx: 0.5.20_kphlhxuojc72cocg52rresljpy
-  tailwindcss: 3.2.1_postcss@8.4.18
+  tailwindcss: 3.2.2_postcss@8.4.18
   tslib: 2.4.1
   typescript: 4.8.4
   vite: 3.2.2
@@ -254,17 +254,17 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/kit/1.0.0-next.532_svelte@3.49.0+vite@3.2.2:
+  /@sveltejs/kit/1.0.0-next.535_svelte@3.49.0+vite@3.2.2:
     resolution:
       {
-        integrity: sha512-g+t+dncoz/DBc1mfwSfBaIBqE5pl0caMUy7yZzjsnyw0WG3AevC04d2KfTOgtOMgXVDnSVqZxlTR+MM5tnKeyw==
+        integrity: sha512-sbVFeidRGYKqahVWATuvl9PVnIDA/DvXUuq3LAV7eLXf9LWsdMt+9OhXmz8Ltxv8ov3+Ph6gcVSBvisF4BEvBQ==
       }
     engines: { node: '>=16.14' }
     hasBin: true
     requiresBuild: true
     peerDependencies:
       svelte: ^3.44.0
-      vite: ^3.1.0
+      vite: ^3.2.0
     dependencies:
       '@sveltejs/vite-plugin-svelte': 1.1.0_svelte@3.49.0+vite@3.2.2
       '@types/cookie': 0.5.1
@@ -714,7 +714,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.21.4
-      caniuse-lite: 1.0.30001429
+      caniuse-lite: 1.0.30001430
       fraction.js: 4.2.0
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -774,7 +774,7 @@ packages:
     engines: { node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7 }
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001429
+      caniuse-lite: 1.0.30001430
       electron-to-chromium: 1.4.284
       node-releases: 2.0.6
       update-browserslist-db: 1.0.10_browserslist@4.21.4
@@ -813,10 +813,10 @@ packages:
     engines: { node: '>= 6' }
     dev: true
 
-  /caniuse-lite/1.0.30001429:
+  /caniuse-lite/1.0.30001430:
     resolution:
       {
-        integrity: sha512-511ThLu1hF+5RRRt0zYCf2U2yRr9GPF6m5y90SBCWsvSoYoW7yAGlv/elyPaNfvGCkp6kj/KFZWU0BMA69Prsg==
+        integrity: sha512-IB1BXTZKPDVPM7cnV4iaKaHxckvdr/3xtctB3f7Hmenx3qYBhGtTZ//7EllK66aKXW98Lx0+7Yr0kxBtIt3tzg==
       }
     dev: true
 
@@ -3070,10 +3070,10 @@ packages:
       typescript: 4.8.4
     dev: true
 
-  /tailwindcss/3.2.1_postcss@8.4.18:
+  /tailwindcss/3.2.2_postcss@8.4.18:
     resolution:
       {
-        integrity: sha512-Uw+GVSxp5CM48krnjHObqoOwlCt5Qo6nw1jlCRwfGy68dSYb/LwS9ZFidYGRiM+w6rMawkZiu1mEMAsHYAfoLg==
+        integrity: sha512-c2GtSdqg+harR4QeoTmex0Ngfg8IIHNeLQH5yr2B9uZbZR1Xt1rYbjWOWTcj3YLTZhrmZnPowoQDbSRFyZHQ5Q==
       }
     engines: { node: '>=12.13.0' }
     hasBin: true
