@@ -9,7 +9,7 @@ export const load: import('./$types').PageServerLoad = ({ cookies, depends, loca
 
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
-	const gameState = locals.gameState;
+	const gameState: { guess: string; complete: boolean }[] = locals.gameState;
 
 	cookies.set('wordLettuce', getCookieFromGameState(gameState), {
 		httpOnly: false,

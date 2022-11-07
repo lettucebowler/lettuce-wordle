@@ -10,7 +10,7 @@
 	import { applyKey, getKeyStatuses, applyWord, checkWords } from '$lib/util/gameFunctions';
 	import { getCookieFromGameState } from '$lib/util/state';
 	import Cookies from 'js-cookie';
-	import { invalidate } from '$app/navigation';
+	import { invalidateAll } from '$app/navigation';
 	import { getDailyWord } from '$lib/util/words';
 	import { browser } from '$app/environment';
 
@@ -130,7 +130,7 @@
 
 				return async ({ result }) => {
 					applyAction(result);
-					await invalidate('/');
+					await invalidateAll();
 				};
 			}}
 			class="m-auto flex max-w-[min(700px,_55vh)]"
