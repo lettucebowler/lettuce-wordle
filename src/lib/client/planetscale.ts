@@ -58,11 +58,11 @@ export const getInfoForLeaderBoard = async (
 
 export const getGameResults = async (
 	user: string,
-	currentGameNum: number
+	count: number
 ): Promise<{ user: string; gamenum: number; answers: string; attempts: number }[]> => {
 	const before = new Date();
 	const results = await conn.execute(
-		`select * from gameresults where user = '${user}' and gamenum > ${currentGameNum - 7}`
+		`select * from gameresults where user = '${user}' order by gamenum desc limit ${count}`
 	);
 	const after = new Date();
 	const duration = after.getTime() - before.getTime();

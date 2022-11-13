@@ -9,7 +9,7 @@ const userInfo = fetcher({
 export const load: import('./$types').PageServerLoad = async (event) => {
 	const user = event.params.user;
 	const userProfile = await userInfo.get(`/${user}`);
-	const results = await getGameResults(user, getGameNum());
+	const results = await getGameResults(user, 30);
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
 	const { login, bio, avatar_url } = userProfile;

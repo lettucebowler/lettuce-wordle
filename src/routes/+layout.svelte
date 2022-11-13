@@ -1,7 +1,5 @@
 <script lang="ts">
-	import { Trophy, Home } from '@steeze-ui/heroicons';
 	import AuthNav from '$lib/components/AuthNav.svelte';
-	import LetterPageContentContainer from '$lib/components/LetterPageContentContainer.svelte';
 	import smallFavicon from '$lib/assets/favicon-16x16.png';
 	import bigFavicon from '$lib/assets/favicon-32x32.png';
 	import appleTouchIcon from '$lib/assets/apple-touch-icon.png';
@@ -12,47 +10,9 @@
 		user: {
 			login: '',
 			avatar: ''
-		}
+		},
+		nav: []
 	};
-
-	$: user = data.user;
-
-	let links: {
-		path: string;
-		name: string;
-		margin?: string;
-		enabled: boolean;
-	}[];
-
-	$: links = [
-		{
-			path: '/',
-			name: 'Home',
-			enabled: true,
-			prefetch: true,
-			icon: Home
-		},
-		{
-			path: '/rankings',
-			name: 'Rankings',
-			enabled: true,
-			prefetch: true,
-			icon: Trophy
-		},
-		{
-			path: '/about',
-			name: 'About',
-			enabled: true,
-			prefetch: true
-		},
-		{
-			path: '/login',
-			name: 'Login',
-			enabled: !user.login,
-			margin: 'left',
-			prefetch: false
-		}
-	];
 </script>
 
 <svelte:head>
@@ -64,15 +24,23 @@
 	<meta name="description" content="Lettuce Wordle`" />
 </svelte:head>
 
-<LetterPageContentContainer>
-	<AuthNav {links} {user} />
+<div class="mx-auto box-border flex flex w-full max-w-screen-md flex-auto flex-col gap-2 p-1">
+	<AuthNav links={data.nav} user={data.user} />
 	<slot />
-</LetterPageContentContainer>
+</div>
 
 <style>
 	:global(body) {
 		background-color: var(--nord-0);
 		margin: 0px 0px;
+		display: flex;
+		flex-direction: column;
+	}
+
+	:global(#svelte) {
+		display: flex;
+		flex: 1 1 auto;
+		flex-direction: column;
 	}
 
 	:global(body, html) {

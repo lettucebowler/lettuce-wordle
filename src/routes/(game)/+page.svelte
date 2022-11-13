@@ -10,7 +10,7 @@
 	import { applyKey, getKeyStatuses, applyWord, checkWords } from '$lib/util/gameFunctions';
 	import { getCookieFromGameState } from '$lib/util/state';
 	import Cookies from 'js-cookie';
-	import { invalidate } from '$app/navigation';
+	import { invalidateAll } from '$app/navigation';
 	import { getDailyWord } from '$lib/util/words';
 	import { browser } from '$app/environment';
 
@@ -106,7 +106,7 @@
 	<title>{$appName} Daily</title>
 </svelte:head>
 
-<main class="flex flex-auto flex-col items-center justify-between gap-2">
+<main class="flex w-full flex-auto flex-col items-center justify-between gap-2">
 	<div class="flex h-auto w-full flex-auto flex-col items-center">
 		<form
 			method="POST"
@@ -134,7 +134,7 @@
 
 				return async ({ result }) => {
 					applyAction(result);
-					await invalidate('/');
+					await invalidateAll();
 				};
 			}}
 			class="m-auto flex max-w-[min(700px,_55vh)]"
