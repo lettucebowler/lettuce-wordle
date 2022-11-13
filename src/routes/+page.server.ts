@@ -1,8 +1,9 @@
 import { getCookieFromGameState } from '$lib/util/state';
-import { applyWord, applyKey } from '$lib/util/gameFunctions';
+import { applyWord, applyKey, checkWords } from '$lib/util/gameFunctions';
 import { invalid } from '@sveltejs/kit';
 import { saveGameResults } from '$lib/client/planetscale';
 import { getGameNum } from '$lib/util/share';
+import { getDailyWord } from '$lib/util/words';
 
 export const load: import('./$types').PageServerLoad = ({ cookies, depends, locals }) => {
 	depends('/');
@@ -10,6 +11,8 @@ export const load: import('./$types').PageServerLoad = ({ cookies, depends, loca
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
 	const gameState = locals.gameState;
+
+	const answers = checkWords(gameState, getDailyWord());
 
 	cookies.set('wordLettuce', getCookieFromGameState(gameState), {
 		httpOnly: false,
@@ -19,7 +22,8 @@ export const load: import('./$types').PageServerLoad = ({ cookies, depends, loca
 	});
 
 	return {
-		state: gameState
+		state: gameState,
+		answers
 	};
 };
 

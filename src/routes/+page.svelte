@@ -22,7 +22,7 @@
 	};
 	let invalidForm = false;
 	let guesses: { guess: string; complete: boolean }[] = [];
-	let answers: string[] = [];
+	let current_guess = 0;
 	let keys = {};
 
 	const rows = Array(6);
@@ -34,20 +34,14 @@
 
 	const handleKey = (key: string) => {
 		form = { invalid: false, success: false };
-		const updatedGuesses = applyKey(key, guesses);
-		guesses = updatedGuesses;
+		data.state = applyKey(key, data.state, data.answers);
+		data = data;
 	};
 
 	const updateData = (gameData: { guess: string; complete: boolean }[]) => {
 		data.state = gameData;
+		data.answers = checkWords(data.state, getDailyWord());
 		data = data;
-		const gameState = getCookieFromGameState(gameData);
-		Cookies.set('wordLettuce', gameState, {
-			path: '/',
-			httpOnly: false,
-			expires: 1,
-			secure: false
-		});
 	};
 
 	const getRealIndex = (
@@ -69,19 +63,21 @@
 	};
 
 	onMount(() => {
-		const lastAnswer = answers?.at(-1) || '_____';
+		const lastAnswer = data.answers?.at(-1) || '_____';
 		if (lastAnswer === 'xxxxx') {
-			openModal(answers, guesses?.length || 0, lastAnswer === 'xxxxx', data?.user?.login || '');
+			openModal(
+				data.answers,
+				guesses?.length || 0,
+				lastAnswer === 'xxxxx',
+				data?.user?.login || ''
+			);
 		}
 	});
 
-	$: guesses = data?.state;
-	$: answers = checkWords(guesses, getDailyWord());
-	$: current_guess = answers.length || 0;
-
+	// handle form stuff on submit
 	$: {
 		if (form?.success && browser) {
-			openModal(answers, guesses?.length || 0, true, data?.user?.login || '');
+			openModal(data.answers, guesses?.length || 0, true, data?.user?.login || '');
 		}
 
 		if (form?.invalid) {
@@ -92,9 +88,17 @@
 		}
 	}
 
+	// keep state synced up
 	$: {
-		keys = {};
-		keys = getKeyStatuses(guesses, answers);
+		guesses = data?.state;
+		current_guess = data.answers.length || 0;
+		keys = getKeyStatuses(guesses, data.answers);
+		Cookies.set('wordLettuce', getCookieFromGameState(data.state), {
+			path: '/',
+			httpOnly: false,
+			expires: 1,
+			secure: false
+		});
 	}
 </script>
 
@@ -108,19 +112,19 @@
 			method="POST"
 			action="?/enter"
 			id="game"
-			use:enhance={({ data, cancel }) => {
-				const guess = data.getAll('guess').map((l) => l.toString().toLowerCase());
-				const { metadata, updatedGuesses } = applyWord(guesses, guess);
+			use:enhance={(event) => {
+				const guess = event.data.getAll('guess').map((l) => l.toString().toLowerCase());
+				const { metadata, updatedGuesses } = applyWord(data.state, guess, data.answers);
 				form = metadata;
 				updateData(updatedGuesses);
 
 				if (!metadata.success) {
-					cancel();
+					event.cancel();
 					return;
 				}
 
 				if (guess.length < 5) {
-					cancel();
+					event.cancel();
 					invalidForm = true;
 					setTimeout(() => {
 						invalidForm = false;
@@ -136,8 +140,8 @@
 			class="m-auto flex max-w-[min(700px,_55vh)]"
 		>
 			<div class="grid w-full grid-rows-[repeat(6,_1fr)] gap-2">
-				{#each rows as _, i (getRealIndex(i, guesses, answers))}
-					{@const realIndex = getRealIndex(i, guesses, answers)}
+				{#each rows as _, i (getRealIndex(i, guesses, data.answers))}
+					{@const realIndex = getRealIndex(i, guesses, data.answers)}
 					{@const current = realIndex === current_guess}
 					<div
 						animate:flip={{ duration: 150 }}
@@ -145,14 +149,14 @@
 						class="grid w-full grid-cols-[repeat(5,_1fr)] gap-2"
 					>
 						{#each columns as _, j}
-							{@const answer = (answers[realIndex] || '_____')[j]}
+							{@const answer = (data.answers[realIndex] || '_____')[j]}
 							{@const letter = guesses[realIndex]?.guess?.at(j) || ''}
 							<LetterBox
 								{answer}
 								{letter}
 								slot={j}
 								name={current ? 'guess' : 'not'}
-								bulge={answers[realIndex]?.length === 5}
+								bulge={data.answers[realIndex]?.length === 5}
 								wiggle={invalidForm && current}
 							/>
 						{/each}

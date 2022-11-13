@@ -1,9 +1,6 @@
 import { getGameNum } from './share';
 
-const encodeState = (state: {
-	gameNum: number;
-	guesses: { guess: string; complete: boolean }[];
-}): string => {
+const encodeState = (state: { gameNum: number; guesses: string[] }): string => {
 	const stateString = JSON.stringify(state);
 	const encoded = btoa(stateString);
 	return encoded;
@@ -18,7 +15,7 @@ export const getCookieFromGameState = (
 	const gameNum = getGameNum();
 	const saveState = {
 		gameNum,
-		guesses: gameState
+		guesses: gameState.map((guess) => guess.guess)
 	};
 	const cookie = encodeState(saveState);
 	return cookie;
@@ -27,10 +24,7 @@ export const getCookieFromGameState = (
 const decodeState = (stateBuffer: string) => {
 	let state: {
 		gameNum: number;
-		guesses: {
-			guess: string;
-			complete: boolean;
-		}[];
+		guesses: string[];
 	} = {
 		gameNum: getGameNum(),
 		guesses: []
@@ -43,10 +37,13 @@ const decodeState = (stateBuffer: string) => {
 		const parsed = JSON.parse(stateString);
 		const currentGameNum = getGameNum();
 		const { gameNum, guesses } = parsed;
-		if (!guesses || gameNum !== currentGameNum) {
+		if (!guesses || gameNum !== currentGameNum || guesses?.at(0)?.complete) {
 			return state;
 		}
-		state = parsed;
+		state = {
+			gameNum,
+			guesses: guesses.map((guess: string) => ({ guess, complete: guess.length === 5 }))
+		};
 	} catch (e) {
 		console.log(e);
 		return state;

@@ -40,7 +40,7 @@ export const checkWord = (word: string[], answer: string) => {
 
 export const checkWords = (guesses: { guess: string; complete: boolean }[], answer: string) => {
 	return guesses
-		.filter((guess) => guess.guess.length === 5 && guess.complete)
+		.filter((guess) => guess?.guess?.length === 5 && guess?.complete)
 		.map((guess) => {
 			return checkWord(guess.guess.split(''), answer);
 		});
@@ -86,10 +86,9 @@ export const applyKey = (
 	guesses: {
 		guess: string;
 		complete: boolean;
-	}[]
+	}[],
+	answers: string[]
 ) => {
-	const answer = getDailyWord();
-	const answers = checkWords(guesses, answer);
 	const keyTest = /^[a-zA-Z]{1}$/;
 	const isLetter = keyTest.test(key);
 	const current_guess = answers.length;
@@ -125,7 +124,8 @@ export const applyWord = (
 		guess: string;
 		complete: boolean;
 	}[],
-	data: string[]
+	data: string[],
+	answers: string[]
 ) => {
 	const answer = getDailyWord();
 	const guessLetters = data.map((l: string) => l.toLowerCase());
@@ -135,7 +135,6 @@ export const applyWord = (
 		success: false
 	};
 	let updatedGuesses = guesses;
-	const answers = checkWords(updatedGuesses, answer);
 	if (answers.at(-1) === 'xxxxx') {
 		metadata.success = true;
 		return {
