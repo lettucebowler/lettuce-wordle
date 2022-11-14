@@ -35,7 +35,7 @@ export const actions: import('./$types').Actions = {
 		const gameState = locals.gameState;
 		const guesses = gameState || [];
 
-		const updatedGuesses = applyKey(key, guesses);
+		const updatedGuesses = applyKey(key, guesses, checkWords(guesses, getDailyWord()));
 		cookies.set('wordLettuce', getCookieFromGameState(updatedGuesses), {
 			httpOnly: false,
 			path: '/',
@@ -57,7 +57,11 @@ export const actions: import('./$types').Actions = {
 		const gameState = event.locals.gameState;
 		const guess = data.getAll('guess').map((l) => l.toString().toLowerCase());
 
-		const { metadata, updatedGuesses, updatedAnswers } = applyWord(gameState, guess);
+		const { metadata, updatedGuesses, updatedAnswers } = applyWord(
+			gameState,
+			guess,
+			checkWords(gameState, getDailyWord())
+		);
 		if (metadata.invalid) {
 			return invalid(400, metadata);
 		}
