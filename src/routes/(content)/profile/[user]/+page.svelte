@@ -10,10 +10,10 @@
 	$: userProfile = data.userProfile;
 </script>
 
-<div class="flex flex-col items-center gap-8">
+<main class="grid w-full gap-8">
 	<figure class="flex flex-col gap-2">
 		<img
-			class="aspect-square h-[360px] rounded-xl object-contain"
+			class="mx-auto aspect-square h-[360px] rounded-xl object-contain"
 			src={userProfile.avatar}
 			alt={userProfile.login}
 		/>
@@ -40,7 +40,7 @@
 						>{gameResult.attempts || 0}</span
 					>
 				</h2>
-				<div class="grid grid-cols-5 gap-1 ">
+				<div class="grid grid-cols-5 gap-1">
 					{#each cells as _, i}
 						{@const answer = answers.charAt(i) || '_'}
 						<div
@@ -63,4 +63,4 @@
 			No wins in the last seven days...
 		</p>
 	{/if}
-</div>
+</main>
