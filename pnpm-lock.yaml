@@ -10,7 +10,7 @@ specifiers:
   '@types/js-cookie': ^3.0.2
   '@typescript-eslint/eslint-plugin': ^5.44.0
   '@typescript-eslint/parser': ^5.44.0
-  '@upstash/redis': ^1.17.0
+  '@upstash/redis': ^1.18.0
   autoprefixer: ^10.4.13
   cookie: ^0.5.0
   eslint: ^8.28.0
@@ -36,12 +36,12 @@ devDependencies:
   '@steeze-ui/heroicons': 2.2.1
   '@steeze-ui/svelte-icon': 1.3.2
   '@sveltejs/adapter-vercel': 1.0.0-next.84
-  '@sveltejs/kit': 1.0.0-next.560_svelte@3.49.0+vite@3.2.4
+  '@sveltejs/kit': 1.0.0-next.561_svelte@3.49.0+vite@3.2.4
   '@types/cookie': 0.5.1
   '@types/js-cookie': 3.0.2
   '@typescript-eslint/eslint-plugin': 5.44.0_fnsv2sbzcckq65bwfk7a5xwslu
   '@typescript-eslint/parser': 5.44.0_hsf322ms6xhhd4b5ne6lb74y4a
-  '@upstash/redis': 1.17.0
+  '@upstash/redis': 1.18.0
   autoprefixer: 10.4.13_postcss@8.4.19
   cookie: 0.5.0
   eslint: 8.28.0
@@ -254,10 +254,10 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/kit/1.0.0-next.560_svelte@3.49.0+vite@3.2.4:
+  /@sveltejs/kit/1.0.0-next.561_svelte@3.49.0+vite@3.2.4:
     resolution:
       {
-        integrity: sha512-ldZJyd+jfQWVkOkRHq25cXMffhL5MgB1Uzhhw1ngF8ezB38P/g4T+5ohP8wuk2lxPJIjbY3S6BeXN5mod9XOhA==
+        integrity: sha512-N8HQvS6gcm7R78ADfM4xjhuFS3Ir+Ezce3De8WOnISXQ1tS2npc5LMH9LRHHi14nfosAfJ7vUlcLwLE6N/I7+Q==
       }
     engines: { node: '>=16.14' }
     hasBin: true
@@ -515,10 +515,10 @@ packages:
       eslint-visitor-keys: 3.3.0
     dev: true
 
-  /@upstash/redis/1.17.0:
+  /@upstash/redis/1.18.0:
     resolution:
       {
-        integrity: sha512-3rwQt+JWMbZ68jVv6AX5C0GI59npHAxfyY/3RZACf2fzQKs41RNq2ohpsEhVb2SQxUXe13Ztvv9apJegqgttyA==
+        integrity: sha512-BBYz0X5EghFttYIk0vePW3/clQoAfxmPxwqc3UXem3Qp9iGFRwLN/HKvxuJQxkt18RyNPQ3fN4Eg0MG4lyu7Hw==
       }
     dependencies:
       isomorphic-fetch: 3.0.0
@@ -1665,7 +1665,7 @@ packages:
       }
     engines: { node: '>= 8' }
     dependencies:
-      minipass: 3.3.4
+      minipass: 3.3.6
     dev: true
 
   /fs.realpath/1.0.0:
@@ -2150,10 +2150,10 @@ packages:
       }
     dev: true
 
-  /minipass/3.3.4:
+  /minipass/3.3.6:
     resolution:
       {
-        integrity: sha512-I9WPbWHCGu8W+6k1ZiGpPu0GkoKBeorkfKNuAFBNS1HNFJvke82sxvI5bzcCNpWPorkOO5QQ+zomzzwRxejXiw==
+        integrity: sha512-DxiNidxSEK+tHG6zOIklvNOwm3hvCrbUrdtzY74U6HKTJxvIDfOUL5W5P2Ghd3DTkhhKPYGqeNUIh5qcM4YBfw==
       }
     engines: { node: '>=8' }
     dependencies:
@@ -2167,7 +2167,7 @@ packages:
       }
     engines: { node: '>= 8' }
     dependencies:
-      minipass: 3.3.4
+      minipass: 3.3.6
       yallist: 4.0.0
     dev: true
 
@@ -3114,7 +3114,7 @@ packages:
     dependencies:
       chownr: 2.0.0
       fs-minipass: 2.1.0
-      minipass: 3.3.4
+      minipass: 3.3.6
       minizlib: 2.1.2
       mkdirp: 1.0.4
       yallist: 4.0.0
