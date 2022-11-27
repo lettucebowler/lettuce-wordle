@@ -1,4 +1,5 @@
 import cloudFlareWorkersKV from '@kikobeats/cloudflare-workers-kv';
+import { dev } from '$app/environment';
 
 import {
 	CLOUDFLARE_TOKEN as key,
@@ -12,9 +13,9 @@ const store = cloudFlareWorkersKV({
 	namespaceId
 });
 
-export const get = async (key: string) => {
+export const get = async (key: string, platform = null) => {
 	const before = new Date();
-	const json = await store.get(key);
+	const json = dev && !platform ? await store.get(key) : null;
 	const after = new Date();
 	console.log('fetch profile from cloudflare-kv', after.getTime() - before.getTime());
 	return json;
