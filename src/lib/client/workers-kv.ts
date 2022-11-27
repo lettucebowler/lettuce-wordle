@@ -13,10 +13,10 @@ const store = cloudFlareWorkersKV({
 });
 
 export const get = async (key: string) => {
-	const before = performance.now();
+	const before = new Date();
 	const json = await store.get(key);
-	const after = performance.now();
-	console.log('fetch profile from cloudflare-kv', after - before);
+	const after = new Date();
+	console.log('fetch profile from cloudflare-kv', after.getTime() - before.getTime());
 	return json;
 };
 
