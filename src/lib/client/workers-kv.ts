@@ -1,27 +1,18 @@
-import cloudFlareWorkersKV from '@kikobeats/cloudflare-workers-kv';
-import { dev } from '$app/environment';
+import { fetcher } from 'itty-fetcher';
+import { KV_TOKEN, KV_HOST } from '$env/static/private';
 
-import {
-	CLOUDFLARE_TOKEN as key,
-	CLOUDFLARE_ACCOUNT_ID as accountId,
-	CLOUDFLARE_KV_NAMESPACE as namespaceId
-} from '$env/static/private';
-
-const store = cloudFlareWorkersKV({
-	accountId,
-	key,
-	namespaceId
+const workersKV = fetcher({
+	base: KV_HOST,
+	transformRequest(req) {
+		req.headers['Authorization'] = `Bearer ${KV_TOKEN}`;
+		return req;
+	}
 });
 
-export const get = async (key: string, platform = null) => {
-	const before = new Date();
-	const json = dev && !platform ? await store.get(key) : null;
-	const after = new Date();
-	console.log('fetch profile from cloudflare-kv', after.getTime() - before.getTime());
-	return json;
-};
-
-export const set = async (key: string, value: any) => {
-	const json = JSON.stringify(value);
-	await store.set(key, json, 900000);
+export const get = async (key: string) => {
+	const before = new Date().getTime();
+	const data = await workersKV.post('/get', { key });
+	const after = new Date().getTime();
+	console.log('load from KV', after - before);
+	return data;
 };

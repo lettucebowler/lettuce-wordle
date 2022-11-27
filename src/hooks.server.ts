@@ -3,7 +3,7 @@ import { SESSION_COOKIE_NAME } from '$env/static/private';
 import { getProfile, stashProfile } from '$lib/client/redis';
 import { getUser } from '$lib/client/oauth';
 import { getGameFromCookie } from '$lib/util/state';
-import { get, set } from '$lib/client/workers-kv';
+import { get } from '$lib/client/workers-kv';
 
 const AuthenticateSession = async (event: RequestEvent) => {
 	const session = event.cookies.get(SESSION_COOKIE_NAME) || '';
@@ -12,7 +12,8 @@ const AuthenticateSession = async (event: RequestEvent) => {
 	if (session && !event.locals.user) {
 		let refresh = false;
 		let user = await getProfile(session);
-		// let bleh = await get(session);
+		let bleh = await get('test');
+		console.log(bleh);
 		if (!user.login) {
 			user = await getUser(session, event.fetch);
 			refresh = true;

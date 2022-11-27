@@ -3,7 +3,6 @@ import { fetcher } from 'itty-fetcher';
 import { CLIENT_ID, CLIENT_SECRET, SESSION_COOKIE_NAME } from '$env/static/private';
 import { stashProfile } from '$lib/client/redis';
 import { getGameNum } from '$lib/util/share';
-import { set } from '$lib/client/workers-kv';
 
 import { getUser } from '$lib/client/oauth';
 import { saveGameResults } from '$lib/client/planetscale';
