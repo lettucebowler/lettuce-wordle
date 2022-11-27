@@ -12,7 +12,7 @@ const AuthenticateSession = async (event: RequestEvent) => {
 	if (session && !event.locals.user) {
 		let refresh = false;
 		let user = await getProfile(session);
-		// let user = await get(session);
+		await get(session);
 		if (!user.login) {
 			user = await getUser(session, event.fetch);
 			refresh = true;
