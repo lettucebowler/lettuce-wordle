@@ -1,11 +1,14 @@
 import { Redis } from '@upstash/redis';
-import { AUTH_REDIS_REST_TOKEN, AUTH_REDIS_URL } from '$env/static/private';
+import {
+	UPSTASH_REDIS_REST_TOKEN as token,
+	UPSTASH_REDIS_REST_URL as url
+} from '$env/static/private';
 
 type Profile = { login?: string; profile_url?: string };
 
 const redis = new Redis({
-	url: AUTH_REDIS_URL,
-	token: AUTH_REDIS_REST_TOKEN
+	url,
+	token
 });
 
 export const getProfile = async (accessToken: string): Promise<Profile> => {
