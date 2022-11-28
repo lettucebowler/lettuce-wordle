@@ -29,3 +29,5 @@ export const set = async (key: string, value: any) => {
 	console.log('load from KV', after - before);
 	return data;
 };
+
+export const getUserKV = (key: string) => get(key) as Promise<{ login?: string; avatar?: string }>;
