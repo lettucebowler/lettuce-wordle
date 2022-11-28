@@ -47,8 +47,8 @@ export const GET: import('./$types').RequestHandler = async (event) => {
 	}
 	const accessToken = await getAccessToken(code || '', event.fetch);
 	const user = await getUser(accessToken, event.fetch);
-	// stashProfile(accessToken, user);
-	set(accessToken, user);
+	stashProfile(accessToken, user);
+	// set(accessToken, user);
 	// set(accessToken, user);
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
