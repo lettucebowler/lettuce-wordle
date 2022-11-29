@@ -23,10 +23,7 @@ export const get = async (key: string) => {
 };
 
 export const set = async (key: string, value: any) => {
-	const before = new Date().getTime();
 	const data = await workersKV.post('/set', { key, value });
-	const after = new Date().getTime();
-	console.log('write to KV', after - before);
 	return data;
 };
 
