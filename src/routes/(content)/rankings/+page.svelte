@@ -23,7 +23,7 @@
 		<div class="grid gap-2">
 			{#each scores as score, i (i)}
 				{@const position = scores.filter((s) => s.score > score.score).length + 1}
-				<a href={`/profile/${score.user}`} data-sveltekit-prefetch>
+				<a href={`/profile/${score.user}`} data-sveltekit-preload-data="hover">
 					<div
 						class="grid w-full grid-cols-3 items-center rounded-2xl p-2 text-xl font-medium"
 						class:bg-polar-300={i % 2 == 1}
