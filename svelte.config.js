@@ -11,9 +11,7 @@ const config = {
 
 	kit: {
 		adapter: adapter({
-			out: 'build',
-			edge: true,
-			split: true
+			out: 'build'
 		}),
 		inlineStyleThreshold: 2048
 	}
