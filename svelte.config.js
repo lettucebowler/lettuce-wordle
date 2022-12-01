@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-auto';
+import adapter from '@sveltejs/adapter-vercel';
 import preprocess from 'svelte-preprocess';
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -7,7 +7,14 @@ const config = {
 		preprocess({
 			postcss: true
 		})
-	]
+	],
+
+	kit: {
+		adapter: adapter({
+			out: 'build'
+		}),
+		inlineStyleThreshold: 2048
+	}
 };
 
 export default config;
