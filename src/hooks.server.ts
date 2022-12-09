@@ -3,6 +3,7 @@ import { SESSION_COOKIE_NAME } from '$env/static/private';
 import { getProfile, stashProfile } from '$lib/client/redis';
 import { getUser } from '$lib/client/oauth';
 import { getGameFromCookie } from '$lib/util/state';
+import { get as getKV, set as setKV } from '$lib/client/workers-kv';
 
 const AuthenticateSession = async (event: RequestEvent) => {
 	const session = event.cookies.get(SESSION_COOKIE_NAME) || '';
@@ -10,13 +11,15 @@ const AuthenticateSession = async (event: RequestEvent) => {
 	// @ts-ignore
 	if (session && !event.locals.user) {
 		let refresh = false;
-		let user = await getProfile(session);
-		if (!user.login) {
+		// let user = await getProfile(session);
+		let user = await getKV(session);
+		if (!user?.login) {
 			user = await getUser(session, event.fetch);
 			refresh = true;
 		}
-		stashProfile(session, user);
-		if (!user.login) {
+		// stashProfile(session, user);
+		setKV(session, user);
+		if (!user?.login) {
 			event.cookies.delete(SESSION_COOKIE_NAME);
 		}
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
