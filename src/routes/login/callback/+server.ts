@@ -3,7 +3,8 @@ import { fetcher } from 'itty-fetcher';
 import { CLIENT_ID, CLIENT_SECRET, SESSION_COOKIE_NAME } from '$env/static/private';
 import { getGameNum } from '$lib/util/share';
 import { getUser } from '$lib/client/oauth';
-import { saveGameResults } from '$lib/client/planetscale';
+// import { saveGameResults } from '$lib/client/planetscale';
+import { saveGameResults } from '$lib/client/apiWordlettuce';
 import { checkWords } from '$lib/util/gameFunctions';
 import { getDailyWord } from '$lib/util/words';
 import { stashProfile } from '$lib/client/apiWordlettuce';
@@ -57,7 +58,11 @@ export const GET: import('./$types').RequestHandler = async (event) => {
 		answers = checkWords(gameState, getDailyWord());
 	}
 	if (user.login && answers.length && answers.at(-1) === 'xxxxx') {
-		await saveGameResults(user.login, getGameNum(), answers);
+		await saveGameResults({
+			user: user.login,
+			gamenum: getGameNum(),
+			answers: answers.join('')
+		});
 	}
 	event.cookies.set(SESSION_COOKIE_NAME, accessToken, {
 		httpOnly: true,

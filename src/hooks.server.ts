@@ -10,13 +10,11 @@ const AuthenticateSession = async (event: RequestEvent) => {
 	// @ts-ignore
 	if (session && !event.locals.user) {
 		let refresh = false;
-		// let user = await getProfile(session);
 		let user = await getKV(session);
 		if (!user?.login) {
 			user = await getUser(session, event.fetch);
 			refresh = true;
 		}
-		// stashProfile(session, user);
 		setKV(session, user);
 		if (!user?.login) {
 			event.cookies.delete(SESSION_COOKIE_NAME);
