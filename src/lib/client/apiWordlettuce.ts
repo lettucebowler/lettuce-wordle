@@ -9,7 +9,7 @@ const workersKV = fetcher({
 	}
 });
 
-export const get = async (key: string) => {
+export const getProfile = async (key: string) => {
 	const before = new Date().getTime();
 	let data = {};
 	try {
@@ -22,9 +22,10 @@ export const get = async (key: string) => {
 	return data;
 };
 
-export const set = async (key: string, value: any) => {
+export const stashProfile = async (key: string, value: any) => {
 	const data = await workersKV.post('/set', { session: key, profile: value });
 	return data;
 };
 
-export const getUserKV = (key: string) => get(key) as Promise<{ login?: string; avatar?: string }>;
+export const getUserKV = (key: string) =>
+	getProfile(key) as Promise<{ login?: string; avatar?: string }>;

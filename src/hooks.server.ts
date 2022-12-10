@@ -1,9 +1,8 @@
 import type { RequestEvent } from '@sveltejs/kit';
 import { SESSION_COOKIE_NAME } from '$env/static/private';
-import { getProfile, stashProfile } from '$lib/client/redis';
 import { getUser } from '$lib/client/oauth';
 import { getGameFromCookie } from '$lib/util/state';
-import { get as getKV, set as setKV } from '$lib/client/workers-kv';
+import { getProfile as getKV, stashProfile as setKV } from '$lib/client/apiWordlettuce';
 
 const AuthenticateSession = async (event: RequestEvent) => {
 	const session = event.cookies.get(SESSION_COOKIE_NAME) || '';

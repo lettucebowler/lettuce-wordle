@@ -7,7 +7,7 @@ import { getUser } from '$lib/client/oauth';
 import { saveGameResults } from '$lib/client/planetscale';
 import { checkWords } from '$lib/util/gameFunctions';
 import { getDailyWord } from '$lib/util/words';
-import { set } from '$lib/client/workers-kv';
+import { stashProfile } from '$lib/client/apiWordlettuce';
 
 const tokenUrl = 'https://github.com/login/oauth/access_token';
 
@@ -49,7 +49,7 @@ export const GET: import('./$types').RequestHandler = async (event) => {
 	const accessToken = await getAccessToken(code || '', event.fetch);
 	const user = await getUser(accessToken, event.fetch);
 	// stashProfile(accessToken, user);
-	set(accessToken, user);
+	stashProfile(accessToken, user);
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
 	const gameState = event.locals.gameState;
