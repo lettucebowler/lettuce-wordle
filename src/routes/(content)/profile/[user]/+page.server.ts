@@ -1,5 +1,4 @@
 import { getGameResults } from '$lib/client/planetscale';
-import { getGameNum } from '$lib/util/share';
 import { fetcher } from 'itty-fetcher';
 
 const userInfo = fetcher({
