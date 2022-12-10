@@ -58,7 +58,7 @@ export const GET: import('./$types').RequestHandler = async (event) => {
 		answers = checkWords(gameState, getDailyWord());
 	}
 	if (user.login && answers.length && answers.at(-1) === 'xxxxx') {
-		await saveGameResults({
+		saveGameResults({
 			user: user.login,
 			gamenum: getGameNum(),
 			answers: answers.join('')

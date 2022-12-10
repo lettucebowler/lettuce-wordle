@@ -9,13 +9,11 @@ const AuthenticateSession = async (event: RequestEvent) => {
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
 	if (session && !event.locals.user) {
-		let refresh = false;
 		let user = await getKV(session);
 		if (!user?.login) {
 			user = await getUser(session, event.fetch);
-			refresh = true;
+			setKV(session, user);
 		}
-		setKV(session, user);
 		if (!user?.login) {
 			event.cookies.delete(SESSION_COOKIE_NAME);
 		}

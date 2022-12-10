@@ -26,6 +26,7 @@ export const getProfile = async (key: string) => {
 };
 
 export const stashProfile = async (key: string, value: any) => {
+	console.log('Stash profile to KV');
 	const data = await apiWordlettuce.post('/auth/set', { session: key, profile: value });
 	return data;
 };
