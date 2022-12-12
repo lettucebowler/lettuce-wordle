@@ -22,7 +22,7 @@
 		</figcaption>
 	</figure>
 	{#if userProfile.bio}
-		<P>
+		<P className="text-center">
 			{userProfile.bio}
 		</P>
 	{/if}

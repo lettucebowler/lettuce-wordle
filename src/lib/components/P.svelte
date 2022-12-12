@@ -1,3 +1,13 @@
-<p class="mx-4 text-left text-lg text-snow-300">
+<script lang="ts">
+	export let className = '';
+</script>
+
+<p
+	class:mx-4={true}
+	class:text-left={true}
+	class:text-lg={true}
+	class:text-snow-300={true}
+	class={className}
+>
 	<slot />
 </p>
