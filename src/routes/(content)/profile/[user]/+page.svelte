@@ -1,9 +1,9 @@
 <script lang="ts">
 	import P from '$lib/components/P.svelte';
-	import type { WordLettuceUser } from '$lib/client/oauth';
+	import type { Profile } from '$lib/types/auth';
 	export let data: import('./$types').PageData;
 
-	let userProfile: WordLettuceUser;
+	let userProfile: Profile;
 	const cells = Array(30);
 
 	$: gameResults = data.gameResults;

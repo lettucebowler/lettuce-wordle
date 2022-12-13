@@ -1,10 +1,9 @@
 import { getCookieFromGameState } from '$lib/util/state';
 import { applyWord, applyKey, checkWords } from '$lib/util/gameFunctions';
 import { fail as invalid } from '@sveltejs/kit';
-// import { saveGameResults } from '$lib/client/planetscale';
-import { saveGameResults } from '$lib/client/apiWordlettuce';
 import { getGameNum } from '$lib/util/share';
 import { getDailyWord } from '$lib/util/words';
+import { saveGameResults } from '$lib/util/gameresults';
 
 export const load: import('./$types').PageServerLoad = ({ cookies, depends, locals }) => {
 	depends('/');
@@ -72,11 +71,12 @@ export const actions: import('./$types').Actions = {
 		const { user } = event.locals;
 		if (user) {
 			const gamenum = getGameNum();
-			saveGameResults({
+			const gameResult = {
 				gamenum,
 				user: user.login,
 				answers: updatedAnswers.join('')
-			});
+			};
+			saveGameResults(gameResult, event.locals.dbProvider);
 		}
 
 		event.cookies.set('wordLettuce', getCookieFromGameState(updatedGuesses), {

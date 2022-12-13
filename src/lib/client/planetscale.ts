@@ -1,6 +1,6 @@
 import { connect } from '@planetscale/database';
 import { DATABASE_HOST, DATABASE_USERNAME, DATABASE_PASSWORD } from '$env/static/private';
-import type { GameResult } from './apiWordlettuce';
+import type { GameResult, LeaderboardResults } from '$lib/types/gameresult';
 
 const config = {
 	host: DATABASE_HOST,
@@ -23,16 +23,7 @@ export const saveGameResults = async ({ user, gamenum, answers }: GameResult) =>
 	return results;
 };
 
-export const getInfoForLeaderBoard = async (
-	gameNum: number
-): Promise<
-	{
-		user: string;
-		sum: number;
-		count: number;
-		score: number;
-	}[]
-> => {
+export const getLeaderBoardResults = async (gameNum: number) => {
 	const before = new Date();
 	const results = await conn.execute(
 		`select user, sum(attempts), count(attempts), (count(attempts) * 7) - sum(attempts) from gameresults where gamenum > (${
@@ -41,7 +32,7 @@ export const getInfoForLeaderBoard = async (
 	);
 	const after = new Date();
 	const duration = after.getTime() - before.getTime();
-	console.log(`time fetching scores: ${duration}`);
+	console.log('fetch leaderboard results from planetscale:', duration);
 	const { rows } = results;
 
 	const scores = rows.map((row) => {
@@ -53,22 +44,17 @@ export const getInfoForLeaderBoard = async (
 			score: parseInt(score)
 		};
 	});
-	return scores;
+	return scores as LeaderboardResults[];
 };
 
-export const getGameResults = async (
-	user: string,
-	count: number
-): Promise<{ user: string; gamenum: number; answers: string; attempts: number }[]> => {
+export const getGameResults = async (user: string, count: number) => {
 	const before = new Date();
 	const results = await conn.execute(
 		`select * from gameresults where user = '${user}' order by gamenum desc limit ${count}`
 	);
 	const after = new Date();
 	const duration = after.getTime() - before.getTime();
-	console.log(`time fetching game results: ${duration}`);
+	console.log(`get last ${count} game results from planetscale for ${user}`, duration);
 	const { rows } = results;
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
-	return rows || [];
+	return rows as GameResult[];
 };

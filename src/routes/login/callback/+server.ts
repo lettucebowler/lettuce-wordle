@@ -2,13 +2,12 @@ import { redirect } from '@sveltejs/kit';
 import { fetcher } from 'itty-fetcher';
 import { CLIENT_ID, CLIENT_SECRET, SESSION_COOKIE_NAME } from '$env/static/private';
 import { getGameNum } from '$lib/util/share';
-import { getUser } from '$lib/client/oauth';
-import { saveGameResults as saveGamePlanetscale } from '$lib/client/planetscale';
-import { saveGameResults as saveGameD1 } from '$lib/client/apiWordlettuce';
+import { getUserFromSession } from '$lib/client/github';
 import { checkWords } from '$lib/util/gameFunctions';
 import { getDailyWord } from '$lib/util/words';
 import { stashProfile as setKV } from '$lib/client/apiWordlettuce';
 import { stashProfile as setUpstash } from '$lib/client/upstash';
+import { saveGameResults } from '$lib/util/gameresults';
 
 const tokenUrl = 'https://github.com/login/oauth/access_token';
 
@@ -48,39 +47,24 @@ export const GET: import('./$types').RequestHandler = async (event) => {
 		throw redirect(307, '/');
 	}
 	const accessToken = await getAccessToken(code || '', event.fetch);
-	const user = await getUser(accessToken, event.fetch);
-	// stashProfile(accessToken, user);
-	if (event.locals.authMode === 'cf') {
+	const user = await getUserFromSession(accessToken, event.fetch);
+	if (event.locals.authProvider === 'cf') {
 		setKV(accessToken, user);
 	} else {
 		setUpstash(accessToken, user);
 	}
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
 	const gameState = event.locals.gameState;
 	let answers: string[] = [];
 	if (gameState.length) {
 		answers = checkWords(gameState, getDailyWord());
 	}
 	if (user.login && answers.length && answers.at(-1) === 'xxxxx') {
-		// saveGameResults({
-		// 	user: user.login,
-		// 	gamenum: getGameNum(),
-		// 	answers: answers.join('')
-		// });
-		if (event.locals.dbProvider === 'cf') {
-			await saveGameD1({
-				user: user.login,
-				gamenum: getGameNum(),
-				answers: answers.join('')
-			});
-		} else {
-			await saveGamePlanetscale({
-				user: user.login,
-				gamenum: getGameNum(),
-				answers: answers.join('')
-			});
-		}
+		const gameResult = {
+			user: user.login,
+			gamenum: getGameNum(),
+			answers: answers.join('')
+		};
+		await saveGameResults(gameResult, event.locals.dbProvider);
 	}
 	event.cookies.set(SESSION_COOKIE_NAME, accessToken, {
 		httpOnly: true,

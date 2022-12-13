@@ -24,7 +24,7 @@ export const getCookieFromGameState = (
 const decodeState = (stateBuffer: string) => {
 	let state: {
 		gameNum: number;
-		guesses: string[];
+		guesses: { guess: string; complete: true }[];
 	} = {
 		gameNum: getGameNum(),
 		guesses: []

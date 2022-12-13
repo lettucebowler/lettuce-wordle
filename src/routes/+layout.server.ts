@@ -1,4 +1,3 @@
-import type { WordLettuceUser } from '$lib/client/oauth';
 import { Trophy, Home } from '@steeze-ui/heroicons';
 
 export const prerender = false;
@@ -15,12 +14,10 @@ type NavLink = {
 };
 
 export const load: import('./$types').LayoutServerLoad = async (event) => {
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
-	const user: WordLettuceUser = event.locals.user || {};
+	const user = event.locals.user;
 	const { login, avatar } = user;
 
-	let links: NavLink[] = [
+	const links: NavLink[] = [
 		{
 			path: '/',
 			name: 'Home',

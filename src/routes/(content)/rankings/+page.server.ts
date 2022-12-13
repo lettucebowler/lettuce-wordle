@@ -1,13 +1,9 @@
-import { getLeaderBoardResults } from '$lib/client/apiWordlettuce';
-import { getInfoForLeaderBoard } from '$lib/client/planetscale';
 import { getGameNum } from '$lib/util/share';
+import { getLeaderBoardResults } from '$lib/util/gameresults';
 
 export const load: import('./$types').PageServerLoad = async (event) => {
 	const dbProvider = event.locals.dbProvider;
-	const scores =
-		dbProvider === 'cf'
-			? await getLeaderBoardResults(getGameNum())
-			: await getInfoForLeaderBoard(getGameNum());
+	const scores = await getLeaderBoardResults(getGameNum(), dbProvider);
 	return {
 		scores
 	};
