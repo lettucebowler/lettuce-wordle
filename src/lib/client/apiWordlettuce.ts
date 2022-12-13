@@ -31,7 +31,7 @@ export const stashProfile = async (key: string, value: any) => {
 	return data;
 };
 
-type GameResult = {
+export type GameResult = {
 	gamenum: number;
 	user: string;
 	attempts?: string;

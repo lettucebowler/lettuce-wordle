@@ -1,8 +1,18 @@
 import type { WordLettuceUser } from '$lib/client/oauth';
-import type { NavLink } from '$lib/types/Link';
 import { Trophy, Home } from '@steeze-ui/heroicons';
 
 export const prerender = false;
+
+import type { IconSource } from '@steeze-ui/svelte-icon/types';
+
+type NavLink = {
+	path: string;
+	name: string;
+	enabled: boolean;
+	prefetch: boolean;
+	margin?: string;
+	icon?: IconSource;
+};
 
 export const load: import('./$types').LayoutServerLoad = async (event) => {
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment

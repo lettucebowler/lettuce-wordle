@@ -1,5 +1,6 @@
 import { connect } from '@planetscale/database';
 import { DATABASE_HOST, DATABASE_USERNAME, DATABASE_PASSWORD } from '$env/static/private';
+import type { GameResult } from './apiWordlettuce';
 
 const config = {
 	host: DATABASE_HOST,
@@ -9,13 +10,12 @@ const config = {
 
 const conn = connect(config);
 
-export const saveGameResults = async (user: string, gamenum: number, answers: string[]) => {
+export const saveGameResults = async ({ user, gamenum, answers }: GameResult) => {
 	const before = new Date();
-	const answerString = answers.join('');
 	const results = await conn.execute(
-		`insert into gameresults (user, gamenum, answers, attempts) values ('${user}', ${gamenum}, '${answerString}', '${Math.floor(
-			answerString.length / 5
-		)}') on duplicate key update answers='${answerString}', attempts='${answers.length}'`
+		`insert into gameresults (user, gamenum, answers, attempts) values ('${user}', ${gamenum}, '${answers}', '${Math.floor(
+			answers.length / 5
+		)}') on duplicate key update answers='${answers}', attempts='${answers.length}'`
 	);
 	const after = new Date();
 	const duration = after.getTime() - before.getTime();
