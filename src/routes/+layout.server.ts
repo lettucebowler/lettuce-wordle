@@ -15,7 +15,8 @@ type NavLink = {
 
 export const load: import('./$types').LayoutServerLoad = async (event) => {
 	const user = event.locals.user;
-	const { login, avatar } = user;
+
+	const { login, avatar } = user || {};
 
 	const links: NavLink[] = [
 		{

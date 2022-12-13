@@ -14,7 +14,7 @@ const apiWordlettuce = fetcher({
 
 export const getProfile = async (key: string) => {
 	const before = new Date().getTime();
-	let data = {};
+	let data = null;
 	try {
 		data = await apiWordlettuce.post('/auth/get', { session: key });
 	} catch (e) {
