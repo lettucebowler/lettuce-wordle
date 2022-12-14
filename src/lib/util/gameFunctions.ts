@@ -134,39 +134,30 @@ export const applyWord = (
 		invalid: false,
 		success: false
 	};
-	let updatedGuesses = guesses;
 	if (answers.at(-1) === 'xxxxx') {
 		metadata.success = true;
 		return {
-			updatedGuesses,
+			updatedGuesses: guesses,
 			metadata,
 			updatedAnswers: answers
 		};
 	}
-	if (guess.length !== 5 || !isValidWord(guess)) {
+	if (guess.length !== 5 || !isValidWord(guess) || !guesses.length) {
 		metadata.invalid = true;
 		return {
-			updatedGuesses,
+			updatedGuesses: guesses,
 			metadata,
 			updatedAnswers: answers
 		};
 	}
 	const statuses = checkWord(guessLetters, answer);
-	const updatedAnswers = [...answers, statuses];
-	if (guesses?.length < updatedAnswers.length) {
-		updatedGuesses.push({
-			guess,
-			complete: true
-		});
-	}
-
-	if (updatedGuesses.length) {
-		const [last, ...rest] = updatedGuesses.reverse();
-		if (last) {
-			last.complete = true;
-			updatedGuesses = [last, ...rest].reverse();
+	let updatedGuesses = guesses.map((guess) => {
+		return {
+			guess: guess.guess,
+			complete: guess.guess.length === 5,
 		}
-	}
+	})
+	answers.push(statuses);
 
 	if (statuses === 'xxxxx') {
 		metadata.success = true;
@@ -175,6 +166,6 @@ export const applyWord = (
 	return {
 		updatedGuesses,
 		metadata,
-		updatedAnswers
+		answers
 	};
 };
