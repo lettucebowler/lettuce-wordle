@@ -51,11 +51,7 @@ const authHandler = SvelteKitAuth({
 	providers: [
 		GitHub({
 			clientId: SK_AUTH_GITHUB_CLIENT_ID,
-			clientSecret: SK_AUTH_GITHUB_CLIENT_SECRET,
-			authorization: {
-				url: 'https://github.com/login/oauth/authorize',
-				params: { scope: 'email' }
-			}
+			clientSecret: SK_AUTH_GITHUB_CLIENT_SECRET
 		})
 	],
 	trustHost: true,
