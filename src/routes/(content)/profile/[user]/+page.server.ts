@@ -13,10 +13,10 @@ export const load: import('./$types').PageServerLoad = async (event) => {
 			avatar: 'https://avatars.githubusercontent.com/u/31812953?v=4'
 		};
 	}
-	const results = await getGameResults(user, 50, 'd1');
-	for (const result of results) {
-		await saveGameResults(result, 'planetscale');
-	}
+	const results = await getGameResults(user, 50, event.locals.dbProvider);
+	// for (const result of results) {
+	// 	await saveGameResults(result, 'planetscale');
+	// }
 	return {
 		gameResults: results,
 		userProfile
