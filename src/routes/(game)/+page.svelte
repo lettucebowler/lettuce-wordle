@@ -7,7 +7,13 @@
 	import { enhance, applyAction } from '$app/forms';
 	import LettuceKeyboard from '$lib/components/LettuceKeyboard.svelte';
 	import LetterBox from '$lib/components/LetterBox.svelte';
-	import { applyKey, getKeyStatuses, applyWord, checkWords, checkWord } from '$lib/util/gameFunctions';
+	import {
+		applyKey,
+		getKeyStatuses,
+		applyWord,
+		checkWords,
+		checkWord
+	} from '$lib/util/gameFunctions';
 	import { getCookieFromGameState } from '$lib/util/state';
 	import Cookies from 'js-cookie';
 	import { invalidateAll } from '$app/navigation';

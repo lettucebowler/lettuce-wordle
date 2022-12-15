@@ -154,9 +154,9 @@ export const applyWord = (
 	let updatedGuesses = guesses.map((guess) => {
 		return {
 			guess: guess.guess,
-			complete: guess.guess.length === 5,
-		}
-	})
+			complete: guess.guess.length === 5
+		};
+	});
 	answers.push(statuses);
 
 	if (statuses === 'xxxxx') {

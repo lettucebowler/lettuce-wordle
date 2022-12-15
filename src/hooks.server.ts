@@ -4,8 +4,8 @@ import { getUserFromSession } from '$lib/client/github';
 import { getGameFromCookie } from '$lib/util/state';
 import { getProfile as getKV, stashProfile as setKV } from '$lib/client/apiWordlettuce';
 import { getProfile as getUpstash, stashProfile as setUpstash } from '$lib/client/upstash';
-import SvelteKitAuth from "@auth/sveltekit"
-import GitHub from "@auth/core/providers/github"
+import SvelteKitAuth from '@auth/sveltekit';
+import GitHub from '@auth/core/providers/github';
 import { CLIENT_ID, CLIENT_SECRET } from '$env/static/private';
 import { sequence } from '@sveltejs/kit/hooks';
 
@@ -48,6 +48,9 @@ const gameStateHandler: import('@sveltejs/kit').Handle = async ({ event, resolve
 	return response;
 };
 
-export const handle = sequence(SvelteKitAuth({
-	providers: [GitHub({ clientId: CLIENT_ID, clientSecret: CLIENT_SECRET })],
-  }), gameStateHandler);
+export const handle = sequence(
+	SvelteKitAuth({
+		providers: [GitHub({ clientId: CLIENT_ID, clientSecret: CLIENT_SECRET })]
+	}),
+	gameStateHandler
+);
