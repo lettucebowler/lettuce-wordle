@@ -4,10 +4,6 @@ import { getUserFromSession } from '$lib/client/github';
 import { getGameFromCookie } from '$lib/util/state';
 import { getProfile as getKV, stashProfile as setKV } from '$lib/client/apiWordlettuce';
 import { getProfile as getUpstash, stashProfile as setUpstash } from '$lib/client/upstash';
-import SvelteKitAuth from '@auth/sveltekit';
-import GitHub from '@auth/core/providers/github';
-import { CLIENT_ID, CLIENT_SECRET } from '$env/static/private';
-import { sequence } from '@sveltejs/kit/hooks';
 
 const AuthenticateSession = async (event: RequestEvent) => {
 	const session = event.cookies.get(SESSION_COOKIE_NAME) || '';
@@ -35,22 +31,15 @@ const addGameStateToSession = (event: RequestEvent) => {
 	event.locals.gameState = gameState?.guesses;
 };
 
-const gameStateHandler: import('@sveltejs/kit').Handle = async ({ event, resolve }) => {
+export const handle: import('@sveltejs/kit').Handle = async ({ event, resolve }) => {
 	const searchParams = new URL(event.request.url).searchParams;
 	const authMode = searchParams.get('authProvider') || 'cf';
 	const dbMode = searchParams.get('dbProvider') || 'cf';
 	event.locals.authProvider = authMode;
 	event.locals.dbProvider = dbMode;
 
-	// await AuthenticateSession(event);
+	await AuthenticateSession(event);
 	addGameStateToSession(event);
 	const response = await resolve(event);
 	return response;
 };
-
-export const handle = sequence(
-	SvelteKitAuth({
-		providers: [GitHub({ clientId: CLIENT_ID, clientSecret: CLIENT_SECRET })]
-	}),
-	gameStateHandler
-);
