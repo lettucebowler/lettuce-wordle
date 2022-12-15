@@ -1,6 +1,10 @@
 import { redirect } from '@sveltejs/kit';
 import { fetcher } from 'itty-fetcher';
-import { CLIENT_ID, CLIENT_SECRET, SESSION_COOKIE_NAME } from '$env/static/private';
+import {
+	LEGACY_AUTH_CLIENT_ID,
+	LEGACY_AUTH_CLIENT_SECRET,
+	SESSION_COOKIE_NAME
+} from '$env/static/private';
 import { getGameNum } from '$lib/util/share';
 import { getUserFromSession } from '$lib/client/github';
 import { checkWords } from '$lib/util/gameFunctions';
@@ -25,8 +29,8 @@ const getAccessToken = async (
 	} = await auth.post(
 		tokenUrl,
 		{
-			client_id: CLIENT_ID,
-			client_secret: CLIENT_SECRET,
+			client_id: LEGACY_AUTH_CLIENT_ID,
+			client_secret: LEGACY_AUTH_CLIENT_SECRET,
 			code
 		},
 		{
