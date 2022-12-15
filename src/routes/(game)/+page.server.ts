@@ -8,9 +8,7 @@ import { saveGameResults } from '$lib/util/gameresults';
 export const load: import('./$types').PageServerLoad = ({ cookies, depends, locals }) => {
 	depends('/');
 
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
-	const gameState: { guess: string; complete: boolean }[] = locals.gameState;
+	const gameState = locals.gameState;
 
 	const answers = checkWords(gameState, getDailyWord());
 
@@ -30,8 +28,6 @@ export const load: import('./$types').PageServerLoad = ({ cookies, depends, loca
 export const actions: import('./$types').Actions = {
 	keyboard: async ({ url, cookies, locals }) => {
 		const key: string = url.searchParams.get('key') || '';
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
 		const gameState = locals.gameState;
 		const guesses = gameState || [];
 
@@ -52,8 +48,6 @@ export const actions: import('./$types').Actions = {
 	enter: async (event) => {
 		const data = await event.request.formData();
 
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
 		const gameState = event.locals.gameState;
 		const guess = data.getAll('guess').map((l) => l.toString().toLowerCase());
 
@@ -66,15 +60,13 @@ export const actions: import('./$types').Actions = {
 			return invalid(400, metadata);
 		}
 
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
 		const { user } = event.locals;
 		if (user) {
 			const gamenum = getGameNum();
 			const gameResult = {
 				gamenum,
 				user: user.login,
-				answers: updatedAnswers.join('')
+				answers: updatedAnswers?.join('') || ''
 			};
 			saveGameResults(gameResult, event.locals.dbProvider);
 		}

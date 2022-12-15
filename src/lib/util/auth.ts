@@ -9,26 +9,30 @@ import {
 
 import type { Profile } from '$lib/types/auth';
 
-export const getProfile = async (session: string, provider = 'cf') => {
+export const getProfile = async (session: string, provider: string) => {
 	let profile = {};
 	switch (provider) {
 		case 'upstash':
 			profile = await getProfileUpstash(session);
 			break;
-		default:
+		case 'kv':
 			profile = await getProfileKV(session);
 			break;
+		default:
+			throw Error('invalid provider');
 	}
 	return profile as Profile;
 };
 
-export const stashProfile = async (session: string, user: Profile, provider = 'cf') => {
+export const stashProfile = async (session: string, user: Profile, provider: string) => {
 	switch (provider) {
 		case 'upstash':
 			stashProfileUpstash(session, user);
 			break;
-		default:
+		case 'kv':
 			stashProfileKV(session, user);
 			break;
+		default:
+			throw Error('invalid provider');
 	}
 };

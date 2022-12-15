@@ -1,22 +1,19 @@
 import type { RequestEvent } from '@sveltejs/kit';
-import { SESSION_COOKIE_NAME } from '$env/static/private';
+import {
+	SESSION_COOKIE_NAME,
+	DEFAULT_AUTH_PROVIDER,
+	DEFAULT_DB_PROVIDER
+} from '$env/static/private';
 import { getUserFromSession } from '$lib/client/github';
 import { getGameFromCookie } from '$lib/util/state';
-import { getProfile as getKV, stashProfile as setKV } from '$lib/client/apiWordlettuce';
-import { getProfile as getUpstash, stashProfile as setUpstash } from '$lib/client/upstash';
-
+import { getProfile, stashProfile } from '$lib/util/auth';
 const AuthenticateSession = async (event: RequestEvent) => {
 	const session = event.cookies.get(SESSION_COOKIE_NAME) || '';
-	const authProvider = event.locals.authProvider || 'cf';
 	if (session && !event.locals.user) {
-		let user = authProvider === 'cf' ? await getKV(session) : await getUpstash(session);
+		let user = await getProfile(session, event.locals.authProvider);
 		if (!user?.login) {
 			user = await getUserFromSession(session, event.fetch);
-			if (authProvider === 'cf') {
-				setKV(session, user);
-			} else {
-				setUpstash(session, user);
-			}
+			stashProfile(session, user, event.locals.authProvider);
 		}
 		if (!user?.login) {
 			event.cookies.delete(SESSION_COOKIE_NAME);
@@ -33,10 +30,10 @@ const addGameStateToSession = (event: RequestEvent) => {
 
 export const handle: import('@sveltejs/kit').Handle = async ({ event, resolve }) => {
 	const searchParams = new URL(event.request.url).searchParams;
-	const authMode = searchParams.get('authProvider') || 'cf';
-	const dbMode = searchParams.get('dbProvider') || 'cf';
-	event.locals.authProvider = authMode;
-	event.locals.dbProvider = dbMode;
+	const authProvider = searchParams.get('authProvider') || DEFAULT_AUTH_PROVIDER;
+	const dbProvider = searchParams.get('dbProvider') || DEFAULT_DB_PROVIDER;
+	event.locals.authProvider = authProvider;
+	event.locals.dbProvider = dbProvider;
 
 	await AuthenticateSession(event);
 	addGameStateToSession(event);

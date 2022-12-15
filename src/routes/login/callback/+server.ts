@@ -5,8 +5,7 @@ import { getGameNum } from '$lib/util/share';
 import { getUserFromSession } from '$lib/client/github';
 import { checkWords } from '$lib/util/gameFunctions';
 import { getDailyWord } from '$lib/util/words';
-import { stashProfile as setKV } from '$lib/client/apiWordlettuce';
-import { stashProfile as setUpstash } from '$lib/client/upstash';
+import { stashProfile } from '$lib/util/auth';
 import { saveGameResults } from '$lib/util/gameresults';
 
 const tokenUrl = 'https://github.com/login/oauth/access_token';
@@ -48,11 +47,7 @@ export const GET: import('./$types').RequestHandler = async (event) => {
 	}
 	const accessToken = await getAccessToken(code || '', event.fetch);
 	const user = await getUserFromSession(accessToken, event.fetch);
-	if (event.locals.authProvider === 'cf') {
-		setKV(accessToken, user);
-	} else {
-		setUpstash(accessToken, user);
-	}
+	stashProfile(accessToken, user, event.locals.authProvider);
 	const gameState = event.locals.gameState;
 	let answers: string[] = [];
 	if (gameState.length) {
