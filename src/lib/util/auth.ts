@@ -21,6 +21,7 @@ export const getProfile = async (session: string, provider: string) => {
 		default:
 			throw Error('invalid provider');
 	}
+	console.log(profile);
 	return profile as Profile;
 };
 

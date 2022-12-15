@@ -9,6 +9,7 @@ import { getGameFromCookie } from '$lib/util/state';
 import { getProfile, stashProfile } from '$lib/util/auth';
 const AuthenticateSession = async (event: RequestEvent) => {
 	const session = event.cookies.get(SESSION_COOKIE_NAME) || '';
+	console.log('session', session);
 	if (session && !event.locals.user) {
 		let user = await getProfile(session, event.locals.authProvider);
 		if (!user?.login) {

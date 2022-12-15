@@ -4,6 +4,7 @@ const userURL = 'https://api.github.com/user';
 
 import type { Profile } from '$lib/types/auth';
 import type { RequestEvent } from '@sveltejs/kit';
+import { detach } from 'svelte/internal';
 
 export const getUserFromSession = async (
 	accessToken: string,
@@ -51,12 +52,14 @@ export const getUserProfile = async (event: RequestEvent, user: string) => {
 		base: 'https://api.github.com/users',
 		fetch: event.fetch
 	});
-
+	const before = new Date().getTime();
 	const userProfile = (await userInfo.get(`/${user}`)) as {
 		login: string;
 		avatar_url: string;
 		bio: string;
 	};
+	const after = new Date().getTime();
+	console.log(`load ${user} profile from github user api:`, after - before)
 	return {
 		login: userProfile.login,
 		avatar: userProfile.avatar_url,
