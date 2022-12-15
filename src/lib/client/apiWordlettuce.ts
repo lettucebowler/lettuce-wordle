@@ -16,7 +16,15 @@ export const getProfile = async (key: string) => {
 	const before = new Date().getTime();
 	let data = null;
 	try {
-		data = await apiWordlettuce.post('/auth/get', { session: key });
+		data = await apiWordlettuce.get(
+			'/auth/get',
+			{},
+			{
+				headers: {
+					session: key
+				}
+			}
+		);
 	} catch (e) {
 		console.log(e);
 	}
