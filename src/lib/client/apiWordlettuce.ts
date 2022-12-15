@@ -13,7 +13,6 @@ const apiWordlettuce = fetcher({
 });
 
 export const getProfile = async (key: string) => {
-	const before = new Date().getTime();
 	let data = null;
 	try {
 		data = await apiWordlettuce.get(
@@ -28,37 +27,25 @@ export const getProfile = async (key: string) => {
 	} catch (e) {
 		console.log(e);
 	}
-	const after = new Date().getTime();
-	console.log('load profile from KV:', after - before);
 	return data as Profile;
 };
 
 export const stashProfile = async (key: string, value: Profile) => {
-	console.log('Stash profile to KV');
-	const data = await apiWordlettuce.post('/auth/set', { session: key, profile: value });
-	return data;
+	await apiWordlettuce.post('/auth/set', { session: key, profile: value });
+	return value;
 };
 
 export const getGameResults = async (user: string, count: number) => {
-	const before = new Date().getTime();
 	const gameResults = await apiWordlettuce.get(`/gameresults/${user}`, { count });
-	const after = new Date().getTime();
-	console.log(`load results for last ${count} games for ${user} from D1:`, after - before);
 	return gameResults as GameResult[];
 };
 
 export const getLeaderBoardResults = async (gamenum: number) => {
-	const before = new Date().getTime();
 	const leaderboardResults = await apiWordlettuce.get('/gameresults/leaderboard', { gamenum });
-	const after = new Date().getTime();
-	console.log(`load results for leaderboard game ${gamenum} from D1:`, after - before);
 	return leaderboardResults as LeaderboardResults[];
 };
 
 export const saveGameResults = async (gameresult: GameResult) => {
-	const before = new Date().getTime();
 	const results = await apiWordlettuce.post('/gameresults', gameresult);
-	const after = new Date().getTime();
-	console.log('save game results to D1:', after - before);
 	return results;
 };

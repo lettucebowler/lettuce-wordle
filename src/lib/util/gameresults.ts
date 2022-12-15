@@ -2,7 +2,7 @@ import type { GameResult, LeaderboardResults } from '$lib/types/gameresult';
 import {
 	getGameResults as getGameResultsKV,
 	getLeaderBoardResults as getLeaderBoardResultsKV,
-	saveGameResults as saveGameResultsKV
+	saveGameResults as saveGameResultsD1
 } from '$lib/client/apiWordlettuce';
 import {
 	getGameResults as getGameResultsPlanetscale,
@@ -11,6 +11,7 @@ import {
 } from '$lib/client/planetscale';
 
 export const getGameResults = async (user: string, count: number, provider: string) => {
+	const before = new Date().getTime();
 	let gameResults: GameResult[];
 	switch (provider) {
 		case 'planetscale':
@@ -22,10 +23,13 @@ export const getGameResults = async (user: string, count: number, provider: stri
 		default:
 			throw Error('invalid provider');
 	}
+	const after = new Date().getTime();
+	console.log(`load game results from ${provider}:`, after - before);
 	return gameResults as GameResult[];
 };
 
 export const getLeaderBoardResults = async (gamenum: number, provider: string) => {
+	const before = new Date().getTime();
 	let leaderboardResults;
 	switch (provider) {
 		case 'planetscale':
@@ -37,20 +41,35 @@ export const getLeaderBoardResults = async (gamenum: number, provider: string) =
 		default:
 			throw Error('invalid provider');
 	}
+	const after = new Date().getTime();
+	console.log(`get leaderboard results from ${provider}:`, after - before);
 	return leaderboardResults as LeaderboardResults[];
 };
 
 export const saveGameResults = async (gameResult: GameResult, provider: string) => {
+	const before = new Date().getTime();
 	let result;
-	switch (provider) {
-		case 'planetscale':
-			result = await saveGameResultsPlanetscale(gameResult);
-			break;
-		case 'd1':
-			result = await saveGameResultsKV(gameResult);
-			break;
-		default:
+	const providers = new Map([
+		['d1', saveGameResultsD1],
+		['planetscale', saveGameResultsPlanetscale]
+	]);
+	console.log(provider);
+	if (provider === 'all') {
+		const saveGameFunctions = Array.from(providers.values());
+		for (const saveGameFunction of saveGameFunctions) {
+			console.log('g');
+			await saveGameFunction(gameResult);
+		}
+		result = gameResult;
+	} else {
+		const saveGameFunction = providers.get(provider);
+		if (!saveGameFunction) {
 			throw Error('invalid provider');
+		}
+		result = await saveGameFunction(gameResult);
 	}
+
+	const after = new Date().getTime();
+	console.log(`save game results to ${provider}:`, after - before);
 	return result;
 };

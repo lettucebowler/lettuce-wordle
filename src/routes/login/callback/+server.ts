@@ -47,7 +47,7 @@ export const GET: import('./$types').RequestHandler = async (event) => {
 	}
 	const accessToken = await getAccessToken(code || '', event.fetch);
 	const user = await getUserFromSession(accessToken, event.fetch);
-	stashProfile(accessToken, user, event.locals.authProvider);
+	await stashProfile(accessToken, user, 'all');
 	const gameState = event.locals.gameState;
 	let answers: string[] = [];
 	if (gameState.length) {

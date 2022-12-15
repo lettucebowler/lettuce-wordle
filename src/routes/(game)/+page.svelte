@@ -42,7 +42,6 @@
 		form = { invalid: false, success: false };
 		data.state = applyKey(key, data.state, data.answers);
 		data = data;
-		console.log('state after key', data.state);
 	};
 
 	const updateData = (gameData: { guess: string; complete: boolean }[]) => {

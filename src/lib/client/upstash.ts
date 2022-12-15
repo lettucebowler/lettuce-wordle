@@ -11,16 +11,12 @@ export const getProfile = async (accessToken: string) => {
 	if (!accessToken) return {} as Profile;
 
 	let profile = {};
-	const beforeProfile = new Date();
 	profile = (await redis.get(`${accessToken}`)) || profile;
 	redis.expire(accessToken, 900);
-	const afterProfile = new Date();
-	const profileDuration = afterProfile.getTime() - beforeProfile.getTime();
-	console.log('load profile from upstash: ', profileDuration);
 	return profile as Profile;
 };
 
 export const stashProfile = async (accessToken: string, profile: Profile) => {
-	const status = await redis.set(`${accessToken}`, profile, { ex: 900 });
-	return status;
+	await redis.set(`${accessToken}`, profile, { ex: 900 });
+	return profile;
 };

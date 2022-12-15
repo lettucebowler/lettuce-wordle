@@ -46,6 +46,7 @@ export const actions: import('./$types').Actions = {
 	},
 
 	enter: async (event) => {
+		console.log('enter');
 		const data = await event.request.formData();
 
 		const gameState = event.locals.gameState;
@@ -62,13 +63,14 @@ export const actions: import('./$types').Actions = {
 
 		const { user } = event.locals;
 		if (user) {
+			console.log(user);
 			const gamenum = getGameNum();
 			const gameResult = {
 				gamenum,
 				user: user.login,
 				answers: updatedAnswers?.join('') || ''
 			};
-			saveGameResults(gameResult, event.locals.dbProvider);
+			await saveGameResults(gameResult, 'all');
 		}
 
 		event.cookies.set('wordLettuce', getCookieFromGameState(updatedGuesses), {
