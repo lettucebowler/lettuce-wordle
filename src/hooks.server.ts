@@ -1,4 +1,4 @@
-import type { RequestEvent } from '@sveltejs/kit';
+import { redirect, type RequestEvent } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import SvelteKitAuth from '@auth/sveltekit';
 import GitHub from '@auth/core/providers/github';
@@ -18,10 +18,11 @@ const AuthenticateSession = async (event: RequestEvent) => {
 		let user = await getProfile(session, event.locals.authProvider);
 		if (!user?.login) {
 			user = await getUserFromSession(session, event.fetch);
-			stashProfile(session, user, 'all');
 		}
 		if (!user?.login) {
 			event.cookies.delete(SESSION_COOKIE_NAME);
+		} else {
+			stashProfile(session, user, 'all');
 		}
 		event.locals.user = user;
 	}

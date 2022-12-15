@@ -36,6 +36,9 @@ export const getUserFromSession = async (
 		bio: string;
 	};
 	const after = new Date().getTime();
+	if (!user) {
+		return empty;
+	}
 	console.log('load user profile with access token from github:', after - before);
 	return {
 		...empty,
