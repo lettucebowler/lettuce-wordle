@@ -151,7 +151,7 @@ export const applyWord = (
 		};
 	}
 	const statuses = checkWord(guessLetters, answer);
-	let updatedGuesses = guesses.map((guess) => {
+	const updatedGuesses = guesses.map((guess) => {
 		return {
 			guess: guess.guess,
 			complete: guess.guess.length === 5

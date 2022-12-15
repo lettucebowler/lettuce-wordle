@@ -50,5 +50,5 @@ export const stashProfile = async (session: string, user: Profile, provider: str
 	}
 	const after = new Date().getTime();
 	console.log(`stash profile to ${provider}:`, after - before);
-	return user;
+	return result;
 };
