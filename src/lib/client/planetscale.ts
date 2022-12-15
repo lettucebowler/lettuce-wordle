@@ -15,7 +15,7 @@ export const saveGameResults = async ({ user, gamenum, answers }: GameResult) =>
 	const results = await conn.execute(
 		`insert into gameresults (user, gamenum, answers, attempts) values ('${user}', ${gamenum}, '${answers}', '${Math.floor(
 			answers.length / 5
-		)}') on duplicate key update answers='${answers}', attempts='${answers.length}'`
+		)}') on duplicate key update answers='${answers}', attempts='${Math.floor(answers.length / 5)}'`
 	);
 	const after = new Date();
 	const duration = after.getTime() - before.getTime();
