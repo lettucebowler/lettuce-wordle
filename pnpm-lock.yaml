@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@auth/core': ^0.1.4
-  '@auth/sveltekit': ^0.1.5
+  '@auth/sveltekit': ^0.1.6
   '@planetscale/database': ^1.5.0
   '@steeze-ui/heroicons': ^2.2.1
   '@steeze-ui/svelte-icon': ^1.3.2
@@ -40,7 +40,7 @@ dependencies:
 
 devDependencies:
   '@auth/core': 0.1.4
-  '@auth/sveltekit': 0.1.5_bio2am5im2x75lbhbikb6qancq
+  '@auth/sveltekit': 0.1.6_e24fmtavzua53hjiuev7juit3i
   '@planetscale/database': 1.5.0
   '@steeze-ui/heroicons': 2.2.1
   '@steeze-ui/svelte-icon': 1.3.2
@@ -73,25 +73,6 @@ devDependencies:
   vite: 4.0.1
 
 packages:
-  /@auth/core/0.1.3:
-    resolution:
-      {
-        integrity: sha512-F2UBW9D8AkjV6vNkFx5x1bMzrirzkxdlFW2vMwS+P9rXj3vTwtK19M30MwIDB3biL7nN8piSQvy38fGr0QlPBA==
-      }
-    peerDependencies:
-      nodemailer: 6.8.0
-    peerDependenciesMeta:
-      nodemailer:
-        optional: true
-    dependencies:
-      '@panva/hkdf': 1.0.2
-      cookie: 0.5.0
-      jose: 4.11.1
-      oauth4webapi: 2.0.5
-      preact: 10.11.3
-      preact-render-to-string: 5.2.3_preact@10.11.3
-    dev: true
-
   /@auth/core/0.1.4:
     resolution:
       {
@@ -111,18 +92,18 @@ packages:
       preact-render-to-string: 5.2.3_preact@10.11.3
     dev: true
 
-  /@auth/sveltekit/0.1.5_bio2am5im2x75lbhbikb6qancq:
+  /@auth/sveltekit/0.1.6_e24fmtavzua53hjiuev7juit3i:
     resolution:
       {
-        integrity: sha512-NF21ZHGnsYH+U6NhZc/HJGQtRDcGXWc8ok6DL7jYxGnrFXX7O0jZ8CqQLZRECWJfrdi0exbHqPb3aENCugWM4A==
+        integrity: sha512-IY9Qc2dIq6UnPLZR2pBXLVnuzcG3/ODH/fxuxajf9pq4xmrXaZvG9zRNDLiTq3EJiueiNUaD6rvqFV5BXxo76w==
       }
     peerDependencies:
+      '@sveltejs/kit': ^1.0.0
       svelte: ^3.54.0
-      svelte-kit: ^1.0.0
     dependencies:
-      '@auth/core': 0.1.3
+      '@auth/core': 0.1.4
+      '@sveltejs/kit': 1.0.0_svelte@3.55.0+vite@4.0.1
       svelte: 3.55.0
-      svelte-kit: 1.0.0
     transitivePeerDependencies:
       - nodemailer
     dev: true
@@ -1215,7 +1196,10 @@ packages:
     dev: true
 
   /concat-map/0.0.1:
-    resolution: { integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s= }
+    resolution:
+      {
+        integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==
+      }
     dev: true
 
   /console-control-strings/1.1.0:
