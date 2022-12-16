@@ -4,6 +4,7 @@ import { fail as invalid } from '@sveltejs/kit';
 import { getGameNum } from '$lib/util/share';
 import { getDailyWord } from '$lib/util/words';
 import { saveGameResults } from '$lib/util/gameresults';
+import type { WordLettuceSession } from '$lib/types/auth';
 
 export const load: import('./$types').PageServerLoad = ({ cookies, depends, locals }) => {
 	depends('/');
@@ -60,10 +61,9 @@ export const actions: import('./$types').Actions = {
 		if (metadata.invalid) {
 			return invalid(400, metadata);
 		}
-
-		const { user } = event.locals;
+		const session = (await event.locals.getSession()) as WordLettuceSession;
+		const user = session?.user;
 		if (user) {
-			console.log(user);
 			const gamenum = getGameNum();
 			const gameResult = {
 				gamenum,

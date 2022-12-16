@@ -7,10 +7,7 @@
 	import '$lib/assets/app.css';
 
 	export let data: import('./$types').LayoutData = {
-		user: {
-			login: '',
-			avatar: ''
-		},
+		session: null,
 		nav: []
 	};
 </script>
@@ -25,7 +22,7 @@
 </svelte:head>
 
 <div class="mx-auto box-border flex flex w-full max-w-screen-md flex-auto flex-col gap-2 p-1">
-	<AuthNav links={data.nav} user={data.user} />
+	<AuthNav links={data.nav} user={data?.session?.user} />
 	<slot />
 </div>
 

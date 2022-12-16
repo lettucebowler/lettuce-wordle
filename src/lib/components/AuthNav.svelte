@@ -8,12 +8,12 @@
 	import { ChevronDown } from '@steeze-ui/heroicons';
 	import type { IconSource } from '@steeze-ui/svelte-icon/types';
 
-	import white from '$lib/assets/white.png';
+	import LoginForm from '$lib/components/LoginForm.svelte';
 
-	export let user: {
-		login?: string;
-		avatar?: string;
-	} = {};
+	import white from '$lib/assets/white.png';
+	import type { UserProfile } from '$lib/types/auth';
+
+	export let user: UserProfile;
 	export let links: {
 		path: string;
 		name: string;
@@ -96,15 +96,15 @@
 				</span></a
 			>
 		{/each}
-		{#if user.login}
+		{#if user}
 			<label
 				for="subnav"
 				class="ml-auto box-border flex h-14 flex-[0_0_auto] select-none items-center justify-center gap-1 rounded-xl p-2 text-center text-3xl text-snow-300 transition duration-150 ease-in-out hover:bg-polar-300 active:bg-polar-200"
 			>
-				{#if user.avatar}
+				{#if user.image}
 					<img
 						src={white}
-						srcset={user.avatar}
+						srcset={user.image}
 						class="box-border aspect-square h-full rounded-lg object-contain"
 						alt=""
 					/>
@@ -116,6 +116,9 @@
 					class={`h-6 w-6 transition-transform ${dropdownVisible ? 'rotate-180' : ''}`}
 				/>
 			</label>
+		{:else}
+			<!-- <SigninButton /> -->
+			<LoginForm />
 		{/if}
 	</nav>
 	<input type="checkbox" class="hidden" name="subnav" id="subnav" bind:checked={dropdownVisible} />
