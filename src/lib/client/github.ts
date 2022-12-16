@@ -30,7 +30,9 @@ export const getUserFromSession = async (
 				}
 			}
 		)
-		.catch((e) => console.log(e))) as {
+		.catch(({ status, message }) => {
+			return empty;
+		})) as {
 		login: string;
 		avatar_url: string;
 		bio: string;

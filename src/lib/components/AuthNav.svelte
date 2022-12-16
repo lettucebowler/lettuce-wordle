@@ -9,11 +9,10 @@
 	import type { IconSource } from '@steeze-ui/svelte-icon/types';
 
 	import white from '$lib/assets/white.png';
+	import type { UserProfile } from '$lib/types/auth';
+	import { signIn, signOut } from '@auth/sveltekit/client';
 
-	export let user: {
-		login?: string;
-		avatar?: string;
-	} = {};
+	export let user: UserProfile;
 	export let links: {
 		path: string;
 		name: string;
@@ -96,15 +95,15 @@
 				</span></a
 			>
 		{/each}
-		{#if user.login}
+		{#if user}
 			<label
 				for="subnav"
 				class="ml-auto box-border flex h-14 flex-[0_0_auto] select-none items-center justify-center gap-1 rounded-xl p-2 text-center text-3xl text-snow-300 transition duration-150 ease-in-out hover:bg-polar-300 active:bg-polar-200"
 			>
-				{#if user.avatar}
+				{#if user.image}
 					<img
 						src={white}
-						srcset={user.avatar}
+						srcset={user.image}
 						class="box-border aspect-square h-full rounded-lg object-contain"
 						alt=""
 					/>
@@ -116,6 +115,10 @@
 					class={`h-6 w-6 transition-transform ${dropdownVisible ? 'rotate-180' : ''}`}
 				/>
 			</label>
+			<!-- {:else}
+			<div class="flex flex-[1_0_auto] h-14 ml-auto justify-center transition duration-150 ease-in-out hover:bg-polar-300 active:bg-polar-200 rounded-xl p-2">
+				<button class="text-3xl text-snow-300 font-medium" on:click={() => signIn('github')}>Sign in</button>
+			</div> -->
 		{/if}
 	</nav>
 	<input type="checkbox" class="hidden" name="subnav" id="subnav" bind:checked={dropdownVisible} />

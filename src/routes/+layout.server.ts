@@ -1,3 +1,4 @@
+import type { WordLettuceSession } from '$lib/types/auth';
 import { Trophy, Home } from '@steeze-ui/heroicons';
 
 export const prerender = false;
@@ -13,10 +14,9 @@ type NavLink = {
 	icon?: IconSource;
 };
 
+// @ts-ignore
 export const load: import('./$types').LayoutServerLoad = async (event) => {
-	const user = event.locals.user;
-
-	const { login, avatar } = user || {};
+	const session = (await event.locals.getSession()) as WordLettuceSession;
 
 	const links: NavLink[] = [
 		{
@@ -42,17 +42,14 @@ export const load: import('./$types').LayoutServerLoad = async (event) => {
 		{
 			path: '/login',
 			name: 'Login',
-			enabled: !login,
+			enabled: !session?.user?.login,
 			margin: 'left',
 			prefetch: false
 		}
 	];
 
 	return {
-		user: {
-			login: login || '',
-			avatar: avatar || ''
-		},
-		nav: links
+		nav: links,
+		session
 	};
 };

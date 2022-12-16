@@ -69,7 +69,7 @@
 				data.answers,
 				guesses?.length || 0,
 				lastAnswer === 'xxxxx',
-				data?.user?.login || ''
+				data?.session?.user?.login || ''
 			);
 		}
 	});
@@ -77,7 +77,7 @@
 	// handle form stuff on submit
 	$: {
 		if (form?.success && browser) {
-			openModal(data.answers, guesses?.length || 0, true, data?.user?.login || '');
+			openModal(data.answers, guesses?.length || 0, true, data?.session?.user?.login || '');
 		}
 
 		if (form?.invalid) {
