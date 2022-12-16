@@ -9,21 +9,6 @@ import {
 	SK_AUTH_GITHUB_CLIENT_SECRET
 } from '$env/static/private';
 import { getGameFromCookie } from '$lib/util/state';
-// const AuthenticateSession = async (event: RequestEvent) => {
-// 	const session = event.cookies.get(SESSION_COOKIE_NAME) || '';
-// 	if (session && !event.locals.user) {
-// 		let user = await getProfile(session, event.locals.authProvider);
-// 		if (!user?.login) {
-// 			user = await getUserFromSession(session, event.fetch);
-// 		}
-// 		if (!user?.login) {
-// 			event.cookies.delete(SESSION_COOKIE_NAME);
-// 		} else {
-// 			stashProfile(session, user, 'all');
-// 		}
-// 		event.locals.user = user;
-// 	}
-// };
 
 const addGameStateToSession = (event: RequestEvent) => {
 	const wordLettuceState = event.cookies.get('wordLettuce') || '';
@@ -38,7 +23,6 @@ const gameStateHandler: import('@sveltejs/kit').Handle = async ({ event, resolve
 	event.locals.authProvider = authProvider;
 	event.locals.dbProvider = dbProvider;
 
-	// await AuthenticateSession(event);
 	addGameStateToSession(event);
 	const response = await resolve(event);
 	return response;
