@@ -1,19 +1,39 @@
 import { getCookieFromGameState } from '$lib/util/state';
 import { applyWord, applyKey, checkWords } from '$lib/util/gameFunctions';
-import { fail as invalid } from '@sveltejs/kit';
+import { fail as invalid, redirect } from '@sveltejs/kit';
 import { getGameNum } from '$lib/util/share';
 import { getDailyWord } from '$lib/util/words';
 import { saveGameResults } from '$lib/util/gameresults';
 import type { WordLettuceSession } from '$lib/types/auth';
+import type { GameResult } from '$lib/types/gameresult';
 
-export const load: import('./$types').PageServerLoad = ({ cookies, depends, locals }) => {
-	depends('/');
+export const load: import('./$types').PageServerLoad = async (event) => {
+	event.depends('/');
 
-	const gameState = locals.gameState;
+	const gameState = event.locals.gameState;
 
 	const answers = checkWords(gameState, getDailyWord());
 
-	cookies.set('wordLettuce', getCookieFromGameState(gameState), {
+	const session = (await event.locals.getSession()) as WordLettuceSession;
+
+	const query = new URL(event.request.url).searchParams;
+
+	if (session && query.get('saveGame') === 'true' && answers?.at(-1) === 'xxxxx') {
+		const login = session.user?.login;
+		const id = session.user?.id;
+		if (login && id) {
+			const gameResult: GameResult = {
+				user: login,
+				user_id: id,
+				gamenum: getGameNum(),
+				answers: answers.join('')
+			};
+			await saveGameResults(gameResult, 'all');
+			throw redirect(307, '/');
+		}
+	}
+
+	event.cookies.set('wordLettuce', getCookieFromGameState(gameState), {
 		httpOnly: false,
 		path: '/',
 		maxAge: 86400,
@@ -47,7 +67,6 @@ export const actions: import('./$types').Actions = {
 	},
 
 	enter: async (event) => {
-		console.log('enter');
 		const data = await event.request.formData();
 
 		const gameState = event.locals.gameState;
@@ -65,9 +84,10 @@ export const actions: import('./$types').Actions = {
 		const user = session?.user;
 		if (user) {
 			const gamenum = getGameNum();
-			const gameResult = {
+			const gameResult: GameResult = {
 				gamenum,
 				user: user.login,
+				user_id: user.id,
 				answers: updatedAnswers?.join('') || ''
 			};
 			await saveGameResults(gameResult, 'all');

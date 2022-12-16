@@ -5,8 +5,6 @@
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 
-	import LoginForm from '$lib/components/LoginForm.svelte';
-
 	export const modalActions = {
 		open(answers: string[], guesses: number, success: boolean, user = '') {
 			authenticated = !!user;
@@ -125,9 +123,7 @@
 			Next word in {formatTime(timeUntil)}
 		</div>
 		{#if !authenticated}
-			<div class="flex w-full flex-row justify-center gap-3">
-				<LoginForm />
-			</div>
+			<div class="flex w-full flex-row justify-center gap-3" />
 		{/if}
 		<div class="flex w-full flex-row justify-center gap-3">
 			<button

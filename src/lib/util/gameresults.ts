@@ -53,11 +53,9 @@ export const saveGameResults = async (gameResult: GameResult, provider: string) 
 		['d1', saveGameResultsD1],
 		['planetscale', saveGameResultsPlanetscale]
 	]);
-	console.log(provider);
 	if (provider === 'all') {
 		const saveGameFunctions = Array.from(providers.values());
 		for (const saveGameFunction of saveGameFunctions) {
-			console.log('g');
 			await saveGameFunction(gameResult);
 		}
 		result = gameResult;

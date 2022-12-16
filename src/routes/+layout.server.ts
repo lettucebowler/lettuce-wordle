@@ -38,6 +38,13 @@ export const load: import('./$types').LayoutServerLoad = async (event) => {
 			name: 'About',
 			enabled: true,
 			prefetch: true
+		},
+		{
+			path: '/login',
+			name: 'Login',
+			enabled: !session?.user?.login,
+			margin: 'left',
+			prefetch: false
 		}
 	];
 

@@ -8,10 +8,9 @@
 	import { ChevronDown } from '@steeze-ui/heroicons';
 	import type { IconSource } from '@steeze-ui/svelte-icon/types';
 
-	import LoginForm from '$lib/components/LoginForm.svelte';
-
 	import white from '$lib/assets/white.png';
 	import type { UserProfile } from '$lib/types/auth';
+	import { signIn, signOut } from '@auth/sveltekit/client';
 
 	export let user: UserProfile;
 	export let links: {
@@ -116,9 +115,10 @@
 					class={`h-6 w-6 transition-transform ${dropdownVisible ? 'rotate-180' : ''}`}
 				/>
 			</label>
-		{:else}
-			<!-- <SigninButton /> -->
-			<LoginForm />
+			<!-- {:else}
+			<div class="flex flex-[1_0_auto] h-14 ml-auto justify-center transition duration-150 ease-in-out hover:bg-polar-300 active:bg-polar-200 rounded-xl p-2">
+				<button class="text-3xl text-snow-300 font-medium" on:click={() => signIn('github')}>Sign in</button>
+			</div> -->
 		{/if}
 	</nav>
 	<input type="checkbox" class="hidden" name="subnav" id="subnav" bind:checked={dropdownVisible} />
