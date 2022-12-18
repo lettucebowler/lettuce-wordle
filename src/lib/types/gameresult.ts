@@ -1,6 +1,5 @@
 export type GameResult = {
 	gamenum: number;
-	user: string;
 	user_id: number;
 	attempts?: number;
 	answers: string;

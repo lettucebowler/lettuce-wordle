@@ -11,12 +11,24 @@ const config = {
 
 const client = new Client(config);
 
-export const saveGameResults = async ({ user, gamenum, answers }: GameResult) => {
+export const saveGameResults = async (gameResult: GameResult) => {
 	const conn = client.connection();
+	// const results = await conn.execute(
+	// 	`insert into gameresults (user, gamenum, answers, attempts) values ('${user}', ${gamenum}, '${answers}', '${Math.floor(
+	// 		answers.length / 5
+	// 	)}') on duplicate key update answers='${answers}', attempts='${Math.floor(answers.length / 5)}'`
+	// );
+	const attempts = Math.floor(gameResult.answers.length / 5);
 	const results = await conn.execute(
-		`insert into gameresults (user, gamenum, answers, attempts) values ('${user}', ${gamenum}, '${answers}', '${Math.floor(
-			answers.length / 5
-		)}') on duplicate key update answers='${answers}', attempts='${Math.floor(answers.length / 5)}'`
+		'insert into gameresults (gamenum, answers, attempts, user_id) values (?, ?, ?, ?) on duplicate key update answers = ?, attempts = ?',
+		[
+			gameResult.gamenum,
+			gameResult.answers,
+			attempts,
+			gameResult.user_id,
+			gameResult.answers,
+			attempts
+		]
 	);
 	return results;
 };
@@ -24,9 +36,9 @@ export const saveGameResults = async ({ user, gamenum, answers }: GameResult) =>
 export const getLeaderBoardResults = async (gameNum: number) => {
 	const conn = client.connection();
 	const results = await conn.execute(
-		`select user, sum(attempts), count(attempts), (count(attempts) * 7) - sum(attempts) from gameresults where gamenum > (${
+		`select username, sum(attempts), count(attempts), (count(attempts) * 7) - sum(attempts) from gameresults a inner join users b on a.user_id = b.github_id where gamenum > (${
 			gameNum - 7
-		}) group by user order by (count(attempts) * 7) - sum(attempts) desc limit 10`
+		}) group by user_id order by (count(attempts) * 7) - sum(attempts) desc limit 10`
 	);
 	const { rows } = results;
 
