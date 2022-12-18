@@ -1,6 +1,7 @@
-import { connect } from '@planetscale/database';
+import { Client } from '@planetscale/database';
 import { DATABASE_HOST, DATABASE_USERNAME, DATABASE_PASSWORD } from '$env/static/private';
 import type { GameResult, LeaderboardResults } from '$lib/types/gameresult';
+import LetterPageContentContainer from '$lib/components/LetterPageContentContainer.svelte';
 
 const config = {
 	host: DATABASE_HOST,
@@ -8,9 +9,10 @@ const config = {
 	password: DATABASE_PASSWORD
 };
 
-const conn = connect(config);
+const client = new Client(config)
 
 export const saveGameResults = async ({ user, gamenum, answers }: GameResult) => {
+	const conn = client.connection();
 	const results = await conn.execute(
 		`insert into gameresults (user, gamenum, answers, attempts) values ('${user}', ${gamenum}, '${answers}', '${Math.floor(
 			answers.length / 5
@@ -20,6 +22,7 @@ export const saveGameResults = async ({ user, gamenum, answers }: GameResult) =>
 };
 
 export const getLeaderBoardResults = async (gameNum: number) => {
+	const conn = client.connection();
 	const results = await conn.execute(
 		`select user, sum(attempts), count(attempts), (count(attempts) * 7) - sum(attempts) from gameresults where gamenum > (${
 			gameNum - 7
@@ -40,9 +43,21 @@ export const getLeaderBoardResults = async (gameNum: number) => {
 };
 
 export const getGameResults = async (user: string, count: number) => {
+	const conn = client.connection();
 	const results = await conn.execute(
 		`select * from gameresults where user = '${user}' order by gamenum desc limit ${count}`
 	);
 	const { rows } = results;
 	return rows as GameResult[];
 };
+
+export const updateUsername = async (githubId: number, username: string) => {
+	const conn = client.connection();
+	console.log(githubId);
+	console.log(username);
+	const results = await conn.execute(
+		'insert into users (github_id, username) values (?, ?) on duplicate key update username = ?',
+		[githubId, username, username],
+	);
+	return results;
+}

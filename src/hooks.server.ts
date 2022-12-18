@@ -9,6 +9,7 @@ import {
 	SK_AUTH_GITHUB_CLIENT_SECRET
 } from '$env/static/private';
 import { getGameFromCookie } from '$lib/util/state';
+import { updateUsername } from '$lib/client/planetscale';
 
 const addGameStateToSession = (event: RequestEvent) => {
 	const wordLettuceState = event.cookies.get('wordLettuce') || '';
@@ -63,6 +64,8 @@ const authHandler = SvelteKitAuth({
 					login,
 					id
 				};
+				const results = await updateUsername(id, login);
+				console.log(results);
 			}
 			return token;
 		}
