@@ -9,7 +9,7 @@ const config = {
 	password: DATABASE_PASSWORD
 };
 
-const client = new Client(config)
+const client = new Client(config);
 
 export const saveGameResults = async ({ user, gamenum, answers }: GameResult) => {
 	const conn = client.connection();
@@ -44,11 +44,21 @@ export const getLeaderBoardResults = async (gameNum: number) => {
 
 export const getGameResults = async (user: string, count: number) => {
 	const conn = client.connection();
+	// const results = await conn.execute(
+	// 	`select * from gameresults where user = '${user}' order by gamenum desc limit ${count}`
+	// );
 	const results = await conn.execute(
-		`select * from gameresults where user = '${user}' order by gamenum desc limit ${count}`
+		'select username, user_id, gamenum, answers, attempts from gameresults a inner join users b on a.user_id = b.github_id where username = ? order by gamenum desc limit ?',
+		[user, count]
 	);
 	const { rows } = results;
-	return rows as GameResult[];
+	return rows.map((row) => ({
+		user: row.username,
+		user_id: row.user_id,
+		gamenum: row.gamenum,
+		answers: row.answers,
+		attempts: row.attempts
+	})) as GameResult[];
 };
 
 export const updateUsername = async (githubId: number, username: string) => {
@@ -57,7 +67,7 @@ export const updateUsername = async (githubId: number, username: string) => {
 	console.log(username);
 	const results = await conn.execute(
 		'insert into users (github_id, username) values (?, ?) on duplicate key update username = ?',
-		[githubId, username, username],
+		[githubId, username, username]
 	);
 	return results;
-}
+};
