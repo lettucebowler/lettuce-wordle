@@ -3,6 +3,7 @@ export type GameResult = {
 	user_id: number;
 	attempts?: number;
 	answers: string;
+	username?: string;
 };
 
 export type LeaderboardResults = {

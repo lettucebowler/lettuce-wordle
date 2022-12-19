@@ -54,7 +54,7 @@ export const getGameResults = async (user: string, count: number) => {
 		[user, count]
 	);
 	const { rows } = results;
-	return rows.map((row) => ({
+	return (rows as GameResult[]).map((row: GameResult) => ({
 		user: row.username,
 		user_id: row.user_id,
 		gamenum: row.gamenum,
