@@ -1,5 +1,4 @@
 import { getGameResults, saveGameResults, upsertUser } from '$lib/util/gameresults';
-import { getUserProfile } from '$lib/client/github';
 
 export const load: import('./$types').PageServerLoad = async (event) => {
 	const user = event.params.user;
