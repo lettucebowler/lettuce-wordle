@@ -44,6 +44,7 @@ export const getLeaderBoardResults = async (gameNum: number) => {
 			score: parseInt(score)
 		};
 	});
+	
 	return scores as LeaderboardResults[];
 };
 
