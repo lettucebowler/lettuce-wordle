@@ -7,7 +7,8 @@ import {
 import {
 	getGameResults as getGameResultsPlanetscale,
 	getLeaderBoardResults as getLeaderBoardResultsPlanetscale,
-	saveGameResults as saveGameResultsPlanetscale
+	saveGameResults as saveGameResultsPlanetscale,
+	upsertUser as upserUserPlanetscale
 } from '$lib/client/planetscale';
 
 export const getGameResults = async (user: string, count: number, provider: string) => {
@@ -69,5 +70,30 @@ export const saveGameResults = async (gameResult: GameResult, provider: string) 
 
 	const after = new Date().getTime();
 	console.log(`save game results to ${provider}:`, after - before);
+	return result;
+};
+
+export const upsertUser = async (githubId: number, username: string, provider: string) => {
+	const before = new Date().getTime();
+	let result;
+	let providers = new Map([['planetscale', upserUserPlanetscale]]);
+	if (provider === 'all') {
+		const upsertUserFunctions = Array.from(providers.values());
+		for (const upsertUserFunction of upsertUserFunctions) {
+			await upsertUserFunction(githubId, username);
+		}
+		result = {
+			githubId,
+			username
+		};
+	} else {
+		const upsertUserFunction = providers.get(provider);
+		if (!upsertUserFunction) {
+			throw Error('invalid provider');
+		}
+		result = await upsertUserFunction(githubId, username);
+	}
+	const after = new Date().getTime();
+	console.log(`upsert user info to ${provider}:`, after - before);
 	return result;
 };

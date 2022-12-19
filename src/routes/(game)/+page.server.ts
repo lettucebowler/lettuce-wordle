@@ -23,12 +23,12 @@ export const load: import('./$types').PageServerLoad = async (event) => {
 		const id = session.user?.id;
 		if (login && id) {
 			const gameResult: GameResult = {
-				user: login,
+				username: login,
 				user_id: id,
 				gamenum: getGameNum(),
 				answers: answers.join('')
 			};
-			await saveGameResults(gameResult, 'all');
+			await saveGameResults(gameResult, event.locals.dbProvider);
 			throw redirect(307, '/');
 		}
 	}
@@ -86,11 +86,11 @@ export const actions: import('./$types').Actions = {
 			const gamenum = getGameNum();
 			const gameResult: GameResult = {
 				gamenum,
-				user: user.login,
+				username: user.login,
 				user_id: user.id,
 				answers: updatedAnswers?.join('') || ''
 			};
-			await saveGameResults(gameResult, 'all');
+			await saveGameResults(gameResult, event.locals.dbProvider);
 		}
 
 		event.cookies.set('wordLettuce', getCookieFromGameState(updatedGuesses), {

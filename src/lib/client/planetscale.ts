@@ -14,7 +14,7 @@ export const saveGameResults = async (gameResult: GameResult) => {
 	const conn = client.connection();
 	const attempts = Math.floor(gameResult.answers.length / 5);
 	const results = await conn.execute(
-		'insert into gameresults (gamenum, answers, attempts, user_id) values (?, ?, ?, ?) on duplicate key update answers = ?, attempts = ?',
+		'insert into game_results (gamenum, answers, attempts, user_id) values (?, ?, ?, ?) on duplicate key update answers = ?, attempts = ?',
 		[
 			gameResult.gamenum,
 			gameResult.answers,
@@ -30,7 +30,7 @@ export const saveGameResults = async (gameResult: GameResult) => {
 export const getLeaderBoardResults = async (gameNum: number) => {
 	const conn = client.connection();
 	const results = await conn.execute(
-		'select username, sum(attempts), count(attempts), (count(attempts) * 7) - sum(attempts) from gameresults a inner join users b on a.user_id = b.github_id where gamenum > ? and gamenum <= ? group by user_id order by (count(attempts) * 7) - sum(attempts) desc limit 10',
+		'select username, sum(attempts), count(attempts), (count(attempts) * 7) - sum(attempts) from game_results a inner join users b on a.user_id = b.github_id where gamenum > ? and gamenum <= ? group by user_id order by (count(attempts) * 7) - sum(attempts) desc limit 10',
 		[gameNum - 7, gameNum]
 	);
 	const { rows } = results;
@@ -50,7 +50,7 @@ export const getLeaderBoardResults = async (gameNum: number) => {
 export const getGameResults = async (user: string, count: number) => {
 	const conn = client.connection();
 	const results = await conn.execute(
-		'select username, user_id, gamenum, answers, attempts from gameresults a inner join users b on a.user_id = b.github_id where username = ? order by gamenum desc limit ?',
+		'select username, user_id, gamenum, answers, attempts from game_results a inner join users b on a.user_id = b.github_id where username = ? order by gamenum desc limit ?',
 		[user, count]
 	);
 	const { rows } = results;
@@ -63,7 +63,7 @@ export const getGameResults = async (user: string, count: number) => {
 	})) as GameResult[];
 };
 
-export const updateUsername = async (githubId: number, username: string) => {
+export const upsertUser = async (githubId: number, username: string) => {
 	const conn = client.connection();
 	const results = await conn.execute(
 		'insert into users (github_id, username) values (?, ?) on duplicate key update username = ?',
