@@ -4,15 +4,12 @@ export type Profile = {
 	bio: string;
 };
 
-export type UserProfile =
-	| {
-			login: string;
-			id: number;
-			email: string;
-			image: string;
-	  }
-	| null
-	| undefined;
+export type UserProfile = {
+	login: string;
+	id: number;
+	email: string;
+	image: string;
+};
 
 export type WordLettuceSession =
 	| {
@@ -22,3 +19,8 @@ export type WordLettuceSession =
 	  }
 	| null
 	| undefined;
+
+export type UserRecord = {
+	username: string;
+	github_id: number;
+};

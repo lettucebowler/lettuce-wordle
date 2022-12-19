@@ -1,8 +1,9 @@
 import type { GameResult, LeaderboardResults } from '$lib/types/gameresult';
 import {
-	getGameResults as getGameResultsKV,
-	getLeaderBoardResults as getLeaderBoardResultsKV,
-	saveGameResults as saveGameResultsD1
+	getGameResults as getGameResultsD1,
+	getLeaderBoardResults as getLeaderBoardResultsD1,
+	saveGameResults as saveGameResultsD1,
+	upsertUser as upsertUserD1
 } from '$lib/client/apiWordlettuce';
 import {
 	getGameResults as getGameResultsPlanetscale,
@@ -10,6 +11,7 @@ import {
 	saveGameResults as saveGameResultsPlanetscale,
 	upsertUser as upserUserPlanetscale
 } from '$lib/client/planetscale';
+import type { UserRecord } from '$lib/types/auth';
 
 export const getGameResults = async (user: string, count: number, provider: string) => {
 	const before = new Date().getTime();
@@ -19,7 +21,7 @@ export const getGameResults = async (user: string, count: number, provider: stri
 			gameResults = await getGameResultsPlanetscale(user, count);
 			break;
 		case 'd1':
-			gameResults = await getGameResultsKV(user, count);
+			gameResults = await getGameResultsD1(user, count);
 			break;
 		default:
 			throw Error('invalid provider');
@@ -37,7 +39,7 @@ export const getLeaderBoardResults = async (gamenum: number, provider: string) =
 			leaderboardResults = await getLeaderBoardResultsPlanetscale(gamenum);
 			break;
 		case 'd1':
-			leaderboardResults = await getLeaderBoardResultsKV(gamenum);
+			leaderboardResults = await getLeaderBoardResultsD1(gamenum);
 			break;
 		default:
 			throw Error('invalid provider');
@@ -73,25 +75,25 @@ export const saveGameResults = async (gameResult: GameResult, provider: string) 
 	return result;
 };
 
-export const upsertUser = async (githubId: number, username: string, provider: string) => {
+export const upsertUser = async (user: UserRecord, provider: string) => {
 	const before = new Date().getTime();
 	let result;
-	let providers = new Map([['planetscale', upserUserPlanetscale]]);
+	let providers = new Map([
+		['planetscale', upserUserPlanetscale],
+		['d1', upsertUserD1]
+	]);
 	if (provider === 'all') {
 		const upsertUserFunctions = Array.from(providers.values());
 		for (const upsertUserFunction of upsertUserFunctions) {
-			await upsertUserFunction(githubId, username);
+			await upsertUserFunction(user);
 		}
-		result = {
-			githubId,
-			username
-		};
+		result = user;
 	} else {
 		const upsertUserFunction = providers.get(provider);
 		if (!upsertUserFunction) {
 			throw Error('invalid provider');
 		}
-		result = await upsertUserFunction(githubId, username);
+		result = await upsertUserFunction(user);
 	}
 	const after = new Date().getTime();
 	console.log(`upsert user info to ${provider}:`, after - before);

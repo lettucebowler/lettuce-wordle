@@ -1,8 +1,9 @@
 import { fetcher } from 'itty-fetcher';
+import { API_GITHUB_HOST } from '$env/static/private';
 
 const userURL = 'https://api.github.com/user';
 
-import type { Profile } from '$lib/types/auth';
+import type { Profile, UserProfile } from '$lib/types/auth';
 import type { RequestEvent } from '@sveltejs/kit';
 
 export const getUserFromSession = async (
@@ -12,7 +13,7 @@ export const getUserFromSession = async (
 		init?: RequestInit | undefined
 	) => Promise<Response> = fetch
 ) => {
-	const auth = fetcher({ fetch: fetchImplementation });
+	const auth = fetcher({ fetch: fetchImplementation, base: API_GITHUB_HOST });
 	const empty: Profile = {
 		login: '',
 		avatar: '',
@@ -21,7 +22,7 @@ export const getUserFromSession = async (
 	const before = new Date().getTime();
 	const user = (await auth
 		.get(
-			userURL,
+			'/user',
 			{},
 			{
 				headers: {
@@ -52,20 +53,26 @@ export const getUserFromSession = async (
 
 export const getUserProfile = async (event: RequestEvent, user: string) => {
 	const userInfo = fetcher({
-		base: 'https://api.github.com/users',
-		fetch: event.fetch
+		base: API_GITHUB_HOST,
+		fetch: event.fetch,
+		transformRequest(req) {
+			console.log(req.url);
+			return req;
+		}
 	});
 	const before = new Date().getTime();
-	const userProfile = (await userInfo.get(`/${user}`)) as {
+	const userProfile = (await userInfo.get(`/users/${user}`)) as {
 		login: string;
 		avatar_url: string;
 		bio: string;
+		id: number;
 	};
 	const after = new Date().getTime();
 	console.log('load user profile from github user api', after - before);
 	return {
 		login: userProfile.login,
-		avatar: userProfile.avatar_url,
-		bio: userProfile.bio
-	} as Profile;
+		image: userProfile.avatar_url,
+		email: '',
+		id: userProfile.id
+	} as UserProfile;
 };

@@ -61,8 +61,13 @@ const authHandler = SvelteKitAuth({
 					login,
 					id
 				};
-				const results = await upsertUser(id, login, DEFAULT_DB_PROVIDER);
-				console.log(results);
+				const results = await upsertUser(
+					{
+						github_id: id,
+						username: login
+					},
+					'all'
+				);
 			}
 			return token;
 		}

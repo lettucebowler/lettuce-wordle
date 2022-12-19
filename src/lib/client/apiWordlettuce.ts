@@ -2,7 +2,7 @@ import { fetcher } from 'itty-fetcher';
 import { API_WORDLETTUCE_TOKEN, API_WORDLETTUCE_HOST } from '$env/static/private';
 
 import type { GameResult, LeaderboardResults } from '$lib/types/gameresult';
-import type { Profile } from '$lib/types/auth';
+import type { Profile, UserRecord } from '$lib/types/auth';
 
 const apiWordlettuce = fetcher({
 	base: `${API_WORDLETTUCE_HOST}/api`,
@@ -11,29 +11,6 @@ const apiWordlettuce = fetcher({
 		return req;
 	}
 });
-
-export const getProfile = async (key: string) => {
-	let data = null;
-	try {
-		data = await apiWordlettuce.get(
-			'/auth/get',
-			{},
-			{
-				headers: {
-					session: key
-				}
-			}
-		);
-	} catch (e) {
-		console.log(e);
-	}
-	return data as Profile;
-};
-
-export const stashProfile = async (key: string, value: Profile) => {
-	await apiWordlettuce.post('/auth/set', { session: key, profile: value });
-	return value;
-};
 
 export const getGameResults = async (user: string, count: number) => {
 	const gameResults = await apiWordlettuce.get(`/gameresults/${user}`, { count });
@@ -47,5 +24,10 @@ export const getLeaderBoardResults = async (gamenum: number) => {
 
 export const saveGameResults = async (gameresult: GameResult) => {
 	const results = await apiWordlettuce.post('/gameresults', gameresult);
+	return results;
+};
+
+export const upsertUser = async (user: UserRecord) => {
+	const results = await apiWordlettuce.post('/user', user);
 	return results;
 };

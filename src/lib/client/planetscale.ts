@@ -1,6 +1,7 @@
 import { Client } from '@planetscale/database';
 import { DATABASE_HOST, DATABASE_USERNAME, DATABASE_PASSWORD } from '$env/static/private';
 import type { GameResult, LeaderboardResults } from '$lib/types/gameresult';
+import type { UserRecord } from '$lib/types/auth';
 
 const config = {
 	host: DATABASE_HOST,
@@ -44,7 +45,7 @@ export const getLeaderBoardResults = async (gameNum: number) => {
 			score: parseInt(score)
 		};
 	});
-	
+
 	return scores as LeaderboardResults[];
 };
 
@@ -64,11 +65,12 @@ export const getGameResults = async (user: string, count: number) => {
 	})) as GameResult[];
 };
 
-export const upsertUser = async (githubId: number, username: string) => {
+export const upsertUser = async (user: UserRecord) => {
 	const conn = client.connection();
+	const { github_id, username } = user;
 	const results = await conn.execute(
 		'insert into users (github_id, username) values (?, ?) on duplicate key update username = ?',
-		[githubId, username, username]
+		[github_id, username, username]
 	);
 	return results;
 };

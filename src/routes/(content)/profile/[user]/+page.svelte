@@ -1,9 +1,8 @@
 <script lang="ts">
-	import P from '$lib/components/P.svelte';
-	import type { Profile } from '$lib/types/auth';
+	import type { UserProfile } from '$lib/types/auth';
 	export let data: import('./$types').PageData;
 
-	let userProfile: Profile;
+	let userProfile: UserProfile;
 	const cells = Array(30);
 
 	$: gameResults = data.gameResults;
@@ -14,18 +13,13 @@
 	<figure class="flex flex-col gap-2">
 		<img
 			class="mx-auto aspect-square h-[360px] rounded-xl object-contain"
-			src={userProfile.avatar}
+			src={userProfile.image}
 			alt={userProfile.login}
 		/>
 		<figcaption class="text-center text-2xl font-medium text-snow-300">
 			{userProfile.login}
 		</figcaption>
 	</figure>
-	{#if userProfile.bio}
-		<P className="text-center">
-			{userProfile.bio}
-		</P>
-	{/if}
 
 	<h1 class="text-center text-3xl font-bold text-snow-300">Play History</h1>
 
