@@ -2,7 +2,6 @@
 
 declare namespace App {
 	interface Locals {
-		authProvider: string;
 		dbProvider: string;
 		user: {
 			login: string;

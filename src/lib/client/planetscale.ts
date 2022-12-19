@@ -65,8 +65,6 @@ export const getGameResults = async (user: string, count: number) => {
 
 export const updateUsername = async (githubId: number, username: string) => {
 	const conn = client.connection();
-	console.log(githubId);
-	console.log(username);
 	const results = await conn.execute(
 		'insert into users (github_id, username) values (?, ?) on duplicate key update username = ?',
 		[githubId, username, username]

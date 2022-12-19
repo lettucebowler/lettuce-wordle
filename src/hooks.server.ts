@@ -3,7 +3,6 @@ import { sequence } from '@sveltejs/kit/hooks';
 import SvelteKitAuth from '@auth/sveltekit';
 import GitHub from '@auth/core/providers/github';
 import {
-	DEFAULT_AUTH_PROVIDER,
 	DEFAULT_DB_PROVIDER,
 	SK_AUTH_GITHUB_CLIENT_ID,
 	SK_AUTH_GITHUB_CLIENT_SECRET
@@ -19,9 +18,7 @@ const addGameStateToSession = (event: RequestEvent) => {
 
 const gameStateHandler: import('@sveltejs/kit').Handle = async ({ event, resolve }) => {
 	const searchParams = new URL(event.request.url).searchParams;
-	const authProvider = searchParams.get('authProvider') || DEFAULT_AUTH_PROVIDER;
 	const dbProvider = searchParams.get('dbProvider') || DEFAULT_DB_PROVIDER;
-	event.locals.authProvider = authProvider;
 	event.locals.dbProvider = dbProvider;
 
 	addGameStateToSession(event);
