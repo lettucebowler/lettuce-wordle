@@ -50,3 +50,29 @@ export const getUserFromSession = async (
 		bio: user.bio
 	} as Profile;
 };
+
+export const getUserProfile = async (event: RequestEvent, user: string) => {
+	const userInfo = fetcher({
+		base: API_GITHUB_HOST,
+		fetch: event.fetch,
+		transformRequest(req) {
+			console.log(req.url);
+			return req;
+		}
+	});
+	const before = new Date().getTime();
+	const userProfile = (await userInfo.get(`/users/${user}`)) as {
+		login: string;
+		avatar_url: string;
+		bio: string;
+		id: number;
+	};
+	const after = new Date().getTime();
+	console.log('load user profile from github user api', after - before);
+	return {
+		login: userProfile.login,
+		image: userProfile.avatar_url,
+		email: '',
+		id: userProfile.id
+	} as UserProfile;
+};
