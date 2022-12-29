@@ -1,0 +1,4 @@
+pnpm-lock.yaml
+.svelte-kit
+.vercel
+node_modules
