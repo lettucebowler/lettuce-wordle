@@ -38,7 +38,7 @@
 	{form}
 	bind:this={button}
 	class="grid h-full w-full cursor-pointer place-items-center rounded-md border-solid border-transparent text-center text-sm font-bold text-snow-300 hover:brightness-[90%] active:brightness-[75%] xl:text-base"
-	class:bg-charade-500={status === '_'}
+	class:bg-charade-600={status === '_'}
 	class:bg-aurora-300={status === 'c'}
 	class:bg-aurora-400={status === 'x'}
 	class:bg-charade-700={status === 'i'}

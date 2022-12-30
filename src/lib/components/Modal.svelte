@@ -4,6 +4,7 @@
 	import { appName } from '$lib/util/store';
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
+	import AuthForm from './AuthForm.svelte';
 
 	export const modalActions = {
 		open(answers: string[], guesses: number, success: boolean, user = '') {
@@ -123,17 +124,18 @@
 			Next word in {formatTime(timeUntil)}
 		</div>
 		{#if !authenticated}
-			<div class="flex w-full flex-row justify-center gap-3">
-				<a
-					class="h-12 w-full cursor-pointer rounded-lg border-transparent bg-aurora-200 p-0 font-bold text-snow-300 active:brightness-90"
-					href="/login"
-					><span
-						class="grid h-full items-center text-center duration-500 hover:backdrop-brightness-90 hover:backdrop-filter"
-					>
-						Sign in to save your results
-					</span></a
-				>
-			</div>
+			<AuthForm mode="login" useBuiltinButton={false}>
+				<div class="flex w-full flex-row justify-center gap-3">
+					<button
+						class="h-12 w-full cursor-pointer rounded-lg border-transparent bg-aurora-200 p-0 font-bold text-snow-300 active:brightness-90"
+						><span
+							class="grid h-full items-center duration-500 hover:backdrop-brightness-90 hover:backdrop-filter"
+						>
+							Login to save your results
+						</span>
+					</button>
+				</div>
+			</AuthForm>
 		{/if}
 		<div class="flex w-full flex-row justify-center gap-3">
 			<button
