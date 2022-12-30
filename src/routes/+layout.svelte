@@ -8,7 +8,9 @@
 
 	export let data: import('./$types').LayoutData = {
 		session: null,
-		nav: []
+		nav: [],
+		csrf: '',
+		callbackUrl: undefined
 	};
 </script>
 
@@ -63,6 +65,6 @@
 
 	:root {
 		font-family: --apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
-		'Open Sans', 'Helvetica Neue', sans-serif;
+			'Open Sans', 'Helvetica Neue', sans-serif;
 	}
 </style>

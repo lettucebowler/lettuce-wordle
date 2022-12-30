@@ -18,7 +18,12 @@ export const load: import('./$types').PageServerLoad = async (event) => {
 
 	const query = new URL(event.request.url).searchParams;
 
-	if (session && query.get('saveGame') === 'true' && answers?.at(-1) === 'xxxxx') {
+	const doSaveGame = query.get('saveGame') === 'true';
+
+	if (doSaveGame) {
+		if (!session || answers?.at(-1) !== 'xxxxx') {
+			throw redirect(307, '/');
+		}
 		const login = session.user?.login;
 		const id = session.user?.id;
 		if (login && id) {

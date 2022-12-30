@@ -10,6 +10,7 @@
 
 	import white from '$lib/assets/white.png';
 	import type { UserProfile } from '$lib/types/auth';
+	import AuthForm from './AuthForm.svelte';
 
 	export let user: UserProfile | null | undefined;
 	export let links: {
@@ -38,11 +39,6 @@
 			path: user ? `/profile/${user.login}` : '/profile',
 			name: 'Profile',
 			prefetch: true
-		},
-		{
-			path: '/logout',
-			name: 'Logout',
-			prefetch: false
 		}
 	];
 
@@ -112,6 +108,8 @@
 					class={`h-6 w-6 transition-transform ${dropdownVisible ? 'rotate-180' : ''}`}
 				/>
 			</label>
+		{:else}
+			<AuthForm csrf={$page.data.csrf} callback={$page.data.callbackUrl} mode="login" />
 		{/if}
 	</nav>
 	<input type="checkbox" class="hidden" name="subnav" id="subnav" bind:checked={dropdownVisible} />
@@ -132,6 +130,7 @@
 					></a
 				>
 			{/each}
+			<AuthForm csrf={$page.data.csrf} callback={$page.data.callbackUrl} mode="logout" />
 		</nav>
 	{/if}
 </div>

@@ -10,18 +10,20 @@ import {
 import { getGameFromCookie } from '$lib/util/state';
 import { upsertUser } from '$lib/util/gameresults';
 
-const addGameStateToSession = (event: RequestEvent) => {
-	const wordLettuceState = event.cookies.get('wordLettuce') || '';
-	const gameState = getGameFromCookie(wordLettuceState);
-	event.locals.gameState = gameState?.guesses;
-};
+import type { Handle } from '@sveltejs/kit';
 
-const gameStateHandler: import('@sveltejs/kit').Handle = async ({ event, resolve }) => {
+const providerHandler: Handle = async ({ event, resolve }) => {
 	const searchParams = new URL(event.request.url).searchParams;
 	const dbProvider = searchParams.get('dbProvider') || DEFAULT_DB_PROVIDER;
 	event.locals.dbProvider = dbProvider;
+	const response = await resolve(event);
+	return response;
+};
 
-	addGameStateToSession(event);
+const gameStateHandler: Handle = async ({ event, resolve }) => {
+	const wordLettuceState = event.cookies.get('wordLettuce') || '';
+	const gameState = getGameFromCookie(wordLettuceState);
+	event.locals.gameState = gameState?.guesses;
 	const response = await resolve(event);
 	return response;
 };
@@ -74,4 +76,4 @@ const authHandler = SvelteKitAuth({
 	}
 });
 
-export const handle = sequence(authHandler, gameStateHandler);
+export const handle = sequence(authHandler, gameStateHandler, providerHandler);

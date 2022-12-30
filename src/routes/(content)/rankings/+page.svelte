@@ -41,7 +41,7 @@
 							<img
 								alt="profile icon"
 								src={`https://avatars.githubusercontent.com/u/${score.userId}?v=4`}
-								class="h-full h-10 rounded"
+								class="aspect-square h-full h-10 rounded"
 							/>
 							<div class="grid items-center">
 								{score.user}

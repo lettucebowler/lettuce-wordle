@@ -18,6 +18,9 @@ type NavLink = {
 export const load: import('./$types').LayoutServerLoad = async (event) => {
 	const session = (await event.locals.getSession()) as WordLettuceSession;
 
+	const csrf = event.cookies.get('next-auth.csrf-token')?.split('|')?.at(0) || '';
+	const callbackUrl = event.cookies.get('next-auth.callback-url');
+
 	const links: NavLink[] = [
 		{
 			path: '/',
@@ -38,18 +41,13 @@ export const load: import('./$types').LayoutServerLoad = async (event) => {
 			name: 'About',
 			enabled: true,
 			prefetch: true
-		},
-		{
-			path: '/login',
-			name: 'Login',
-			enabled: !session?.user?.login,
-			margin: 'left',
-			prefetch: false
 		}
 	];
 
 	return {
 		nav: links,
-		session
+		session,
+		csrf,
+		callbackUrl
 	};
 };
