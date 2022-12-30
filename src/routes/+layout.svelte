@@ -60,4 +60,9 @@
 		border: 0.25em solid #2e3440;
 		border-radius: 100vw;
 	}
+
+	:root {
+		font-family: --apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
+		'Open Sans', 'Helvetica Neue', sans-serif;
+	}
 </style>

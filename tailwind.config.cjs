@@ -9,12 +9,6 @@ module.exports = {
 	theme: {
 		colors: {
 			transparent: 'transparent',
-			polar: {
-				100: '#2E3440',
-				200: '#3B4252',
-				300: '#434C5E',
-				400: '#4C566A'
-			},
 			snow: {
 				100: '#D8DEE9',
 				200: '#E5E9F0',

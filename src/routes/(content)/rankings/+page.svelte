@@ -15,7 +15,7 @@
 		Highest wins.
 	</P>
 	<div class="grid w-full gap-2 text-snow-300">
-		<div class="grid grid-cols-3 rounded-lg bg-polar-400 p-2 text-xl font-medium">
+		<div class="grid grid-cols-3 rounded-lg bg-charade-600 p-2 text-xl font-medium">
 			<div class="text-left">Rank</div>
 			<div class="text-center">User</div>
 			<div class="text-right">score</div>
@@ -26,8 +26,8 @@
 				<a href={`/profile/${score.user}`} data-sveltekit-preload-data="hover">
 					<div
 						class="grid w-full grid-cols-3 gap-4 rounded-lg py-1 px-2 text-xl font-medium"
-						class:bg-polar-300={i % 2 == 1}
-						class:bg-polar-200={i % 2 == 0}
+						class:bg-charade-700={i % 2 == 1}
+						class:bg-charade-800={i % 2 == 0}
 					>
 						<div class="flex flex-[0_0_2rem] items-center text-left text-snow-300">
 							{#if position === 1}
