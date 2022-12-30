@@ -1,5 +1,6 @@
 import type { WordLettuceSession } from '$lib/types/auth';
 import { Trophy, Home } from '@steeze-ui/heroicons';
+import { fetcher } from 'itty-fetcher';
 
 export const prerender = false;
 
@@ -17,9 +18,6 @@ type NavLink = {
 // @ts-ignore
 export const load: import('./$types').LayoutServerLoad = async (event) => {
 	const session = (await event.locals.getSession()) as WordLettuceSession;
-
-	const csrf = event.cookies.get('next-auth.csrf-token')?.split('|')?.at(0) || '';
-	const callbackUrl = event.cookies.get('next-auth.callback-url');
 
 	const links: NavLink[] = [
 		{
@@ -46,8 +44,6 @@ export const load: import('./$types').LayoutServerLoad = async (event) => {
 
 	return {
 		nav: links,
-		session,
-		csrf,
-		callbackUrl
+		session
 	};
 };

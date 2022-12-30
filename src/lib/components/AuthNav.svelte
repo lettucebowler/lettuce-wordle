@@ -130,7 +130,7 @@
 					></a
 				>
 			{/each}
-			<AuthForm csrf={$page.data.csrf} callback={$page.data.callbackUrl} mode="logout" />
+			<AuthForm mode="logout" />
 		</nav>
 	{/if}
 </div>

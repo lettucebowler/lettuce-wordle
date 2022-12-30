@@ -1,14 +1,23 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-
-	export let csrf: string;
-	export let callback: string;
+	import { signIn, signOut } from '@auth/sveltekit/client';
 	export let mode: 'login' | 'logout' = 'login';
 </script>
 
-<form method="POST" action={mode === 'login' ? '/auth/signin/github' : '/auth/signout'}>
-	<input type="hidden" name="csrfToken" value={csrf} />
-	<input type="hidden" name="callbackUrl" value={callback} />
+<form
+	method="POST"
+	action={mode === 'login' ? '/auth/signin/github' : '/auth/signout'}
+	use:enhance={({ cancel }) => {
+		if (mode === 'login') {
+			signIn('github', { callbackUrl: '/?saveGame=true' });
+		} else {
+			signOut();
+		}
+		cancel();
+	}}
+>
+	<!-- <input type="hidden" name="csrfToken" value={csrf} />
+	<input type="hidden" name="callbackUrl" value={callback} /> -->
 	<button
 		class="grid h-full items-center rounded-xl  p-2 text-center font-medium text-snow-300 active:bg-charade-900"
 		class:text-lg={mode === 'logout'}

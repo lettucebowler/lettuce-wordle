@@ -8,9 +8,7 @@
 
 	export let data: import('./$types').LayoutData = {
 		session: null,
-		nav: [],
-		csrf: '',
-		callbackUrl: undefined
+		nav: []
 	};
 </script>
 
