@@ -13,7 +13,9 @@ export const load: import('./$types').PageServerLoad = async (event) => {
 		userProfile = {
 			login: 'OOPSIE',
 			bio: 'I decided to use my enterprise account and broke the github user api',
-			avatar: 'https://avatars.githubusercontent.com/u/31812953?v=4'
+			image: 'https://avatars.githubusercontent.com/u/31812953?v=4',
+			id: 0,
+			email: 'no@email.com'
 		};
 	}
 	// const userProfile = {

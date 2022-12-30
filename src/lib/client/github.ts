@@ -56,7 +56,6 @@ export const getUserProfile = async (event: RequestEvent, user: string) => {
 		base: API_GITHUB_HOST,
 		fetch: event.fetch,
 		transformRequest(req) {
-			console.log(req.url);
 			return req;
 		}
 	});

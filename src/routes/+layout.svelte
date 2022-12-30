@@ -17,7 +17,6 @@
 	<link rel="icon" type="image/png" sizes="32x32" href={bigFavicon} />
 	<link rel="icon" type="image/png" sizes="16x16" href={smallFavicon} />
 	<link rel="mask-icon" href={safariPinnedTabIcon} color="#a3be8c" />
-	<meta charset="UTF-8" />
 	<meta name="description" content="Lettuce Wordle`" />
 </svelte:head>
 
@@ -28,7 +27,6 @@
 
 <style>
 	:global(body) {
-		background-color: var(--nord-0);
 		margin: 0px 0px;
 		display: flex;
 		flex-direction: column;

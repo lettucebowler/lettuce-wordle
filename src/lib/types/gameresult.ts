@@ -8,6 +8,7 @@ export type GameResult = {
 
 export type LeaderboardResults = {
 	user: string;
+	userId: number;
 	sum: number;
 	count: number;
 	score: number;

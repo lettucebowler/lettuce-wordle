@@ -89,6 +89,9 @@ export const applyKey = (
 	}[],
 	answers: string[]
 ) => {
+	if (answers?.at(-1) === 'xxxxx') {
+		return guesses;
+	}
 	const keyTest = /^[a-zA-Z]{1}$/;
 	const isLetter = keyTest.test(key);
 	const current_guess = answers.length;
@@ -136,6 +139,7 @@ export const applyWord = (
 	};
 	if (answers.at(-1) === 'xxxxx') {
 		metadata.success = true;
+		console.log('ignore because success');
 		return {
 			updatedGuesses: guesses,
 			metadata,

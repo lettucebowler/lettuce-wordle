@@ -10,9 +10,8 @@
 
 	import white from '$lib/assets/white.png';
 	import type { UserProfile } from '$lib/types/auth';
-	import { signIn, signOut } from '@auth/sveltekit/client';
 
-	export let user: UserProfile;
+	export let user: UserProfile | null | undefined;
 	export let links: {
 		path: string;
 		name: string;
@@ -73,19 +72,17 @@
 
 <div id="big-papa-nav">
 	<nav
-		class="box-border flex justify-between gap-x-1 rounded-2xl bg-polar-400 p-1"
+		class="box-border flex justify-between gap-x-1 rounded-2xl bg-charade-600 p-1"
 		id="primary-nav"
 	>
 		{#each links.filter((link) => link.enabled) as link}
 			<a
-				class="flex h-14 flex-[1_0_auto] cursor-pointer overflow-hidden rounded-xl border-transparent p-0 text-3xl font-medium text-snow-300 active:backdrop-brightness-90"
+				class="flex h-14 flex-[1_0_auto] cursor-pointer overflow-hidden rounded-xl border-transparent p-0 text-3xl font-medium text-snow-300 hover:bg-charade-700 active:bg-charade-800"
 				class:ml-auto={link.margin === 'left'}
 				class:backdrop-brightness-90={link.path === $page.url.pathname}
 				href={link.path}
 				data-sveltekit-preload-data={link.prefetch ? 'hover' : null}
-				><span
-					class="grid h-full w-full place-items-center p-2 text-center duration-150 hover:backdrop-brightness-90 hover:backdrop-filter"
-				>
+				><span class="grid h-full w-full place-items-center p-2 text-center duration-150">
 					<span class="flex items-center gap-2">
 						{#if link.icon}
 							<span><Icon src={link.icon} theme="solid" class="h-10" /></span>
@@ -98,13 +95,13 @@
 		{#if user}
 			<label
 				for="subnav"
-				class="ml-auto box-border flex h-14 flex-[0_0_auto] select-none items-center justify-center gap-1 rounded-xl p-2 text-center text-3xl text-snow-300 transition duration-150 ease-in-out hover:bg-polar-300 active:bg-polar-200"
+				class="ml-auto box-border flex h-14 flex-[0_0_auto] cursor-pointer select-none items-center justify-center gap-1 rounded-xl p-2 text-center text-3xl text-snow-300 transition ease-in-out hover:bg-charade-700 active:bg-charade-800"
 			>
 				{#if user.image}
 					<img
 						src={white}
 						srcset={user.image}
-						class="box-border aspect-square h-full rounded-lg object-contain"
+						class="box-border aspect-square h-full rounded object-contain"
 						alt=""
 					/>
 				{/if}
@@ -115,10 +112,6 @@
 					class={`h-6 w-6 transition-transform ${dropdownVisible ? 'rotate-180' : ''}`}
 				/>
 			</label>
-			<!-- {:else}
-			<div class="flex flex-[1_0_auto] h-14 ml-auto justify-center transition duration-150 ease-in-out hover:bg-polar-300 active:bg-polar-200 rounded-xl p-2">
-				<button class="text-3xl text-snow-300 font-medium" on:click={() => signIn('github')}>Sign in</button>
-			</div> -->
 		{/if}
 	</nav>
 	<input type="checkbox" class="hidden" name="subnav" id="subnav" bind:checked={dropdownVisible} />
@@ -126,16 +119,15 @@
 		<nav
 			transition:slide={{ duration: 150 }}
 			id="subnav-content"
-			class="mt-2 ml-4 mr-4 flex justify-evenly rounded-xl bg-polar-300 p-1 font-medium transition transition-all duration-150"
+			class="mt-2 ml-4 mr-4 flex justify-evenly rounded-xl bg-charade-700 p-1 font-medium transition transition-all duration-150"
 			class:hidden={!dropdownVisible && !jsEnabled}
 		>
 			{#each subnavItems as subnavItem}
 				<a
 					href={subnavItem.path}
 					data-sveltekit-preload-data={subnavItem.prefetch ? 'hover' : null}
-					class="flex cursor-pointer overflow-hidden rounded-xl border-transparent p-0 text-lg font-medium text-snow-300 active:backdrop-brightness-90"
-					><span
-						class="grid h-full w-full place-items-center p-2 text-center duration-150 hover:backdrop-brightness-90 hover:backdrop-filter"
+					class="flex cursor-pointer overflow-hidden rounded-xl border-transparent p-0 text-lg font-medium text-snow-300 hover:bg-charade-800 active:bg-charade-900"
+					><span class="grid h-full w-full place-items-center p-2 text-center"
 						>{subnavItem.name}</span
 					></a
 				>

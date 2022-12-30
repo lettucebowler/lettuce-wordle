@@ -23,12 +23,12 @@
 <input
 	readonly
 	class="box-border grid aspect-square w-full grid-rows-3 rounded-xl text-center text-2xl font-bold text-snow-300 sm:text-3xl"
-	class:border-polar-300={answer === '_'}
+	class:border-charade-700={answer === '_'}
 	class:border-4={answer === '_'}
 	class:border-solid={answer === '_'}
 	class:bg-aurora-400={answer === 'x'}
 	class:bg-aurora-300={answer === 'c'}
-	class:bg-polar-300={answer === 'i'}
+	class:bg-charade-700={answer === 'i'}
 	class:bg-transparent={answer === '_'}
 	class:animate-bulge={doBulge}
 	class:animate-wiggle={wiggle}

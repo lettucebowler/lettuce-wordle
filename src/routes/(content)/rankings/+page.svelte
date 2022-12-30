@@ -15,9 +15,9 @@
 		Highest wins.
 	</P>
 	<div class="grid w-full gap-2 text-snow-300">
-		<div class="grid grid-cols-3 rounded-2xl bg-polar-400 p-2 text-xl font-medium">
+		<div class="grid grid-cols-3 rounded-lg bg-polar-400 p-2 text-xl font-medium">
 			<div class="text-left">Rank</div>
-			<div class="text-left">User</div>
+			<div class="text-center">User</div>
 			<div class="text-right">score</div>
 		</div>
 		<div class="grid gap-2">
@@ -25,19 +25,32 @@
 				{@const position = scores.filter((s) => s.score > score.score).length + 1}
 				<a href={`/profile/${score.user}`} data-sveltekit-preload-data="hover">
 					<div
-						class="grid w-full grid-cols-3 items-center rounded-2xl p-2 text-xl font-medium"
+						class="grid w-full grid-cols-3 gap-4 rounded-lg py-1 px-2 text-xl font-medium"
 						class:bg-polar-300={i % 2 == 1}
 						class:bg-polar-200={i % 2 == 0}
 					>
-						<div class="grid items-center text-left text-snow-300">
+						<div class="flex flex-[0_0_2rem] items-center text-left text-snow-300">
 							{#if position === 1}
 								<Icon src={Trophy} theme="solid" class="h-8 w-8" />
 							{:else}
 								#{position}
 							{/if}
 						</div>
-						<div class="text-left">{score.user}</div>
-						<div class="text-right">{score.score}</div>
+
+						<div class="flex justify-start gap-4 text-left">
+							<img
+								alt="profile icon"
+								src={`https://avatars.githubusercontent.com/u/${score.userId}?v=4`}
+								class="h-full h-10 rounded"
+							/>
+							<div class="grid items-center">
+								{score.user}
+							</div>
+						</div>
+
+						<div class="grid items-center text-right">
+							{score.score}
+						</div>
 					</div></a
 				>
 			{/each}
