@@ -1,4 +1,3 @@
-import type { RequestEvent } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import SvelteKitAuth from '@auth/sveltekit';
 import GitHub from '@auth/core/providers/github';
