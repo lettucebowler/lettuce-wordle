@@ -2,7 +2,7 @@ import { fetcher } from 'itty-fetcher';
 import { API_WORDLETTUCE_TOKEN, API_WORDLETTUCE_HOST } from '$env/static/private';
 
 import type { GameResult, LeaderboardResults } from '$lib/types/gameresult';
-import type { Profile, UserRecord } from '$lib/types/auth';
+import type { UserRecord } from '$lib/types/auth';
 
 const apiWordlettuce = fetcher({
 	base: `${API_WORDLETTUCE_HOST}/api`,

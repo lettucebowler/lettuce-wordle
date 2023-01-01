@@ -4,10 +4,6 @@
 	import A from '$lib/components/A.svelte';
 </script>
 
-<svelte:head>
-	<title>About {$appName}</title>
-</svelte:head>
-
 <main class="grid gap-8">
 	<h1 class="text-center text-3xl font-bold text-snow-300">About {$appName}</h1>
 	<P>

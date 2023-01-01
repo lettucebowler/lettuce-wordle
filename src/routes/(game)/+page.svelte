@@ -13,6 +13,7 @@
 	import { invalidateAll } from '$app/navigation';
 	import { getDailyWord } from '$lib/util/words';
 	import { browser } from '$app/environment';
+	import { getGameNum } from '$lib/util/share';
 
 	export let data: import('./$types').PageData;
 	export let form: import('./$types').ActionData;
@@ -103,7 +104,7 @@
 </script>
 
 <svelte:head>
-	<title>{$appName} Daily</title>
+	<title>{$appName} #{getGameNum()}</title>
 </svelte:head>
 
 <main class="flex w-full flex-auto flex-col items-center justify-between gap-2">

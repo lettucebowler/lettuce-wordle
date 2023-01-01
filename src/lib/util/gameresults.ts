@@ -78,7 +78,7 @@ export const saveGameResults = async (gameResult: GameResult, provider: string) 
 export const upsertUser = async (user: UserRecord, provider: string) => {
 	const before = new Date().getTime();
 	let result;
-	let providers = new Map([
+	const providers = new Map([
 		['planetscale', upserUserPlanetscale],
 		['d1', upsertUserD1]
 	]);

@@ -37,9 +37,10 @@ const authHandler = SvelteKitAuth({
 	trustHost: true,
 	callbacks: {
 		async session({ session, token }) {
-			const { name, ...restUser } = session?.user || {};
+			const { email, image } = session?.user || {};
 			const sessionUser = {
-				...restUser,
+				email,
+				image,
 				id: token.id,
 				login: token.login
 			};
@@ -56,13 +57,13 @@ const authHandler = SvelteKitAuth({
 				token.provider = account.provider;
 			}
 			if (profile) {
-				const { login, id } = profile as any;
+				const { login, id } = profile as { login: string; id: number };
 				token = {
 					...token,
 					login,
 					id
 				};
-				const results = await upsertUser(
+				await upsertUser(
 					{
 						github_id: id,
 						username: login

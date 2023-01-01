@@ -5,6 +5,8 @@
 	import appleTouchIcon from '$lib/assets/apple-touch-icon.png';
 	import safariPinnedTabIcon from '$lib/assets/safari-pinned-tab.svg';
 	import '$lib/assets/app.css';
+	import { appName } from '$lib/util/store';
+	import { getGameNum } from '$lib/util/share';
 
 	export let data: import('./$types').LayoutData = {
 		session: null,
@@ -18,6 +20,7 @@
 	<link rel="icon" type="image/png" sizes="16x16" href={smallFavicon} />
 	<link rel="mask-icon" href={safariPinnedTabIcon} color="#a3be8c" />
 	<meta name="description" content="Lettuce Wordle`" />
+	<title>{$appName} #{getGameNum()}</title>
 </svelte:head>
 
 <div class="mx-auto box-border flex flex w-full max-w-screen-md flex-auto flex-col gap-2 p-1">

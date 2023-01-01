@@ -1,9 +1,9 @@
 import { getUserProfile } from '$lib/client/github';
-import { getGameResults, saveGameResults, upsertUser } from '$lib/util/gameresults';
+import { getGameResults } from '$lib/util/gameresults';
+// import { saveGameResults, upsertUser } from '$lib/util/gameresults';
 
 export const load: import('./$types').PageServerLoad = async (event) => {
 	const user = event.params.user;
-	// let userProfile = await getUserProfile(event, user);
 	const results = await getGameResults(user, 50, event.locals.dbProvider);
 
 	let userProfile;

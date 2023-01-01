@@ -1,8 +1,6 @@
 import { fetcher } from 'itty-fetcher';
 import { API_GITHUB_HOST } from '$env/static/private';
 
-const userURL = 'https://api.github.com/user';
-
 import type { Profile, UserProfile } from '$lib/types/auth';
 import type { RequestEvent } from '@sveltejs/kit';
 
@@ -31,7 +29,7 @@ export const getUserFromSession = async (
 				}
 			}
 		)
-		.catch(({ status, message }) => {
+		.catch(() => {
 			return empty;
 		})) as {
 		login: string;
