@@ -39,7 +39,6 @@ export const load = async (event: ServerLoadEvent) => {
 			prefetch: true
 		}
 	];
-	
 
 	return {
 		nav: links,
