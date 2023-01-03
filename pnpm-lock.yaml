@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@auth/core': 0.2.4
-  '@auth/sveltekit': 0.1.11
+  '@auth/sveltekit': 0.1.10
   '@planetscale/database': ^1.5.0
   '@steeze-ui/heroicons': ^2.2.1
   '@steeze-ui/svelte-icon': ^1.3.2
@@ -30,16 +30,16 @@ specifiers:
   tailwindcss: ^3.2.4
   tslib: ^2.4.1
   typescript: ^4.9.4
-  vite: ^4.0.3
+  vite: ^4.0.4
 
 devDependencies:
   '@auth/core': 0.2.4
-  '@auth/sveltekit': 0.1.11_f5fzfhbe3oooig6fzl5vkyl5v4
+  '@auth/sveltekit': 0.1.10_f5fzfhbe3oooig6fzl5vkyl5v4
   '@planetscale/database': 1.5.0
   '@steeze-ui/heroicons': 2.2.1
   '@steeze-ui/svelte-icon': 1.3.2
   '@sveltejs/adapter-vercel': 1.0.0_@sveltejs+kit@1.0.1
-  '@sveltejs/kit': 1.0.1_svelte@3.55.0+vite@4.0.3
+  '@sveltejs/kit': 1.0.1_svelte@3.55.0+vite@4.0.4
   '@types/cookie': 0.5.1
   '@types/js-cookie': 3.0.2
   '@typescript-eslint/eslint-plugin': 5.48.0_k73wpmdolxikpyqun3p36akaaq
@@ -62,12 +62,12 @@ devDependencies:
   tailwindcss: 3.2.4_postcss@8.4.20
   tslib: 2.4.1
   typescript: 4.9.4
-  vite: 4.0.3
+  vite: 4.0.4
 
 packages:
 
-  /@auth/core/0.2.3:
-    resolution: {integrity: sha512-GJJkCh1jmI1kJlGmVOGMHRimQbHQCCwgmZLIx0Fpod1e0g4gtk6hGL5LmKjb7rN3j3HQbxQOEg5j6jJLZ7dDJw==}
+  /@auth/core/0.2.2:
+    resolution: {integrity: sha512-hEs3no7OjbFTZjb5XjbE6hlkmYw+NVfG+MwQ3IhHTwVx8hAQ4BV704UMWiPmBVXeJrkoVrNFYlkGpEAc3pGNgg==}
     peerDependencies:
       nodemailer: 6.8.0
     peerDependenciesMeta:
@@ -92,20 +92,20 @@ packages:
     dependencies:
       '@panva/hkdf': 1.0.2
       cookie: 0.5.0
-      jose: 4.11.1
+      jose: 4.11.2
       oauth4webapi: 2.0.6
       preact: 10.11.3
       preact-render-to-string: 5.2.3_preact@10.11.3
     dev: true
 
-  /@auth/sveltekit/0.1.11_f5fzfhbe3oooig6fzl5vkyl5v4:
-    resolution: {integrity: sha512-veSAWERabK2bKOymkvD1tK0+YA7GbOnroESukz15ABoIfQ+UdEbxcfgUIXeg1ZS0QignAgJ5XwBjn8ph9OfWwg==}
+  /@auth/sveltekit/0.1.10_f5fzfhbe3oooig6fzl5vkyl5v4:
+    resolution: {integrity: sha512-sVuk1AE0HEpttBpInB1zVs+v8l05TlonGa+UqiWk6ZHnvc1+nlsoAm7UFqZTuq+lgVNcXm1heNiaVwBiAqlpTQ==}
     peerDependencies:
       '@sveltejs/kit': ^1.0.0
       svelte: ^3.54.0
     dependencies:
-      '@auth/core': 0.2.3
-      '@sveltejs/kit': 1.0.1_svelte@3.55.0+vite@4.0.3
+      '@auth/core': 0.2.2
+      '@sveltejs/kit': 1.0.1_svelte@3.55.0+vite@4.0.4
       svelte: 3.55.0
     transitivePeerDependencies:
       - nodemailer
@@ -435,7 +435,7 @@ packages:
     peerDependencies:
       '@sveltejs/kit': ^1.0.0
     dependencies:
-      '@sveltejs/kit': 1.0.1_svelte@3.55.0+vite@4.0.3
+      '@sveltejs/kit': 1.0.1_svelte@3.55.0+vite@4.0.4
       '@vercel/nft': 0.22.6
       esbuild: 0.16.13
     transitivePeerDependencies:
@@ -443,7 +443,7 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/kit/1.0.1_svelte@3.55.0+vite@4.0.3:
+  /@sveltejs/kit/1.0.1_svelte@3.55.0+vite@4.0.4:
     resolution: {integrity: sha512-C41aCaDjA7xoUdsrc/lSdU1059UdLPIRE1vEIRRynzpMujNgp82bTMHkDosb6vykH6LrLf3tT2w2/5NYQhKYGQ==}
     engines: {node: ^16.14 || >=18}
     hasBin: true
@@ -452,7 +452,7 @@ packages:
       svelte: ^3.54.0
       vite: ^4.0.0
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 2.0.2_svelte@3.55.0+vite@4.0.3
+      '@sveltejs/vite-plugin-svelte': 2.0.2_svelte@3.55.0+vite@4.0.4
       '@types/cookie': 0.5.1
       cookie: 0.5.0
       devalue: 4.2.0
@@ -466,12 +466,12 @@ packages:
       svelte: 3.55.0
       tiny-glob: 0.2.9
       undici: 5.14.0
-      vite: 4.0.3
+      vite: 4.0.4
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /@sveltejs/vite-plugin-svelte/2.0.2_svelte@3.55.0+vite@4.0.3:
+  /@sveltejs/vite-plugin-svelte/2.0.2_svelte@3.55.0+vite@4.0.4:
     resolution: {integrity: sha512-xCEan0/NNpQuL0l5aS42FjwQ6wwskdxC3pW1OeFtEKNZwRg7Evro9lac9HesGP6TdFsTv2xMes5ASQVKbCacxg==}
     engines: {node: ^14.18.0 || >= 16}
     peerDependencies:
@@ -484,8 +484,8 @@ packages:
       magic-string: 0.27.0
       svelte: 3.55.0
       svelte-hmr: 0.15.1_svelte@3.55.0
-      vite: 4.0.3
-      vitefu: 0.2.4_vite@4.0.3
+      vite: 4.0.4
+      vitefu: 0.2.4_vite@4.0.4
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -900,7 +900,7 @@ packages:
     dev: true
 
   /concat-map/0.0.1:
-    resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=}
+    resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
     dev: true
 
   /console-control-strings/1.1.0:
@@ -1481,6 +1481,10 @@ packages:
 
   /jose/4.11.1:
     resolution: {integrity: sha512-YRv4Tk/Wlug8qicwqFNFVEZSdbROCHRAC6qu/i0dyNKr5JQdoa2pIGoS04lLO/jXQX7Z9omoNewYIVIxqZBd9Q==}
+    dev: true
+
+  /jose/4.11.2:
+    resolution: {integrity: sha512-njj0VL2TsIxCtgzhO+9RRobBvws4oYyCM8TpvoUQwl/MbIM3NFJRR9+e6x0sS5xXaP1t6OCBkaBME98OV9zU5A==}
     dev: true
 
   /js-cookie/3.0.1:
@@ -2412,8 +2416,8 @@ packages:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
     dev: true
 
-  /vite/4.0.3:
-    resolution: {integrity: sha512-HvuNv1RdE7deIfQb8mPk51UKjqptO/4RXZ5yXSAvurd5xOckwS/gg8h9Tky3uSbnjYTgUm0hVCet1cyhKd73ZA==}
+  /vite/4.0.4:
+    resolution: {integrity: sha512-xevPU7M8FU0i/80DMR+YhgrzR5KS2ORy1B4xcX/cXLsvnUWvfHuqMmVU6N0YiJ4JWGRJJsLCgjEzKjG9/GKoSw==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
     peerDependencies:
@@ -2445,7 +2449,7 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /vitefu/0.2.4_vite@4.0.3:
+  /vitefu/0.2.4_vite@4.0.4:
     resolution: {integrity: sha512-fanAXjSaf9xXtOOeno8wZXIhgia+CZury481LsDaV++lSvcU2R9Ch2bPh3PYFyoHW+w9LqAeYRISVQjUIew14g==}
     peerDependencies:
       vite: ^3.0.0 || ^4.0.0
@@ -2453,7 +2457,7 @@ packages:
       vite:
         optional: true
     dependencies:
-      vite: 4.0.3
+      vite: 4.0.4
     dev: true
 
   /webidl-conversions/3.0.1:
