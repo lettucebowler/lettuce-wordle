@@ -5,7 +5,7 @@ import { browser } from '$app/environment';
 import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = async ({ data, fetch }) => {
-	if (browser && !data.csrfToken) {
+	if (browser) {
 		const { csrfToken } = (await fetcher({ fetch }).get(window.location.origin + '/auth/csrf')) as {
 			csrfToken: string;
 		};
@@ -14,7 +14,5 @@ export const load: LayoutLoad = async ({ data, fetch }) => {
 			csrfToken
 		};
 	}
-	return {
-		...data
-	};
+	return data;
 };
