@@ -87,7 +87,7 @@ export const actions: import('./$types').Actions = {
 		}
 		const session = (await event.locals.getSession()) as WordLettuceSession;
 		const user = session?.user;
-		if (user) {
+		if (user && updatedAnswers?.at(-1) === 'xxxxx') {
 			const gamenum = getGameNum();
 			const gameResult: GameResult = {
 				gamenum,
