@@ -103,10 +103,6 @@
 	}
 </script>
 
-<svelte:head>
-	<title>{$appName} #{getGameNum()}</title>
-</svelte:head>
-
 <main class="flex w-full flex-auto flex-col items-center justify-between gap-2">
 	<div class="flex h-auto w-full flex-auto flex-col items-center">
 		<form

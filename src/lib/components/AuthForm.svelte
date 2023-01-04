@@ -1,24 +1,13 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
-	import { signIn, signOut } from '@auth/sveltekit/client';
+	import { page } from '$app/stores';
 	export let mode: 'login' | 'logout' = 'login';
 	export let useBuiltinButton = true;
+	export let callback: string = '/?saveGame=true';
 </script>
 
-<form
-	method="POST"
-	action={mode === 'login' ? '/auth/signin/github' : '/auth/signout'}
-	use:enhance={({ cancel }) => {
-		if (mode === 'login') {
-			signIn('github', { callbackUrl: '/?saveGame=true' });
-		} else {
-			signOut();
-		}
-		cancel();
-	}}
->
-	<!-- <input type="hidden" name="csrfToken" value={csrf} />
-	<input type="hidden" name="callbackUrl" value={callback} /> -->
+<form method="POST" action={mode === 'login' ? '/auth/signin/github' : '/auth/signout'}>
+	<input type="hidden" name="csrfToken" value={$page.data.csrfToken} />
+	<input type="hidden" name="callbackUrl" value={callback} />
 	{#if useBuiltinButton}
 		<button
 			class="grid h-full items-center rounded-xl  p-2 text-center font-medium text-snow-300 active:bg-charade-900"

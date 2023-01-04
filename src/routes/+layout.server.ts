@@ -16,7 +16,6 @@ export type NavLink = {
 
 export const load = async (event: ServerLoadEvent) => {
 	const session = (await event.locals.getSession()) as WordLettuceSession;
-
 	const links: NavLink[] = [
 		{
 			path: '/',
