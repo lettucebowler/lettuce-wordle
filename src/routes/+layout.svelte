@@ -8,10 +8,7 @@
 	import { appName } from '$lib/util/store';
 	import { getGameNum } from '$lib/util/share';
 
-	export let data: import('./$types').LayoutData = {
-		session: null,
-		nav: []
-	};
+	export let data: import('./$types').LayoutData;
 </script>
 
 <svelte:head>
@@ -24,7 +21,7 @@
 </svelte:head>
 
 <div class="mx-auto box-border flex flex w-full max-w-screen-md flex-auto flex-col gap-2 p-1">
-	<AuthNav links={data.nav} user={data?.session?.user} />
+	<AuthNav links={data.nav} user={data?.session?.user} csrf={data?.csrfToken} />
 	<slot />
 </div>
 

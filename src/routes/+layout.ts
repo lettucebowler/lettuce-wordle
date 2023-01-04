@@ -2,9 +2,13 @@ import { fetcher } from 'itty-fetcher';
 
 import { browser } from '$app/environment';
 
-export const load = async ({ data }) => {
-	if (browser) {
-		const { csrfToken } = await fetcher().get(window.location.origin + '/auth/csrf');
+import type { LayoutLoad } from './$types';
+
+export const load: LayoutLoad = async ({ data, fetch }) => {
+	if (browser && !data.csrfToken) {
+		const { csrfToken } = (await fetcher({ fetch }).get(window.location.origin + '/auth/csrf')) as {
+			csrfToken: string;
+		};
 		return {
 			...data,
 			csrfToken

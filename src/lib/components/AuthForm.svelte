@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	export let mode: 'login' | 'logout' = 'login';
 	export let useBuiltinButton = true;
 	export let callback: string = '/?saveGame=true';
+	export let csrf = '';
 </script>
 
 <form method="POST" action={mode === 'login' ? '/auth/signin/github' : '/auth/signout'}>
-	<input type="hidden" name="csrfToken" value={$page.data.csrfToken} />
+	<input type="hidden" name="csrfToken" value={csrf} />
 	<input type="hidden" name="callbackUrl" value={callback} />
 	{#if useBuiltinButton}
 		<button

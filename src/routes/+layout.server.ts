@@ -16,6 +16,9 @@ export type NavLink = {
 
 export const load = async (event: ServerLoadEvent) => {
 	const session = (await event.locals.getSession()) as WordLettuceSession;
+	const csrfToken = event.request.url.startsWith('https')
+		? event.cookies.get('__Secure-next-auth.session-token')
+		: event.cookies.get('next-auth.csrf-token');
 	const links: NavLink[] = [
 		{
 			path: '/',
@@ -41,6 +44,7 @@ export const load = async (event: ServerLoadEvent) => {
 
 	return {
 		nav: links,
-		session
+		session,
+		csrfToken: csrfToken || ''
 	};
 };

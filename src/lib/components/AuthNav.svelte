@@ -21,6 +21,7 @@
 		enabled: boolean;
 		icon?: IconSource;
 	}[] = [];
+	export let csrf = '';
 
 	let showDropdown = true;
 
@@ -109,7 +110,7 @@
 				/>
 			</label>
 		{:else}
-			<AuthForm csrf={$page.data.csrf} callback={$page.data.callbackUrl} mode="login" />
+			<AuthForm {csrf} mode="login" />
 		{/if}
 	</nav>
 	<input type="checkbox" class="hidden" name="subnav" id="subnav" bind:checked={dropdownVisible} />
@@ -130,7 +131,7 @@
 					></a
 				>
 			{/each}
-			<AuthForm mode="logout" />
+			<AuthForm mode="logout" {csrf} />
 		</nav>
 	{/if}
 </div>
