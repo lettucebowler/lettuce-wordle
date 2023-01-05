@@ -2,18 +2,14 @@
 	import Modal from '$lib/components/Modal.svelte';
 	import { slide } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
-	import { appName } from '$lib/util/store';
 	import { onMount } from 'svelte';
-	import { enhance, applyAction, type SubmitFunction } from '$app/forms';
+	import { enhance, type SubmitFunction } from '$app/forms';
 	import LettuceKeyboard from '$lib/components/LettuceKeyboard.svelte';
 	import LetterBox from '$lib/components/LetterBox.svelte';
-	import { applyKey, getKeyStatuses, applyWord, checkWords } from '$lib/util/gameFunctions';
+	import { applyKey, getKeyStatuses, applyWord } from '$lib/util/gameFunctions';
 	import { getCookieFromGameState } from '$lib/util/state';
 	import Cookies from 'js-cookie';
-	import { invalidateAll } from '$app/navigation';
-	import { getDailyWord } from '$lib/util/words';
 	import { browser } from '$app/environment';
-	import { getGameNum } from '$lib/util/share';
 
 	export let data: import('./$types').PageData;
 	export let form: import('./$types').ActionData;
@@ -22,9 +18,6 @@
 		open(answers: string[], guesses: number, success: boolean, user: string): void;
 	};
 	let invalidForm = false;
-	let guesses: { guess: string; complete: boolean }[] = [];
-	let current_guess = 0;
-	let keys = {};
 
 	const rows = Array(6);
 	const columns = Array(5);
@@ -36,12 +29,6 @@
 	const handleKey = (key: string) => {
 		form = { invalid: false, success: false };
 		data.state = applyKey(key, data.state, data.answers);
-		data = data;
-	};
-
-	const updateData = (gameData: { guess: string; complete: boolean }[]) => {
-		data.state = gameData;
-		data.answers = checkWords(data.state, getDailyWord());
 		data = data;
 	};
 
@@ -68,7 +55,7 @@
 		if (lastAnswer === 'xxxxx') {
 			openModal(
 				data.answers,
-				guesses?.length || 0,
+				data.state?.length || 0,
 				lastAnswer === 'xxxxx',
 				data?.session?.user?.login || ''
 			);
@@ -78,7 +65,7 @@
 	// handle form stuff on submit
 	$: {
 		if (form?.success && browser) {
-			openModal(data.answers, guesses?.length || 0, true, data?.session?.user?.login || '');
+			openModal(data.answers, data.state?.length || 0, true, data?.session?.user?.login || '');
 		}
 
 		if (form?.invalid) {
@@ -87,14 +74,6 @@
 				invalidForm = false;
 			}, 150);
 		}
-	}
-
-	// keep state synced up
-	$: {
-		guesses = data?.state;
-		current_guess = data.answers.length || 0;
-		keys = getKeyStatuses(guesses, data.answers);
-		console.log('update data');
 	}
 
 	const enhanceForm: SubmitFunction = (event) => {
@@ -141,9 +120,9 @@
 			class="my-auto flex w-full max-w-[min(700px,_55vh)]"
 		>
 			<div class="grid w-full grid-rows-[repeat(6,_1fr)] gap-2">
-				{#each rows as _, i (getRealIndex(i, guesses, data.answers))}
-					{@const realIndex = getRealIndex(i, guesses, data.answers)}
-					{@const current = realIndex === current_guess}
+				{#each rows as _, i (getRealIndex(i, data.state, data.answers))}
+					{@const realIndex = getRealIndex(i, data.state, data.answers)}
+					{@const current = realIndex === data.answers.length}
 					<div
 						animate:flip={{ duration: 150 }}
 						out:slide|local={{ duration: 150 }}
@@ -151,7 +130,7 @@
 					>
 						{#each columns as _, j}
 							{@const answer = (data.answers[realIndex] || '_____')[j]}
-							{@const letter = guesses[realIndex]?.guess?.at(j) || ''}
+							{@const letter = data.state[realIndex]?.guess?.at(j) || ''}
 							<LetterBox
 								{answer}
 								{letter}
@@ -167,7 +146,10 @@
 		</form>
 	</div>
 	<div class="h-full max-h-[min(20rem,_30vh)] w-full">
-		<LettuceKeyboard on:key={(e) => handleKey(e.detail)} answers={keys} />
+		<LettuceKeyboard
+			on:key={(e) => handleKey(e.detail)}
+			answers={getKeyStatuses(data.state, data.answers)}
+		/>
 	</div>
 </main>
 <Modal bind:modalActions />
