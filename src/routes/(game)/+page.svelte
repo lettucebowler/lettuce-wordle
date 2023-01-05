@@ -94,6 +94,7 @@
 		guesses = data?.state;
 		current_guess = data.answers.length || 0;
 		keys = getKeyStatuses(guesses, data.answers);
+		console.log('update data');
 		Cookies.set('wordLettuce', getCookieFromGameState(data.state), {
 			path: '/',
 			httpOnly: false,
@@ -101,15 +102,8 @@
 			secure: false
 		});
 	}
-</script>
 
-<main class="flex w-full flex-auto flex-col items-center justify-between gap-2">
-	<div class="flex h-auto w-full flex-auto flex-col items-center">
-		<form
-			method="POST"
-			action="?/enter"
-			id="game"
-			use:enhance={(event) => {
+	const enhanceForm = (event) => {
 				const guess = event.data.getAll('guess').map((l) => l.toString().toLowerCase());
 				const { metadata, updatedGuesses } = applyWord(data.state, guess, data.answers);
 				form = metadata;
@@ -133,7 +127,16 @@
 					applyAction(result);
 					await invalidateAll();
 				};
-			}}
+			}
+</script>
+
+<main class="flex w-full flex-auto flex-col items-center justify-between gap-2">
+	<div class="flex h-auto w-full flex-auto flex-col items-center">
+		<form
+			method="POST"
+			action="?/enter"
+			id="game"
+			use:enhance
 			class="m-auto flex max-w-[min(700px,_55vh)]"
 		>
 			<div class="grid w-full grid-rows-[repeat(6,_1fr)] gap-2">

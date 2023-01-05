@@ -146,7 +146,7 @@ export const applyWord = (
 			updatedAnswers: answers
 		};
 	}
-	if (guess.length !== 5 || !isValidWord(guess) || !guesses.length) {
+	if (guess.length !== 5 || !isValidWord(guess)) {
 		metadata.invalid = true;
 		return {
 			updatedGuesses: guesses,
@@ -160,7 +160,7 @@ export const applyWord = (
 			guess: guess.guess,
 			complete: guess.guess.length === 5
 		};
-	});
+	}).concat([{guess, complete: true}]);
 	answers.push(statuses);
 
 	if (statuses === 'xxxxx') {
