@@ -20,9 +20,8 @@
 	$: delayTime = wiggle ? '0s' : `${slot * delay}s`;
 </script>
 
-<input
-	readonly
-	class="box-border grid aspect-square w-full grid-rows-3 rounded-xl text-center text-2xl font-bold text-snow-300 sm:text-3xl"
+<div
+	class="box-border grid aspect-square items-center rounded-xl text-center text-2xl font-bold text-snow-300 sm:text-3xl"
 	class:border-charade-700={answer === '_'}
 	class:border-4={answer === '_'}
 	class:border-solid={answer === '_'}
@@ -34,6 +33,7 @@
 	class:animate-wiggle={wiggle}
 	style:animation-delay={delayTime}
 	style:transition-delay={delayTime}
-	value={letter.toUpperCase()}
-	{name}
-/>
+>
+	<input type="hidden" readonly value={letter.toUpperCase()} {name} />
+	{letter.toLocaleUpperCase()}
+</div>

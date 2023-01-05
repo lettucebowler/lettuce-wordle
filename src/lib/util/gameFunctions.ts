@@ -155,12 +155,14 @@ export const applyWord = (
 		};
 	}
 	const statuses = checkWord(guessLetters, answer);
-	const updatedGuesses = guesses.map((guess) => {
-		return {
-			guess: guess.guess,
-			complete: guess.guess.length === 5
-		};
-	}).concat([{guess, complete: true}]);
+	const updatedGuesses = guesses
+		.map((guess) => {
+			return {
+				guess: guess.guess,
+				complete: guess.guess.length === 5
+			};
+		})
+		.concat([{ guess, complete: true }]);
 	answers.push(statuses);
 
 	if (statuses === 'xxxxx') {
@@ -170,6 +172,6 @@ export const applyWord = (
 	return {
 		updatedGuesses,
 		metadata,
-		answers
+		updatedAnswers: answers
 	};
 };

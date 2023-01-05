@@ -1,3 +1,5 @@
+import { getGameNum } from './share';
+
 export const answerList = [
 	'aback',
 	'abase',
@@ -12989,15 +12991,8 @@ const getWord = (random: () => number) => {
 
 export const getDailyWord = () => {
 	const dateLocal = new Date();
-	const utcDate = Date.UTC(
-		dateLocal.getUTCFullYear(),
-		dateLocal.getUTCMonth(),
-		dateLocal.getUTCDate(),
-		0,
-		0,
-		0
-	);
-	const random = mulberry32(utcDate);
+	const gameNum = getGameNum();
+	const random = mulberry32(gameNum);
 	return getWord(random);
 };
 

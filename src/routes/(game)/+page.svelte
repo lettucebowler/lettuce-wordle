@@ -4,7 +4,7 @@
 	import { flip } from 'svelte/animate';
 	import { appName } from '$lib/util/store';
 	import { onMount } from 'svelte';
-	import { enhance, applyAction } from '$app/forms';
+	import { enhance, applyAction, type SubmitFunction } from '$app/forms';
 	import LettuceKeyboard from '$lib/components/LettuceKeyboard.svelte';
 	import LetterBox from '$lib/components/LetterBox.svelte';
 	import { applyKey, getKeyStatuses, applyWord, checkWords } from '$lib/util/gameFunctions';
@@ -95,39 +95,40 @@
 		current_guess = data.answers.length || 0;
 		keys = getKeyStatuses(guesses, data.answers);
 		console.log('update data');
+	}
+
+	const enhanceForm: SubmitFunction = (event) => {
+		const guess = event.data.getAll('guess').map((l) => l.toString().toLowerCase());
+
+		if (guess.length < 5) {
+			event.cancel();
+			invalidForm = true;
+			setTimeout(() => {
+				invalidForm = false;
+			}, 150);
+			return;
+		}
+
+		const { metadata, updatedAnswers } = applyWord(data.state, guess, data.answers);
+		form = metadata;
+		data.answers = updatedAnswers;
+		data = data;
 		Cookies.set('wordLettuce', getCookieFromGameState(data.state), {
 			path: '/',
 			httpOnly: false,
 			expires: 1,
 			secure: false
 		});
-	}
 
-	const enhanceForm = (event) => {
-				const guess = event.data.getAll('guess').map((l) => l.toString().toLowerCase());
-				const { metadata, updatedGuesses } = applyWord(data.state, guess, data.answers);
-				form = metadata;
-				updateData(updatedGuesses);
+		if (!metadata.success) {
+			event.cancel();
+			return;
+		}
 
-				if (!metadata.success) {
-					event.cancel();
-					return;
-				}
-
-				if (guess.length < 5) {
-					event.cancel();
-					invalidForm = true;
-					setTimeout(() => {
-						invalidForm = false;
-					}, 150);
-					return;
-				}
-
-				return async ({ result }) => {
-					applyAction(result);
-					await invalidateAll();
-				};
-			}
+		return async ({ update }) => {
+			update();
+		};
+	};
 </script>
 
 <main class="flex w-full flex-auto flex-col items-center justify-between gap-2">
@@ -136,8 +137,8 @@
 			method="POST"
 			action="?/enter"
 			id="game"
-			use:enhance
-			class="m-auto flex max-w-[min(700px,_55vh)]"
+			use:enhance={enhanceForm}
+			class="my-auto flex w-full max-w-[min(700px,_55vh)]"
 		>
 			<div class="grid w-full grid-rows-[repeat(6,_1fr)] gap-2">
 				{#each rows as _, i (getRealIndex(i, guesses, data.answers))}

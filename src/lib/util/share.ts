@@ -1,3 +1,5 @@
+import { getDailyWord } from './words';
+
 export const getGameStatus = (appName: string, statuses: string[]) => {
 	const gameStatus = statuses.filter((l) => l[0] !== 'none');
 	const gameNum = getGameNum();
@@ -28,10 +30,15 @@ const getStatusEmoji = (status: string) => {
 };
 
 export const getGameNum = () => {
-	const initialDate = new Date('2022-02-01T00:00:00Z');
-	const todayDate = new Date();
-	todayDate.setUTCHours(0, 0, 0, 0);
-	const gameNum = (todayDate.getTime() - initialDate.getTime()) / 1000 / 60 / 60 / 24;
+	const msInADay = 1000 * 60 * 60 * 24;
+	const initialDate = 1643673600000;
+	const initial = new Date(new Date(initialDate).toISOString());
+	const initialTimestamp = initial.getTime();
+	const today = new Date(
+		new Date(new Date(new Date().setHours(0, 0, 0, 0)).toISOString()).setUTCHours(0, 0, 0, 0)
+	);
+	const todayTimestamp = today.getTime();
+	const gameNum = (todayTimestamp - initialTimestamp) / msInADay;
 	return gameNum;
 };
 
