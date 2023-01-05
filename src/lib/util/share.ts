@@ -31,14 +31,9 @@ const getStatusEmoji = (status: string) => {
 
 export const getGameNum = () => {
 	const msInADay = 1000 * 60 * 60 * 24;
-	const initialDate = 1643673600000;
-	const initial = new Date(new Date(initialDate).toISOString());
-	const initialTimestamp = initial.getTime();
-	const today = new Date(
-		new Date(new Date(new Date().setHours(0, 0, 0, 0)).toISOString()).setUTCHours(0, 0, 0, 0)
-	);
-	const todayTimestamp = today.getTime();
-	const gameNum = (todayTimestamp - initialTimestamp) / msInADay;
+	const initial = new Date(1643673600000);
+	const now = new Date();
+	const gameNum = Math.floor((now.getTime() - initial.getTime()) / msInADay);
 	return gameNum;
 };
 
