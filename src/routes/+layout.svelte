@@ -7,8 +7,10 @@
 	import '$lib/assets/app.css';
 	import { appName } from '$lib/util/store';
 	import { getGameNum } from '$lib/util/share';
+	import type { UserProfile } from '$lib/types/auth';
 
 	export let data: import('./$types').LayoutData;
+	const user = data.session?.user as UserProfile;
 </script>
 
 <svelte:head>
@@ -21,7 +23,7 @@
 </svelte:head>
 
 <div class="mx-auto box-border flex flex w-full max-w-screen-md flex-auto flex-col gap-2 p-1">
-	<AuthNav links={data.nav} user={data?.session?.user} csrf={data?.csrfToken} />
+	<AuthNav links={data.nav} {user} csrf={data?.csrfToken} />
 	<slot />
 </div>
 
@@ -45,19 +47,17 @@
 	}
 
 	:global(::-webkit-scrollbar) {
-		width: 16px;
+		width: 8px;
 		height: 1em;
 	}
 
 	:global(::-webkit-scrollbar-track) {
 		background: transparent;
-		border-radius: 100vw;
 		margin-block: 4px;
 	}
 
 	:global(::-webkit-scrollbar-thumb) {
-		background: #4c566a;
-		border: 0.25em solid #2e3440;
+		background: #2e3440;
 		border-radius: 100vw;
 	}
 
