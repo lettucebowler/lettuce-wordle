@@ -35,6 +35,7 @@ export const load = async (event: ServerLoadEvent) => {
 	// if (cookie) {
 	// 	event.cookies.set(csrfCookieName, cookie);
 	// }
+	
 	// const before = new Date().getTime();
 	// const origin = new URL(event.request.url).origin;
 	// const { csrfToken } = await fetcher({
@@ -49,9 +50,9 @@ export const load = async (event: ServerLoadEvent) => {
 	// 		}
 	// 	}
 	// );
+	// const after = new Date().getTime();
+	// console.log('get csrf token:', after - before);
 	const csrfToken = '';
-	const after = new Date().getTime();
-	console.log('get csrf token:', after - before);
 	const links: NavLink[] = [
 		{
 			path: '/',
