@@ -2,6 +2,7 @@ import type { WordLettuceSession } from '$lib/types/auth';
 import { Trophy, Home } from '@steeze-ui/heroicons';
 import type { IconSource } from '@steeze-ui/svelte-icon/types';
 import type { ServerLoadEvent } from '@sveltejs/kit';
+import { fetcher } from 'itty-fetcher';
 import { AUTH_SECRET as secret } from '$env/static/private';
 import { createCSRFToken } from '../../node_modules/@auth/core/src/lib/csrf-token';
 
@@ -21,19 +22,32 @@ export const load = async (event: ServerLoadEvent) => {
 	const csrfCookieName = `${
 		event.request.url.startsWith('https') ? '__Host-' : ''
 	}next-auth.csrf-token`;
-	const csrfCookieValue = event.cookies.get(csrfCookieName);
-	const csrf = await createCSRFToken({
-		// @ts-ignore
-		options: {
-			secret
-		},
-		cookieValue: csrfCookieValue,
-		isPost: false,
-		bodyValue: undefined
-	});
-	if (csrf.cookie) {
-		event.cookies.set(csrfCookieName, csrf.cookie);
-	}
+	// const csrfCookieValue = event.cookies.get(csrfCookieName);
+	// const {csrfToken, cookie} = await createCSRFToken({
+	// 	// @ts-ignore
+	// 	options: {
+	// 		secret
+	// 	},
+	// 	cookieValue: csrfCookieValue,
+	// 	isPost: false,
+	// 	bodyValue: undefined
+	// });
+	// if (cookie) {
+	// 	event.cookies.set(csrfCookieName, cookie);
+	// }
+	const origin = new URL(event.request.url).origin;
+	const { csrfToken } = await fetcher({
+		fetch: event.fetch,
+		base: origin
+	}).get(
+		'/auth/csrf',
+		{},
+		{
+			headers: {
+				cookie: event.cookies.serialize(csrfCookieName, event.cookies.get(csrfCookieName) || '')
+			}
+		}
+	);
 	const links: NavLink[] = [
 		{
 			path: '/',
@@ -56,10 +70,9 @@ export const load = async (event: ServerLoadEvent) => {
 			prefetch: true
 		}
 	];
-
 	return {
 		nav: links,
 		session,
-		csrfToken: csrf.csrfToken
+		csrfToken: csrfToken
 	};
 };

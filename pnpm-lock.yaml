@@ -17,7 +17,7 @@ specifiers:
   eslint: ^8.31.0
   eslint-config-prettier: ^8.6.0
   eslint-plugin-svelte3: ^4.0.0
-  itty-fetcher: ^0.7.6
+  itty-fetcher: ^0.8.1
   js-cookie: ^3.0.1
   postcss: ^8.4.21
   prettier: ^2.8.2
@@ -49,7 +49,7 @@ devDependencies:
   eslint: 8.31.0
   eslint-config-prettier: 8.6.0_eslint@8.31.0
   eslint-plugin-svelte3: 4.0.0_6go7qzsvzihesfwmyvq3tnl5qq
-  itty-fetcher: 0.7.6
+  itty-fetcher: 0.8.1
   js-cookie: 3.0.1
   postcss: 8.4.21
   prettier: 2.8.2
@@ -1475,8 +1475,8 @@ packages:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
     dev: true
 
-  /itty-fetcher/0.7.6:
-    resolution: {integrity: sha512-Og0aOK6Wgsm8YUVKDfdo7NL6jvz5x6TzOgO05BAdBWcAcBDqoSRyxzGem2g9zWiIcRIblw/9Ku/8TGWb2Es/Iw==}
+  /itty-fetcher/0.8.1:
+    resolution: {integrity: sha512-ZR5L+Af1nqdg3UI3js/0BlXqvyxY0cANVZmQH1coBBJFt4GWWayfkVQCYja6t1+brtjC3eUCiYuPutptf3WP3g==}
     dev: true
 
   /jose/4.11.1:
