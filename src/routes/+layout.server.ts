@@ -35,24 +35,21 @@ export const load = async (event: ServerLoadEvent) => {
 	// if (cookie) {
 	// 	event.cookies.set(csrfCookieName, cookie);
 	// }
-	
-	// const before = new Date().getTime();
-	// const origin = new URL(event.request.url).origin;
-	// const { csrfToken } = await fetcher({
-	// 	fetch: event.fetch,
-	// 	base: origin
-	// }).get(
-	// 	'/auth/csrf',
-	// 	{},
-	// 	{
-	// 		headers: {
-	// 			cookie: event.cookies.serialize(csrfCookieName, event.cookies.get(csrfCookieName) || '')
-	// 		}
-	// 	}
-	// );
-	// const after = new Date().getTime();
-	// console.log('get csrf token:', after - before);
-	const csrfToken = '';
+
+	const origin = new URL(event.request.url).origin;
+	const { csrfToken } = await fetcher({
+		fetch: event.fetch,
+		base: origin
+	}).get(
+		'/auth/csrf',
+		{},
+		{
+			headers: {
+				cookie: event.cookies.serialize(csrfCookieName, event.cookies.get(csrfCookieName) || '')
+			}
+		}
+	);
+
 	const links: NavLink[] = [
 		{
 			path: '/',
