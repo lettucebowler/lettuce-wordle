@@ -22,22 +22,9 @@ export const load = async (event: ServerLoadEvent) => {
 	const csrfCookieName = `${
 		event.request.url.startsWith('https') ? '__Host-' : ''
 	}next-auth.csrf-token`;
-	// const csrfCookieValue = event.cookies.get(csrfCookieName);
-	// const {csrfToken, cookie} = await createCSRFToken({
-	// 	// @ts-ignore
-	// 	options: {
-	// 		secret
-	// 	},
-	// 	cookieValue: csrfCookieValue,
-	// 	isPost: false,
-	// 	bodyValue: undefined
-	// });
-	// if (cookie) {
-	// 	event.cookies.set(csrfCookieName, cookie);
-	// }
 
 	const origin = new URL(event.request.url).origin;
-	const { csrfToken } = await fetcher({
+	const { csrfToken } = (await fetcher({
 		fetch: event.fetch,
 		base: origin
 	}).get(
@@ -48,7 +35,7 @@ export const load = async (event: ServerLoadEvent) => {
 				cookie: event.cookies.serialize(csrfCookieName, event.cookies.get(csrfCookieName) || '')
 			}
 		}
-	);
+	)) as { csrfToken: string };
 
 	const links: NavLink[] = [
 		{
