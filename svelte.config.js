@@ -13,7 +13,7 @@ const config = {
 		adapter: adapter({
 			out: 'build',
 			edge: true,
-			split: true,
+			split: true
 		})
 	}
 };
