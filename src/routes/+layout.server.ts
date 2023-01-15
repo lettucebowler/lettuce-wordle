@@ -3,8 +3,6 @@ import { Trophy, Home } from '@steeze-ui/heroicons';
 import type { IconSource } from '@steeze-ui/svelte-icon/types';
 import type { ServerLoadEvent } from '@sveltejs/kit';
 import { fetcher } from 'itty-fetcher';
-import { AUTH_SECRET as secret } from '$env/static/private';
-import { createCSRFToken } from '../../node_modules/@auth/core/src/lib/csrf-token';
 
 export const prerender = false;
 

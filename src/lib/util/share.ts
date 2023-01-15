@@ -1,5 +1,3 @@
-import { getDailyWord } from './words';
-
 export const getGameStatus = (appName: string, statuses: string[]) => {
 	const gameStatus = statuses.filter((l) => l[0] !== 'none');
 	const gameNum = getGameNum();

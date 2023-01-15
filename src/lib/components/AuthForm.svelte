@@ -1,9 +1,7 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
-
 	export let mode: 'login' | 'logout' = 'login';
 	export let useBuiltinButton = true;
-	export let callback: string = '/?saveGame=true';
+	export let callback = '/?saveGame=true';
 	export let csrf = '';
 </script>
 

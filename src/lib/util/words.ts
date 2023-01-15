@@ -12990,7 +12990,6 @@ const getWord = (random: () => number) => {
 };
 
 export const getDailyWord = () => {
-	const dateLocal = new Date();
 	const gameNum = getGameNum();
 	const random = mulberry32(gameNum);
 	return getWord(random);
