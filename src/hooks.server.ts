@@ -1,7 +1,6 @@
 import { sequence } from '@sveltejs/kit/hooks';
 import { SvelteKitAuth } from '@auth/sveltekit';
 import GitHub from '@auth/core/providers/github';
-import { getDBProvider } from '$lib/client/upstash';
 import {
 	DEFAULT_DB_PROVIDER,
 	SK_AUTH_GITHUB_CLIENT_ID,
@@ -13,7 +12,6 @@ import { upsertUser } from '$lib/util/gameresults';
 import type { Handle } from '@sveltejs/kit';
 
 const providerHandler: Handle = async ({ event, resolve }) => {
-	const db = await getDBProvider();
 	const searchParams = new URL(event.request.url).searchParams;
 	const dbProvider = searchParams.get('dbProvider') || DEFAULT_DB_PROVIDER;
 	event.locals.dbProvider = dbProvider;

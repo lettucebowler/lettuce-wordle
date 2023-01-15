@@ -13,7 +13,6 @@ specifiers:
   '@types/js-cookie': ^3.0.2
   '@typescript-eslint/eslint-plugin': ^5.48.1
   '@typescript-eslint/parser': ^5.48.1
-  '@upstash/redis': ^1.19.1
   autoprefixer: ^10.4.13
   cookie: ^0.5.0
   eslint: ^8.31.0
@@ -47,7 +46,6 @@ devDependencies:
   '@types/js-cookie': 3.0.2
   '@typescript-eslint/eslint-plugin': 5.48.1_3jon24igvnqaqexgwtxk6nkpse
   '@typescript-eslint/parser': 5.48.1_iukboom6ndih5an6iafl45j2fe
-  '@upstash/redis': 1.19.1
   autoprefixer: 10.4.13_postcss@8.4.21
   cookie: 0.5.0
   eslint: 8.31.0
@@ -660,14 +658,6 @@ packages:
     dependencies:
       '@typescript-eslint/types': 5.48.1
       eslint-visitor-keys: 3.3.0
-    dev: true
-
-  /@upstash/redis/1.19.1:
-    resolution: {integrity: sha512-oH621FYa8wEnBXWXabNssiKrpITK/x0grpisn2WaIvukH3oij+lB41B9uEGUzYS93RfQvGAsgEb23FYremqgZA==}
-    dependencies:
-      isomorphic-fetch: 3.0.0
-    transitivePeerDependencies:
-      - encoding
     dev: true
 
   /@vercel/nft/0.22.6:
@@ -1498,15 +1488,6 @@ packages:
 
   /isexe/2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
-    dev: true
-
-  /isomorphic-fetch/3.0.0:
-    resolution: {integrity: sha512-qvUtwJ3j6qwsF3jLxkZ72qCgjMysPzDfeV240JHiGZsANBYd+EEuu35v7dfrJ9Up0Ak07D7GGSkGhCHTqg/5wA==}
-    dependencies:
-      node-fetch: 2.6.8
-      whatwg-fetch: 3.6.2
-    transitivePeerDependencies:
-      - encoding
     dev: true
 
   /itty-fetcher/0.8.1:
@@ -2497,10 +2478,6 @@ packages:
 
   /webidl-conversions/3.0.1:
     resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
-    dev: true
-
-  /whatwg-fetch/3.6.2:
-    resolution: {integrity: sha512-bJlen0FcuU/0EMLrdbJ7zOnW6ITZLrZMIarMUVmdKtsGvZna8vxKYaexICWPfZ8qwf9fzNq+UEIZrnSaApt6RA==}
     dev: true
 
   /whatwg-url/5.0.0:
