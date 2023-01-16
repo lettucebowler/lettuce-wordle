@@ -31,32 +31,24 @@
 		}
 	}}
 >
-	{#each ['q,w,e,r,t,y,u,i,o,p', ',a,s,d,f,g,h,j,k,l', ',,,z,x,c,v,b,n,m'] as row, i}
+	{#each ['q,w,e,r,t,y,u,i,o,p', ',a,s,d,f,g,h,j,k,l', ',,,z,x,c,v,b,n,m,enter,backspace'] as row, i}
 		<div class="flex w-full flex-auto flex-col justify-center">
 			<div class="grid flex-auto grid-cols-[repeat(40,_0.25fr)] gap-1">
 				{#each row.split(',') as letter}
+					{@const attributes = {
+						key: letter,
+						status: answers[letter] || '_',
+						form: letter === 'enter' ? 'game' : undefined,
+						action: letter === 'enter' ? 'enter' : 'keyboard'
+					}}
 					{#if letter}
 						<div class="col-span-4 grid place-items-center">
-							<LettuceKey key={letter} status={answers[letter] || '_'} bind:button={keys[letter]} />
+							<LettuceKey {...attributes} bind:button={keys[letter]} />
 						</div>
 					{:else}
 						<div />
 					{/if}
 				{/each}
-				{#if i == 2}
-					<div class="col-span-4 grid place-items-center">
-						<LettuceKey
-							key="enter"
-							status="_"
-							form="game"
-							action="enter"
-							bind:button={keys['enter']}
-						/>
-					</div>
-					<div class="col-span-4 grid place-items-center">
-						<LettuceKey key="backspace" status="_" bind:button={keys['backspace']} />
-					</div>
-				{/if}
 			</div>
 		</div>
 	{/each}
