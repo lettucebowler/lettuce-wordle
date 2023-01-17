@@ -2,6 +2,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { ArrowUturnRight, Backspace } from '@steeze-ui/heroicons';
 	import type { IconSource } from '@steeze-ui/svelte-icon/types';
+	import LettuceIcon from '$lib/components/Icon.svelte';
 
 	export let key: string;
 	export let status = 'none';
@@ -44,7 +45,8 @@
 	class:bg-charade-700={status === 'i'}
 >
 	{#if icon}
-		<Icon {...icon} />
+		<!-- <Icon {...icon} /> -->
+		<LettuceIcon icon="arrow-uturn-right" size={8} />
 	{:else}
 		{key.toUpperCase()}
 	{/if}

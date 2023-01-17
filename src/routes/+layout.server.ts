@@ -41,14 +41,14 @@ export const load = async (event: ServerLoadEvent) => {
 			name: 'Home',
 			enabled: true,
 			prefetch: true,
-			icon: Home
+			icon: 'home'
 		},
 		{
 			path: '/rankings',
 			name: 'Rankings',
 			enabled: true,
 			prefetch: true,
-			icon: Trophy
+			icon: 'trophy'
 		},
 		{
 			path: '/about',

@@ -84,7 +84,7 @@
 					<span class="flex items-center gap-2">
 						{#if link.icon}
 							<!-- <span><Icon src={link.icon} theme="solid" class="h-10" /></span> -->
-							<span class="mr-auto text-snow-300"><LettuceIcon icon="trophy" /></span>
+							<span class="mr-auto text-snow-300"><LettuceIcon icon={link.icon} /></span>
 						{/if}
 						<span class:hidden={link.icon} class:sm:inline={link.icon}>{link.name}</span>
 					</span>
