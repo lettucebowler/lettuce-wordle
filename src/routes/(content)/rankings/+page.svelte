@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Trophy } from '@steeze-ui/heroicons';
+	import LettuceIcon from '$lib/components/Icon.svelte';
 	import P from '$lib/components/P.svelte';
 
 	export let data: import('./$types').PageData;
@@ -31,7 +30,8 @@
 					>
 						<div class="flex flex-[0_0_2rem] items-center text-left text-snow-300">
 							{#if position === 1}
-								<Icon src={Trophy} theme="solid" class="h-8 w-8" />
+								<!-- <Icon src={Trophy} theme="solid" class="h-8 w-8" /> -->
+								<span class="h-8"><LettuceIcon icon="trophy" /></span>
 							{:else}
 								#{position}
 							{/if}

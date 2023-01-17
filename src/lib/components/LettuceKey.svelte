@@ -1,7 +1,4 @@
 <script lang="ts">
-	import { Icon } from '@steeze-ui/svelte-icon';
-	import { ArrowUturnRight, Backspace } from '@steeze-ui/heroicons';
-	import type { IconSource } from '@steeze-ui/svelte-icon/types';
 	import LettuceIcon from '$lib/components/Icon.svelte';
 
 	export let key: string;
@@ -10,21 +7,21 @@
 	export let action = 'keyboard';
 	export let button: HTMLButtonElement;
 
-	const icons: Map<string, { src: IconSource; theme: string; class: string }> = new Map([
+	const icons = new Map([
 		[
 			'enter',
 			{
-				src: ArrowUturnRight,
-				theme: 'mini',
-				class: 'h-5 w-5 rotate-180'
+				icon: 'arrow-uturn-right',
+				flip: true,
+				size: 5
 			}
 		],
 		[
 			'backspace',
 			{
-				src: Backspace,
-				theme: 'mini',
-				class: 'h-5 w-5'
+				icon: 'backspace',
+				flip: false,
+				size: 5
 			}
 		]
 	]);
@@ -46,7 +43,7 @@
 >
 	{#if icon}
 		<!-- <Icon {...icon} /> -->
-		<LettuceIcon icon="arrow-uturn-right" size={8} />
+		<span class="h-5"><LettuceIcon {...icon} /></span>
 	{:else}
 		{key.toUpperCase()}
 	{/if}

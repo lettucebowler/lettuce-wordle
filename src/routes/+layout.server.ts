@@ -1,6 +1,4 @@
 import type { WordLettuceSession } from '$lib/types/auth';
-import { Trophy, Home } from '@steeze-ui/heroicons';
-import type { IconSource } from '@steeze-ui/svelte-icon/types';
 import type { ServerLoadEvent } from '@sveltejs/kit';
 import { fetcher } from 'itty-fetcher';
 
@@ -12,7 +10,7 @@ export type NavLink = {
 	enabled: boolean;
 	prefetch: boolean;
 	margin?: string;
-	icon?: IconSource;
+	icon?: string;
 };
 
 export const load = async (event: ServerLoadEvent) => {

@@ -4,9 +4,6 @@
 	import { slide } from 'svelte/transition';
 	import { onMount } from 'svelte';
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
-	import { Icon } from '@steeze-ui/svelte-icon';
-	import { ChevronDown } from '@steeze-ui/heroicons';
-	import type { IconSource } from '@steeze-ui/svelte-icon/types';
 	import LettuceIcon from '$lib/components/Icon.svelte';
 
 	import white from '$lib/assets/white.png';
@@ -20,7 +17,7 @@
 		margin?: string;
 		prefetch?: boolean;
 		enabled: boolean;
-		icon?: IconSource;
+		icon?: string;
 	}[] = [];
 	export let csrf = '';
 
@@ -84,7 +81,7 @@
 					<span class="flex items-center gap-2">
 						{#if link.icon}
 							<!-- <span><Icon src={link.icon} theme="solid" class="h-10" /></span> -->
-							<span class="mr-auto text-snow-300"><LettuceIcon icon={link.icon} /></span>
+							<span class="mr-auto h-10 text-snow-300"><LettuceIcon icon={link.icon} /></span>
 						{/if}
 						<span class:hidden={link.icon} class:sm:inline={link.icon}>{link.name}</span>
 					</span>
@@ -105,11 +102,14 @@
 					/>
 				{/if}
 				<span class="m-1 hidden md:inline">{user.login}</span>
-				<Icon
+				<!-- <Icon
 					src={ChevronDown}
 					theme="solid"
 					class={`h-6 w-6 transition-transform ${dropdownVisible ? 'rotate-180' : ''}`}
-				/>
+				/> -->
+				<span class="h-4 sm:h-6 lg:h-8">
+					<LettuceIcon flip={dropdownVisible} icon="chevron-down" />
+				</span>
 			</label>
 		{:else}
 			<AuthForm {csrf} mode="login" />
