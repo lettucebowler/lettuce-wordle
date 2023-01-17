@@ -7,6 +7,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { ChevronDown } from '@steeze-ui/heroicons';
 	import type { IconSource } from '@steeze-ui/svelte-icon/types';
+	import LettuceIcon from '$lib/components/Icon.svelte';
 
 	import white from '$lib/assets/white.png';
 	import type { UserProfile } from '$lib/types/auth';
@@ -82,7 +83,8 @@
 				><span class="grid h-full w-full place-items-center p-2 text-center duration-150">
 					<span class="flex items-center gap-2">
 						{#if link.icon}
-							<span><Icon src={link.icon} theme="solid" class="h-10" /></span>
+							<!-- <span><Icon src={link.icon} theme="solid" class="h-10" /></span> -->
+							<span class="mr-auto text-snow-300"><LettuceIcon icon="trophy" /></span>
 						{/if}
 						<span class:hidden={link.icon} class:sm:inline={link.icon}>{link.name}</span>
 					</span>
