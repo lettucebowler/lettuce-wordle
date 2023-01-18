@@ -76,7 +76,7 @@
 				d={path.path}
 				fill-rule={path.fillRule || 'inherit'}
 				clip-rule={path.clipRule || 'inherit'}
-				class="fill-snow-300"
+				class="fill-snow-100"
 			/>
 		{/each}
 	</svg>
