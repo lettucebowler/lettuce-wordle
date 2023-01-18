@@ -54,7 +54,7 @@
 <div>
 	<div id="big-papa-nav" class="flex justify-end">
 		<nav
-			class="ml-auto box-border flex justify-end gap-x-1 rounded-2xl sm:ml-0 sm:w-full sm:bg-charade-600 sm:p-1"
+			class="ml-auto box-border flex justify-end gap-x-1 rounded-2xl pt-1 pr-1 sm:ml-0 sm:w-full sm:bg-charade-600 sm:p-1"
 			id="primary-nav"
 		>
 			<div class="hidden gap-1 sm:flex">
