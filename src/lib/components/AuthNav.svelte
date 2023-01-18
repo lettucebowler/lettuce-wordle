@@ -3,7 +3,7 @@
 	import { browser } from '$app/environment';
 	import { slide } from 'svelte/transition';
 	import { onMount } from 'svelte';
-	import { afterNavigate, beforeNavigate } from '$app/navigation';
+	import { afterNavigate } from '$app/navigation';
 	import LettuceIcon from '$lib/components/Icon.svelte';
 
 	import white from '$lib/assets/white.png';
@@ -106,7 +106,7 @@
 		<nav
 			transition:slide={{ duration: 150 }}
 			id="subnav-content"
-			class="absolute z-40 mr-4 box-border flex hidden h-0 w-full justify-evenly rounded-xl bg-charade-900 font-medium sm:static sm:z-0 sm:mt-2 sm:ml-4 sm:flex sm:h-auto sm:w-auto sm:bg-charade-700 sm:p-1 sm:transition sm:transition-all sm:duration-150"
+			class="absolute z-40 mr-4 box-border flex hidden h-0 w-full justify-evenly rounded-xl bg-charade-900 font-medium sm:static sm:z-0 sm:mt-2 sm:ml-4 sm:h-auto sm:w-auto sm:bg-charade-700 sm:p-1 sm:transition sm:transition-all sm:duration-150"
 			class:hidden={!dropdownVisible && !jsEnabled}
 		>
 			<div
