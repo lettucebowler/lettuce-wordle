@@ -47,11 +47,11 @@
 	}
 
 	:global(::-webkit-scrollbar) {
-		width: 8px;
+		width: 4px;
 		height: 1em;
 	}
 
-	:global(::-webkit-scrollbar-track) {
+	:global(::-webkit-scrollbar-track:hover) {
 		background: transparent;
 		margin-block: 4px;
 	}

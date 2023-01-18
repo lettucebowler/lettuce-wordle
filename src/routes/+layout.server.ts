@@ -38,15 +38,13 @@ export const load = async (event: ServerLoadEvent) => {
 			path: '/',
 			name: 'Home',
 			enabled: true,
-			prefetch: true,
-			icon: 'home'
+			prefetch: true
 		},
 		{
 			path: '/rankings',
 			name: 'Rankings',
 			enabled: true,
-			prefetch: true,
-			icon: 'trophy'
+			prefetch: true
 		},
 		{
 			path: '/about',
