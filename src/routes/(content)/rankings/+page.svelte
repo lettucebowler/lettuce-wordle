@@ -30,7 +30,6 @@
 					>
 						<div class="flex flex-[0_0_2rem] items-center text-left text-snow-300">
 							{#if position === 1}
-								<!-- <Icon src={Trophy} theme="solid" class="h-8 w-8" /> -->
 								<span class="h-8"><LettuceIcon icon="trophy" /></span>
 							{:else}
 								#{position}

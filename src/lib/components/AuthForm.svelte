@@ -10,7 +10,7 @@
 	<input type="hidden" name="callbackUrl" value={callback} />
 	{#if useBuiltinButton}
 		<button
-			class="grid h-full items-center rounded-xl  p-2 text-center font-medium text-snow-300 active:bg-charade-900"
+			class="grid h-full items-center rounded-lg py-2 px-6 text-center font-medium text-snow-100 active:bg-charade-900"
 			class:text-lg={mode === 'logout'}
 			class:text-3xl={mode === 'login'}
 			class:hover:bg-charade-800={mode === 'logout'}

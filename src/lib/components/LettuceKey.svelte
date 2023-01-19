@@ -12,16 +12,14 @@
 			'enter',
 			{
 				icon: 'arrow-uturn-right',
-				flip: true,
-				size: 5
+				flip: true
 			}
 		],
 		[
 			'backspace',
 			{
 				icon: 'backspace',
-				flip: false,
-				size: 5
+				flip: false
 			}
 		]
 	]);
@@ -42,7 +40,6 @@
 	class:bg-charade-700={status === 'i'}
 >
 	{#if icon}
-		<!-- <Icon {...icon} /> -->
 		<span class="h-5"><LettuceIcon {...icon} /></span>
 	{:else}
 		{key.toUpperCase()}

@@ -54,90 +54,135 @@
 <div>
 	<div id="big-papa-nav" class="flex justify-end">
 		<nav
-			class="ml-auto box-border flex justify-end gap-x-1 rounded-2xl pt-1 pr-1 sm:ml-0 sm:w-full sm:bg-charade-600 sm:p-1"
+			class="h-18 ml-auto ml-0 box-border max-h-[72px] w-full justify-end gap-x-4 rounded-2xl bg-charade-600 p-1"
 			id="primary-nav"
 		>
-			<div class="hidden gap-1 sm:flex">
-				{#each links.filter((link) => link.enabled) as link}
-					<a
-						class="flex h-14 flex-[1_0_auto] cursor-pointer overflow-hidden rounded-xl border-transparent p-0 text-3xl font-medium text-snow-300 hover:bg-charade-700 active:bg-charade-800"
-						class:ml-auto={link.margin === 'left'}
-						class:backdrop-brightness-90={link.path === $page.url.pathname}
-						href={link.path}
-						data-sveltekit-preload-data={link.prefetch ? 'hover' : null}
-						><span class="grid h-full w-full place-items-center p-2 text-center duration-150">
-							<span class="flex items-center gap-2">
-								{#if link.icon}
-									<!-- <span><Icon src={link.icon} theme="solid" class="h-10" /></span> -->
-									<span class="mr-auto h-10 text-snow-300"><LettuceIcon icon={link.icon} /></span>
-								{/if}
-								<span class:hidden={link.icon} class:sm:inline={link.icon}>{link.name}</span>
-							</span>
-						</span></a
-					>
-				{/each}
-			</div>
-			{#if user}
-				<label
-					for="subnav"
-					class="box-border flex h-12 flex-[0_0_auto] cursor-pointer select-none items-center justify-center gap-1 rounded-xl text-center text-3xl text-snow-300 transition ease-in-out sm:ml-auto sm:h-14 sm:p-2 sm:hover:bg-charade-700 sm:active:bg-charade-800"
-				>
-					<span class="h-8">
-						<LettuceIcon flip={dropdownVisible} icon="chevron-down" />
-					</span>
-
-					{#if user.image}
-						<img
-							src={white}
-							srcset={user.image}
-							class="box-border aspect-square h-full rounded object-contain"
-							alt=""
-						/>
-					{/if}
-				</label>
-			{:else}
-				<AuthForm {csrf} mode="login" />
-			{/if}
-		</nav>
-	</div>
-
-	<input type="checkbox" class="hidden" name="subnav" id="subnav" bind:checked={dropdownVisible} />
-	{#if showDropdown}
-		<nav
-			transition:slide={{ duration: 150 }}
-			id="subnav-content"
-			class="absolute z-40 mr-4 box-border flex hidden h-0 w-full justify-evenly rounded-xl bg-charade-900 font-medium sm:static sm:z-0 sm:mt-2 sm:ml-4 sm:h-auto sm:w-auto sm:bg-charade-700 sm:p-1 sm:transition sm:transition-all sm:duration-150"
-			class:hidden={!dropdownVisible && !jsEnabled}
-		>
-			<div
-				class="box-border h-screen w-full divide-y bg-charade-900 px-3 py-4 sm:h-max sm:divide-y-0 sm:bg-charade-700 sm:p-0"
-			>
-				<div class="flex flex-col items-end gap-4 border-charade-600 pb-4 sm:hidden sm:p-0">
+			<div class="flex">
+				<div class="hidden gap-4 sm:flex">
 					{#each links.filter((link) => link.enabled) as link}
 						<a
-							class="ml-auto w-max cursor-pointer rounded-xl border-transparent p-0 text-right text-right text-3xl font-medium text-snow-300"
+							class="flex h-14 cursor-pointer overflow-hidden rounded-xl border-transparent py-2 px-6 text-3xl font-medium text-snow-300 hover:bg-charade-700 active:bg-charade-800"
 							class:ml-auto={link.margin === 'left'}
+							class:bg-charade-700={link.path === $page.url.pathname}
+							class:text-snow-100={link.path !== $page.url.pathname}
 							href={link.path}
-							data-sveltekit-preload-data={link.prefetch ? 'hover' : null}>{link.name}</a
+							data-sveltekit-preload-data={link.prefetch ? 'hover' : null}
+						>
+							{link.name}</a
 						>
 					{/each}
 				</div>
-				<div class="flex justify-center gap-2 border-charade-600 py-4 sm:p-0">
-					{#each subnavItems as subnavItem}
-						<a
-							href={subnavItem.path}
-							data-sveltekit-preload-data={subnavItem.prefetch ? 'hover' : null}
-							class="flex cursor-pointer overflow-hidden rounded-xl border-transparent p-0 text-lg font-medium text-snow-300 hover:bg-charade-800 active:bg-charade-900"
-							><span class="grid h-full w-full place-items-center p-2 text-center"
-								>{subnavItem.name}</span
-							></a
-						>
-					{/each}
-					<AuthForm mode="logout" {csrf} />
-				</div>
+				{#if user}
+					<label
+						for="subnav"
+						class="ml-auto box-border flex h-14 flex-[0_0_auto] cursor-pointer select-none items-center justify-center gap-2 rounded-xl text-center text-3xl text-snow-100 transition ease-in-out hover:bg-charade-700 active:bg-charade-800"
+					>
+						<span class="hidden h-8 pl-2 sm:inline">
+							<LettuceIcon icon="chevron-down" flip={dropdownVisible} />
+						</span>
+						<span class="h-8 px-3 sm:hidden">
+							<LettuceIcon icon="menu" flip={dropdownVisible} />
+						</span>
+						{#if user.image}
+							<img
+								src={white}
+								srcset={user.image}
+								class="box-border hidden aspect-square h-full rounded-xl object-contain sm:block"
+								alt=""
+							/>
+						{/if}
+					</label>
+				{:else}
+					<AuthForm {csrf} mode="login" />
+				{/if}
+			</div>
+			<div class="sm:hidden">
+				<input
+					type="checkbox"
+					class="hidden"
+					name="subnav"
+					id="subnav"
+					bind:checked={dropdownVisible}
+				/>
+				{#if showDropdown}
+					<nav
+						id="subnav-content"
+						class="absolute top-[72px] right-0 left-0 bottom-0 z-10 flex-col divide-y bg-charade-900"
+						class:hidden={!dropdownVisible && !jsEnabled}
+					>
+						<div class="space-y-4 p-4">
+							{#each links.filter((link) => link.enabled) as link}
+								<a
+									class="block cursor-pointer border-charade-700 text-3xl font-medium text-snow-100 hover:text-snow-300"
+									href={link.path}
+									data-sveltekit-preload-data={link.prefetch ? 'hover' : null}
+								>
+									{link.name}</a
+								>
+							{/each}
+						</div>
+						<div class="flex flex-col justify-start gap-4 border-charade-700 p-4">
+							{#if user && user.image && user.login}
+								<div class="flex items-center justify-start gap-4">
+									<img
+										src={white}
+										srcset={user.image}
+										class="box-border aspect-square h-10 rounded object-contain sm:hidden"
+										alt=""
+									/>
+									<span class="text-xl font-medium text-snow-300">{user.login}</span>
+								</div>
+							{/if}
+							<div class="flex flex-col gap-2">
+								{#each subnavItems as subnavItem}
+									<a
+										href={subnavItem.path}
+										data-sveltekit-preload-data={subnavItem.prefetch ? 'hover' : null}
+										class="cursor-pointer p-0 text-xl font-medium text-snow-100 hover:text-snow-300"
+										>{subnavItem.name}</a
+									>
+								{/each}
+								<AuthForm mode="logout" {csrf} useBuiltinButton={false}
+									><button class="text-xl font-medium text-snow-100 hover:text-snow-300"
+										>logout</button
+									></AuthForm
+								>
+							</div>
+						</div>
+					</nav>
+				{/if}
 			</div>
 		</nav>
-	{/if}
+	</div>
+	<div class="hidden sm:block">
+		<input
+			type="checkbox"
+			class="hidden"
+			name="subnav"
+			id="subnav"
+			bind:checked={dropdownVisible}
+		/>
+		{#if showDropdown}
+			<nav
+				transition:slide|local={{ duration: 150 }}
+				id="subnav-content"
+				class="mx-4 mt-2 flex flex-row justify-center gap-4 rounded-xl bg-charade-700 p-1 font-medium transition transition-all duration-150"
+				class:hidden={!dropdownVisible && !jsEnabled}
+			>
+				{#each subnavItems as subnavItem}
+					<a
+						href={subnavItem.path}
+						data-sveltekit-preload-data={subnavItem.prefetch ? 'hover' : null}
+						class="flex cursor-pointer overflow-hidden rounded-lg border-transparent p-0 text-lg font-medium text-snow-100 hover:bg-charade-800"
+						><span class="grid h-full w-full place-items-center py-2 px-6 text-center"
+							>{subnavItem.name}</span
+						></a
+					>
+				{/each}
+				<AuthForm mode="logout" {csrf} />
+			</nav>
+		{/if}
+	</div>
 </div>
 
 <style>

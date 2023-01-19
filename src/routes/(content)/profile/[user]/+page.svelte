@@ -12,7 +12,7 @@
 <main class="grid w-full gap-8">
 	<figure class="flex flex-col gap-2">
 		<img
-			class="mx-auto aspect-square h-[360px] rounded-xl object-contain"
+			class="mx-auto h-full max-w-[60%] rounded-xl object-contain"
 			src={userProfile.image}
 			alt={userProfile.login}
 		/>

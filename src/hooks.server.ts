@@ -15,7 +15,10 @@ const providerHandler: Handle = async ({ event, resolve }) => {
 	const searchParams = new URL(event.request.url).searchParams;
 	const dbProvider = searchParams.get('dbProvider') || DEFAULT_DB_PROVIDER;
 	event.locals.dbProvider = dbProvider;
+	const logString = `${event.request.method} ${event.url.pathname}`;
+	console.time(logString);
 	const response = await resolve(event);
+	console.timeEnd(logString);
 	return response;
 };
 

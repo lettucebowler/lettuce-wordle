@@ -13,7 +13,6 @@ const apiWordlettuce = fetcher({
 });
 
 export const getGameResults = async (user: string, count: number) => {
-	console.log(user);
 	const gameResults = await apiWordlettuce.get(`/gameresults/${user}`, { count });
 	return gameResults as GameResult[];
 };
