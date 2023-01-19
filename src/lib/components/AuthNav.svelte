@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
-	import { slide } from 'svelte/transition';
+	import { slide, fly } from 'svelte/transition';
 	import { onMount } from 'svelte';
 	import { afterNavigate } from '$app/navigation';
 	import LettuceIcon from '$lib/components/Icon.svelte';
@@ -138,12 +138,12 @@
 									<a
 										href={subnavItem.path}
 										data-sveltekit-preload-data={subnavItem.prefetch ? 'hover' : null}
-										class="cursor-pointer p-0 text-xl font-medium text-snow-100 hover:text-snow-300"
+										class="cursor-pointer p-0 text-2xl font-medium text-snow-100 hover:text-snow-300"
 										>{subnavItem.name}</a
 									>
 								{/each}
 								<AuthForm mode="logout" {csrf} useBuiltinButton={false}
-									><button class="text-xl font-medium text-snow-100 hover:text-snow-300"
+									><button class="text-2xl font-medium text-snow-100 hover:text-snow-300"
 										>logout</button
 									></AuthForm
 								>
