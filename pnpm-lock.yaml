@@ -5,7 +5,7 @@ specifiers:
   '@auth/sveltekit': 0.1.10
   '@planetscale/database': ^1.5.0
   '@sveltejs/adapter-vercel': 1.0.4
-  '@sveltejs/kit': ^1.2.0
+  '@sveltejs/kit': ^1.2.2
   '@types/cookie': ^0.5.1
   '@types/js-cookie': ^3.0.2
   '@typescript-eslint/eslint-plugin': ^5.48.2
@@ -31,10 +31,10 @@ specifiers:
 
 devDependencies:
   '@auth/core': 0.2.5
-  '@auth/sveltekit': 0.1.10_gydvpanoth4mzb6dbygr646kbe
+  '@auth/sveltekit': 0.1.10_jjtf66hbwfiwo2vqrkskvyeeaq
   '@planetscale/database': 1.5.0
-  '@sveltejs/adapter-vercel': 1.0.4_@sveltejs+kit@1.2.0
-  '@sveltejs/kit': 1.2.0_svelte@3.55.1+vite@4.0.4
+  '@sveltejs/adapter-vercel': 1.0.4_@sveltejs+kit@1.2.2
+  '@sveltejs/kit': 1.2.2_svelte@3.55.1+vite@4.0.4
   '@types/cookie': 0.5.1
   '@types/js-cookie': 3.0.2
   '@typescript-eslint/eslint-plugin': 5.48.2_caon6io6stgpr7lz2rtbhekxqy
@@ -92,14 +92,14 @@ packages:
       preact-render-to-string: 5.2.3_preact@10.11.3
     dev: true
 
-  /@auth/sveltekit/0.1.10_gydvpanoth4mzb6dbygr646kbe:
+  /@auth/sveltekit/0.1.10_jjtf66hbwfiwo2vqrkskvyeeaq:
     resolution: {integrity: sha512-sVuk1AE0HEpttBpInB1zVs+v8l05TlonGa+UqiWk6ZHnvc1+nlsoAm7UFqZTuq+lgVNcXm1heNiaVwBiAqlpTQ==}
     peerDependencies:
       '@sveltejs/kit': ^1.0.0
       svelte: ^3.54.0
     dependencies:
       '@auth/core': 0.2.2
-      '@sveltejs/kit': 1.2.0_svelte@3.55.1+vite@4.0.4
+      '@sveltejs/kit': 1.2.2_svelte@3.55.1+vite@4.0.4
       svelte: 3.55.1
     transitivePeerDependencies:
       - nodemailer
@@ -416,12 +416,12 @@ packages:
       picomatch: 2.3.1
     dev: true
 
-  /@sveltejs/adapter-vercel/1.0.4_@sveltejs+kit@1.2.0:
+  /@sveltejs/adapter-vercel/1.0.4_@sveltejs+kit@1.2.2:
     resolution: {integrity: sha512-kBh60gq+nB4258Vbu1G7vwofVz4HqTUbWf11N5PSOOqb5hoCalr5PXEhnn0wQwSE9eyFhehi/GCNQE7FC0dUhQ==}
     peerDependencies:
       '@sveltejs/kit': ^1.0.0
     dependencies:
-      '@sveltejs/kit': 1.2.0_svelte@3.55.1+vite@4.0.4
+      '@sveltejs/kit': 1.2.2_svelte@3.55.1+vite@4.0.4
       '@vercel/nft': 0.22.6
       esbuild: 0.16.17
     transitivePeerDependencies:
@@ -429,8 +429,8 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/kit/1.2.0_svelte@3.55.1+vite@4.0.4:
-    resolution: {integrity: sha512-Burt+zmAlAOkV2jsEJMHCipVI2w7eMyjDzC/63Z+CML4/xz/Kt4Kjl4CJf1o7ldtzP/C3GCjuq70aMrWhzTDRw==}
+  /@sveltejs/kit/1.2.2_svelte@3.55.1+vite@4.0.4:
+    resolution: {integrity: sha512-aZUjAZ/6gWEYFQDrDNINuvOi6VxlG86kCcIDRWDIFJjI38Ueieo1fySb0j0d2VkQVrYXU7VqjTVMBZFix+hByA==}
     engines: {node: ^16.14 || >=18}
     hasBin: true
     requiresBuild: true
@@ -886,7 +886,7 @@ packages:
     dev: true
 
   /concat-map/0.0.1:
-    resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
+    resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=}
     dev: true
 
   /console-control-strings/1.1.0:
