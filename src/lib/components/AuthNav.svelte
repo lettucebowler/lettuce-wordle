@@ -72,29 +72,31 @@
 						>
 					{/each}
 				</div>
-				{#if user}
-					<label
-						for="subnav"
-						class="ml-auto box-border flex h-14 flex-[0_0_auto] cursor-pointer select-none items-center justify-center gap-2 rounded-xl text-center text-3xl text-snow-100 transition ease-in-out hover:bg-charade-700 active:bg-charade-800"
-					>
-						<span class="hidden h-8 pl-2 sm:inline">
-							<LettuceIcon icon="chevron-down" flip={dropdownVisible} />
-						</span>
-						<span class="h-8 px-3 sm:hidden">
-							<LettuceIcon icon="menu" flip={dropdownVisible} />
-						</span>
-						{#if user.image}
-							<img
-								src={white}
-								srcset={user.image}
-								class="box-border hidden aspect-square h-full rounded-xl object-contain sm:block"
-								alt=""
-							/>
-						{/if}
-					</label>
-				{:else}
-					<AuthForm {csrf} mode="login" />
-				{/if}
+				<div class="ml-auto h-14">
+					{#if user}
+						<label
+							for="subnav"
+							class="box-border flex h-full flex-[0_0_auto] cursor-pointer select-none items-center justify-center gap-2 rounded-xl p-1 text-center text-3xl text-snow-100 transition ease-in-out hover:bg-charade-700 active:bg-charade-800"
+						>
+							<span class="hidden h-8 pl-2 sm:inline">
+								<LettuceIcon icon="chevron-down" flip={dropdownVisible} />
+							</span>
+							<span class="h-8 px-3 sm:hidden">
+								<LettuceIcon icon="menu" flip={dropdownVisible} />
+							</span>
+							{#if user.image}
+								<img
+									src={white}
+									srcset={user.image}
+									class="box-border hidden aspect-square h-full rounded-lg object-contain sm:block"
+									alt=""
+								/>
+							{/if}
+						</label>
+					{:else}
+						<AuthForm mode="login" />
+					{/if}
+				</div>
 			</div>
 			<div class="sm:hidden">
 				<input
@@ -142,7 +144,7 @@
 										>{subnavItem.name}</a
 									>
 								{/each}
-								<AuthForm mode="logout" {csrf} useBuiltinButton={false}
+								<AuthForm mode="logout"
 									><button class="text-2xl font-medium text-snow-100 hover:text-snow-300"
 										>logout</button
 									></AuthForm
@@ -179,7 +181,7 @@
 						></a
 					>
 				{/each}
-				<AuthForm mode="logout" {csrf} />
+				<AuthForm mode="logout" />
 			</nav>
 		{/if}
 	</div>

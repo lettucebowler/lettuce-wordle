@@ -19,8 +19,6 @@
 		}
 	};
 
-	export let csrf = '';
-
 	let dialog: HTMLDialogElement;
 	let share = '';
 	let attempts: number;
@@ -126,7 +124,7 @@
 			Next word in {formatTime(timeUntil)}
 		</div>
 		{#if !authenticated}
-			<AuthForm mode="login" useBuiltinButton={false} {csrf}>
+			<AuthForm mode="login">
 				<div class="flex w-full flex-row justify-center gap-3">
 					<button
 						class="h-12 w-full cursor-pointer rounded-lg border-transparent bg-aurora-200 p-0 font-bold text-snow-300 active:brightness-90"

@@ -1,8 +1,8 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@auth/core': 0.2.5
-  '@auth/sveltekit': 0.1.10
+  '@auth/core': 0.3.0
+  '@auth/sveltekit': 0.2.0
   '@planetscale/database': ^1.5.0
   '@sveltejs/adapter-vercel': 1.0.4
   '@sveltejs/kit': ^1.2.6
@@ -30,8 +30,8 @@ specifiers:
   vite: ^4.0.4
 
 devDependencies:
-  '@auth/core': 0.2.5
-  '@auth/sveltekit': 0.1.10_eqarplwsh6bdthyjnxl6asqngq
+  '@auth/core': 0.3.0
+  '@auth/sveltekit': 0.2.0_eqarplwsh6bdthyjnxl6asqngq
   '@planetscale/database': 1.5.0
   '@sveltejs/adapter-vercel': 1.0.4_@sveltejs+kit@1.2.6
   '@sveltejs/kit': 1.2.6_svelte@3.55.1+vite@4.0.4
@@ -60,24 +60,8 @@ devDependencies:
 
 packages:
 
-  /@auth/core/0.2.2:
-    resolution: {integrity: sha512-hEs3no7OjbFTZjb5XjbE6hlkmYw+NVfG+MwQ3IhHTwVx8hAQ4BV704UMWiPmBVXeJrkoVrNFYlkGpEAc3pGNgg==}
-    peerDependencies:
-      nodemailer: 6.8.0
-    peerDependenciesMeta:
-      nodemailer:
-        optional: true
-    dependencies:
-      '@panva/hkdf': 1.0.2
-      cookie: 0.5.0
-      jose: 4.11.1
-      oauth4webapi: 2.0.5
-      preact: 10.11.3
-      preact-render-to-string: 5.2.3_preact@10.11.3
-    dev: true
-
-  /@auth/core/0.2.5:
-    resolution: {integrity: sha512-e9jQOW6kSnxa0gfeR5neqLIDAUvZtyGTh3YpO2eN5F/5gBybE582M5e34rXlJKj+/tAgf+oYBJAY5CUxGTY9tw==}
+  /@auth/core/0.3.0:
+    resolution: {integrity: sha512-4bmPzEiQKSXD825Jrcgj7igSFghBTpkSQ6U/jnYABJRQGhwnWJ/q9FHxEo6SGZWvYvpjOrvJOWhrP4Xng4CGUQ==}
     peerDependencies:
       nodemailer: 6.8.0
     peerDependenciesMeta:
@@ -92,13 +76,13 @@ packages:
       preact-render-to-string: 5.2.3_preact@10.11.3
     dev: true
 
-  /@auth/sveltekit/0.1.10_eqarplwsh6bdthyjnxl6asqngq:
-    resolution: {integrity: sha512-sVuk1AE0HEpttBpInB1zVs+v8l05TlonGa+UqiWk6ZHnvc1+nlsoAm7UFqZTuq+lgVNcXm1heNiaVwBiAqlpTQ==}
+  /@auth/sveltekit/0.2.0_eqarplwsh6bdthyjnxl6asqngq:
+    resolution: {integrity: sha512-yadgUev83LZ8sElHtkxNOshDw5IHkQYSymCsAc6yi0NwpHlXG4ylf0CCgLVuuf4nn1XT1SZ26DIrK46VRMNmGg==}
     peerDependencies:
       '@sveltejs/kit': ^1.0.0
       svelte: ^3.54.0
     dependencies:
-      '@auth/core': 0.2.2
+      '@auth/core': 0.3.0
       '@sveltejs/kit': 1.2.6_svelte@3.55.1+vite@4.0.4
       svelte: 3.55.1
     transitivePeerDependencies:
@@ -1465,10 +1449,6 @@ packages:
     resolution: {integrity: sha512-ZR5L+Af1nqdg3UI3js/0BlXqvyxY0cANVZmQH1coBBJFt4GWWayfkVQCYja6t1+brtjC3eUCiYuPutptf3WP3g==}
     dev: true
 
-  /jose/4.11.1:
-    resolution: {integrity: sha512-YRv4Tk/Wlug8qicwqFNFVEZSdbROCHRAC6qu/i0dyNKr5JQdoa2pIGoS04lLO/jXQX7Z9omoNewYIVIxqZBd9Q==}
-    dev: true
-
   /jose/4.11.2:
     resolution: {integrity: sha512-njj0VL2TsIxCtgzhO+9RRobBvws4oYyCM8TpvoUQwl/MbIM3NFJRR9+e6x0sS5xXaP1t6OCBkaBME98OV9zU5A==}
     dev: true
@@ -1703,10 +1683,6 @@ packages:
       console-control-strings: 1.1.0
       gauge: 3.0.2
       set-blocking: 2.0.0
-    dev: true
-
-  /oauth4webapi/2.0.5:
-    resolution: {integrity: sha512-KmoR3KxCwmr9KvL/c/6UVzQnc4CUjo+j8NSgD3bWYlZXpUmyOVw97nDVb0BKZhCcUtGsbll16v8vsnR5JbTZ9A==}
     dev: true
 
   /oauth4webapi/2.0.6:

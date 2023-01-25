@@ -15,23 +15,23 @@ export type NavLink = {
 
 export const load = async (event: ServerLoadEvent) => {
 	const session = (await event.locals.getSession()) as WordLettuceSession;
-	const csrfCookieName = `${
-		event.request.url.startsWith('https') ? '__Host-' : ''
-	}next-auth.csrf-token`;
+	// const csrfCookieName = `${
+	// 	event.request.url.startsWith('https') ? '__Host-' : ''
+	// }next-auth.csrf-token`;
 
-	const origin = new URL(event.request.url).origin;
-	const { csrfToken } = (await fetcher({
-		fetch: event.fetch,
-		base: origin
-	}).get(
-		'/auth/csrf',
-		{},
-		{
-			headers: {
-				cookie: event.cookies.serialize(csrfCookieName, event.cookies.get(csrfCookieName) || '')
-			}
-		}
-	)) as { csrfToken: string };
+	// const origin = new URL(event.request.url).origin;
+	// const { csrfToken } = (await fetcher({
+	// 	fetch: event.fetch,
+	// 	base: origin
+	// }).get(
+	// 	'/auth/csrf',
+	// 	{},
+	// 	{
+	// 		headers: {
+	// 			cookie: event.cookies.serialize(csrfCookieName, event.cookies.get(csrfCookieName) || '')
+	// 		}
+	// 	}
+	// )) as { csrfToken: string };
 
 	const links: NavLink[] = [
 		{
@@ -55,7 +55,7 @@ export const load = async (event: ServerLoadEvent) => {
 	];
 	return {
 		nav: links,
-		session,
-		csrfToken: csrfToken
+		session
+		// csrfToken: csrfToken
 	};
 };

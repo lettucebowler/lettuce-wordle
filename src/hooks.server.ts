@@ -1,6 +1,7 @@
 import { sequence } from '@sveltejs/kit/hooks';
 import { SvelteKitAuth } from '@auth/sveltekit';
 import GitHub from '@auth/core/providers/github';
+import { skipCSRFCheck } from '@auth/core';
 import {
 	DEFAULT_DB_PROVIDER,
 	SK_AUTH_GITHUB_CLIENT_ID,
@@ -31,6 +32,7 @@ const gameStateHandler: Handle = async ({ event, resolve }) => {
 };
 
 const authHandler = SvelteKitAuth({
+	skipCSRFCheck,
 	providers: [
 		GitHub({
 			clientId: SK_AUTH_GITHUB_CLIENT_ID,
