@@ -5,7 +5,8 @@ import { skipCSRFCheck } from '@auth/core';
 import {
 	DEFAULT_DB_PROVIDER,
 	SK_AUTH_GITHUB_CLIENT_ID,
-	SK_AUTH_GITHUB_CLIENT_SECRET
+	SK_AUTH_GITHUB_CLIENT_SECRET,
+	AUTH_SECRET
 } from '$env/static/private';
 import { getGameFromCookie } from '$lib/util/state';
 import { upsertUser } from '$lib/util/gameresults';
@@ -33,6 +34,7 @@ const gameStateHandler: Handle = async ({ event, resolve }) => {
 
 const authHandler = SvelteKitAuth({
 	skipCSRFCheck,
+	secret: AUTH_SECRET,
 	providers: [
 		GitHub({
 			clientId: SK_AUTH_GITHUB_CLIENT_ID,
