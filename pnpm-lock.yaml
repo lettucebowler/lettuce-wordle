@@ -5,7 +5,7 @@ specifiers:
   '@auth/sveltekit': 0.2.0
   '@planetscale/database': ^1.5.0
   '@sveltejs/adapter-vercel': 1.0.4
-  '@sveltejs/kit': ^1.2.10
+  '@sveltejs/kit': ^1.3.1
   '@types/cookie': ^0.5.1
   '@types/js-cookie': ^3.0.2
   '@typescript-eslint/eslint-plugin': ^5.49.0
@@ -25,16 +25,16 @@ specifiers:
   svelte-check: ^3.0.3
   svelte2tsx: ^0.6.0
   tailwindcss: ^3.2.4
-  tslib: ^2.4.1
+  tslib: ^2.5.0
   typescript: ^4.9.4
   vite: ^4.0.4
 
 devDependencies:
   '@auth/core': 0.3.0
-  '@auth/sveltekit': 0.2.0_zs3hbfe76g2td52l3qai2a3jzi
+  '@auth/sveltekit': 0.2.0_v6fhkc6vsocij4ilceaqsvkmfe
   '@planetscale/database': 1.5.0
-  '@sveltejs/adapter-vercel': 1.0.4_@sveltejs+kit@1.2.10
-  '@sveltejs/kit': 1.2.10_svelte@3.55.1+vite@4.0.4
+  '@sveltejs/adapter-vercel': 1.0.4_@sveltejs+kit@1.3.1
+  '@sveltejs/kit': 1.3.1_svelte@3.55.1+vite@4.0.4
   '@types/cookie': 0.5.1
   '@types/js-cookie': 3.0.2
   '@typescript-eslint/eslint-plugin': 5.49.0_iu322prlnwsygkcra5kbpy22si
@@ -54,7 +54,7 @@ devDependencies:
   svelte-check: 3.0.3_pehl75e5jsy22vp33udjja4soi
   svelte2tsx: 0.6.0_atrrhq7vg4ekua4nnyrpuardle
   tailwindcss: 3.2.4_postcss@8.4.21
-  tslib: 2.4.1
+  tslib: 2.5.0
   typescript: 4.9.4
   vite: 4.0.4
 
@@ -76,14 +76,14 @@ packages:
       preact-render-to-string: 5.2.3_preact@10.11.3
     dev: true
 
-  /@auth/sveltekit/0.2.0_zs3hbfe76g2td52l3qai2a3jzi:
+  /@auth/sveltekit/0.2.0_v6fhkc6vsocij4ilceaqsvkmfe:
     resolution: {integrity: sha512-yadgUev83LZ8sElHtkxNOshDw5IHkQYSymCsAc6yi0NwpHlXG4ylf0CCgLVuuf4nn1XT1SZ26DIrK46VRMNmGg==}
     peerDependencies:
       '@sveltejs/kit': ^1.0.0
       svelte: ^3.54.0
     dependencies:
       '@auth/core': 0.3.0
-      '@sveltejs/kit': 1.2.10_svelte@3.55.1+vite@4.0.4
+      '@sveltejs/kit': 1.3.1_svelte@3.55.1+vite@4.0.4
       svelte: 3.55.1
     transitivePeerDependencies:
       - nodemailer
@@ -400,12 +400,12 @@ packages:
       picomatch: 2.3.1
     dev: true
 
-  /@sveltejs/adapter-vercel/1.0.4_@sveltejs+kit@1.2.10:
+  /@sveltejs/adapter-vercel/1.0.4_@sveltejs+kit@1.3.1:
     resolution: {integrity: sha512-kBh60gq+nB4258Vbu1G7vwofVz4HqTUbWf11N5PSOOqb5hoCalr5PXEhnn0wQwSE9eyFhehi/GCNQE7FC0dUhQ==}
     peerDependencies:
       '@sveltejs/kit': ^1.0.0
     dependencies:
-      '@sveltejs/kit': 1.2.10_svelte@3.55.1+vite@4.0.4
+      '@sveltejs/kit': 1.3.1_svelte@3.55.1+vite@4.0.4
       '@vercel/nft': 0.22.6
       esbuild: 0.16.17
     transitivePeerDependencies:
@@ -413,8 +413,8 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/kit/1.2.10_svelte@3.55.1+vite@4.0.4:
-    resolution: {integrity: sha512-5LKhBEvkli5xzRObhV0c9QfyRiV96MQNouFM2Cn9nlEno6c88WVCFlNFPuTiSmHM2GE3pSCB+uT37fMFoWSERA==}
+  /@sveltejs/kit/1.3.1_svelte@3.55.1+vite@4.0.4:
+    resolution: {integrity: sha512-IjZDhByOlWiyJRsa2SQhSYsMqJu62UGMVdSP0hFWIiKOxqHjmixZwIVUBljG2YSMmb0JP3hA9/oaCdstGWRu/Q==}
     engines: {node: ^16.14 || >=18}
     hasBin: true
     requiresBuild: true
@@ -870,7 +870,7 @@ packages:
     dev: true
 
   /concat-map/0.0.1:
-    resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=}
+    resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
     dev: true
 
   /console-control-strings/1.1.0:
@@ -1509,7 +1509,7 @@ packages:
   /lower-case/2.0.2:
     resolution: {integrity: sha512-7fm3l3NAF9WfN6W3JOmf5drwpVqX78JtoGJ3A6W0a6ZnldM41w2fV5D490psKFTpMds8TJse/eHLFFsNHHjHgg==}
     dependencies:
-      tslib: 2.4.1
+      tslib: 2.5.0
     dev: true
 
   /lru-cache/6.0.0:
@@ -1634,7 +1634,7 @@ packages:
     resolution: {integrity: sha512-fgAN3jGAh+RoxUGZHTSOLJIqUc2wmoBwGR4tbpNAKmmovFoWq0OdRkb0VkldReO2a2iBT/OEulG9XSUc10r3zg==}
     dependencies:
       lower-case: 2.0.2
-      tslib: 2.4.1
+      tslib: 2.5.0
     dev: true
 
   /node-fetch/2.6.8:
@@ -1742,7 +1742,7 @@ packages:
     resolution: {integrity: sha512-uWlGT3YSnK9x3BQJaOdcZwrnV6hPpd8jFH1/ucpiLRPh/2zCVJKS19E4GvYHvaCcACn3foXZ0cLB9Wrx1KGe5g==}
     dependencies:
       no-case: 3.0.4
-      tslib: 2.4.1
+      tslib: 2.5.0
     dev: true
 
   /path-exists/4.0.0:
@@ -1979,8 +1979,8 @@ packages:
       glob: 7.2.3
     dev: true
 
-  /rollup/3.10.1:
-    resolution: {integrity: sha512-3Er+yel3bZbZX1g2kjVM+FW+RUWDxbG87fcqFM5/9HbPCTpbVp6JOLn7jlxnNlbu7s/N/uDA4EV/91E2gWnxzw==}
+  /rollup/3.11.0:
+    resolution: {integrity: sha512-+uWPPkpWQ2H3Qi7sNBcRfhhHJyUNgBYhG4wKe5wuGRj2m55kpo+0p5jubKNBjQODyPe6tSBE3tNpdDwEisQvAQ==}
     engines: {node: '>=14.18.0', npm: '>=8.0.0'}
     hasBin: true
     optionalDependencies:
@@ -2309,8 +2309,8 @@ packages:
     resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
     dev: true
 
-  /tslib/2.4.1:
-    resolution: {integrity: sha512-tGyy4dAjRIEwI7BzsB0lynWgOpfqjUdq91XXAlIWD2OwKBH7oCl/GZG/HT4BOHrTlPMOASlMQ7veyTqpmRcrNA==}
+  /tslib/2.5.0:
+    resolution: {integrity: sha512-336iVw3rtn2BUK7ORdIAHTyxHGRIHVReokCR3XjbckJMK7ms8FysBfhLR8IXnAgy7T0PTPNBWKiH514FOW/WSg==}
     dev: true
 
   /tsutils/3.21.0_typescript@4.9.4:
@@ -2397,7 +2397,7 @@ packages:
       esbuild: 0.16.17
       postcss: 8.4.21
       resolve: 1.22.1
-      rollup: 3.10.1
+      rollup: 3.11.0
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
