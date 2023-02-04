@@ -1,14 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
-	import { slide, fly } from 'svelte/transition';
+	import { slide } from 'svelte/transition';
 	import { onMount } from 'svelte';
 	import { afterNavigate } from '$app/navigation';
-	import LettuceIcon from '$lib/components/Icon.svelte';
-
-	import white from '$lib/assets/white.png';
 	import type { UserProfile } from '$lib/types/auth';
 	import AuthForm from './AuthForm.svelte';
+	import LettuceAvatar from './LettuceAvatar.svelte';
 
 	export let user: UserProfile | null | undefined;
 	export let links: {
@@ -19,7 +17,6 @@
 		enabled: boolean;
 		icon?: string;
 	}[] = [];
-	export let csrf = '';
 
 	let showDropdown = true;
 
@@ -76,22 +73,14 @@
 					{#if user}
 						<label
 							for="subnav"
-							class="box-border flex h-full flex-[0_0_auto] cursor-pointer select-none items-center justify-center gap-2 rounded-xl p-1 text-center text-3xl text-snow-100 transition ease-in-out hover:bg-charade-700 active:bg-charade-800"
+							class="box-border flex h-full flex-[0_0_auto] cursor-pointer select-none items-center justify-center gap-2 rounded-xl text-center text-3xl text-snow-100 transition ease-in-out hover:bg-charade-700 active:bg-charade-800"
 						>
-							<span class="hidden h-8 pl-2 sm:inline">
-								<LettuceIcon icon="chevron-down" flip={dropdownVisible} />
+							<span
+								class="box-border aspect-square h-full overflow-hidden rounded-xl border-2 border-snow-300 transition-transform"
+								class:rotate-180={dropdownVisible}
+							>
+								<LettuceAvatar name={user.login} size={52} />
 							</span>
-							<span class="h-8 px-3 sm:hidden">
-								<LettuceIcon icon="menu" flip={dropdownVisible} />
-							</span>
-							{#if user.image}
-								<img
-									src={white}
-									srcset={user.image}
-									class="box-border hidden aspect-square h-full rounded-lg object-contain sm:block"
-									alt=""
-								/>
-							{/if}
 						</label>
 					{:else}
 						<AuthForm mode="login" />
@@ -126,12 +115,9 @@
 						<div class="flex flex-col justify-start gap-4 border-charade-700 p-4">
 							{#if user && user.image && user.login}
 								<div class="flex items-center justify-start gap-4">
-									<img
-										src={white}
-										srcset={user.image}
-										class="box-border aspect-square h-10 rounded object-contain sm:hidden"
-										alt=""
-									/>
+									<span class="box-border w-max overflow-hidden rounded border-2"
+										><LettuceAvatar name={user.login} /></span
+									>
 									<span class="text-xl font-medium text-snow-300">{user.login}</span>
 								</div>
 							{/if}

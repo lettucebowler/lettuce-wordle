@@ -1,4 +1,5 @@
 <script lang="ts">
+	import LettuceAvatar from '$lib/components/LettuceAvatar.svelte';
 	import type { UserProfile } from '$lib/types/auth';
 	export let data: import('./$types').PageData;
 
@@ -7,15 +8,17 @@
 
 	$: gameResults = data.gameResults;
 	$: userProfile = data.userProfile;
+
+	let imagew: number;
+
+	$: console.log(imagew);
 </script>
 
 <main class="grid w-full gap-8">
 	<figure class="flex flex-col gap-2">
-		<img
-			class="mx-auto h-full max-w-[60%] rounded-xl object-contain"
-			src={userProfile.image}
-			alt={userProfile.login}
-		/>
+		<div class="mx-auto w-full max-w-[50%] overflow-hidden rounded-2xl" bind:clientWidth={imagew}>
+			<LettuceAvatar name={userProfile.login} size={imagew} />
+		</div>
 		<figcaption class="text-center text-2xl font-medium text-snow-300">
 			{userProfile.login}
 		</figcaption>

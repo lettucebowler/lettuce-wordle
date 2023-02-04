@@ -152,4 +152,4 @@
 		/>
 	</div>
 </main>
-<Modal bind:modalActions csrf={data.csrfToken} />
+<Modal bind:modalActions />
