@@ -16,30 +16,30 @@
 	</P>
 	<div class="grid w-full gap-2 text-snow-300">
 		<div
-			class="grid grid-cols-[auto,_50px,_50px] gap-8 rounded-lg bg-charade-600 p-2 text-xl font-medium"
+			class="grid w-full grid-cols-[1fr,_50px] gap-4 rounded-lg bg-charade-600 p-2 text-xl font-medium sm:grid-cols-[1fr,_50px,_50px] sm:gap-8"
 		>
 			<div class="text-left">User</div>
-			<div class="text-center">Score</div>
+			<div class="hidden text-center sm:grid">Score</div>
 			<div class="text-right">Rank</div>
 		</div>
-		<div class="grid gap-2">
+		<div class="grid w-full gap-2">
 			{#each scores as score, i (i)}
 				{@const position = scores.filter((s) => s.score > score.score).length + 1}
 				<a href={`/profile/${score.user}`} data-sveltekit-preload-data="hover">
 					<div
-						class="grid w-full grid-cols-[auto,_50px,_50px] gap-8 rounded-xl p-2 text-xl font-medium"
+						class="box-border grid w-full grid-cols-[1fr,_50px] gap-2 rounded-xl p-2 text-xl font-medium sm:grid-cols-[1fr,_50px,_50px] sm:gap-8"
 						class:bg-charade-700={i % 2 == 1}
 						class:bg-charade-800={i % 2 == 0}
 					>
-						<div class="flex justify-start gap-4 text-left">
+						<div class="flex w-max justify-start gap-2 text-left sm:gap-4">
 							<span class="box-border w-max overflow-hidden rounded border-2"
 								><LettuceAvatar name={score.user} /></span
 							>
-							<div class="grid items-center">
+							<span class="grid items-center">
 								{score.user}
-							</div>
+							</span>
 						</div>
-						<div class="grid items-center text-right">
+						<div class="hidden items-center text-right sm:grid">
 							{score.score}
 						</div>
 						<div class="flex flex-[0_0_2rem] items-center justify-end text-right text-snow-300">

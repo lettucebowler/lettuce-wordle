@@ -22,8 +22,8 @@
 	<title>{$appName} #{getGameNum()}</title>
 </svelte:head>
 
-<div class="mx-auto box-border flex flex w-full max-w-screen-md flex-auto flex-col gap-2 p-1">
-	<AuthNav links={data.nav} {user} csrf={data?.csrfToken} />
+<div class="mx-auto box-border flex w-full max-w-screen-md flex-auto flex-col gap-2 p-1">
+	<AuthNav links={data.nav} {user} />
 	<slot />
 </div>
 
