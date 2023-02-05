@@ -8,16 +8,12 @@
 
 	$: gameResults = data.gameResults;
 	$: userProfile = data.userProfile;
-
-	let imagew: number;
-
-	$: console.log(imagew);
 </script>
 
 <main class="grid w-full gap-8">
 	<figure class="flex flex-col gap-2">
-		<div class="mx-auto w-full max-w-[50%] overflow-hidden rounded-2xl" bind:clientWidth={imagew}>
-			<LettuceAvatar name={userProfile.login} size={imagew} />
+		<div class="mx-auto h-full overflow-hidden rounded-2xl">
+			<LettuceAvatar name={userProfile.login} size={256} />
 		</div>
 		<figcaption class="text-center text-2xl font-medium text-snow-300">
 			{userProfile.login}
