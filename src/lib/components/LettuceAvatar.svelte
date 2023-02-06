@@ -14,6 +14,7 @@
 
 <img
 	style={`width:${size}px;height:${size}px`}
+	loading="lazy"
 	src={`${host}/beam/${size}/${name}?${new URLSearchParams({
 		square: square.toString(),
 		colors: colors.join(',')
