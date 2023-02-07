@@ -21,7 +21,7 @@
 </script>
 
 <div
-	class="box-border grid aspect-square items-center rounded-xl text-center text-2xl font-bold text-snow-300 sm:text-3xl"
+	class="box-border grid aspect-square items-center rounded-xl text-center text-2xl font-bold text-snow-300 shadow sm:text-3xl"
 	class:border-charade-700={answer === '_'}
 	class:border-4={answer === '_'}
 	class:border-solid={answer === '_'}
