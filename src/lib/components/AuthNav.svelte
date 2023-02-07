@@ -72,8 +72,18 @@
 				<div class="ml-auto h-14">
 					{#if user}
 						<label
-							for="subnav"
-							class="box-border flex h-full flex-[0_0_auto] cursor-pointer select-none items-center justify-center gap-2 rounded-xl text-center text-3xl text-snow-100 transition ease-in-out hover:bg-charade-700 active:bg-charade-800"
+							for="subnav-toggle-small"
+							class="box-border flex h-full flex-[0_0_auto] cursor-pointer select-none items-center justify-center gap-2 rounded-xl text-center text-3xl text-snow-100 transition ease-in-out hover:bg-charade-700 active:bg-charade-800 sm:hidden"
+						>
+							<span
+								class="box-border aspect-square h-full overflow-hidden rounded-xl border-2 border-snow-300 transition-transform"
+								class:rotate-180={dropdownVisible}
+							>
+								<LettuceAvatar name={user.login} size={52} />
+							</span>
+						</label><label
+							for="subnav-toggle-big"
+							class="box-border hidden h-full flex-[0_0_auto] cursor-pointer select-none items-center justify-center gap-2 rounded-xl text-center text-3xl text-snow-100 transition ease-in-out hover:bg-charade-700 active:bg-charade-800 sm:flex"
 						>
 							<span
 								class="box-border aspect-square h-full overflow-hidden rounded-xl border-2 border-snow-300 transition-transform"
@@ -92,7 +102,7 @@
 					type="checkbox"
 					class="hidden"
 					name="subnav"
-					id="subnav"
+					id="subnav-toggle-small"
 					bind:checked={dropdownVisible}
 				/>
 				{#if showDropdown}
@@ -147,7 +157,7 @@
 			type="checkbox"
 			class="hidden"
 			name="subnav"
-			id="subnav"
+			id="subnav-toggle-big"
 			bind:checked={dropdownVisible}
 		/>
 		{#if showDropdown}

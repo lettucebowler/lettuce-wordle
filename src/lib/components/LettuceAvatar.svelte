@@ -10,11 +10,10 @@
 	const host = PUBLIC_AVATAR_HOST ? PUBLIC_AVATAR_HOST : 'https://source.boringavatars.com';
 </script>
 
-<!-- <AvatarBeam {size} {square} {name} {colors} /> -->
-
 <img
 	style={`width:${size}px;height:${size}px`}
 	loading="lazy"
+	class="pointer-events-none inline"
 	src={`${host}/beam/${size}/${name}?${new URLSearchParams({
 		square: square.toString(),
 		colors: colors.join(',')
