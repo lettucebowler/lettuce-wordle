@@ -5,12 +5,13 @@
 
 	export let colors = ['D08770', 'EBCB8B', 'A3BE8C', '8FBCBB', '4C566A'];
 
-	import { PUBLIC_AVATAR_HOST } from '$env/static/public';
+	import { AvatarBeam } from 'svelte-boring-avatars';
+	// import { PUBLIC_AVATAR_HOST } from '$env/static/public';
 
-	const host = PUBLIC_AVATAR_HOST ? PUBLIC_AVATAR_HOST : 'https://source.boringavatars.com';
+	// const host = PUBLIC_AVATAR_HOST ? PUBLIC_AVATAR_HOST : 'https://source.boringavatars.com';
 </script>
 
-<img
+<!-- <img
 	style={`width:${size}px;height:${size}px`}
 	loading="lazy"
 	class="pointer-events-none inline"
@@ -19,4 +20,6 @@
 		colors: colors.join(',')
 	}).toString()}`}
 	alt=""
-/>
+/> -->
+
+<AvatarBeam {name} {size} {square} colors={colors.map((color) => `#${color}`)} />
