@@ -13,7 +13,6 @@ const config = {
 		adapter: adapter({
 			out: 'build',
 			runtime: 'edge',
-			regions: ['iad1'],
 			split: true
 		})
 	}
