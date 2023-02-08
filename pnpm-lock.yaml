@@ -1,8 +1,8 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@auth/core': 0.3.0
-  '@auth/sveltekit': 0.2.0
+  '@auth/core': 0.4.0
+  '@auth/sveltekit': 0.2.1
   '@planetscale/database': ^1.5.0
   '@sveltejs/adapter-vercel': ^2.0.1
   '@sveltejs/kit': ^1.5.0
@@ -31,8 +31,8 @@ specifiers:
   vite: ^4.1.1
 
 devDependencies:
-  '@auth/core': 0.3.0
-  '@auth/sveltekit': 0.2.0_stq7ooc25ght4ze53cyj5iopy4
+  '@auth/core': 0.4.0
+  '@auth/sveltekit': 0.2.1_stq7ooc25ght4ze53cyj5iopy4
   '@planetscale/database': 1.5.0
   '@sveltejs/adapter-vercel': 2.0.1_@sveltejs+kit@1.5.0
   '@sveltejs/kit': 1.5.0_svelte@3.55.1+vite@4.1.1
@@ -78,8 +78,24 @@ packages:
       preact-render-to-string: 5.2.3_preact@10.11.3
     dev: true
 
-  /@auth/sveltekit/0.2.0_stq7ooc25ght4ze53cyj5iopy4:
-    resolution: {integrity: sha512-yadgUev83LZ8sElHtkxNOshDw5IHkQYSymCsAc6yi0NwpHlXG4ylf0CCgLVuuf4nn1XT1SZ26DIrK46VRMNmGg==}
+  /@auth/core/0.4.0:
+    resolution: {integrity: sha512-wHVljvVGPmKSjlxQUYZCOL4GGe26YqhT351sA2REE43YskaqRMYh1TVjBxpXcdG8/P8bw2DsHgl+aBEV3P5+KQ==}
+    peerDependencies:
+      nodemailer: ^6.8.0
+    peerDependenciesMeta:
+      nodemailer:
+        optional: true
+    dependencies:
+      '@panva/hkdf': 1.0.2
+      cookie: 0.5.0
+      jose: 4.11.2
+      oauth4webapi: 2.0.6
+      preact: 10.11.3
+      preact-render-to-string: 5.2.3_preact@10.11.3
+    dev: true
+
+  /@auth/sveltekit/0.2.1_stq7ooc25ght4ze53cyj5iopy4:
+    resolution: {integrity: sha512-uC1xxWLCWsd581yMzOAiOhUudsjA/HHYuFXMOnvxB4gRcxQV9bW3t+GcP2NWWah6gU00kMc7r2JsVhGyPNANGQ==}
     peerDependencies:
       '@sveltejs/kit': ^1.0.0
       svelte: ^3.54.0
