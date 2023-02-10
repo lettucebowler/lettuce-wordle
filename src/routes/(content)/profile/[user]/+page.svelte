@@ -1,22 +1,20 @@
 <script lang="ts">
 	import LettuceAvatar from '$lib/components/LettuceAvatar.svelte';
-	import type { UserProfile } from '$lib/types/auth';
-	export let data: import('./$types').PageData;
+	import type { PageData } from './$types';
+	export let data: PageData;
 
-	let userProfile: UserProfile;
 	const cells = Array(30);
 
 	$: gameResults = data.gameResults;
-	$: userProfile = data.userProfile;
 </script>
 
 <main class="grid w-full gap-8">
 	<figure class="flex flex-col gap-2">
 		<div class="mx-auto h-full overflow-hidden rounded-2xl">
-			<LettuceAvatar name={userProfile.login} size={256} />
+			<LettuceAvatar name={data.user} size={256} />
 		</div>
 		<figcaption class="text-center text-2xl font-medium text-snow-300">
-			{userProfile.login}
+			{data.user}
 		</figcaption>
 	</figure>
 

@@ -1,16 +1,14 @@
-import { getUserProfile } from '$lib/client/github';
+import type { Config } from '@sveltejs/adapter-vercel';
+export const config: Config = {
+	regions: ['iad1']
+};
+
 import { getGameResults } from '$lib/util/gameresults';
 import type { PageServerLoad } from './$types';
 export const load: PageServerLoad = async (event) => {
 	const user = event.params.user;
 	return {
 		gameResults: getGameResults(user, 1400, event.locals.dbProvider),
-		userProfile: getUserProfile(event, user).catch(() => ({
-			login: user,
-			bio: 'I decided to use my enterprise account and broke the github user api',
-			image: 'https://avatars.githubusercontent.com/u/31812953?v=4',
-			id: 0,
-			email: 'no@email.com'
-		}))
+		user
 	};
 };
