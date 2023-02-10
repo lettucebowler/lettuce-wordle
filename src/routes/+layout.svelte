@@ -8,8 +8,9 @@
 	import { appName } from '$lib/util/store';
 	import { getGameNum } from '$lib/util/share';
 	import type { UserProfile } from '$lib/types/auth';
+	import type { LayoutData } from './$types';
 
-	export let data: import('./$types').LayoutData;
+	export let data: LayoutData;
 	const user = data.session?.user as UserProfile;
 </script>
 

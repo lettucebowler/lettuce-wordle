@@ -1,7 +1,12 @@
+import type { Config } from '@sveltejs/adapter-vercel';
+export const config: Config = {
+	regions: ['iad1']
+};
+
 import { getUserProfile } from '$lib/client/github';
 import { getGameResults } from '$lib/util/gameresults';
-
-export const load: import('./$types').PageServerLoad = async (event) => {
+import type { PageServerLoad } from './$types';
+export const load: PageServerLoad = async (event) => {
 	const user = event.params.user;
 	return {
 		gameResults: getGameResults(user, 1400, event.locals.dbProvider),

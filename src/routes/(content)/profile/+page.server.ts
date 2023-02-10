@@ -1,9 +1,8 @@
-import type { WordLettuceSession } from '$lib/types/auth';
 import { redirect } from '@sveltejs/kit';
 
 export const load: import('./$types').PageServerLoad = async (event) => {
-	const session = (await event.locals.getSession()) as WordLettuceSession;
-	const { user } = session;
+	const { session } = await event.parent();
+	let user = session?.user;
 	if (!user) {
 		throw redirect(307, `/login?referrer=${encodeURIComponent('/profile')}`);
 	}
