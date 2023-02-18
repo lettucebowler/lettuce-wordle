@@ -14,16 +14,11 @@ const client = new Client(config);
 export const saveGameResults = async (gameResult: GameResult) => {
 	const conn = client.connection();
 	const attempts = Math.floor(gameResult.answers.length / 5);
+	const answerString =
+		gameResult.answers.length > 30 ? gameResult.answers.slice(-30) : gameResult.answers;
 	const results = await conn.execute(
 		'insert into game_results (gamenum, answers, attempts, user_id) values (?, ?, ?, ?) on duplicate key update answers = ?, attempts = ?',
-		[
-			gameResult.gamenum,
-			gameResult.answers,
-			attempts,
-			gameResult.user_id,
-			gameResult.answers,
-			attempts
-		]
+		[gameResult.gamenum, answerString, attempts, gameResult.user_id, answerString, attempts]
 	);
 	return results;
 };

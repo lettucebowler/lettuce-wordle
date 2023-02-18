@@ -59,8 +59,7 @@ export const saveGameResults = async (gameResult: GameResult, provider: string) 
 	if (provider === 'all') {
 		const saveGameFunctions = Array.from(providers.values());
 		for (const saveGameFunction of saveGameFunctions) {
-			const g = await saveGameFunction(gameResult);
-			console.log(saveGameFunction, g);
+			await saveGameFunction(gameResult);
 		}
 		result = gameResult;
 	} else {
