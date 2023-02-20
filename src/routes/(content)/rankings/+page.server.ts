@@ -8,8 +8,11 @@ import { getLeaderBoardResults } from '$lib/util/gameresults';
 import type { PageServerLoad } from './$types';
 export const load: PageServerLoad = async (event) => {
 	const dbProvider = event.locals.dbProvider;
-	const scores = await getLeaderBoardResults(getGameNum(), dbProvider);
+	const leaderboardResults = getLeaderBoardResults(getGameNum(), dbProvider);
+
 	return {
-		scores
+		leaderboard: {
+			scores: event.isDataRequest ? leaderboardResults : await leaderboardResults
+		}
 	};
 };
