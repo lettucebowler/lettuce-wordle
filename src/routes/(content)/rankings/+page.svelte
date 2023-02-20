@@ -22,7 +22,7 @@
 			<div class="hidden text-center sm:grid">Score</div>
 			<div class="text-right">Rank</div>
 		</div>
-		{#await data.leaderboard.scores}
+		<!-- {#await data.leaderboard.scores}
 			<div class="w-full flex items-center flex-col mt-10 gap-4">
 				<svg
 					class="animate-spin h-20 w-20 text-white"
@@ -46,7 +46,7 @@
 				</svg>
 				<span class="text-snow-300 font-medium">Just a sec....</span>
 			</div>
-		{:then value}
+		{:then value} -->
 			<div class="grid w-full gap-2">
 				{#each value as score, i (i)}
 					{@const position = value.filter((s) => s.score > score.score).length + 1}
@@ -78,6 +78,6 @@
 					>
 				{/each}
 			</div>
-		{/await}
+		<!-- {/await} -->
 	</div>
 </main>
