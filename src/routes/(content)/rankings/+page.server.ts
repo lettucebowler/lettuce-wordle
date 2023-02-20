@@ -1,8 +1,8 @@
-import type { Config } from '@sveltejs/adapter-vercel';
-export const config: Config = {
-	// regions: ['iad1']
-	runtime: 'edge',
-};
+// import type { Config } from '@sveltejs/adapter-vercel';
+// export const config: Config = {
+// 	// regions: ['iad1']
+// 	runtime: 'edge',
+// };
 
 import { getGameNum } from '$lib/util/share';
 import { getLeaderBoardResults } from '$lib/util/gameresults';
@@ -13,7 +13,8 @@ export const load: PageServerLoad = async (event) => {
 
 	return {
 		leaderboard: {
-			scores: event.isDataRequest ? leaderboardResults : await leaderboardResults
+			// scores: event.isDataRequest ? leaderboardResults : await leaderboardResults,
+			scores: await leaderboardResults
 		}
 	};
 };
