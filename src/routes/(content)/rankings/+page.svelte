@@ -50,7 +50,7 @@
 			<div class="grid w-full gap-2">
 				{#each value as score, i (i)}
 					{@const position = value.filter((s) => s.score > score.score).length + 1}
-					<a href={`/profile/${score.user}`} data-sveltekit-preload-data="hover">
+					<a href={`/profile/${score.user}`}>
 						<div
 							class="box-border grid w-full grid-cols-[1fr,_50px] gap-2 rounded-xl p-2 text-xl font-medium sm:grid-cols-[1fr,_50px,_50px] sm:gap-8"
 							class:bg-charade-700={i % 2 == 1}

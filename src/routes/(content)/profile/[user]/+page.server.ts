@@ -7,8 +7,11 @@ import { getGameResults } from '$lib/util/gameresults';
 import type { PageServerLoad } from './$types';
 export const load: PageServerLoad = async (event) => {
 	const user = event.params.user;
+	const gameResults = getGameResults(user, 1400, event.locals.dbProvider);
 	return {
-		gameResults: getGameResults(user, 1400, event.locals.dbProvider),
-		user
+		profile: {
+			gameResults: event.isDataRequest ? gameResults : await gameResults,
+			user
+		}
 	};
 };

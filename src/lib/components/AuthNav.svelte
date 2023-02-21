@@ -63,7 +63,6 @@
 							class:bg-charade-700={link.path === $page.url.pathname}
 							class:text-snow-100={link.path !== $page.url.pathname}
 							href={link.path}
-							data-sveltekit-preload-data={link.prefetch ? 'hover' : null}
 						>
 							{link.name}</a
 						>
@@ -116,7 +115,6 @@
 								<a
 									class="block cursor-pointer border-charade-700 text-3xl font-medium text-snow-100 hover:text-snow-300"
 									href={link.path}
-									data-sveltekit-preload-data={link.prefetch ? 'hover' : null}
 								>
 									{link.name}</a
 								>
@@ -135,7 +133,6 @@
 								{#each subnavItems as subnavItem}
 									<a
 										href={subnavItem.path}
-										data-sveltekit-preload-data={subnavItem.prefetch ? 'hover' : null}
 										class="cursor-pointer p-0 text-2xl font-medium text-snow-100 hover:text-snow-300"
 										>{subnavItem.name}</a
 									>
@@ -170,7 +167,6 @@
 				{#each subnavItems as subnavItem}
 					<a
 						href={subnavItem.path}
-						data-sveltekit-preload-data={subnavItem.prefetch ? 'hover' : null}
 						class="flex cursor-pointer overflow-hidden rounded-lg border-transparent p-0 text-lg font-medium text-snow-100 hover:bg-charade-800"
 						><span class="grid h-full w-full place-items-center py-2 px-6 text-center"
 							>{subnavItem.name}</span

@@ -14,8 +14,6 @@ export const load: PageServerLoad = async (event) => {
 	return {
 		leaderboard: {
 			scores: event.isDataRequest ? leaderboardResults : await leaderboardResults
-			// scores: await leaderboardResults,
-			// scores: leaderboardResults,
 		}
 	};
 };
