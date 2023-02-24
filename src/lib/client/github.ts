@@ -57,15 +57,14 @@ export const getUserProfile = async (event: RequestEvent, user: string) => {
 			return req;
 		}
 	});
-	const before = new Date().getTime();
+	console.time('load profile from github user api');
 	const userProfile = (await userInfo.get(`/users/${user}`)) as {
 		login: string;
 		avatar_url: string;
 		bio: string;
 		id: number;
 	};
-	const after = new Date().getTime();
-	console.log('load user profile from github user api', after - before);
+	console.timeEnd('load profile from github user api');
 	return {
 		login: userProfile.login,
 		image: userProfile.avatar_url,

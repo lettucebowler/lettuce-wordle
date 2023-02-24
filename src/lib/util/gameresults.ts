@@ -14,7 +14,7 @@ import {
 import type { UserRecord } from '$lib/types/auth';
 
 export const getGameResults = async (user: string, count: number, provider: string) => {
-	const before = new Date().getTime();
+	console.time(`load game results from ${provider}:`);
 	let gameResults: GameResult[];
 	switch (provider) {
 		case 'planetscale':
@@ -26,13 +26,12 @@ export const getGameResults = async (user: string, count: number, provider: stri
 		default:
 			throw Error('invalid provider');
 	}
-	const after = new Date().getTime();
-	console.log(`load game results from ${provider}:`, after - before);
+	console.timeEnd(`load game results from ${provider}:`);
 	return gameResults as GameResult[];
 };
 
 export const getLeaderBoardResults = async (gamenum: number, provider: string) => {
-	const before = new Date().getTime();
+	console.time(`get leaderboard results from ${provider}:`);
 	let leaderboardResults;
 	switch (provider) {
 		case 'planetscale':
@@ -44,13 +43,12 @@ export const getLeaderBoardResults = async (gamenum: number, provider: string) =
 		default:
 			throw Error('invalid provider');
 	}
-	const after = new Date().getTime();
-	console.log(`get leaderboard results from ${provider}:`, after - before);
+	console.timeEnd(`get leaderboard results from ${provider}:`);
 	return leaderboardResults as LeaderboardResults[];
 };
 
 export const saveGameResults = async (gameResult: GameResult, provider: string) => {
-	const before = new Date().getTime();
+	console.time(`save game results to ${provider}:`);
 	let result;
 	const providers = new Map([
 		['d1', saveGameResultsD1],
@@ -70,13 +68,12 @@ export const saveGameResults = async (gameResult: GameResult, provider: string) 
 		result = await saveGameFunction(gameResult);
 	}
 
-	const after = new Date().getTime();
-	console.log(`save game results to ${provider}:`, after - before);
+	console.timeEnd(`save game results to ${provider}:`);
 	return result;
 };
 
 export const upsertUser = async (user: UserRecord, provider: string) => {
-	const before = new Date().getTime();
+	console.time(`upsert user info to ${provider}:`);
 	let result;
 	const providers = new Map([
 		['planetscale', upserUserPlanetscale],
@@ -95,7 +92,6 @@ export const upsertUser = async (user: UserRecord, provider: string) => {
 		}
 		result = await upsertUserFunction(user);
 	}
-	const after = new Date().getTime();
-	console.log(`upsert user info to ${provider}:`, after - before);
+	console.timeEnd(`upsert user info to ${provider}:`);
 	return result;
 };

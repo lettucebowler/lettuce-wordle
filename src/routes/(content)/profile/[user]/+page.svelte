@@ -2,17 +2,16 @@
 	import LettuceAvatar from '$lib/components/LettuceAvatar.svelte';
 	import type { PageData } from './$types';
 	export let data: PageData;
-
 	const cells = Array(30);
-
-	// $: gameResults = data.gameResults;
 </script>
 
 <main class="grid w-full gap-8">
 	<figure class="flex flex-col gap-2">
-		<div class="mx-auto h-full overflow-hidden rounded-2xl">
-			<LettuceAvatar name={data.profile.user} size={256} />
-		</div>
+		{#each [data.profile.user] as user (user)}
+			<div class="mx-auto h-full overflow-hidden rounded-2xl">
+				<LettuceAvatar name={user} size={256} />
+			</div>
+		{/each}
 		<figcaption class="text-center text-2xl font-medium text-snow-300">
 			{data.profile.user}
 		</figcaption>
