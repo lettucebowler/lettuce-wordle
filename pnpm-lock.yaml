@@ -1,7 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@auth/core': ^0.4.0
+  '@auth/core': 0.4.0
   '@auth/sveltekit': ^0.2.1
   '@planetscale/database': ^1.5.0
   '@sveltejs/adapter-vercel': ^2.1.0
