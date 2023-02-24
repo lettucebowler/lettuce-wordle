@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@auth/core': 0.4.0
-  '@auth/sveltekit': ^0.2.1
+  '@auth/sveltekit': 0.2.0
   '@planetscale/database': ^1.5.0
   '@sveltejs/adapter-vercel': ^2.1.0
   '@sveltejs/kit': ^1.8.3
@@ -32,7 +32,7 @@ specifiers:
 
 devDependencies:
   '@auth/core': 0.4.0
-  '@auth/sveltekit': 0.2.1_4rylcc2rz3gc4fnbb666aauziu
+  '@auth/sveltekit': 0.2.0_4rylcc2rz3gc4fnbb666aauziu
   '@planetscale/database': 1.5.0
   '@sveltejs/adapter-vercel': 2.1.0_@sveltejs+kit@1.8.3
   '@sveltejs/kit': 1.8.3_svelte@3.55.1+vite@4.1.4
@@ -94,8 +94,8 @@ packages:
       preact-render-to-string: 5.2.3_preact@10.11.3
     dev: true
 
-  /@auth/sveltekit/0.2.1_4rylcc2rz3gc4fnbb666aauziu:
-    resolution: {integrity: sha512-uC1xxWLCWsd581yMzOAiOhUudsjA/HHYuFXMOnvxB4gRcxQV9bW3t+GcP2NWWah6gU00kMc7r2JsVhGyPNANGQ==}
+  /@auth/sveltekit/0.2.0_4rylcc2rz3gc4fnbb666aauziu:
+    resolution: {integrity: sha512-yadgUev83LZ8sElHtkxNOshDw5IHkQYSymCsAc6yi0NwpHlXG4ylf0CCgLVuuf4nn1XT1SZ26DIrK46VRMNmGg==}
     peerDependencies:
       '@sveltejs/kit': ^1.0.0
       svelte: ^3.54.0
