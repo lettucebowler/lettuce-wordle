@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@auth/core': 0.3.0
-  '@auth/sveltekit': 0.2.0
+  '@auth/sveltekit': 0.1.6
   '@planetscale/database': ^1.5.0
   '@sveltejs/adapter-vercel': ^2.1.0
   '@sveltejs/kit': ^1.8.3
@@ -32,7 +32,7 @@ specifiers:
 
 devDependencies:
   '@auth/core': 0.3.0
-  '@auth/sveltekit': 0.2.0_4rylcc2rz3gc4fnbb666aauziu
+  '@auth/sveltekit': 0.1.6_4rylcc2rz3gc4fnbb666aauziu
   '@planetscale/database': 1.5.0
   '@sveltejs/adapter-vercel': 2.1.0_@sveltejs+kit@1.8.3
   '@sveltejs/kit': 1.8.3_svelte@3.55.1+vite@4.1.4
@@ -62,6 +62,22 @@ devDependencies:
 
 packages:
 
+  /@auth/core/0.1.4:
+    resolution: {integrity: sha512-RsGtCWzbimuTUfV0ODE8NDxiJ5iDJAR3Wedj5OgdyZxTlCxSirXKf7+6g+krE6gHG3PoOkkd6xN6QENk+D60xw==}
+    peerDependencies:
+      nodemailer: 6.8.0
+    peerDependenciesMeta:
+      nodemailer:
+        optional: true
+    dependencies:
+      '@panva/hkdf': 1.0.2
+      cookie: 0.5.0
+      jose: 4.11.1
+      oauth4webapi: 2.0.5
+      preact: 10.11.3
+      preact-render-to-string: 5.2.3_preact@10.11.3
+    dev: true
+
   /@auth/core/0.3.0:
     resolution: {integrity: sha512-4bmPzEiQKSXD825Jrcgj7igSFghBTpkSQ6U/jnYABJRQGhwnWJ/q9FHxEo6SGZWvYvpjOrvJOWhrP4Xng4CGUQ==}
     peerDependencies:
@@ -78,13 +94,13 @@ packages:
       preact-render-to-string: 5.2.3_preact@10.11.3
     dev: true
 
-  /@auth/sveltekit/0.2.0_4rylcc2rz3gc4fnbb666aauziu:
-    resolution: {integrity: sha512-yadgUev83LZ8sElHtkxNOshDw5IHkQYSymCsAc6yi0NwpHlXG4ylf0CCgLVuuf4nn1XT1SZ26DIrK46VRMNmGg==}
+  /@auth/sveltekit/0.1.6_4rylcc2rz3gc4fnbb666aauziu:
+    resolution: {integrity: sha512-IY9Qc2dIq6UnPLZR2pBXLVnuzcG3/ODH/fxuxajf9pq4xmrXaZvG9zRNDLiTq3EJiueiNUaD6rvqFV5BXxo76w==}
     peerDependencies:
       '@sveltejs/kit': ^1.0.0
       svelte: ^3.54.0
     dependencies:
-      '@auth/core': 0.3.0
+      '@auth/core': 0.1.4
       '@sveltejs/kit': 1.8.3_svelte@3.55.1+vite@4.1.4
       svelte: 3.55.1
     transitivePeerDependencies:
@@ -379,6 +395,10 @@ packages:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.15.0
+    dev: true
+
+  /@panva/hkdf/1.0.2:
+    resolution: {integrity: sha512-MSAs9t3Go7GUkMhpKC44T58DJ5KGk2vBo+h1cqQeqlMfdGkxaVB78ZWpv9gYi/g2fa4sopag9gJsNvS8XGgWJA==}
     dev: true
 
   /@panva/hkdf/1.0.4:
@@ -1452,6 +1472,10 @@ packages:
     resolution: {integrity: sha512-ZR5L+Af1nqdg3UI3js/0BlXqvyxY0cANVZmQH1coBBJFt4GWWayfkVQCYja6t1+brtjC3eUCiYuPutptf3WP3g==}
     dev: true
 
+  /jose/4.11.1:
+    resolution: {integrity: sha512-YRv4Tk/Wlug8qicwqFNFVEZSdbROCHRAC6qu/i0dyNKr5JQdoa2pIGoS04lLO/jXQX7Z9omoNewYIVIxqZBd9Q==}
+    dev: true
+
   /jose/4.12.0:
     resolution: {integrity: sha512-wW1u3cK81b+SFcHjGC8zw87yuyUweEFe0UJirrXEw1NasW00eF7sZjeG3SLBGz001ozxQ46Y9sofDvhBmWFtXQ==}
     dev: true
@@ -1691,6 +1715,10 @@ packages:
       console-control-strings: 1.1.0
       gauge: 3.0.2
       set-blocking: 2.0.0
+    dev: true
+
+  /oauth4webapi/2.0.5:
+    resolution: {integrity: sha512-KmoR3KxCwmr9KvL/c/6UVzQnc4CUjo+j8NSgD3bWYlZXpUmyOVw97nDVb0BKZhCcUtGsbll16v8vsnR5JbTZ9A==}
     dev: true
 
   /oauth4webapi/2.1.0:

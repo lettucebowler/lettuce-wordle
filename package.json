@@ -13,7 +13,7 @@
 	},
 	"devDependencies": {
 		"@auth/core": "0.3.0",
-		"@auth/sveltekit": "0.2.0",
+		"@auth/sveltekit": "0.1.6",
 		"@planetscale/database": "^1.5.0",
 		"@sveltejs/adapter-vercel": "^2.1.0",
 		"@sveltejs/kit": "^1.8.3",
