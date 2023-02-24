@@ -12,8 +12,8 @@ const config = {
 	kit: {
 		adapter: adapter({
 			out: 'build',
-			runtime: 'edge',
-			// runtime: 'nodejs18.x'
+			// runtime: 'edge',
+			runtime: 'nodejs18.x'
 			// split: true
 		})
 	}
