@@ -39,7 +39,11 @@ export const load: import('./$types').PageServerLoad = async (event) => {
 				gamenum: getGameNum(),
 				answers: answers.join('')
 			};
-			// await saveGameResults(gameResult, 'all');
+			console.log(
+				'save game'
+			);
+			console.log(gameResult);
+			await saveGameResults(gameResult, 'all');
 			throw redirect(307, '/');
 		}
 	}
