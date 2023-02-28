@@ -20,29 +20,29 @@ export const load: import('./$types').PageServerLoad = async (event) => {
 
 	const doSaveGame = query.get('saveGame') === 'true';
 
-	// if (doSaveGame) {
-	// 	if (!session) {
-	// 		throw redirect(307, '/');
-	// 	}
-	// 	if (!gameState?.length) {
-	// 		throw redirect(307, '/');
-	// 	}
-	// 	if (!answers?.length || answers?.at(-1) !== 'xxxxx') {
-	// 		throw redirect(307, '/');
-	// 	}
-	// 	const login = session.user?.login;
-	// 	const id = session.user?.id;
-	// 	if (login && id) {
-	// 		const gameResult: GameResult = {
-	// 			username: login,
-	// 			user_id: id,
-	// 			gamenum: getGameNum(),
-	// 			answers: answers.join('')
-	// 		};
-	// 		await saveGameResults(gameResult, 'all');
-	// 		throw redirect(307, '/');
-	// 	}
-	// }
+	if (doSaveGame) {
+		if (!session?.user) {
+			throw redirect(307, '/');
+		}
+		if (!gameState?.length) {
+			throw redirect(307, '/');
+		}
+		if (!answers?.length || answers?.at(-1) !== 'xxxxx') {
+			throw redirect(307, '/');
+		}
+		// const login = session.user?.login;
+		// const id = session.user?.id;
+		// if (login && id) {
+		// 	const gameResult: GameResult = {
+		// 		username: login,
+		// 		user_id: id,
+		// 		gamenum: getGameNum(),
+		// 		answers: answers.join('')
+		// 	};
+		// 	await saveGameResults(gameResult, 'all');
+		// 	throw redirect(307, '/');
+		// }
+	}
 
 	event.cookies.set('wordLettuce', getCookieFromGameState(gameState), {
 		httpOnly: false,
