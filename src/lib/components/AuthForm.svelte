@@ -8,7 +8,7 @@
 	action={mode === 'login' ? '/auth/signin/github' : '/auth/signout'}
 	class="h-full"
 >
-	<input type="hidden" name="callbackUrl" value={callback} />
+	<input type="hidden" name="callbackUrl" value={mode === 'login' ? callback : ''} />
 	<slot>
 		<button
 			class="grid h-full items-center rounded-xl py-2 px-6 text-center font-medium text-snow-100 active:bg-charade-900"
