@@ -31,7 +31,7 @@ export const load: import('./$types').PageServerLoad = async (event) => {
 			throw redirect(307, '/');
 		}
 		const login = session.user?.login;
-		// const id = session.user?.id;
+		const id = session.user?.id;
 		// if (login && id) {
 		// 	const gameResult: GameResult = {
 		// 		username: login,
