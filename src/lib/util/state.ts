@@ -45,7 +45,7 @@ const decodeState = (stateBuffer: string) => {
 			guesses: guesses.map((guess: string) => ({ guess, complete: guess.length === 5 }))
 		};
 	} catch (e) {
-		console.log(e);
+		console.log('error decoding state', e);
 		return state;
 	}
 	return state;
