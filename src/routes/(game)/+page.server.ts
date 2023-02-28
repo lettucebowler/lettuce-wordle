@@ -32,16 +32,16 @@ export const load: import('./$types').PageServerLoad = async (event) => {
 		}
 		const login = session.user?.login;
 		const id = session.user?.id;
-		// if (login && id) {
-		// 	const gameResult: GameResult = {
-		// 		username: login,
-		// 		user_id: id,
-		// 		gamenum: getGameNum(),
-		// 		answers: answers.join('')
-		// 	};
-		// 	await saveGameResults(gameResult, 'all');
-		// 	throw redirect(307, '/');
-		// }
+		if (login && id) {
+			// const gameResult: GameResult = {
+			// 	username: login,
+			// 	user_id: id,
+			// 	gamenum: getGameNum(),
+			// 	answers: answers.join('')
+			// };
+			// await saveGameResults(gameResult, 'all');
+			throw redirect(307, '/');
+		}
 	}
 
 	event.cookies.set('wordLettuce', getCookieFromGameState(gameState), {
