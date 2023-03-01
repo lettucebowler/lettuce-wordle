@@ -4,8 +4,8 @@ specifiers:
   '@auth/core': 0.4.0
   '@auth/sveltekit': 0.2.2
   '@planetscale/database': ^1.5.0
-  '@sveltejs/adapter-vercel': ^2.2.0
-  '@sveltejs/kit': ^1.9.1
+  '@sveltejs/adapter-vercel': ^2.2.1
+  '@sveltejs/kit': ^1.9.2
   '@types/cookie': ^0.5.1
   '@types/js-cookie': ^3.0.3
   '@typescript-eslint/eslint-plugin': ^5.54.0
@@ -32,10 +32,10 @@ specifiers:
 
 devDependencies:
   '@auth/core': 0.4.0
-  '@auth/sveltekit': 0.2.2_4brjpbycjlbuuteyhagri3gdbm
+  '@auth/sveltekit': 0.2.2_ogwk6wdqryajyu4u32xlwbfomu
   '@planetscale/database': 1.5.0
-  '@sveltejs/adapter-vercel': 2.2.0_@sveltejs+kit@1.9.1
-  '@sveltejs/kit': 1.9.1_svelte@3.55.1+vite@4.1.4
+  '@sveltejs/adapter-vercel': 2.2.1_@sveltejs+kit@1.9.2
+  '@sveltejs/kit': 1.9.2_svelte@3.55.1+vite@4.1.4
   '@types/cookie': 0.5.1
   '@types/js-cookie': 3.0.3
   '@typescript-eslint/eslint-plugin': 5.54.0_6mj2wypvdnknez7kws2nfdgupi
@@ -78,14 +78,14 @@ packages:
       preact-render-to-string: 5.2.3_preact@10.11.3
     dev: true
 
-  /@auth/sveltekit/0.2.2_4brjpbycjlbuuteyhagri3gdbm:
+  /@auth/sveltekit/0.2.2_ogwk6wdqryajyu4u32xlwbfomu:
     resolution: {integrity: sha512-8PL1120J22RrmsGu8VXTeUvTldSNRqvs/hhEsx9DYswdS5o4umhXsJI5JDbBS3hzpuq7i4LgVEOueW7zQgn9dg==}
     peerDependencies:
       '@sveltejs/kit': ^1.0.0
       svelte: ^3.54.0
     dependencies:
       '@auth/core': 0.4.0
-      '@sveltejs/kit': 1.9.1_svelte@3.55.1+vite@4.1.4
+      '@sveltejs/kit': 1.9.2_svelte@3.55.1+vite@4.1.4
       svelte: 3.55.1
     transitivePeerDependencies:
       - nodemailer
@@ -407,12 +407,12 @@ packages:
       picomatch: 2.3.1
     dev: true
 
-  /@sveltejs/adapter-vercel/2.2.0_@sveltejs+kit@1.9.1:
-    resolution: {integrity: sha512-asyVXHOXnBJYr1/FCjEGJyJFvqY4X3jpLwi8oAqXokGy0ac7QGylxKTKGoIv4UjCLgPIsS/wIEpouPeGzkt1ow==}
+  /@sveltejs/adapter-vercel/2.2.1_@sveltejs+kit@1.9.2:
+    resolution: {integrity: sha512-W8+qytNSvFTr56CC4RLC/PeSuzB8m/LnnZlZD3v23qlgRrHHcYyN5mZJHaZmQvQeqsue7rby+LKfqqZiElstlg==}
     peerDependencies:
       '@sveltejs/kit': ^1.5.0
     dependencies:
-      '@sveltejs/kit': 1.9.1_svelte@3.55.1+vite@4.1.4
+      '@sveltejs/kit': 1.9.2_svelte@3.55.1+vite@4.1.4
       '@vercel/nft': 0.22.6
       esbuild: 0.16.17
     transitivePeerDependencies:
@@ -420,8 +420,8 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/kit/1.9.1_svelte@3.55.1+vite@4.1.4:
-    resolution: {integrity: sha512-SC2pTnaloAL+6744tWl1/b1zGAhZX2zmgmUmKV4Y6nx/y5gP6+MTzY6SC74PYUWSlOPumi8wZ40hQ2RExCFuhg==}
+  /@sveltejs/kit/1.9.2_svelte@3.55.1+vite@4.1.4:
+    resolution: {integrity: sha512-KYDrzs9bdoK+3typr5eBa+8q+RFwZdI80tuSL1yU99Rn5hZsEbcj4tlBGVvlL7SHxJdMUiDUYhTznbpb7CIs9A==}
     engines: {node: ^16.14 || >=18}
     hasBin: true
     requiresBuild: true
@@ -803,7 +803,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001458
-      electron-to-chromium: 1.4.314
+      electron-to-chromium: 1.4.315
       node-releases: 2.0.10
       update-browserslist-db: 1.0.10_browserslist@4.21.5
     dev: true
@@ -984,8 +984,8 @@ packages:
       esutils: 2.0.3
     dev: true
 
-  /electron-to-chromium/1.4.314:
-    resolution: {integrity: sha512-+3RmNVx9hZLlc0gW//4yep0K5SYKmIvB5DXg1Yg6varsuAHlHwTeqeygfS8DWwLCsNOWrgj+p9qgM5WYjw1lXQ==}
+  /electron-to-chromium/1.4.315:
+    resolution: {integrity: sha512-ndBQYz3Eyy3rASjjQ9poMJGoAlsZ/aZnq6GBsGL4w/4sWIAwiUHVSsMuADbxa8WJw7pZ0oxLpGbtoDt4vRTdCg==}
     dev: true
 
   /emoji-regex/8.0.0:
@@ -2000,8 +2000,8 @@ packages:
       glob: 7.2.3
     dev: true
 
-  /rollup/3.17.3:
-    resolution: {integrity: sha512-p5LaCXiiOL/wrOkj8djsIDFmyU9ysUxcyW+EKRLHb6TKldJzXpImjcRSR+vgo09DBdofGcOoLOsRyxxG2n5/qQ==}
+  /rollup/3.18.0:
+    resolution: {integrity: sha512-J8C6VfEBjkvYPESMQYxKHxNOh4A5a3FlP+0BETGo34HEcE4eTlgCrO2+eWzlu2a/sHs2QUkZco+wscH7jhhgWg==}
     engines: {node: '>=14.18.0', npm: '>=8.0.0'}
     hasBin: true
     optionalDependencies:
@@ -2422,7 +2422,7 @@ packages:
       esbuild: 0.16.17
       postcss: 8.4.21
       resolve: 1.22.1
-      rollup: 3.17.3
+      rollup: 3.18.0
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
