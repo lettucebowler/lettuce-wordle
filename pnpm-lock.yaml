@@ -5,7 +5,7 @@ specifiers:
   '@auth/sveltekit': 0.2.2
   '@planetscale/database': ^1.5.0
   '@sveltejs/adapter-vercel': ^2.2.0
-  '@sveltejs/kit': ^1.8.8
+  '@sveltejs/kit': ^1.9.1
   '@types/cookie': ^0.5.1
   '@types/js-cookie': ^3.0.3
   '@typescript-eslint/eslint-plugin': ^5.54.0
@@ -32,10 +32,10 @@ specifiers:
 
 devDependencies:
   '@auth/core': 0.4.0
-  '@auth/sveltekit': 0.2.2_scqqzeqk5npn2agrwzrlv27qqu
+  '@auth/sveltekit': 0.2.2_4brjpbycjlbuuteyhagri3gdbm
   '@planetscale/database': 1.5.0
-  '@sveltejs/adapter-vercel': 2.2.0_@sveltejs+kit@1.8.8
-  '@sveltejs/kit': 1.8.8_svelte@3.55.1+vite@4.1.4
+  '@sveltejs/adapter-vercel': 2.2.0_@sveltejs+kit@1.9.1
+  '@sveltejs/kit': 1.9.1_svelte@3.55.1+vite@4.1.4
   '@types/cookie': 0.5.1
   '@types/js-cookie': 3.0.3
   '@typescript-eslint/eslint-plugin': 5.54.0_6mj2wypvdnknez7kws2nfdgupi
@@ -78,14 +78,14 @@ packages:
       preact-render-to-string: 5.2.3_preact@10.11.3
     dev: true
 
-  /@auth/sveltekit/0.2.2_scqqzeqk5npn2agrwzrlv27qqu:
+  /@auth/sveltekit/0.2.2_4brjpbycjlbuuteyhagri3gdbm:
     resolution: {integrity: sha512-8PL1120J22RrmsGu8VXTeUvTldSNRqvs/hhEsx9DYswdS5o4umhXsJI5JDbBS3hzpuq7i4LgVEOueW7zQgn9dg==}
     peerDependencies:
       '@sveltejs/kit': ^1.0.0
       svelte: ^3.54.0
     dependencies:
       '@auth/core': 0.4.0
-      '@sveltejs/kit': 1.8.8_svelte@3.55.1+vite@4.1.4
+      '@sveltejs/kit': 1.9.1_svelte@3.55.1+vite@4.1.4
       svelte: 3.55.1
     transitivePeerDependencies:
       - nodemailer
@@ -407,12 +407,12 @@ packages:
       picomatch: 2.3.1
     dev: true
 
-  /@sveltejs/adapter-vercel/2.2.0_@sveltejs+kit@1.8.8:
+  /@sveltejs/adapter-vercel/2.2.0_@sveltejs+kit@1.9.1:
     resolution: {integrity: sha512-asyVXHOXnBJYr1/FCjEGJyJFvqY4X3jpLwi8oAqXokGy0ac7QGylxKTKGoIv4UjCLgPIsS/wIEpouPeGzkt1ow==}
     peerDependencies:
       '@sveltejs/kit': ^1.5.0
     dependencies:
-      '@sveltejs/kit': 1.8.8_svelte@3.55.1+vite@4.1.4
+      '@sveltejs/kit': 1.9.1_svelte@3.55.1+vite@4.1.4
       '@vercel/nft': 0.22.6
       esbuild: 0.16.17
     transitivePeerDependencies:
@@ -420,8 +420,8 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/kit/1.8.8_svelte@3.55.1+vite@4.1.4:
-    resolution: {integrity: sha512-64bEcgIECQ8TPQ7sCMo1X1IMSkFjTP8MaKB4YpG4Tw3rvKDaVxBt6MuxdvMShDJu12CpXv692AY4jhfNUPwcmQ==}
+  /@sveltejs/kit/1.9.1_svelte@3.55.1+vite@4.1.4:
+    resolution: {integrity: sha512-SC2pTnaloAL+6744tWl1/b1zGAhZX2zmgmUmKV4Y6nx/y5gP6+MTzY6SC74PYUWSlOPumi8wZ40hQ2RExCFuhg==}
     engines: {node: ^16.14 || >=18}
     hasBin: true
     requiresBuild: true
@@ -803,7 +803,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001458
-      electron-to-chromium: 1.4.313
+      electron-to-chromium: 1.4.314
       node-releases: 2.0.10
       update-browserslist-db: 1.0.10_browserslist@4.21.5
     dev: true
@@ -984,8 +984,8 @@ packages:
       esutils: 2.0.3
     dev: true
 
-  /electron-to-chromium/1.4.313:
-    resolution: {integrity: sha512-QckB9OVqr2oybjIrbMI99uF+b9+iTja5weFe0ePbqLb5BHqXOJUO1SG6kDj/1WtWPRIBr51N153AEq8m7HuIaA==}
+  /electron-to-chromium/1.4.314:
+    resolution: {integrity: sha512-+3RmNVx9hZLlc0gW//4yep0K5SYKmIvB5DXg1Yg6varsuAHlHwTeqeygfS8DWwLCsNOWrgj+p9qgM5WYjw1lXQ==}
     dev: true
 
   /emoji-regex/8.0.0:
