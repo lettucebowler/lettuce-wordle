@@ -21,7 +21,7 @@ export const getGameResults = async (user: string, count: number, offset = 0) =>
 };
 
 export const getLeaderBoardResults = async (gamenum: number) => {
-	const leaderboardResults = await apiWordlettuce.get('/api/gameresults/leaderboard', { gamenum });
+	const leaderboardResults = await apiWordlettuce.get('/leaderboard', { gamenum });
 	return leaderboardResults as LeaderboardResults[];
 };
 

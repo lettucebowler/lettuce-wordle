@@ -31,7 +31,7 @@ export const getGameResults = async (user: string, count: number, provider: stri
 };
 
 export const getLeaderBoardResults = async (gamenum: number, provider: string) => {
-	console.time(`get leaderboard results from ${provider}:`);
+	console.time(`get leaderboard results from ${provider}`);
 	let leaderboardResults;
 	switch (provider) {
 		case 'planetscale':
@@ -43,7 +43,7 @@ export const getLeaderBoardResults = async (gamenum: number, provider: string) =
 		default:
 			throw Error('invalid provider');
 	}
-	console.timeEnd(`get leaderboard results from ${provider}:`);
+	console.timeEnd(`get leaderboard results from ${provider}`);
 	return leaderboardResults as LeaderboardResults[];
 };
 
