@@ -13,7 +13,7 @@ const apiWordlettuce = fetcher({
 });
 
 export const getGameResults = async (user: string, count: number, offset = 0) => {
-	const { results } = (await apiWordlettuce.get(`/users/${user}/gameresults`, {
+	const { results } = (await apiWordlettuce.get(`/v1/users/${user}/gameresults`, {
 		count,
 		offset
 	})) as { results: GameResult[] };
@@ -21,17 +21,17 @@ export const getGameResults = async (user: string, count: number, offset = 0) =>
 };
 
 export const getLeaderBoardResults = async (gamenum: number) => {
-	const leaderboardResults = await apiWordlettuce.get('/leaderboard', { gamenum });
+	const leaderboardResults = await apiWordlettuce.get('/v1/leaderboard', { gamenum });
 	return leaderboardResults as LeaderboardResults[];
 };
 
 export const saveGameResults = async (gameresult: GameResult) => {
 	const { username, gamenum, ...rest } = gameresult;
-	const results = await apiWordlettuce.put(`/users/${username}/gameresults/${gamenum}`, rest);
+	const results = await apiWordlettuce.put(`/v1/users/${username}/gameresults/${gamenum}`, rest);
 	return results;
 };
 
 export const upsertUser = async (user: UserRecord) => {
-	const results = await apiWordlettuce.post('/users', user);
+	const results = await apiWordlettuce.post('/v1/users', user);
 	return results;
 };
