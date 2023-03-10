@@ -50,21 +50,6 @@
 		overflow-y: overlay;
 	}
 
-	:global(::-webkit-scrollbar) {
-		width: 4px;
-		height: 1em;
-	}
-
-	:global(::-webkit-scrollbar-track:hover) {
-		background: transparent;
-		margin-block: 4px;
-	}
-
-	:global(::-webkit-scrollbar-thumb) {
-		background: #2e3440;
-		border-radius: 100vw;
-	}
-
 	:root {
 		font-family: --apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
 			'Open Sans', 'Helvetica Neue', sans-serif;
