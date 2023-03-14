@@ -57,8 +57,8 @@
 							class:bg-charade-800={i % 2 == 0}
 						>
 							<div class="flex w-max justify-start gap-2 text-left sm:gap-4">
-								<span class="box-border w-max overflow-hidden rounded border-2"
-									><LettuceAvatar name={score.user} /></span
+								<span class="box-border w-max overflow-hidden rounded"
+									><LettuceAvatar name={score.user} size={44} /></span
 								>
 								<span class="grid items-center">
 									{score.user}

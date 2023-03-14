@@ -75,20 +75,20 @@
 							class="box-border flex h-full flex-[0_0_auto] cursor-pointer select-none items-center justify-center gap-2 rounded-xl text-center text-3xl text-snow-100 transition ease-in-out hover:bg-charade-700 active:bg-charade-800 sm:hidden"
 						>
 							<span
-								class="box-border aspect-square h-full overflow-hidden rounded-xl border-2 border-snow-300 transition-transform"
+								class="box-border aspect-square h-full overflow-hidden rounded-xl border-snow-300 transition-transform"
 								class:rotate-180={dropdownVisible}
 							>
-								<LettuceAvatar name={user.login} size={52} />
+								<LettuceAvatar name={user.login} size={56} />
 							</span>
 						</label><label
 							for="subnav-toggle-big"
 							class="box-border hidden h-full flex-[0_0_auto] cursor-pointer select-none items-center justify-center gap-2 rounded-xl text-center text-3xl text-snow-100 transition ease-in-out hover:bg-charade-700 active:bg-charade-800 sm:flex"
 						>
 							<span
-								class="box-border aspect-square h-full overflow-hidden rounded-xl border-2 border-snow-300 transition-transform"
+								class="box-border aspect-square h-full overflow-hidden rounded-xl border-snow-300 transition-transform"
 								class:rotate-180={dropdownVisible}
 							>
-								<LettuceAvatar name={user.login} size={52} />
+								<LettuceAvatar name={user.login} size={56} />
 							</span>
 						</label>
 					{:else}
@@ -123,8 +123,8 @@
 						<div class="flex flex-col justify-start gap-4 border-charade-700 p-4">
 							{#if user && user.image && user.login}
 								<div class="flex items-center justify-start gap-4">
-									<span class="box-border w-max overflow-hidden rounded border-2"
-										><LettuceAvatar name={user.login} /></span
+									<span class="box-border w-max overflow-hidden rounded"
+										><LettuceAvatar name={user.login} size={44} /></span
 									>
 									<span class="text-xl font-medium text-snow-300">{user.login}</span>
 								</div>
