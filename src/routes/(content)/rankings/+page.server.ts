@@ -1,6 +1,6 @@
 import type { Config } from '@sveltejs/adapter-vercel';
 export const config: Config = {
-	regions: ['cle1'],
+	regions: ['iad1'],
 	runtime: 'edge'
 };
 
