@@ -27,7 +27,7 @@ export const getLeaderBoardResults = async (gameNum: number) => {
 	const conn = client.connection();
 	const results = await conn.execute(
 		'select username, github_id, sum(attempts), count(attempts), (count(attempts) * 7) - sum(attempts) from game_results a inner join users b on a.user_id = b.github_id where gamenum > ? and gamenum <= ? group by user_id order by (count(attempts) * 7) - sum(attempts) desc, username  limit 10',
-		[gameNum - 1000, gameNum]
+		[gameNum - 7, gameNum]
 	);
 	const { rows } = results;
 
