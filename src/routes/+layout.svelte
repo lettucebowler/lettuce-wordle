@@ -24,6 +24,7 @@
 </svelte:head>
 
 <div
+	id="lettuce-wordle-root"
 	class="mx-auto box-border flex w-full max-w-screen-md flex-auto flex-col gap-2 p-1"
 	data-sveltekit-preload-data="hover"
 >
@@ -44,10 +45,13 @@
 		flex-direction: column;
 	}
 
-	:global(body, html) {
-		height: 100%;
+	:global(body) {
 		min-height: 100%;
 		overflow-y: overlay;
+	}
+
+	:global(body, html) {
+		height: 100%;
 	}
 
 	:root {

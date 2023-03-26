@@ -45,20 +45,14 @@ export const getLeaderBoardResults = async (gameNum: number) => {
 	return scores as LeaderboardResults[];
 };
 
-export const getGameResults = async (user: string, count: number) => {
+export const getGameResults = async (user: string, count: number, offset = 0) => {
 	const conn = client.connection();
 	const results = await conn.execute(
-		'select username, user_id, gamenum, answers, attempts from game_results a inner join users b on a.user_id = b.github_id where username = ? order by gamenum desc limit ?',
-		[user, count]
+		'select username user, user_id, gamenum, answers, attempts from game_results a inner join users b on a.user_id = b.github_id where username = ? order by gamenum desc limit ? offset ?',
+		[user, count, offset]
 	);
 	const { rows } = results;
-	return (rows as GameResult[]).map((row: GameResult) => ({
-		user: row.username,
-		user_id: row.user_id,
-		gamenum: row.gamenum,
-		answers: row.answers,
-		attempts: row.attempts
-	})) as GameResult[];
+	return rows as GameResult[];
 };
 
 export const upsertUser = async (user: UserRecord) => {

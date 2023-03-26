@@ -4,6 +4,12 @@
 	import { appName } from '$lib/util/store';
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
+	import {
+		clickOutsideAction,
+		clickToCopyAction,
+		notifyAction,
+		intervalFnStore
+	} from 'svelte-legos';
 	import AuthForm from './AuthForm.svelte';
 
 	export const modalActions = {
@@ -25,25 +31,6 @@
 	let won: boolean;
 	let message = '';
 	let authenticated = false;
-
-	const clearMessage = () => {
-		message = '';
-	};
-
-	const setMessage = (m: string) => {
-		message = m;
-	};
-
-	const shareGame = () => {
-		message = 'Results Copied to clipboard!';
-		setTimeout(() => clearMessage(), 4000);
-		(!!navigator &&
-			navigator.clipboard
-				.writeText(share)
-				.then(() => setMessage('Results Copied to clipboard!'))
-				.catch(() => setMessage('Failed clipboard copy.'))) ||
-			setMessage('Failed clipboard copy.');
-	};
 
 	let visible = false;
 
@@ -80,6 +67,10 @@
 			timeUntil = getTimeUntilReset();
 		}, 1000);
 	});
+
+	function handleOutsideClick() {
+		closeModal();
+	}
 </script>
 
 <dialog
@@ -87,7 +78,7 @@
 	class="open:opacity-1 box-border w-full max-w-xs rounded-2xl bg-charade-800 p-2 backdrop:animate-fadein backdrop:backdrop-blur-sm open:pointer-events-auto open:animate-flyup"
 	open={false}
 >
-	<div class="flex flex-col gap-2">
+	<div class="flex flex-col gap-2" use:clickOutsideAction on:clickoutside={handleOutsideClick}>
 		<div class="flex h-8 justify-between">
 			<div class="aspect-square h-full" />
 			<h2 class="col-start-2 mt-0 flex-auto text-center text-2xl text-snow-300">&nbsp;Success!</h2>
@@ -110,7 +101,6 @@
 			You solved today's WordLettuce in {attempts} guess{attempts > 1 ? 'es' : ''}. Come back
 			tomorrow and play again!
 		</p>
-
 		<div class="grid h-8 place-items-center">
 			{#if message}
 				<span
@@ -139,7 +129,11 @@
 		{/if}
 		<div class="flex w-full flex-row justify-center gap-3">
 			<button
-				on:click={() => shareGame()}
+				use:clickToCopyAction={share}
+				on:copy-done={() => {
+					message = 'Results copied to clipboard';
+					setTimeout(() => (message = ''), 4000);
+				}}
 				class="h-12 w-full cursor-pointer rounded-lg border-transparent bg-frost-400 p-0 font-bold text-snow-300 active:brightness-90"
 				><span
 					class="grid h-full items-center duration-500 hover:backdrop-brightness-90 hover:backdrop-filter"

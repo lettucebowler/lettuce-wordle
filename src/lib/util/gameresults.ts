@@ -1,4 +1,5 @@
 import type { GameResult, LeaderboardResults } from '$lib/types/gameresult';
+import { DEFAULT_DB_PROVIDER } from '$env/static/private';
 import {
 	getGameResults as getGameResultsD1,
 	getLeaderBoardResults as getLeaderBoardResultsD1,
@@ -13,15 +14,20 @@ import {
 } from '$lib/client/planetscale';
 import type { UserRecord } from '$lib/types/auth';
 
-export const getGameResults = async (user: string, count: number, provider: string) => {
+export const getGameResults = async (
+	user: string,
+	count: number,
+	provider: string = DEFAULT_DB_PROVIDER,
+	offset = 0
+) => {
 	console.time(`load game results from ${provider}:`);
 	let gameResults: GameResult[];
 	switch (provider) {
 		case 'planetscale':
-			gameResults = await getGameResultsPlanetscale(user, count);
+			gameResults = await getGameResultsPlanetscale(user, count, offset);
 			break;
 		case 'd1':
-			gameResults = await getGameResultsD1(user, count);
+			gameResults = await getGameResultsD1(user, count, offset);
 			break;
 		default:
 			throw Error('invalid provider');
