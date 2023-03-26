@@ -2,25 +2,30 @@
 	import { infiniteScrollAction } from 'svelte-legos';
 	import LettuceAvatar from '$lib/components/LettuceAvatar.svelte';
 	import type { PageData } from './$types';
-	import { goto } from '$app/navigation';
+	import { fetcher } from 'itty-fetcher';
+	import type { GameResult } from '$lib/types/gameresult';
 	export let data: PageData;
 	const cells = Array(30);
 
 	let fetchMore = true;
-
 	async function getNextBatch() {
 		if (!fetchMore) {
 			return;
 		}
-		const oldLength = data.profile.gameResults.length;
-		await goto(`?showLast=${data.showLast + 30}`, {
-			noScroll: true
-		});
-		const newLength = data.profile.gameResults.length;
+		const oldLength = gameResults.length;
+		const fetchResult = (await fetcher().get(
+			`/api/users/${data.profile.user}/game-results?count=30&offset=${gameResults.length}`
+		)) as { gameResults: GameResult[] };
+		if (fetchResult?.gameResults) {
+			gameResults = gameResults.concat(fetchResult.gameResults);
+		}
+		const newLength = gameResults.length;
 		if (newLength - oldLength < 30) {
 			fetchMore = false;
 		}
 	}
+
+	$: gameResults = data.profile.gameResults;
 </script>
 
 <svelte:window
@@ -46,7 +51,7 @@
 	<h1 class="text-center text-3xl font-bold text-snow-300">Play History</h1>
 
 	<div class="grid w-full grid-cols-2 gap-2 sm:grid-cols-3">
-		{#each data.profile.gameResults.sort((a, b) => b.gamenum - a.gamenum) as gameResult (gameResult.gamenum)}
+		{#each gameResults.sort((a, b) => b.gamenum - a.gamenum) as gameResult (gameResult.gamenum)}
 			{@const answers = gameResult.answers.split('').slice(-30).join('')}
 			<div
 				class="flex w-full flex-[1_1_200px] flex-col gap-2 rounded-2xl border-4 border-solid border-charade-700 p-2"
