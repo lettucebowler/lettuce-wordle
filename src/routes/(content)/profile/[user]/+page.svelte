@@ -79,6 +79,7 @@
 			</div>
 		{/each}
 	</div>
+	<div class="h-5" />
 	{#if fetchMore}
 		<p class="rounded-xl p-2 text-center text-center text-xl text-snow-300">Loading...</p>
 	{/if}
