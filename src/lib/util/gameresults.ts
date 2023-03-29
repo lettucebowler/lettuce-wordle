@@ -20,7 +20,7 @@ export const getGameResults = async (
 	provider: string = DEFAULT_DB_PROVIDER,
 	offset = 0
 ) => {
-	console.time(`load game results from ${provider}:`);
+	console.time(`load game results from ${provider}`);
 	let gameResults: GameResult[];
 	switch (provider) {
 		case 'planetscale':
@@ -32,7 +32,7 @@ export const getGameResults = async (
 		default:
 			throw Error('invalid provider');
 	}
-	console.timeEnd(`load game results from ${provider}:`);
+	console.timeEnd(`load game results from ${provider}`);
 	return gameResults as GameResult[];
 };
 

@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import { DEFAULT_DB_PROVIDER } from '$env/static/private';
+const dbProviderEnum = ['d1', 'planetscale'];
 const getGameResultsRequestSchema = z.object({
 	offset: z.coerce
 		.number({ invalid_type_error: 'offset must be an integer' })
@@ -7,7 +9,8 @@ const getGameResultsRequestSchema = z.object({
 	count: z.coerce
 		.number({ invalid_type_error: 'count must be an integer' })
 		.int('count must be an integer')
-		.default(30)
+		.default(30),
+	dbProvider: z.enum(['planetscale', 'd1']).default(DEFAULT_DB_PROVIDER as 'planetscale' | 'd1')
 });
 
 import type { RequestHandler } from './$types';

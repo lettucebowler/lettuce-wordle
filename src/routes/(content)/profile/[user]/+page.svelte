@@ -4,6 +4,8 @@
 	import type { PageData } from './$types';
 	import { fetcher } from 'itty-fetcher';
 	import type { GameResult } from '$lib/types/gameresult';
+	import { page } from '$app/stores';
+
 	export let data: PageData;
 	const cells = Array(30);
 
@@ -12,9 +14,17 @@
 		if (!fetchMore) {
 			return;
 		}
+		const searchParams = new URLSearchParams({
+			count: '30',
+			offset: `${gameResults.length}`
+		});
+		if ($page.url.searchParams.get('dbProvider')) {
+			searchParams.set('dbProvider', $page.url.searchParams.get('dbProvider') || '');
+		}
 		const oldLength = gameResults.length;
 		const fetchResult = (await fetcher().get(
-			`/api/users/${data.profile.user}/game-results?count=30&offset=${gameResults.length}`
+			`/api/users/${data.profile.user}/game-results`,
+			searchParams
 		)) as { gameResults: GameResult[] };
 		if (fetchResult?.gameResults) {
 			gameResults = gameResults.concat(fetchResult.gameResults);
