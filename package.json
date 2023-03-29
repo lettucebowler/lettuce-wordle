@@ -42,5 +42,10 @@
 		"vite": "^4.2.1",
 		"zod": "^3.21.4"
 	},
-	"type": "module"
+	"type": "module",
+	"pnpm": {
+		"patchedDependencies": {
+			"svelte-legos@0.1.4": "patches/svelte-legos@0.1.4.patch"
+		}
+	}
 }
