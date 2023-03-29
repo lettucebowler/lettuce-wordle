@@ -1,10 +1,5 @@
 lockfileVersion: '6.0'
 
-patchedDependencies:
-  svelte-legos@0.1.4:
-    hash: 4ipxrm4zlt6kukw7eck5off6jy
-    path: patches/svelte-legos@0.1.4.patch
-
 devDependencies:
   '@auth/core':
     specifier: 0.5.1
@@ -69,15 +64,12 @@ devDependencies:
   svelte:
     specifier: ^3.57.0
     version: 3.57.0
-  svelte-boring-avatars:
-    specifier: ^1.2.2
-    version: 1.2.2
   svelte-check:
     specifier: ^3.1.4
     version: 3.1.4(postcss@8.4.21)(svelte@3.57.0)
   svelte-legos:
     specifier: 0.1.4
-    version: 0.1.4(patch_hash=4ipxrm4zlt6kukw7eck5off6jy)(svelte@3.57.0)
+    version: 0.1.4(svelte@3.57.0)
   svelte2tsx:
     specifier: ^0.6.10
     version: 0.6.10(svelte@3.57.0)(typescript@5.0.2)
@@ -2436,10 +2428,6 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /svelte-boring-avatars@1.2.2:
-    resolution: {integrity: sha512-0PH1az99Rrgbk1RROKpZnFjmZC6gMewqsK1XL6JMnTDhT69QksyhJlSvGw2fpGtjV6BynMuOstLIEp55hf+VLg==}
-    dev: true
-
   /svelte-check@3.1.4(postcss@8.4.21)(svelte@3.57.0):
     resolution: {integrity: sha512-25Lb46ZS4IK/XpBMe4IBMrtYf23V8alqBX+szXoccb7uM0D2Wqq5rMRzYBONZnFVuU1bQG3R50lyIT5eRewv2g==}
     hasBin: true
@@ -2476,7 +2464,7 @@ packages:
       svelte: 3.57.0
     dev: true
 
-  /svelte-legos@0.1.4(patch_hash=4ipxrm4zlt6kukw7eck5off6jy)(svelte@3.57.0):
+  /svelte-legos@0.1.4(svelte@3.57.0):
     resolution: {integrity: sha512-q429q/0GU3rpjeQftLfrD9K2piEu2c5Hq1PrqwRk+f3l+zgH2+MsZ/8UTzwa7FUzHnfH/yfyoZXYrnwnNjOS3w==}
     peerDependencies:
       svelte: ^3.54.0
@@ -2486,7 +2474,6 @@ packages:
       prismjs: 1.29.0
       svelte: 3.57.0
     dev: true
-    patched: true
 
   /svelte-preprocess@5.0.3(postcss@8.4.21)(svelte@3.57.0)(typescript@4.9.5):
     resolution: {integrity: sha512-GrHF1rusdJVbOZOwgPWtpqmaexkydznKzy5qIC2FabgpFyKN57bjMUUUqPRfbBXK5igiEWn1uO/DXsa2vJ5VHA==}
