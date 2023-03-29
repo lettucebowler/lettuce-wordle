@@ -1,3 +1,33 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+	--transparent: transparent;
+
+	--snow-100: #d8dee9;
+	--snow-200: #e5e9f0;
+	--snow-300: #eceff4;
+
+	--frost-100: #8fbcbb;
+	--frost-200: #88c0d0;
+	--frost-300: #81a1c1;
+	--frost-400: #5e81ac;
+
+	--aurora-100: #bf616a;
+	--aurora-200: #d08770;
+	--aurora-300: #ebcb8b;
+	--aurora-400: #a3be8c;
+	--aurora-500: #b48ead;
+
+	--charade-50: #9ca5b8;
+	--charade-100: #939db1;
+	--charade-200: #818da5;
+	--charade-300: #6f7d98;
+	--charade-400: #616e87;
+	--charade-500: #545f75;
+	--charade-600: #485164;
+	--charade-700: #3b4252;
+	--charade-800: #2e3440;
+	--charade-900: #21262e;
+}

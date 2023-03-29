@@ -11,35 +11,35 @@ module.exports = {
 			colors: {
 				transparent: 'transparent',
 				snow: {
-					100: '#D8DEE9',
-					200: '#E5E9F0',
-					300: '#ECEFF4'
+					100: 'var(--snow-100)',
+					200: 'var(--snow-200)',
+					300: 'var(--snow-300)'
 				},
 				frost: {
-					100: '#8FBCBB',
-					200: '#88C0D0',
-					300: '#81A1C1',
-					400: '#5E81AC'
+					100: 'var(--frost-100)',
+					200: 'var(--frost-200)',
+					300: 'var(--frost-300)',
+					400: 'var(--frost-400)'
 				},
 				aurora: {
-					100: '#BF616A',
-					200: '#D08770',
-					300: '#EBCB8B',
-					400: '#A3BE8C',
-					500: '#B48EAD'
+					100: 'var(--aurora-100)',
+					200: 'var(--aurora-200)',
+					300: 'var(--aurora-300)',
+					400: 'var(--aurora-400)',
+					500: 'var(--aurora-500)'
 				},
 				charade: {
-					DEFAULT: '#2E3440',
-					50: '#9CA5B8',
-					100: '#939DB1',
-					200: '#818DA5',
-					300: '#6F7D98',
-					400: '#616E87',
-					500: '#545F75',
-					600: '#485164',
-					700: '#3B4252',
-					800: '#2E3440',
-					900: '#21262E'
+					DEFAULT: 'var(--charade-800)',
+					50: 'var(--charade-50)',
+					100: 'var(--charade-100)',
+					200: 'var(--charade-200)',
+					300: 'var(--charade-300)',
+					400: 'var(--charade-400)',
+					500: 'var(--charade-500)',
+					600: 'var(--charade-600)',
+					700: 'var(--charade-700)',
+					800: 'var(--charade-800)',
+					900: 'var(--charade-900)'
 				}
 			},
 			animation: {
