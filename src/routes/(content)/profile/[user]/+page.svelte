@@ -28,7 +28,7 @@
 	$: gameResults = data.profile.gameResults;
 </script>
 
-<svelte:window
+<svelte:body
 	use:infiniteScrollAction={{
 		distance: 100,
 		cb: getNextBatch,
