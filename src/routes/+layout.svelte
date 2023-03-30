@@ -25,33 +25,29 @@
 
 <div
 	id="lettuce-wordle-root"
-	class="mx-auto box-border flex w-full max-w-screen-md flex-auto flex-col gap-2 p-1"
+	class="mx-auto w-full max-w-screen-md"
 	data-sveltekit-preload-data="hover"
 >
-	<AuthNav links={data.nav} {user} />
 	<slot />
 </div>
 
 <style>
-	:global(body) {
+	/* :global(body) {
 		margin: 0px 0px;
 		display: flex;
+		padding: 4px;
+		flex: 1 1 auto;
 		flex-direction: column;
-	}
+	} */
 
-	:global(#svelte) {
+	/* :global(#svelte) {
 		display: flex;
 		flex: 1 1 auto;
 		flex-direction: column;
-	}
+	} */
 
 	:global(body) {
-		min-height: 100%;
 		overflow-y: overlay;
-	}
-
-	:global(body, html) {
-		height: 100%;
 	}
 
 	:root {

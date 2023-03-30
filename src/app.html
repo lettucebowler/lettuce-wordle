@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="bg-charade-900">
+<html lang="en" class="min-h-full bg-charade-900">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="description" content="WordLettuce - A Wordle clone by Lettucebowler" />
@@ -9,5 +9,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		%sveltekit.head%
 	</head>
-	<div id="svelte">%sveltekit.body%</div>
+	<body class="scrollbar scrollbar-thin scrollbar-track-charade-800 scrollbar-thumb-charade-600">
+		<div id="svelte">%sveltekit.body%</div>
+	</body>
 </html>
