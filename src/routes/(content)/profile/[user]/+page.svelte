@@ -40,7 +40,7 @@
 
 <svelte:body
 	use:infiniteScrollAction={{
-		distance: 200,
+		distance: 100,
 		cb: getNextBatch,
 		immediate: false,
 		disabled: !fetchMore
