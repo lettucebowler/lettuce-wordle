@@ -4,15 +4,13 @@
 	import LettuceAvatar from '$lib/components/LettuceAvatar.svelte';
 
 	export let data: import('./$types').PageData;
-	$: value = data.leaderboard.scores;
 </script>
 
 <main class="grid gap-8">
 	<h1 class="text-center text-3xl font-bold text-snow-300">LeaderBoard</h1>
 	<P>
-		Score for one game is calculated as 7 minus the number of guesses taken. 1 guess is 6 points. 6
-		guesses is 1 point. 10 guesses is -3 points. Total score is running total for the last 7 days.
-		Highest wins.
+		Each successful game earns 1 point, plus a bonus point for the number of guesses under 6 it took
+		to guess the word. 6 guesses is 1 point. 5 guesses is 1 points plus 1 bonus point, etc.
 	</P>
 	<div class="grid w-full gap-2 text-snow-300">
 		<div
@@ -24,7 +22,7 @@
 		</div>
 		<div class="grid w-full gap-2">
 			{#each data.leaderboard.scores as score, i (i)}
-				{@const position = value.filter((s) => s.score > score.score).length + 1}
+				{@const position = data.leaderboard.scores.filter((s) => s.score > score.score).length + 1}
 				<a href={`/profile/${score.user}`}>
 					<div
 						class="box-border grid w-full grid-cols-[1fr,_50px] gap-2 rounded-xl p-2 text-xl font-medium sm:grid-cols-[1fr,_50px,_50px] sm:gap-8"
