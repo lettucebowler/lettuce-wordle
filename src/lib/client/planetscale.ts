@@ -23,28 +23,6 @@ export const saveGameResults = async (gameResult: GameResult) => {
 	return results;
 };
 
-// export const getLeaderBoardResults = async (gameNum: number) => {
-// 	const conn = client.connection();
-// 	const results = await conn.execute(
-// 		'select username, github_id, sum(attempts), count(attempts), (count(attempts) * 7) - sum(attempts) from game_results a inner join users b on a.user_id = b.github_id where gamenum > ? and gamenum <= ? group by user_id order by (count(attempts) * 7) - sum(attempts) desc, username  limit 10',
-// 		[gameNum - 7, gameNum]
-// 	);
-// 	const { rows } = results;
-
-// 	const scores = rows.map((row) => {
-// 		const [user, userId, sum, count, score] = Object.values(row);
-// 		return {
-// 			user,
-// 			userId,
-// 			sum: parseInt(sum),
-// 			count: parseInt(count),
-// 			score: parseInt(score)
-// 		};
-// 	});
-
-// 	return scores as LeaderboardResults[];
-// };
-
 export const getLeaderBoardResults = async (gameNum: number) => {
 	const conn = client.connection();
 	const results = await conn.execute(

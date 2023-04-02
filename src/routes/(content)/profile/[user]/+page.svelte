@@ -68,7 +68,7 @@
 			>
 				<h2 class="flex justify-between text-center text-xl font-medium text-snow-300">
 					<span class="text-left">#{gameResult.gamenum}</span><span class="text-right"
-						>{gameResult.attempts || 0}</span
+						>{1 + 6 - gameResult.answers.length / 5} pts</span
 					>
 				</h2>
 				<div class="grid grid-cols-5 gap-1">
