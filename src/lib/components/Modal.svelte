@@ -4,12 +4,7 @@
 	import { appName } from '$lib/util/store';
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
-	import {
-		clickOutsideAction,
-		clickToCopyAction,
-		notifyAction,
-		intervalFnStore
-	} from 'svelte-legos';
+	import { clickOutsideAction, clickToCopyAction } from 'svelte-legos';
 	import AuthForm from './AuthForm.svelte';
 
 	export const modalActions = {

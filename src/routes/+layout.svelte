@@ -1,5 +1,4 @@
 <script lang="ts">
-	import AuthNav from '$lib/components/AuthNav.svelte';
 	import smallFavicon from '$lib/assets/favicon-16x16.png';
 	import bigFavicon from '$lib/assets/favicon-32x32.png';
 	import appleTouchIcon from '$lib/assets/apple-touch-icon.png';
@@ -7,11 +6,6 @@
 	import '$lib/assets/app.css';
 	import { appName } from '$lib/util/store';
 	import { getGameNum } from '$lib/util/share';
-	import type { UserProfile } from '$lib/types/auth';
-	import type { LayoutData } from './$types';
-
-	export let data: LayoutData;
-	const user = data.session?.user as UserProfile;
 </script>
 
 <svelte:head>
@@ -30,28 +24,3 @@
 >
 	<slot />
 </div>
-
-<style>
-	/* :global(body) {
-		margin: 0px 0px;
-		display: flex;
-		padding: 4px;
-		flex: 1 1 auto;
-		flex-direction: column;
-	} */
-
-	/* :global(#svelte) {
-		display: flex;
-		flex: 1 1 auto;
-		flex-direction: column;
-	} */
-
-	:global(body) {
-		overflow-y: overlay;
-	}
-
-	:root {
-		font-family: --apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
-			'Open Sans', 'Helvetica Neue', sans-serif;
-	}
-</style>

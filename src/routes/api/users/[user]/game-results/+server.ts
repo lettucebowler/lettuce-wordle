@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import { DEFAULT_DB_PROVIDER } from '$env/static/private';
-const dbProviderEnum = ['d1', 'planetscale'];
 const getGameResultsRequestSchema = z.object({
 	offset: z.coerce
 		.number({ invalid_type_error: 'offset must be an integer' })

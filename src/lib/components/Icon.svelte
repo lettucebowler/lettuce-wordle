@@ -9,7 +9,7 @@
 		clipRule?: 'evenodd' | 'inherit';
 	};
 
-	const pathMap: Map<String, Path[]> = new Map([
+	const pathMap: Map<string, Path[]> = new Map([
 		[
 			'home',
 			[
