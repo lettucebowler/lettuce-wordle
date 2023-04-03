@@ -1,8 +1,8 @@
-// import type { Config } from '@sveltejs/adapter-vercel';
-// export const config: Config = {
-// 	regions: ['iad1'],
-// 	runtime: 'edge'
-// };
+import type { Config } from '@sveltejs/adapter-vercel';
+export const config: Config = {
+	regions: ['iad1'],
+	runtime: 'edge'
+};
 
 import { getGameResults } from '$lib/util/gameresults';
 import type { PageServerLoad } from './$types';
