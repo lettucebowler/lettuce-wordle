@@ -6,16 +6,16 @@ devDependencies:
     version: 0.5.1
   '@auth/sveltekit':
     specifier: 0.3.0
-    version: 0.3.0(@sveltejs/kit@1.15.1)(svelte@3.58.0)
+    version: 0.3.0(@sveltejs/kit@1.15.2)(svelte@3.58.0)
   '@planetscale/database':
-    specifier: ^1.6.0
-    version: 1.6.0
+    specifier: ^1.7.0
+    version: 1.7.0
   '@sveltejs/adapter-vercel':
     specifier: ^2.4.1
-    version: 2.4.1(@sveltejs/kit@1.15.1)
+    version: 2.4.1(@sveltejs/kit@1.15.2)
   '@sveltejs/kit':
-    specifier: ^1.15.1
-    version: 1.15.1(svelte@3.58.0)(vite@4.2.1)
+    specifier: ^1.15.2
+    version: 1.15.2(svelte@3.58.0)(vite@4.2.1)
   '@types/cookie':
     specifier: ^0.5.1
     version: 0.5.1
@@ -68,8 +68,8 @@ devDependencies:
     specifier: ^3.2.0
     version: 3.2.0(postcss@8.4.21)(svelte@3.58.0)
   svelte-legos:
-    specifier: ^0.1.8
-    version: 0.1.8(svelte@3.58.0)
+    specifier: ^0.1.9
+    version: 0.1.9(svelte@3.58.0)
   svelte2tsx:
     specifier: ^0.6.11
     version: 0.6.11(svelte@3.58.0)(typescript@5.0.3)
@@ -110,14 +110,14 @@ packages:
       preact-render-to-string: 5.2.3(preact@10.11.3)
     dev: true
 
-  /@auth/sveltekit@0.3.0(@sveltejs/kit@1.15.1)(svelte@3.58.0):
+  /@auth/sveltekit@0.3.0(@sveltejs/kit@1.15.2)(svelte@3.58.0):
     resolution: {integrity: sha512-J9uwaKadzPaQMYec9CYpa9WAjV5EIMEhj4vTuJH6HTp2FJOOJQB5t19WqWv9rYzBVm2rBTPPplQXPI5UKOvg4Q==}
     peerDependencies:
       '@sveltejs/kit': ^1.0.0
       svelte: ^3.54.0
     dependencies:
       '@auth/core': 0.5.1
-      '@sveltejs/kit': 1.15.1(svelte@3.58.0)(vite@4.2.1)
+      '@sveltejs/kit': 1.15.2(svelte@3.58.0)(vite@4.2.1)
       svelte: 3.58.0
     transitivePeerDependencies:
       - nodemailer
@@ -635,8 +635,8 @@ packages:
     resolution: {integrity: sha512-003xWiCuvePbLaPHT+CRuaV4GlyCAVm6XYSbBZDHoWZGn1mNkVKFaDbGJjjxmEFvizUwlCoM6O18FCBMMky2zQ==}
     dev: true
 
-  /@planetscale/database@1.6.0:
-    resolution: {integrity: sha512-eb02567S706Xme/nVwx+EN/wyoHhHBXl1a7+67R/Xm91myEpLn0vZNl58TvLZztBxje4gga16lc8dLt0elNrJA==}
+  /@planetscale/database@1.7.0:
+    resolution: {integrity: sha512-lWR6biXChUyQnxsT4RT1CIeR3ZJvwTQXiQ+158MnY3VjLwjHEGakDzdH9kwUGPk6CHvu6UeqRXp1DgUOVHJFTw==}
     engines: {node: '>=16'}
     dev: true
 
@@ -652,12 +652,12 @@ packages:
       picomatch: 2.3.1
     dev: true
 
-  /@sveltejs/adapter-vercel@2.4.1(@sveltejs/kit@1.15.1):
+  /@sveltejs/adapter-vercel@2.4.1(@sveltejs/kit@1.15.2):
     resolution: {integrity: sha512-7YOHBq8onxqD5ZshQhveuSzJg9ZOicKoNZQtOnAj++0MJmPElxQ5Mjqp6aQfIhHAHl8tn5UbacCpvR39mPejgw==}
     peerDependencies:
       '@sveltejs/kit': ^1.5.0
     dependencies:
-      '@sveltejs/kit': 1.15.1(svelte@3.58.0)(vite@4.2.1)
+      '@sveltejs/kit': 1.15.2(svelte@3.58.0)(vite@4.2.1)
       '@vercel/nft': 0.22.6
       esbuild: 0.16.17
     transitivePeerDependencies:
@@ -665,8 +665,8 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/kit@1.15.1(svelte@3.58.0)(vite@4.2.1):
-    resolution: {integrity: sha512-Wexy3N+COoClTuRawVJRbLoH5HFxNrXG3uoHt/Yd5IGx8WAcJM9Nj/CcBLw/tjCR9uDDYMnx27HxuPy3YIYQUA==}
+  /@sveltejs/kit@1.15.2(svelte@3.58.0)(vite@4.2.1):
+    resolution: {integrity: sha512-rLNxZrjbrlPf8AWW8GAU4L/Vvu17e9v8EYl7pUip7x72lTft7RcxeP3z7tsrHpMSBBxC9o4XdKzFvz1vMZyXZw==}
     engines: {node: ^16.14 || >=18}
     hasBin: true
     requiresBuild: true
@@ -1023,7 +1023,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001474
-      electron-to-chromium: 1.4.352
+      electron-to-chromium: 1.4.355
       node-releases: 2.0.10
       update-browserslist-db: 1.0.10(browserslist@4.21.5)
     dev: true
@@ -1199,8 +1199,8 @@ packages:
       esutils: 2.0.3
     dev: true
 
-  /electron-to-chromium@1.4.352:
-    resolution: {integrity: sha512-ikFUEyu5/q+wJpMOxWxTaEVk2M1qKqTGKKyfJmod1CPZxKfYnxVS41/GCBQg21ItBpZybyN8sNpRqCUGm+Zc4Q==}
+  /electron-to-chromium@1.4.355:
+    resolution: {integrity: sha512-056hxzEE4l667YeOccgjhRr5fTiwZ6EIJ4FpzGps4k3YcS8iAhiaBYUBrv5E2LDQJsussscv9EEUwAYKnv+ZKg==}
     dev: true
 
   /emoji-regex@8.0.0:
@@ -2069,7 +2069,7 @@ packages:
       postcss: 8.4.21
       postcss-value-parser: 4.2.0
       read-cache: 1.0.0
-      resolve: 1.22.1
+      resolve: 1.22.2
     dev: true
 
   /postcss-js@4.0.1(postcss@8.4.21):
@@ -2232,8 +2232,8 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /resolve@1.22.1:
-    resolution: {integrity: sha512-nBpuuYuY5jFsli/JIs1oldw6fOQCBioohqWZg/2hiaOybXOft4lonv85uDOKXdf8rhyK159cxU5cDcK/NKk8zw==}
+  /resolve@1.22.2:
+    resolution: {integrity: sha512-Sb+mjNHOULsBv818T40qSPeRiuWLyaGMa5ewydRLFimneixmVy2zdivRl+AF6jaYPC8ERxGDmFSiqui6SfPd+g==}
     hasBin: true
     dependencies:
       is-core-module: 2.11.0
@@ -2460,8 +2460,8 @@ packages:
       svelte: 3.58.0
     dev: true
 
-  /svelte-legos@0.1.8(svelte@3.58.0):
-    resolution: {integrity: sha512-2eQWG6JjUQycfj6ixTKND3RbLNCvQXSudZomta54SPp1elceDHNoSaJLemeO2DE9WOXwZ18n5+Bi/kj9NvrAzg==}
+  /svelte-legos@0.1.9(svelte@3.58.0):
+    resolution: {integrity: sha512-CIw1mePW8+pXQVxZEQrNTpJBFQjEmygF7Kcn6uxXNQNSO0ZBSlfKt2DwgpBV9HoUatoCVu5YqgwynMYrX23d1Q==}
     peerDependencies:
       svelte: ^3.54.0
     dependencies:
@@ -2574,7 +2574,7 @@ packages:
       postcss-selector-parser: 6.0.11
       postcss-value-parser: 4.2.0
       quick-lru: 5.1.1
-      resolve: 1.22.1
+      resolve: 1.22.2
       sucrase: 3.31.0
     transitivePeerDependencies:
       - ts-node
@@ -2727,7 +2727,7 @@ packages:
     dependencies:
       esbuild: 0.17.15
       postcss: 8.4.21
-      resolve: 1.22.1
+      resolve: 1.22.2
       rollup: 3.20.2
     optionalDependencies:
       fsevents: 2.3.2
