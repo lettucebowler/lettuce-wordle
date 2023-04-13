@@ -109,7 +109,7 @@
 </script>
 
 <main class="flex w-full flex-auto flex-col items-center justify-between gap-2">
-	<div class="flex h-auto w-full flex-auto flex-col items-center">
+	<div class="flex h-auto w-full flex-col items-center">
 		<form
 			method="POST"
 			action="?/enter"

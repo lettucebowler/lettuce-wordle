@@ -16,7 +16,7 @@
 		"@auth/sveltekit": "0.3.0",
 		"@planetscale/database": "^1.7.0",
 		"@sveltejs/adapter-vercel": "^2.4.1",
-		"@sveltejs/kit": "^1.15.4",
+		"@sveltejs/kit": "^1.15.5",
 		"@types/cookie": "^0.5.1",
 		"@types/js-cookie": "^3.0.3",
 		"@typescript-eslint/eslint-plugin": "^5.58.0",
