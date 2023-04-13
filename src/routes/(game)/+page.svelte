@@ -108,8 +108,8 @@
 	};
 </script>
 
-<main class="flex w-full flex-auto flex-col items-center justify-between gap-2">
-	<div class="flex h-auto w-full flex-col items-center">
+<main class="flex w-full flex-auto flex-col items-center justify-end justify-between gap-2">
+	<div class="flex w-full flex-auto flex-col items-center">
 		<form
 			method="POST"
 			action="?/enter"
@@ -143,7 +143,7 @@
 			</div>
 		</form>
 	</div>
-	<div class="h-full max-h-[min(20rem,_30vh)] w-full">
+	<div class="flex h-full max-h-[min(20rem,_30vh)] w-full flex-[5_1_auto] flex-col">
 		<LettuceKeyboard
 			on:key={(e) => handleKey(e.detail)}
 			answers={getKeyStatuses(data.state, data.answers)}

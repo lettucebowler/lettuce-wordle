@@ -19,7 +19,7 @@
 
 <div
 	id="lettuce-wordle-root"
-	class="mx-auto w-full max-w-screen-md flex flex-col flex-auto"
+	class="mx-auto flex w-full max-w-screen-md flex-auto flex-col"
 	data-sveltekit-preload-data="hover"
 >
 	<slot />
