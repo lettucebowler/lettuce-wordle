@@ -2,23 +2,21 @@
 	import { fly } from 'svelte/transition';
 	import { getGameStatus } from '$lib/util/share';
 	import { appName } from '$lib/util/store';
-	import { onMount } from 'svelte';
-	import { browser } from '$app/environment';
 	import { clickOutsideAction, clickToCopyAction } from 'svelte-legos';
+	import { timeUntilNextGame } from '$lib/stores/time';
 	import AuthForm from './AuthForm.svelte';
+	import { trapFocus } from '$lib/actions/trapFocus';
 
-	export const modalActions = {
-		open(answers: string[], guesses: number, success: boolean, user = '') {
-			authenticated = !!user;
-			share = getGameStatus($appName, answers);
-			attempts = guesses;
-			won = success;
-			visible = true;
-			if (dialog && !dialog.open) {
-				dialog.showModal();
-			}
+	export function open(answers: string[], guesses: number, success: boolean, user = '') {
+		authenticated = !!user;
+		share = getGameStatus($appName, answers);
+		attempts = guesses;
+		won = success;
+		visible = true;
+		if (dialog && !dialog.open) {
+			dialog.showModal();
 		}
-	};
+	}
 
 	let dialog: HTMLDialogElement;
 	let share = '';
@@ -42,38 +40,15 @@
 			.toString()
 			.padStart(2, '0')}`;
 	};
-
-	const getTimeUntilReset = () => {
-		const now = new Date().getTime();
-		const tomorrow = new Date();
-		tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
-		tomorrow.setUTCHours(0, 0, 0, 0);
-		const secondsUntil = Math.floor((tomorrow.getTime() - now) / 1000);
-		if (browser && secondsUntil === 0) {
-			location.reload();
-		}
-		return secondsUntil;
-	};
-
-	let timeUntil: number = getTimeUntilReset();
-
-	onMount(() => {
-		setInterval(() => {
-			timeUntil = getTimeUntilReset();
-		}, 1000);
-	});
-
-	function handleOutsideClick() {
-		closeModal();
-	}
 </script>
 
 <dialog
 	bind:this={dialog}
 	class="open:opacity-1 box-border w-full max-w-xs rounded-2xl bg-charade-800 p-2 backdrop:animate-fadein backdrop:backdrop-blur-sm open:pointer-events-auto open:animate-flyup"
 	open={false}
+	use:trapFocus
 >
-	<div class="flex flex-col gap-2" use:clickOutsideAction on:clickoutside={handleOutsideClick}>
+	<div class="flex flex-col gap-2" use:clickOutsideAction on:clickoutside={closeModal}>
 		<div class="flex h-8 justify-between">
 			<div class="aspect-square h-full" />
 			<h2 class="col-start-2 mt-0 flex-auto text-center text-2xl text-snow-300">&nbsp;Success!</h2>
@@ -106,7 +81,7 @@
 			{/if}
 		</div>
 		<div class="grid place-items-center p-2 text-center font-bold text-snow-300">
-			Next word in {formatTime(timeUntil)}
+			Next word in {formatTime($timeUntilNextGame)}
 		</div>
 		{#if !authenticated}
 			<AuthForm mode="login">

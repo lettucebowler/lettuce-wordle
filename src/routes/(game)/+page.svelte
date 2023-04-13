@@ -14,16 +14,14 @@
 	export let data: import('./$types').PageData;
 	export let form: import('./$types').ActionData;
 
-	let modalActions: {
-		open(answers: string[], guesses: number, success: boolean, user: string): void;
-	};
+	let modal: Modal;
 	let invalidForm = false;
 
 	const rows = Array(6);
 	const columns = Array(5);
 
 	const openModal = (answers: string[], guesses: number, success: boolean, user = '') => {
-		setTimeout(() => modalActions?.open(answers, guesses, success, user), 500);
+		setTimeout(() => modal.open(answers, guesses, success, user), 500);
 	};
 
 	const handleKey = (key: string) => {
@@ -152,4 +150,4 @@
 		/>
 	</div>
 </main>
-<Modal bind:modalActions />
+<Modal bind:this={modal} />
