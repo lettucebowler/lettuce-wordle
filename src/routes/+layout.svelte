@@ -6,6 +6,8 @@
 	import '$lib/assets/app.css';
 	import { appName } from '$lib/util/store';
 	import { getGameNum } from '$lib/util/share';
+	import AuthNav from '$lib/components/AuthNav.svelte';
+	export let data;
 </script>
 
 <svelte:head>
@@ -22,6 +24,7 @@
 	class="mx-auto flex w-full max-w-screen-md flex-auto flex-col"
 	data-sveltekit-preload-data="hover"
 >
+	<AuthNav links={data.nav} user={data?.session?.user} />
 	<slot />
 </div>
 

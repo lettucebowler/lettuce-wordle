@@ -1,11 +1,3 @@
-<script lang="ts">
-	import AuthNav from '$lib/components/AuthNav.svelte';
-	import ContentContainer from '$lib/components/ContentContainer.svelte';
-
-	export let data;
-</script>
-
-<ContentContainer mode="game">
-	<AuthNav links={data.nav} user={data?.session?.user} />
+<div class="flex flex-auto flex-col items-center gap-2 p-1">
 	<slot />
-</ContentContainer>
+</div>
