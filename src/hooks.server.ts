@@ -8,7 +8,7 @@ import {
 	SK_AUTH_GITHUB_CLIENT_SECRET,
 	AUTH_SECRET
 } from '$env/static/private';
-import { getGameFromCookie } from '$lib/util/state';
+import { getGameFromCookie } from '$lib/util/decodeCookie.server';
 import { upsertUser } from '$lib/util/gameresults';
 
 import type { Handle } from '@sveltejs/kit';

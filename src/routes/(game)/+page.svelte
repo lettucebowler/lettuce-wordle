@@ -7,7 +7,7 @@
 	import LettuceKeyboard from '$lib/components/LettuceKeyboard.svelte';
 	import LetterBox from '$lib/components/LetterBox.svelte';
 	import { applyKey, getKeyStatuses, applyWord } from '$lib/util/gameFunctions';
-	import { getCookieFromGameState } from '$lib/util/state';
+	import { getCookieFromGameState } from '$lib/util/encodeCookie';
 	import Cookies from 'js-cookie';
 	import { browser } from '$app/environment';
 
