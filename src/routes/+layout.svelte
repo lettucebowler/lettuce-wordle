@@ -4,7 +4,7 @@
 	import appleTouchIcon from '$lib/assets/apple-touch-icon.png';
 	import safariPinnedTabIcon from '$lib/assets/safari-pinned-tab.svg';
 	import '$lib/assets/app.css';
-	import { appName } from '$lib/util/store';
+	import { appName } from '$lib/stores/appName';
 	import { getGameNum } from '$lib/util/share';
 	import AuthNav from '$lib/components/AuthNav.svelte';
 	export let data;

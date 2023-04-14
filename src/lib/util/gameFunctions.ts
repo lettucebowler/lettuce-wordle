@@ -125,8 +125,6 @@ export const applyWord = (
 	answers: string[]
 ) => {
 	const answer = getDailyWord();
-	const guessLetters = data.map((l: string) => l.toLowerCase());
-	const guess = guessLetters.join('');
 	const metadata = {
 		invalid: false,
 		success: false
@@ -140,7 +138,8 @@ export const applyWord = (
 			updatedAnswers: answers
 		};
 	}
-	if (guess.length !== 5 || !isValidWord(guess)) {
+	const guess = guesses.at(-1);
+	if (!guess || guess.guess.length !== 5 || !isValidWord(guess.guess)) {
 		metadata.invalid = true;
 		return {
 			updatedGuesses: guesses,
@@ -148,15 +147,8 @@ export const applyWord = (
 			updatedAnswers: answers
 		};
 	}
-	const statuses = checkWord(guessLetters, answer);
-	const updatedGuesses = guesses
-		.map((guess) => {
-			return {
-				guess: guess.guess,
-				complete: guess.guess.length === 5
-			};
-		})
-		.concat([{ guess, complete: true }]);
+	const statuses = checkWord(guess.guess.split(''), answer);
+	guess.complete = true;
 	answers.push(statuses);
 
 	if (statuses === 'xxxxx') {
@@ -164,7 +156,7 @@ export const applyWord = (
 	}
 
 	return {
-		updatedGuesses,
+		updatedGuesses: guesses,
 		metadata,
 		updatedAnswers: answers
 	};

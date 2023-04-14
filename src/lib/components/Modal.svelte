@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
 	import { getGameStatus } from '$lib/util/share';
-	import { appName } from '$lib/util/store';
+	import { appName } from '$lib/stores/appName';
 	import { clickOutsideAction, clickToCopyAction } from 'svelte-legos';
 	import { timeUntilNextGame } from '$lib/stores/time';
 	import AuthForm from './AuthForm.svelte';

@@ -12995,12 +12995,6 @@ export const getDailyWord = () => {
 	return getWord(random);
 };
 
-export const getRandomWord = () => {
-	const seed = new Date().getTime();
-	const random = mulberry32(seed);
-	return getWord(random);
-};
-
-export const isValidWord = (word: string) => answerList.concat(allowedGuesses).includes(word);
+export const isValidWord = (word: string) => answerList.includes(word) || allowedGuesses.includes(word);
 
 export default answerList;

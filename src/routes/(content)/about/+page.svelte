@@ -1,5 +1,5 @@
 <script>
-	import { appName } from '$lib/util/store';
+	import { appName } from '$lib/stores/appName';
 	import P from '$lib/components/P.svelte';
 	import A from '$lib/components/A.svelte';
 </script>
