@@ -8,8 +8,6 @@ import type { WordLettuceSession } from '$lib/types/auth';
 import type { GameResult } from '$lib/types/gameresult';
 
 export const load: import('./$types').PageServerLoad = async (event) => {
-	event.depends('/');
-
 	const gameState = event.locals.gameState;
 
 	const answers = checkWords(gameState, getDailyWord());

@@ -1,30 +1,27 @@
 import { getGameNum } from './share';
+import type { Guess } from '$lib/types/gameresult';
 
-const encodeState = (state: { gameNum: number; guesses: string[] }): string => {
+const encodeState = (state: { gameNum: number; guesses: Guess[] }): string => {
 	const stateString = JSON.stringify(state);
 	const encoded = btoa(stateString);
 	return encoded;
 };
 
-export const getCookieFromGameState = (
-	gameState: {
-		guess: string;
-		complete: boolean;
-	}[]
-) => {
+export const getCookieFromGameState = (gameState: Guess[]) => {
 	const gameNum = getGameNum();
 	const saveState = {
 		gameNum,
-		guesses: gameState.map((guess) => guess.guess)
+		guesses: gameState
 	};
 	const cookie = encodeState(saveState);
 	return cookie;
 };
 
+import { GameStateSchema } from '$lib/types/gameresult';
 const decodeState = (stateBuffer: string) => {
 	let state: {
 		gameNum: number;
-		guesses: { guess: string; complete: true }[];
+		guesses: Guess[];
 	} = {
 		gameNum: getGameNum(),
 		guesses: []
@@ -36,22 +33,18 @@ const decodeState = (stateBuffer: string) => {
 		const stateString = atob(stateBuffer);
 		const parsed = JSON.parse(stateString);
 		const currentGameNum = getGameNum();
-		const { gameNum, guesses } = parsed;
-		if (!guesses || gameNum !== currentGameNum || guesses?.at(0)?.complete) {
+		if (parsed?.gameNum !== currentGameNum) {
 			return state;
 		}
-		state = {
-			gameNum,
-			guesses: guesses.map((guess: string) => ({ guess, complete: guess.length === 5 }))
-		};
+		const result = GameStateSchema.safeParse(parsed);
+		if (!result.success) {
+			return state;
+		}
+		return result.data;
 	} catch (e) {
 		console.log('error decoding state', e);
 		return state;
 	}
-	return state;
 };
 
-export const getGameFromCookie = (wordLettuceState: string) => {
-	const gameState = decodeState(wordLettuceState);
-	return gameState;
-};
+export const getGameFromCookie = (wordLettuceState: string) => decodeState(wordLettuceState);

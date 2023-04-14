@@ -1,3 +1,4 @@
+import type { Guess } from '$lib/types/gameresult';
 import { getDailyWord, isValidWord } from './words';
 
 const getLetterLocations = (s: string, l: string) => {
@@ -81,14 +82,7 @@ export const getKeyStatuses = (
 	return { ...incorrect, ...contains, ...correct };
 };
 
-export const applyKey = (
-	key: string,
-	guesses: {
-		guess: string;
-		complete: boolean;
-	}[],
-	answers: string[]
-) => {
+export const applyKey = (key: string, guesses: Guess[], answers: string[]) => {
 	if (answers?.at(-1) === 'xxxxx') {
 		return guesses;
 	}
