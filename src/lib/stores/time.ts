@@ -20,7 +20,6 @@ export const timeUntilNextGame = derived(time, ($time) => {
 // Midnight on some day in February 2022, can't remember the exact date. You can look it up if you care.
 const initial = new Date(1643673600000);
 const msInADay = 1000 * 60 * 60 * 24;
-export const gameNum = derived(
-    time,
-    ($time) => Math.floor(($time.getTime() - initial.getTime()) / msInADay)
-)
+export const gameNum = derived(time, ($time) =>
+	Math.floor(($time.getTime() - initial.getTime()) / msInADay)
+);

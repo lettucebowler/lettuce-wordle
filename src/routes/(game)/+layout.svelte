@@ -1,3 +1,3 @@
-<div class="flex flex-auto flex-col items-center gap-2 p-1">
+<div class="flex flex-auto flex-col items-center gap-2">
 	<slot />
 </div>

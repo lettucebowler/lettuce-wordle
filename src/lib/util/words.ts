@@ -12995,6 +12995,7 @@ export const getDailyWord = () => {
 	return getWord(random);
 };
 
-export const isValidWord = (word: string) => answerList.includes(word) || allowedGuesses.includes(word);
+export const isValidWord = (word: string) =>
+	answerList.includes(word) || allowedGuesses.includes(word);
 
 export default answerList;
