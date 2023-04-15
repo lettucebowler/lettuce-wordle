@@ -7,6 +7,8 @@
 	import type { UserProfile } from '$lib/types/auth';
 	import AuthForm from '$lib/components/AuthForm.svelte';
 	import LettuceAvatar from '$lib/components/LettuceAvatar.svelte';
+	import { crossfade } from 'svelte/transition';
+	import { cubicOut } from 'svelte/easing';
 
 	export let user: UserProfile | null | undefined;
 	export let links: {
@@ -46,6 +48,11 @@
 	afterNavigate(() => {
 		if (dropdownVisible) dropdownVisible = false;
 	});
+
+	const [send, recieve] = crossfade({
+		duration: 250,
+		easing: cubicOut
+	});
 </script>
 
 <div class="w-full">
@@ -57,15 +64,26 @@
 			<div class="flex">
 				<div class="hidden gap-4 sm:flex">
 					{#each links.filter((link) => link.enabled) as link}
-						<a
-							class="flex h-14 cursor-pointer overflow-hidden rounded-xl border-transparent px-6 py-2 text-3xl font-medium text-snow-300 hover:bg-charade-700 active:bg-charade-800"
-							class:ml-auto={link.margin === 'left'}
-							class:bg-charade-700={link.path === $page.url.pathname}
-							class:text-snow-100={link.path !== $page.url.pathname}
-							href={link.path}
-						>
-							{link.name}</a
-						>
+						{@const current = $page.url.pathname === link.path}
+						<div class="grid items-center">
+							{#if current}
+								<div
+									in:recieve={{ key: 'current-link' }}
+									out:send={{ key: 'current-link' }}
+									class="col-[1] row-[1] grid h-full items-center rounded-xl hover:bg-charade-700 active:bg-charade-800"
+									class:bg-charade-700={current}
+								/>
+							{/if}
+							<a
+								class="z-10 col-[1] row-[1] flex h-14 cursor-pointer overflow-hidden border-transparent px-6 py-2 text-3xl font-medium text-snow-300"
+								class:ml-auto={link.margin === 'left'}
+								class:text-snow-100={current}
+								aria-current={current}
+								href={link.path}
+							>
+								{link.name}</a
+							>
+						</div>
 					{/each}
 				</div>
 				<div class="ml-auto h-14">
