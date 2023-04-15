@@ -5,6 +5,7 @@
 	import { fetcher } from 'itty-fetcher';
 	import type { GameResult } from '$lib/types/gameresult';
 	import { page } from '$app/stores';
+	import { browser } from '$app/environment';
 
 	export let data: PageData;
 	const cells = Array(30);
@@ -16,7 +17,7 @@
 		}
 		const searchParams = new URLSearchParams({
 			count: '30',
-			offset: `${gameResults.length}`
+			offset: `${gameResults.length + Number($page.url.searchParams.get('offset') || 0)}`
 		});
 		if ($page.url.searchParams.get('dbProvider')) {
 			searchParams.set('dbProvider', $page.url.searchParams.get('dbProvider') || '');
@@ -25,16 +26,15 @@
 		const fetchResult = (await fetcher().get(
 			`/api/users/${data.profile.user}/game-results`,
 			searchParams
-		)) as { gameResults: GameResult[] };
-		if (fetchResult?.gameResults) {
-			gameResults = gameResults.concat(fetchResult.gameResults);
+		)) as { totalCount: number; results: GameResult[] };
+		if (fetchResult?.results) {
+			gameResults = gameResults.concat(fetchResult.results);
 		}
 		const newLength = gameResults.length;
 		if (newLength - oldLength < 30) {
 			fetchMore = false;
 		}
 	}
-
 	$: gameResults = data.profile.gameResults;
 </script>
 
@@ -89,13 +89,25 @@
 			</div>
 		{/each}
 	</div>
-	<div class="h-5" />
-	{#if fetchMore}
-		<p class="rounded-xl p-2 text-center text-center text-xl text-snow-300">Loading...</p>
-	{/if}
 	{#if !data.profile.gameResults.length}
 		<p class="rounded-xl p-2 text-center text-center text-xl text-snow-300">
 			No wins in the last seven days...
 		</p>
 	{/if}
+	{#if browser && fetchMore}
+		<p class="rounded-xl p-2 text-center text-center text-xl text-snow-300">Loading...</p>
+	{:else}
+		<nav class="mx-4 flex justify-between gap-2">
+			{#each [{ offset: data.prevOffset, title: 'Previous', enabled: data.currentOffset - 30 >= 0 }, { offset: data.nextOffset, title: 'Next', enabled: data.currentOffset + gameResults.length < data.profile.gameCount }] as offset}
+				<a
+					href="?offset={offset.offset}{data.dbProvider ? `&dbProvider=${data.dbProvider}` : ''}"
+					title={offset.title}
+					class="text-lg font-medium text-snow-300"
+					class:invisible={!offset.enabled}>{offset.title}</a
+				>
+			{/each}
+		</nav>
+	{/if}
+
+	<div class="h-5" />
 </main>

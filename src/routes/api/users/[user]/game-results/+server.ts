@@ -32,6 +32,6 @@ export const GET: RequestHandler = async (event) => {
 
 	const gameResults = await getGameResults(event.params.user, data.count, dbProvider, data.offset);
 	return json({
-		gameResults
+		...gameResults
 	});
 };

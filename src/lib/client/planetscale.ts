@@ -47,12 +47,22 @@ export const getLeaderBoardResults = async (gameNum: number) => {
 
 export const getGameResults = async (user: string, count: number, offset = 0) => {
 	const conn = client.connection();
-	const results = await conn.execute(
-		'select username user, user_id, gamenum, answers, attempts from game_results a inner join users b on a.user_id = b.github_id where username = ? order by gamenum desc limit ? offset ?',
-		[user, count, offset]
-	);
+	const [results, countResults] = await Promise.all([
+		conn.execute(
+			'select username user, user_id, gamenum, answers, attempts from game_results a inner join users b on a.user_id = b.github_id where username = ? order by gamenum desc limit ? offset ?',
+			[user, count, offset]
+		),
+		conn.execute(
+			'select count(*) rowCount from game_results a inner join users b on a.user_id = b.github_id where username = ?',
+			[user]
+		)
+	]);
 	const { rows } = results;
-	return rows as GameResult[];
+	const countRow = countResults.rows.at(0);
+	return {
+		totalCount: Number(countRow.rowCount),
+		results: rows as GameResult[]
+	};
 };
 
 export const upsertUser = async (user: UserRecord) => {

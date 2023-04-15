@@ -11,7 +11,6 @@
 	import { browser } from '$app/environment';
 
 	export let data: import('./$types').PageData;
-	$: console.log(data);
 	export let form: import('./$types').ActionData;
 
 	let modal: Modal;

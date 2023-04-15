@@ -13,11 +13,14 @@ const apiWordlettuce = fetcher({
 });
 
 export const getGameResults = async (user: string, count: number, offset = 0) => {
-	const { results } = (await apiWordlettuce.get(`/v1/users/${user}/gameresults`, {
+	const { results, totalCount } = (await apiWordlettuce.get(`/v1/users/${user}/gameresults`, {
 		count,
 		offset
-	})) as { results: GameResult[] };
-	return results as GameResult[];
+	})) as { results: GameResult[]; totalCount: number };
+	return {
+		results: results as GameResult[],
+		totalCount
+	};
 };
 
 export const getLeaderBoardResults = async (gamenum: number) => {

@@ -21,19 +21,28 @@ export const getGameResults = async (
 	offset = 0
 ) => {
 	console.time(`load game results from ${provider}`);
-	let gameResults: GameResult[];
+	let gameResults: GameResult[] = [];
+	let totalCount = 0;
+	let results;
 	switch (provider) {
 		case 'planetscale':
-			gameResults = await getGameResultsPlanetscale(user, count, offset);
+			results = await getGameResultsPlanetscale(user, count, offset);
+			gameResults = results.results;
+			totalCount = results.totalCount;
 			break;
 		case 'd1':
-			gameResults = await getGameResultsD1(user, count, offset);
+			results = await getGameResultsD1(user, count, offset);
+			gameResults = results.results;
+			totalCount = results.totalCount;
 			break;
 		default:
 			throw Error('invalid provider');
 	}
 	console.timeEnd(`load game results from ${provider}`);
-	return gameResults as GameResult[];
+	return {
+		totalCount,
+		results: gameResults as GameResult[]
+	};
 };
 
 export const getLeaderBoardResults = async (gamenum: number, provider: string) => {

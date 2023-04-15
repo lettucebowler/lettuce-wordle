@@ -15,8 +15,10 @@ import type { Handle } from '@sveltejs/kit';
 
 const providerHandler: Handle = async ({ event, resolve }) => {
 	const searchParams = new URL(event.request.url).searchParams;
-	const dbProvider = searchParams.get('dbProvider') || DEFAULT_DB_PROVIDER;
+	const dbProviderOverride = searchParams.get('dbProvider');
+	const dbProvider = dbProviderOverride || DEFAULT_DB_PROVIDER;
 	event.locals.dbProvider = dbProvider;
+	event.locals.dbProviderOverwritten = !!dbProviderOverride;
 	const logString = `${event.request.method} ${event.url.pathname}`;
 	console.time(logString);
 	const response = await resolve(event);
