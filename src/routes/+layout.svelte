@@ -6,7 +6,7 @@
 	import '$lib/assets/app.css';
 	import { appName } from '$lib/stores/appName';
 	import { getGameNum } from '$lib/util/share';
-	import AuthNav from '$lib/components/AuthNav.svelte';
+	import AuthNav from './AuthNav.svelte';
 	export let data;
 </script>
 

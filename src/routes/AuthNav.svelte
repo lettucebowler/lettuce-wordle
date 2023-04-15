@@ -5,8 +5,8 @@
 	import { onMount } from 'svelte';
 	import { afterNavigate } from '$app/navigation';
 	import type { UserProfile } from '$lib/types/auth';
-	import AuthForm from './AuthForm.svelte';
-	import LettuceAvatar from './LettuceAvatar.svelte';
+	import AuthForm from '$lib/components/AuthForm.svelte';
+	import LettuceAvatar from '$lib/components/LettuceAvatar.svelte';
 
 	export let user: UserProfile | null | undefined;
 	export let links: {

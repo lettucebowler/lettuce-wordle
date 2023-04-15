@@ -4,7 +4,7 @@
 	import { appName } from '$lib/stores/appName';
 	import { clickOutsideAction, clickToCopyAction } from 'svelte-legos';
 	import { timeUntilNextGame } from '$lib/stores/time';
-	import AuthForm from './AuthForm.svelte';
+	import AuthForm from '$lib/components/AuthForm.svelte';
 	import { trapFocus } from '$lib/actions/trapFocus';
 
 	export function open(answers: string[], guesses: number, success: boolean, user = '') {

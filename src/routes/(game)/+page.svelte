@@ -1,17 +1,17 @@
 <script lang="ts">
-	import Modal from '$lib/components/Modal.svelte';
+	import Modal from './Modal.svelte';
 	import { slide } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
 	import { onMount } from 'svelte';
 	import { enhance, type SubmitFunction } from '$app/forms';
-	import LettuceKeyboard from '$lib/components/LettuceKeyboard.svelte';
-	import LetterBox from '$lib/components/LetterBox.svelte';
+	import Keyboard from './Keyboard.svelte';
 	import { applyKey, getKeyStatuses, applyWord } from '$lib/util/gameFunctions';
 	import { getCookieFromGameState } from '$lib/util/encodeCookie';
 	import Cookies from 'js-cookie';
 	import { browser } from '$app/environment';
 
 	export let data: import('./$types').PageData;
+	$: console.log(data);
 	export let form: import('./$types').ActionData;
 
 	let modal: Modal;
@@ -76,8 +76,7 @@
 
 	const enhanceForm: SubmitFunction = (event) => {
 		const guess = event.data.getAll('guess').map((l) => l.toString().toLowerCase());
-
-		if (guess.length < 5) {
+		if (guess.join('').length < 5) {
 			event.cancel();
 			invalidForm = true;
 			setTimeout(() => {
@@ -129,14 +128,31 @@
 						{#each columns as _, j}
 							{@const answer = (data.answers[realIndex] || '_____')[j]}
 							{@const letter = data.state[realIndex]?.guess?.at(j) || ''}
-							<LetterBox
-								{answer}
-								{letter}
-								slot={j}
-								name={current ? 'guess' : 'not'}
-								bulge={data.answers[realIndex]?.length === 5}
-								wiggle={invalidForm && current}
-							/>
+							{@const doWiggle = invalidForm && current}
+							{@const doBulge = browser && data.answers[realIndex]?.length === 5}
+							{@const delayTime = doWiggle ? '0s' : `${j * 0.03}s`}
+							<div
+								class="box-border grid aspect-square items-center rounded-xl text-center text-2xl font-bold text-snow-300 shadow sm:text-3xl"
+								class:border-charade-700={answer === '_'}
+								class:border-4={answer === '_'}
+								class:border-solid={answer === '_'}
+								class:bg-aurora-400={answer === 'x'}
+								class:bg-aurora-300={answer === 'c'}
+								class:bg-charade-700={answer === 'i'}
+								class:bg-transparent={answer === '_'}
+								class:animate-bulge={doBulge}
+								class:animate-wiggle={doWiggle}
+								style:animation-delay={delayTime}
+								style:transition-delay={delayTime}
+							>
+								<input
+									type="hidden"
+									readonly
+									value={letter.toUpperCase()}
+									name={current ? 'guess' : 'not'}
+								/>
+								{letter.toUpperCase()}
+							</div>
 						{/each}
 					</div>
 				{/each}
@@ -144,7 +160,7 @@
 		</form>
 	</div>
 	<div class="flex h-full max-h-[min(20rem,_30vh)] w-full flex-[5_1_auto] flex-col">
-		<LettuceKeyboard
+		<Keyboard
 			on:key={(e) => handleKey(e.detail)}
 			answers={getKeyStatuses(data.state, data.answers)}
 		/>
