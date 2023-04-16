@@ -58,8 +58,9 @@ export const load: import('./$types').PageServerLoad = async (event) => {
 };
 
 export const actions: import('./$types').Actions = {
-	keyboard: async ({ url, cookies, locals }) => {
-		const key: string = url.searchParams.get('key') || '';
+	keyboard: async ({ cookies, locals, request }) => {
+		const data = await request.formData();
+		const key = data.get('key');
 		const gameState = locals.gameState;
 		const guesses = gameState || [];
 

@@ -57,8 +57,10 @@
 						<button
 							aria-label={letter}
 							title={letter}
-							formaction="?/{letter === 'enter' ? 'enter' : 'keyboard'}&key={letter}"
+							formaction="?/{letter === 'enter' ? 'enter' : 'keyboard'}"
 							form={letter === 'enter' ? 'game' : undefined}
+							name="key"
+							value={letter}
 							bind:this={keys[letter]}
 							class="col-span-4 grid h-full w-full cursor-pointer place-items-center rounded-md border-solid border-transparent text-center text-sm font-bold text-snow-300 shadow hover:brightness-[90%] active:brightness-[75%] xl:text-base"
 							class:bg-charade-600={status === '_'}
