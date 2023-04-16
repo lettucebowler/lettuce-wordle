@@ -71,7 +71,7 @@
 									in:recieve={{ key: 'current-link' }}
 									out:send={{ key: 'current-link' }}
 									class="col-[1] row-[1] grid h-full items-center rounded-xl hover:bg-charade-700"
-									class:bg-charade-800={current}
+									class:bg-charade-700={current}
 								/>
 							{/if}
 							<a
