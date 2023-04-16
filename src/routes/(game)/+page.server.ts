@@ -60,7 +60,14 @@ export const load: import('./$types').PageServerLoad = async (event) => {
 export const actions: import('./$types').Actions = {
 	keyboard: async ({ cookies, locals, request }) => {
 		const data = await request.formData();
-		const key = data.get('key');
+		const key = data.get('key') as string;
+		if (!key) {
+			return {
+				invalid: true,
+				success: false,
+				failure: false,
+			};
+		}
 		const gameState = locals.gameState;
 		const guesses = gameState || [];
 
