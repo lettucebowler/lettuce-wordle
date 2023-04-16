@@ -70,18 +70,18 @@
 								<div
 									in:recieve={{ key: 'current-link' }}
 									out:send={{ key: 'current-link' }}
-									class="col-[1] row-[1] grid h-full items-center rounded-xl hover:bg-charade-700 active:bg-charade-800"
-									class:bg-charade-700={current}
+									class="col-[1] row-[1] grid h-full items-center rounded-xl hover:bg-charade-700"
+									class:bg-charade-800={current}
 								/>
 							{/if}
 							<a
-								class="z-10 col-[1] row-[1] flex h-14 cursor-pointer overflow-hidden border-transparent px-6 py-2 text-3xl font-medium text-snow-300"
+								class="col-[1] row-[1] flex h-14 cursor-pointer overflow-hidden rounded-xl border-transparent px-6 py-2 text-3xl font-medium text-snow-300 hover:underline"
 								class:ml-auto={link.margin === 'left'}
 								class:text-snow-100={current}
 								aria-current={current}
 								href={link.path}
 							>
-								{link.name}</a
+								<span class="z-10">{link.name}</span></a
 							>
 						</div>
 					{/each}
