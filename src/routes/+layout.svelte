@@ -12,7 +12,6 @@
 
 	$: {
 		if ($updated) {
-			console.log('app updated');
 			location.reload();
 		}
 	}
