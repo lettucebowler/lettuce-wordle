@@ -13,6 +13,7 @@
 	$: {
 		if ($updated) {
 			console.log('app updated');
+			//wow
 		}
 	}
 </script>
