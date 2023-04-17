@@ -43,8 +43,8 @@ module.exports = {
 				}
 			},
 			animation: {
-				bulge: 'bulge 0.3s linear 1',
-				wiggle: 'wiggle 0.15s linear 1',
+				bulge: 'bulge 0.3s ease-in 1',
+				wiggle: 'wiggle 0.15s ease-in 1',
 				flyup: 'flyup 0.5s ease-in 1',
 				fadein: 'fadein 0.5s ease-in 1'
 			},
