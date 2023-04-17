@@ -34,18 +34,16 @@
 	]);
 </script>
 
-<svelte:window on:keydown={clickKey} />
+<svelte:window on:keydown={(e) => keys[e.key.toLowerCase()]?.click()} />
 
 <form
 	method="POST"
 	class="grid h-full flex-auto grid-rows-3 gap-1"
 	id="keyboard"
-	use:enhance={({ action, cancel }) => {
-		const url = new URL(action);
-		if (url.searchParams.has('/keyboard')) {
-			dispatch('key', url.searchParams.get('key'));
-			cancel();
-		}
+	use:enhance={({ cancel, data }) => {
+		const key = data.get('key');
+		dispatch('key', key);
+		cancel();
 	}}
 >
 	{#each ['q,w,e,r,t,y,u,i,o,p', ',a,s,d,f,g,h,j,k,l', ',,,z,x,c,v,b,n,m,enter,backspace'] as row, i}

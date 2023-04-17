@@ -25,8 +25,12 @@
 
 	const handleKey = (key: string) => {
 		form = { invalid: false, success: false };
-		data.state = applyKey(key, data.state, data.answers);
-		data = data;
+		if (key.toLowerCase() === 'enter') {
+			formElement.requestSubmit();
+		} else {
+			data.state = applyKey(key, data.state, data.answers);
+			data = data;
+		}
 	};
 
 	const getRealIndex = (
@@ -104,6 +108,8 @@
 			update();
 		};
 	};
+
+	let formElement: HTMLFormElement;
 </script>
 
 <main class="flex w-full flex-auto flex-col items-center justify-end justify-between gap-2">
@@ -112,6 +118,7 @@
 			method="POST"
 			action="?/enter"
 			id="game"
+			bind:this={formElement}
 			use:enhance={enhanceForm}
 			class="my-auto flex w-full max-w-[min(700px,_55vh)]"
 		>
