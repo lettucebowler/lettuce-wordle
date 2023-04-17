@@ -14,7 +14,11 @@ const config = {
 			out: 'build',
 			runtime: 'edge',
 			split: true
-		})
+		}),
+		version: {
+			name: Date.now().toString(),
+			pollInterval: 5000
+		}
 	}
 };
 

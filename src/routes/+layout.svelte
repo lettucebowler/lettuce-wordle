@@ -7,7 +7,14 @@
 	import { appName } from '$lib/stores/appName';
 	import { getGameNum } from '$lib/util/share';
 	import AuthNav from './AuthNav.svelte';
+	import { updated } from '$app/stores';
 	export let data;
+
+	$: {
+		if ($updated) {
+			console.log('app updated');
+		}
+	}
 </script>
 
 <svelte:head>
