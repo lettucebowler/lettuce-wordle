@@ -65,7 +65,7 @@ export const actions: import('./$types').Actions = {
 			return {
 				invalid: true,
 				success: false,
-				failure: false,
+				failure: false
 			};
 		}
 		const gameState = locals.gameState;
