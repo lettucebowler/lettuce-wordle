@@ -27,12 +27,3 @@
 	<AuthNav links={data.nav} user={data?.session?.user} />
 	<slot />
 </div>
-
-<style>
-	:global(#svelte) {
-		height: 100%;
-		display: flex;
-		flex-direction: column;
-		flex: 1 1 auto;
-	}
-</style>
