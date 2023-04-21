@@ -16,9 +16,6 @@
 	let modal: Modal;
 	let invalidForm = false;
 
-	const rows = Array(6);
-	const columns = Array(5);
-
 	const openModal = (answers: string[], guesses: number, success: boolean, user = '') => {
 		setTimeout(() => modal.open(answers, guesses, success, user), 500);
 	};
@@ -123,7 +120,7 @@
 			class="my-auto flex w-full max-w-[min(700px,_55vh)]"
 		>
 			<div class="grid w-full grid-rows-[repeat(6,_1fr)] gap-2">
-				{#each rows as _, i (getRealIndex(i, data.state, data.answers))}
+				{#each { length: 6 } as _, i (getRealIndex(i, data.state, data.answers))}
 					{@const realIndex = getRealIndex(i, data.state, data.answers)}
 					{@const current = realIndex === data.answers.length}
 					<div
@@ -131,7 +128,7 @@
 						out:slide|local={{ duration: 150 }}
 						class="grid w-full grid-cols-[repeat(5,_1fr)] gap-2"
 					>
-						{#each columns as _, j}
+						{#each { length: 5 } as _, j}
 							{@const answer = (data.answers[realIndex] || '_____')[j]}
 							{@const letter = data.state[realIndex]?.guess?.at(j) || ''}
 							{@const doWiggle = invalidForm && current}
