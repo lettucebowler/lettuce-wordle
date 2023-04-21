@@ -27,7 +27,7 @@
 		"eslint-config-prettier": "^8.8.0",
 		"eslint-plugin-svelte3": "^4.0.0",
 		"itty-fetcher": "^0.8.1",
-		"js-cookie": "^3.0.1",
+		"js-cookie": "^3.0.2",
 		"postcss": "^8.4.23",
 		"prettier": "^2.8.7",
 		"prettier-plugin-svelte": "^2.10.0",
