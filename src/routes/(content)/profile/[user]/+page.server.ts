@@ -6,6 +6,7 @@ export const config: Config = {
 
 import { getGameResults } from '$lib/util/gameresults';
 import type { PageServerLoad } from './$types';
+import { getGameResults as queryTurso } from '$lib/client/turso';
 export const load: PageServerLoad = async (event) => {
 	const searchParams = event.url.searchParams;
 	const offset = Number(searchParams.get('offset')) || 0;
@@ -16,6 +17,7 @@ export const load: PageServerLoad = async (event) => {
 		event.locals.dbProvider,
 		offset
 	);
+	await queryTurso('lettucebowler', 30, 0);
 	const result = {
 		profile: {
 			gameResults: gameResults,
