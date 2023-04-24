@@ -1,11 +1,3 @@
-export type GameResult = {
-	gamenum: number;
-	user_id: number;
-	attempts?: number;
-	answers: string;
-	username?: string;
-};
-
 import { z } from 'zod';
 export const GuessSchema = z.object({
 	guess: z
@@ -31,3 +23,12 @@ export type LeaderboardResults = {
 	count: number;
 	score: number;
 };
+
+export const gameResultSchema = z.object({
+	user: z.string().optional(),
+	user_id: z.number().int().positive(),
+	gamenum: z.number().int().positive(),
+	answers: z.string(),
+	attempts: z.number().int().positive().optional(),
+});
+export type GameResult = z.infer<typeof gameResultSchema>;

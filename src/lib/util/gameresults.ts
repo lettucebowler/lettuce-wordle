@@ -5,13 +5,16 @@ import {
 	getLeaderBoardResults as getLeaderBoardResultsD1,
 	saveGameResults as saveGameResultsD1,
 	upsertUser as upsertUserD1
-} from '$lib/client/apiWordlettuce';
+} from '$lib/server/client/apiWordlettuce';
 import {
 	getGameResults as getGameResultsPlanetscale,
 	getLeaderBoardResults as getLeaderBoardResultsPlanetscale,
 	saveGameResults as saveGameResultsPlanetscale,
 	upsertUser as upserUserPlanetscale
-} from '$lib/client/planetscale';
+} from '$lib/server/client/planetscale';
+import {
+	getGameResults as getGameResultsTurso
+} from '$lib/server/client/turso';
 import type { UserRecord } from '$lib/types/auth';
 
 export const getGameResults = async (
@@ -24,6 +27,7 @@ export const getGameResults = async (
 	let gameResults: GameResult[] = [];
 	let totalCount = 0;
 	let results;
+	console.log(provider);
 	switch (provider) {
 		case 'planetscale':
 			results = await getGameResultsPlanetscale(user, count, offset);
@@ -34,6 +38,11 @@ export const getGameResults = async (
 			results = await getGameResultsD1(user, count, offset);
 			gameResults = results.results;
 			totalCount = results.totalCount;
+			break;
+		case 'turso':
+			results = await getGameResultsTurso(user, count, offset);
+			gameResults = results.results;
+			totalCount = Number(results.totalCount);
 			break;
 		default:
 			throw Error('invalid provider');
