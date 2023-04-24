@@ -12,9 +12,6 @@ import {
 	saveGameResults as saveGameResultsPlanetscale,
 	upsertUser as upserUserPlanetscale
 } from '$lib/server/client/planetscale';
-import {
-	getGameResults as getGameResultsTurso
-} from '$lib/server/client/turso';
 import type { UserRecord } from '$lib/types/auth';
 
 export const getGameResults = async (
@@ -38,11 +35,6 @@ export const getGameResults = async (
 			results = await getGameResultsD1(user, count, offset);
 			gameResults = results.results;
 			totalCount = results.totalCount;
-			break;
-		case 'turso':
-			results = await getGameResultsTurso(user, count, offset);
-			gameResults = results.results;
-			totalCount = Number(results.totalCount);
 			break;
 		default:
 			throw Error('invalid provider');
