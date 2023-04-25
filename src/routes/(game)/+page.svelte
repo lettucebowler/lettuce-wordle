@@ -9,6 +9,7 @@
 	import { getCookieFromGameState } from '$lib/util/encodeCookie';
 	import Cookies from 'js-cookie';
 	import { browser } from '$app/environment';
+	import toast, { Toaster } from 'svelte-french-toast';
 
 	export let data: import('./$types').PageData;
 	export let form: import('./$types').ActionData;
@@ -48,6 +49,7 @@
 		}
 	};
 
+	$: submitDisabled = data.answers?.at(-1) === 'xxxxx';
 	onMount(() => {
 		const lastAnswer = data.answers?.at(-1) || '_____';
 		if (lastAnswer === 'xxxxx') {
@@ -60,12 +62,7 @@
 		}
 	});
 
-	// handle form stuff on submit
 	$: {
-		if (form?.success && browser) {
-			openModal(data.answers, data.state?.length || 0, true, data?.session?.user?.login || '');
-		}
-
 		if (form?.invalid) {
 			invalidForm = true;
 			setTimeout(() => {
@@ -74,7 +71,38 @@
 		}
 	}
 
-	const enhanceForm: SubmitFunction = (event) => {
+	function toastError(message: string) {
+		const style =
+			'border-radius: 0.5rem; color: var(--snow-300); background: var(--charade-700); padding: 1rem 1.5rem; font-size: 18px;';
+		toast.error(message, {
+			style,
+			iconTheme: {
+				primary: 'var(--aurora-100)',
+				secondary: 'var(--snow-300)'
+			}
+		});
+	}
+
+	function toastPromise(
+		promise: Promise<any>,
+		opts: { success: string; error: string; loading: string }
+	) {
+		const style =
+			'border-radius: 0.5rem; color: var(--snow-300); background: var(--charade-700); padding: 1rem 1.5rem; font-size: 18px;';
+		toast.promise(promise, opts, {
+			style,
+			iconTheme: {
+				primary: 'var(--aurora-400)',
+				secondary: 'var(--snow-300)'
+			}
+		});
+	}
+
+	const enhanceForm: SubmitFunction = async (event) => {
+		if (submitDisabled) {
+			event.cancel();
+			return;
+		}
 		const guess = event.data.getAll('guess').map((l) => l.toString().toLowerCase());
 		if (guess.join('').length < 5) {
 			event.cancel();
@@ -87,6 +115,10 @@
 
 		const { metadata, updatedAnswers } = applyWord(data.state, guess, data.answers);
 		form = metadata;
+		if (metadata.invalid) {
+			toastError('invalid word');
+			return;
+		}
 		data.answers = updatedAnswers;
 		data = data;
 		Cookies.set('wordLettuce', getCookieFromGameState(data.state), {
@@ -100,9 +132,24 @@
 			event.cancel();
 			return;
 		}
-
+		let resolvePromise: Function;
+		const promise = new Promise((resolve) => {
+			resolvePromise = resolve;
+		});
+		toastPromise(promise, {
+			loading: 'saving results',
+			error: 'oh nooo',
+			success: 'results saved'
+		});
 		return async ({ update }) => {
+			if (resolvePromise) {
+				resolvePromise();
+			}
+			await new Promise((resolve) => setTimeout(resolve, 500));
 			update();
+			if (form?.success) {
+				openModal(data.answers, data.state?.length || 0, true, data?.session?.user?.login || '');
+			}
 		};
 	};
 
@@ -170,3 +217,4 @@
 	</div>
 </main>
 <Modal bind:this={modal} />
+<Toaster />

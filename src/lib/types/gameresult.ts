@@ -29,6 +29,6 @@ export const gameResultSchema = z.object({
 	user_id: z.number().int().positive(),
 	gamenum: z.number().int().positive(),
 	answers: z.string(),
-	attempts: z.number().int().positive().optional(),
+	attempts: z.number().int().positive().optional()
 });
 export type GameResult = z.infer<typeof gameResultSchema>;
