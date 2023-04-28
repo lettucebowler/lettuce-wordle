@@ -11,8 +11,6 @@
 		authenticated = !!user;
 		share = getGameStatus($appName, answers);
 		attempts = guesses;
-		won = success;
-		visible = true;
 		if (dialog && !dialog.open) {
 			dialog.showModal();
 		}
@@ -21,15 +19,11 @@
 	let dialog: HTMLDialogElement;
 	let share = '';
 	let attempts: number;
-	let won: boolean;
 	let message = '';
 	let authenticated = false;
 
-	let visible = false;
-
 	const closeModal = () => {
 		dialog.close();
-		visible = false;
 	};
 
 	const formatTime = (secondsUntil: number) => {

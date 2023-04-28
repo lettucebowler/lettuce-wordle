@@ -84,7 +84,7 @@
 	}
 
 	function toastPromise(
-		promise: Promise<any>,
+		promise: Promise<unknown>,
 		opts: { success: string; error: string; loading: string }
 	) {
 		const style =
@@ -132,7 +132,7 @@
 			event.cancel();
 			return;
 		}
-		let resolvePromise: Function;
+		let resolvePromise: (value: unknown) => void;
 		const promise = new Promise((resolve) => {
 			resolvePromise = resolve;
 		});
@@ -143,7 +143,7 @@
 		});
 		return async ({ update }) => {
 			if (resolvePromise) {
-				resolvePromise();
+				resolvePromise(undefined);
 			}
 			await new Promise((resolve) => setTimeout(resolve, 500));
 			update();
@@ -167,7 +167,7 @@
 			class="my-auto flex w-full max-w-[min(700px,_55vh)]"
 		>
 			<div class="grid w-full grid-rows-[repeat(6,_1fr)] gap-2">
-				{#each { length: 6 } as _, i (getRealIndex(i, data.state, data.answers))}
+				{#each [...Array(6).keys()] as i (getRealIndex(i, data.state, data.answers))}
 					{@const realIndex = getRealIndex(i, data.state, data.answers)}
 					{@const current = realIndex === data.answers.length}
 					<div
@@ -175,7 +175,7 @@
 						out:slide|local={{ duration: 150 }}
 						class="grid w-full grid-cols-[repeat(5,_1fr)] gap-2"
 					>
-						{#each { length: 5 } as _, j}
+						{#each [...Array(5).keys()] as j}
 							{@const answer = (data.answers[realIndex] || '_____')[j]}
 							{@const letter = data.state[realIndex]?.guess?.at(j) || ''}
 							{@const doWiggle = invalidForm && current}

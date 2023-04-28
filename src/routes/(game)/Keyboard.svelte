@@ -11,11 +11,6 @@
 		[x: string]: HTMLButtonElement;
 	} = {};
 
-	const clickKey = (event: KeyboardEvent) => {
-		const key = event.key.toLowerCase();
-		keys[key]?.click();
-	};
-
 	const icons = new Map([
 		[
 			'enter',
@@ -46,7 +41,7 @@
 		cancel();
 	}}
 >
-	{#each ['q,w,e,r,t,y,u,i,o,p', ',a,s,d,f,g,h,j,k,l', ',,,z,x,c,v,b,n,m,enter,backspace'] as row, i}
+	{#each ['q,w,e,r,t,y,u,i,o,p', ',a,s,d,f,g,h,j,k,l', ',,,z,x,c,v,b,n,m,enter,backspace'] as row}
 		<div class="flex w-full flex-auto flex-col justify-center">
 			<div class="grid flex-auto grid-cols-[repeat(40,_0.25fr)] gap-1">
 				{#each row.split(',') as letter}

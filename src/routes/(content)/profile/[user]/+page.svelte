@@ -8,7 +8,6 @@
 	import { browser } from '$app/environment';
 
 	export let data: PageData;
-	const cells = Array(30);
 
 	let fetchMore = true;
 	async function getNextBatch() {
@@ -72,7 +71,7 @@
 					>
 				</h2>
 				<div class="grid grid-cols-5 gap-1">
-					{#each cells as _, i}
+					{#each [...Array(30).keys()] as i}
 						{@const answer = answers.charAt(i) || '_'}
 						<div
 							class="box-border grid aspect-square w-full grid-rows-3 rounded-lg text-center text-2xl font-bold text-snow-300 sm:text-3xl"

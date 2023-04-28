@@ -2,7 +2,7 @@ import { getGameNum } from './share';
 import type { Guess } from '$lib/types/gameresult';
 import { GameStateSchema } from '$lib/types/gameresult';
 const decodeState = (stateBuffer: string) => {
-	let state: {
+	const state: {
 		gameNum: number;
 		guesses: Guess[];
 	} = {
