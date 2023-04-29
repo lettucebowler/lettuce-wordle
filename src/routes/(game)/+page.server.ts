@@ -9,6 +9,12 @@ import type { GameResult } from '$lib/types/gameresult';
 
 export const load: import('./$types').PageServerLoad = async (event) => {
 	event.depends('/');
+
+
+	console.time('hit deno deploy kv read');
+	await event.fetch('https://api-wordlettuce.deno.dev/');
+	console.timeEnd('hit deno deploy kv read');
+
 	const gameState = event.locals.gameState;
 
 	const answers = checkWords(gameState, getDailyWord());
