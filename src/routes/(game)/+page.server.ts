@@ -34,7 +34,7 @@ export const load: import('./$types').PageServerLoad = async (event) => {
 		const id = session.user?.id;
 		if (login && id) {
 			const gameResult: GameResult = {
-				username: login,
+				user: login,
 				user_id: id,
 				gamenum: getGameNum(),
 				answers: answers.join('')
@@ -106,7 +106,7 @@ export const actions: import('./$types').Actions = {
 			const gamenum = getGameNum();
 			const gameResult: GameResult = {
 				gamenum,
-				username: user.login,
+				user: user.login,
 				user_id: user.id,
 				answers: updatedAnswers?.join('') || ''
 			};

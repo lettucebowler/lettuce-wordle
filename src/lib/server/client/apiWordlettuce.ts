@@ -29,8 +29,8 @@ export const getLeaderBoardResults = async (gamenum: number) => {
 };
 
 export const saveGameResults = async (gameresult: GameResult) => {
-	const { username, gamenum, ...rest } = gameresult;
-	const results = await apiWordlettuce.put(`/v1/users/${username}/gameresults/${gamenum}`, rest);
+	const { user, gamenum, ...rest } = gameresult;
+	const results = await apiWordlettuce.put(`/v1/users/${user}/gameresults/${gamenum}`, rest);
 	return results;
 };
 
