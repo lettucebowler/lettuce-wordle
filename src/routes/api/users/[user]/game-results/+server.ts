@@ -13,7 +13,7 @@ const getGameResultsRequestSchema = z.object({
 });
 
 import type { RequestHandler } from './$types';
-import { json, error } from '@sveltejs/kit';
+import { error, json } from '@sveltejs/kit';
 import { getGameResults } from '$lib/util/gameresults';
 export const GET: RequestHandler = async (event) => {
 	const result = getGameResultsRequestSchema.safeParse(

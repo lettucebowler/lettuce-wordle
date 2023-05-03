@@ -1,4 +1,4 @@
-import { readable, derived } from 'svelte/store';
+import { derived, readable } from 'svelte/store';
 
 const time = readable(new Date(), function start(set) {
 	const interval = setInterval(() => {

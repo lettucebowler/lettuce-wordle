@@ -3,10 +3,10 @@ import { SvelteKitAuth } from '@auth/sveltekit';
 import GitHub from '@auth/core/providers/github';
 import { skipCSRFCheck } from '@auth/core';
 import {
+	AUTH_SECRET,
 	DEFAULT_DB_PROVIDER,
 	SK_AUTH_GITHUB_CLIENT_ID,
-	SK_AUTH_GITHUB_CLIENT_SECRET,
-	AUTH_SECRET
+	SK_AUTH_GITHUB_CLIENT_SECRET
 } from '$env/static/private';
 import { getGameFromCookie } from '$lib/util/decodeCookie.server';
 import { upsertUser } from '$lib/util/gameresults';

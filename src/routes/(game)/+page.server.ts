@@ -1,5 +1,5 @@
 import { getCookieFromGameState } from '$lib/util/encodeCookie';
-import { applyWord, applyKey, checkWords } from '$lib/util/gameFunctions';
+import { applyKey, applyWord, checkWords } from '$lib/util/gameFunctions';
 import { fail as invalid, redirect } from '@sveltejs/kit';
 import { getGameNum } from '$lib/util/share';
 import { getDailyWord } from '$lib/util/words';

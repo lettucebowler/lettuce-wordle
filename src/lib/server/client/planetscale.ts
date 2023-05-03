@@ -1,5 +1,5 @@
 import { Client } from '@planetscale/database';
-import { DATABASE_HOST, DATABASE_USERNAME, DATABASE_PASSWORD } from '$env/static/private';
+import { DATABASE_HOST, DATABASE_PASSWORD, DATABASE_USERNAME } from '$env/static/private';
 import type { GameResult, LeaderboardResults } from '$lib/types/gameresult';
 import type { UserRecord } from '$lib/types/auth';
 

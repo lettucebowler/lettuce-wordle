@@ -1,5 +1,5 @@
 import { fetcher } from 'itty-fetcher';
-import { API_WORDLETTUCE_TOKEN, API_WORDLETTUCE_HOST } from '$env/static/private';
+import { API_WORDLETTUCE_HOST, API_WORDLETTUCE_TOKEN } from '$env/static/private';
 
 import type { GameResult, LeaderboardResults } from '$lib/types/gameresult';
 import type { UserRecord } from '$lib/types/auth';
@@ -24,7 +24,9 @@ export const getGameResults = async (user: string, count: number, offset = 0) =>
 };
 
 export const getLeaderBoardResults = async (gamenum: number) => {
-	const leaderboardResults = await apiWordlettuce.get('/v1/rankings', { gamenum });
+	const leaderboardResults = await apiWordlettuce.get('/v1/rankings', {
+		gamenum
+	});
 	return leaderboardResults as LeaderboardResults[];
 };
 
