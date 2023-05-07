@@ -2,7 +2,8 @@ import { derived, readable } from 'svelte/store';
 
 const time = readable(new Date(), function start(set) {
 	const interval = setInterval(() => {
-		set(new Date());
+		const now = new Date();
+		set(now);
 	}, 1000);
 
 	return function stop() {

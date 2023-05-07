@@ -7,23 +7,31 @@
 	import AuthForm from '$lib/components/AuthForm.svelte';
 	import { trapFocus } from '$lib/actions/trapFocus';
 
-	export function open(answers: string[], guesses: number, success: boolean, user = '') {
-		authenticated = !!user;
-		share = getGameStatus($appName, answers);
-		attempts = guesses;
-		if (dialog && !dialog.open) {
-			dialog.showModal();
-		}
-	}
-
 	let dialog: HTMLDialogElement;
 	let share = '';
 	let attempts: number;
 	let message = '';
 	let authenticated = false;
+	let timeUntil: number;
+	let unsub: Function;
+
+	export function open(answers: string[], guesses: number, success: boolean, user = '') {
+		authenticated = !!user;
+		share = getGameStatus($appName, answers);
+		attempts = guesses;
+		unsub = timeUntilNextGame.subscribe((value) => {
+			timeUntil = value;
+		});
+		if (dialog && !dialog.open) {
+			dialog.showModal();
+		}
+	}
 
 	const closeModal = () => {
 		dialog.close();
+		if (unsub) {
+			unsub();
+		}
 	};
 
 	const formatTime = (secondsUntil: number) => {
@@ -75,7 +83,7 @@
 			{/if}
 		</div>
 		<div class="grid place-items-center p-2 text-center font-bold text-snow-300">
-			Next word in {formatTime($timeUntilNextGame)}
+			Next word in {formatTime(timeUntil)}
 		</div>
 		{#if !authenticated}
 			<AuthForm mode="login">
