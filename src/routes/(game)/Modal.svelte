@@ -3,7 +3,7 @@
 	import { getGameStatus } from '$lib/util/share';
 	import { appName } from '$lib/stores/appName';
 	import { clickOutsideAction, clickToCopyAction } from 'svelte-legos';
-	import { timeUntilNextGame } from '$lib/stores/time';
+	import { timeUntilNextGame } from './stores';
 	import AuthForm from '$lib/components/AuthForm.svelte';
 	import { trapFocus } from '$lib/actions/trapFocus';
 

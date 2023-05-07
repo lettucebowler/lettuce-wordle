@@ -5,8 +5,7 @@ export const config: Config = {
 };
 
 import { getGameResults } from '$lib/util/gameresults';
-import type { PageServerLoad } from './$types';
-export const load: PageServerLoad = async (event) => {
+export async function load(event) {
 	const searchParams = event.url.searchParams;
 	const offset = Number(searchParams.get('offset')) || 0;
 	const user = event.params.user;
@@ -33,4 +32,4 @@ export const load: PageServerLoad = async (event) => {
 		};
 	}
 	return result;
-};
+}

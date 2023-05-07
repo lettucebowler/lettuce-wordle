@@ -24,7 +24,6 @@ export const getGameResults = async (
 	let gameResults: GameResult[] = [];
 	let totalCount = 0;
 	let results;
-	console.log(provider);
 	switch (provider) {
 		case 'planetscale':
 			results = await getGameResultsPlanetscale(user, count, offset);

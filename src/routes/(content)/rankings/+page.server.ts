@@ -6,14 +6,13 @@ export const config: Config = {
 
 import { getGameNum } from '$lib/util/share';
 import { getLeaderBoardResults } from '$lib/util/gameresults';
-import type { PageServerLoad } from './$types';
-export const load: PageServerLoad = async (event) => {
+export async function load(event) {
 	const dbProvider = event.locals.dbProvider;
-	const leaderboardResults = getLeaderBoardResults(getGameNum(), dbProvider);
+	const leaderboardResults = await getLeaderBoardResults(getGameNum(), dbProvider);
 
 	return {
 		leaderboard: {
-			scores: await leaderboardResults
+			scores: leaderboardResults
 		}
 	};
-};
+}

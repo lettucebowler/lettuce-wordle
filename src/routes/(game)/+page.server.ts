@@ -7,7 +7,7 @@ import { saveGameResults } from '$lib/util/gameresults';
 import type { WordLettuceSession } from '$lib/types/auth';
 import type { GameResult } from '$lib/types/gameresult';
 
-export const load: import('./$types').PageServerLoad = async (event) => {
+export async function load(event) {
 	event.depends('/');
 
 	const gameState = event.locals.gameState;
@@ -56,7 +56,7 @@ export const load: import('./$types').PageServerLoad = async (event) => {
 		state: gameState,
 		answers
 	};
-};
+}
 
 export const actions: import('./$types').Actions = {
 	keyboard: async ({ cookies, locals, request }) => {

@@ -10,10 +10,8 @@ export type NavLink = {
 };
 
 import type { WordLettuceSession } from '$lib/types/auth';
-import type { ServerLoadEvent } from '@sveltejs/kit';
-export const load = async (event: ServerLoadEvent) => {
+export async function load(event) {
 	const session = (await event.locals.getSession()) as WordLettuceSession;
-
 	const links: NavLink[] = [
 		{
 			path: '/',
@@ -38,4 +36,4 @@ export const load = async (event: ServerLoadEvent) => {
 		nav: links,
 		session
 	};
-};
+}

@@ -12,10 +12,10 @@ const getGameResultsRequestSchema = z.object({
 	dbProvider: z.enum(['planetscale', 'd1']).default(DEFAULT_DB_PROVIDER as 'planetscale' | 'd1')
 });
 
-import type { RequestHandler } from './$types';
 import { error, json } from '@sveltejs/kit';
 import { getGameResults } from '$lib/util/gameresults';
-export const GET: RequestHandler = async (event) => {
+import type { RequestEvent } from './$types';
+export async function GET(event: RequestEvent) {
 	const result = getGameResultsRequestSchema.safeParse(
 		Object.fromEntries(event.url.searchParams.entries())
 	);
@@ -34,4 +34,4 @@ export const GET: RequestHandler = async (event) => {
 	return json({
 		...gameResults
 	});
-};
+}

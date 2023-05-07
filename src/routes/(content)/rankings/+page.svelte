@@ -3,7 +3,7 @@
 	import P from '$lib/components/P.svelte';
 	import LettuceAvatar from '$lib/components/LettuceAvatar.svelte';
 
-	export let data: import('./$types').PageData;
+	export let data;
 </script>
 
 <main class="grid gap-8">

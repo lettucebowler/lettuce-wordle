@@ -59,7 +59,6 @@ export const getGameResults = async (user: string, count: number, offset = 0) =>
 	]);
 	const { rows } = results;
 	const countRow = countResults.rows.at(0) as { rowCount: number };
-	console.log(rows);
 	return {
 		totalCount: Number(countRow.rowCount),
 		results: rows as GameResult[]
