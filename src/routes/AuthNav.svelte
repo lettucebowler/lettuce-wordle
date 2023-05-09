@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { browser } from '$app/environment';
 	import { slide } from 'svelte/transition';
-	import { onMount } from 'svelte';
 	import { afterNavigate } from '$app/navigation';
 	import type { UserProfile } from '$lib/types/auth';
 	import AuthForm from '$lib/components/AuthForm.svelte';
@@ -20,17 +18,7 @@
 		icon?: string;
 	}[] = [];
 
-	let showDropdown = true;
-
 	let dropdownVisible = false;
-
-	let jsEnabled = false;
-
-	$: {
-		if (browser) {
-			showDropdown = dropdownVisible;
-		}
-	}
 
 	$: subnavItems = [
 		{
@@ -39,11 +27,6 @@
 			prefetch: true
 		}
 	];
-
-	onMount(() => {
-		jsEnabled = true;
-		dropdownVisible = false;
-	});
 
 	afterNavigate(() => {
 		if (dropdownVisible) dropdownVisible = false;
@@ -117,88 +100,77 @@
 			<div class="sm:hidden">
 				<input
 					type="checkbox"
-					class="hidden"
+					class="peer hidden"
 					name="subnav"
 					id="subnav-toggle-small"
 					bind:checked={dropdownVisible}
 				/>
-				{#if showDropdown}
-					<nav
-						id="subnav-content"
-						class="absolute bottom-0 left-0 right-0 top-[72px] z-10 flex-col divide-y bg-charade-900"
-						class:hidden={!dropdownVisible && !jsEnabled}
-					>
-						<div class="space-y-4 p-4">
-							{#each links.filter((link) => link.enabled) as link}
-								<a
-									class="block cursor-pointer border-charade-700 text-3xl font-medium text-snow-100 hover:text-snow-300"
-									href={link.path}
+				<nav
+					id="subnav-content"
+					class="absolute bottom-0 left-0 right-0 top-[72px] z-10 hidden flex-col divide-y bg-charade-900 peer-checked:block"
+					class:hidden={!dropdownVisible}
+				>
+					<div class="space-y-4 p-4">
+						{#each links.filter((link) => link.enabled) as link}
+							<a
+								class="block cursor-pointer border-charade-700 text-3xl font-medium text-snow-100 hover:text-snow-300"
+								href={link.path}
+							>
+								{link.name}</a
+							>
+						{/each}
+					</div>
+					<div class="flex flex-col justify-start gap-4 border-charade-700 p-4">
+						{#if user && user.image && user.login}
+							<div class="flex items-center justify-start gap-4">
+								<span class="box-border w-max overflow-hidden rounded"
+									><LettuceAvatar name={user.login} size={44} /></span
 								>
-									{link.name}</a
+								<span class="text-xl font-medium text-snow-300">{user.login}</span>
+							</div>
+						{/if}
+						<div class="flex flex-col gap-2">
+							{#each subnavItems as subnavItem}
+								<a
+									href={subnavItem.path}
+									class="cursor-pointer p-0 text-2xl font-medium text-snow-100 hover:text-snow-300"
+									>{subnavItem.name}</a
 								>
 							{/each}
+							<AuthForm mode="logout"
+								><button class="text-2xl font-medium text-snow-100 hover:text-snow-300"
+									>logout</button
+								></AuthForm
+							>
 						</div>
-						<div class="flex flex-col justify-start gap-4 border-charade-700 p-4">
-							{#if user && user.image && user.login}
-								<div class="flex items-center justify-start gap-4">
-									<span class="box-border w-max overflow-hidden rounded"
-										><LettuceAvatar name={user.login} size={44} /></span
-									>
-									<span class="text-xl font-medium text-snow-300">{user.login}</span>
-								</div>
-							{/if}
-							<div class="flex flex-col gap-2">
-								{#each subnavItems as subnavItem}
-									<a
-										href={subnavItem.path}
-										class="cursor-pointer p-0 text-2xl font-medium text-snow-100 hover:text-snow-300"
-										>{subnavItem.name}</a
-									>
-								{/each}
-								<AuthForm mode="logout"
-									><button class="text-2xl font-medium text-snow-100 hover:text-snow-300"
-										>logout</button
-									></AuthForm
-								>
-							</div>
-						</div>
-					</nav>
-				{/if}
+					</div>
+				</nav>
 			</div>
 		</nav>
 	</div>
 	<div class="hidden sm:block">
 		<input
 			type="checkbox"
-			class="hidden"
+			class="peer hidden"
 			name="subnav"
 			id="subnav-toggle-big"
 			bind:checked={dropdownVisible}
 		/>
-		{#if showDropdown}
-			<nav
-				transition:slide|local={{ duration: 150 }}
-				id="subnav-content"
-				class="mx-4 mt-2 flex flex-row justify-center gap-4 rounded-xl bg-charade-700 p-1 font-medium transition transition-all duration-150"
-				class:hidden={!dropdownVisible && !jsEnabled}
-			>
-				{#each subnavItems as subnavItem}
-					<a
-						href={subnavItem.path}
-						class="flex cursor-pointer overflow-hidden rounded-lg border-transparent p-0 text-lg font-medium text-snow-100 hover:bg-charade-800"
-						><span class="grid h-full w-full place-items-center px-6 py-2 text-center"
-							>{subnavItem.name}</span
-						></a
-					>
-				{/each}
-				<AuthForm mode="logout" />
+		<div class="grid grid-rows-[0fr] transition transition-all peer-checked:grid-rows-[1fr]">
+			<nav id="subnav-content" class="overflow-hidden">
+				<div class="mx-4 mt-2 flex justify-evenly gap-4 rounded-xl bg-charade-700 p-1 font-medium">
+					{#each subnavItems as subnavItem}
+						<a
+							href={subnavItem.path}
+							class="flex cursor-pointer rounded-lg border-transparent p-0 text-lg font-medium text-snow-100 hover:bg-charade-800"
+							><span class="grid h-full w-full place-items-center px-6 py-2 text-center"
+								>{subnavItem.name}</span
+							></a
+						>
+					{/each}
+					<AuthForm mode="logout" />
+				</div>
 			</nav>
-		{/if}
+		</div>
 	</div>
 </div>
-
-<style>
-	input[type='checkbox'][name^='subnav']:checked ~ nav {
-		display: flex;
-	}
-</style>
