@@ -1,22 +1,15 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { slide } from 'svelte/transition';
 	import { afterNavigate } from '$app/navigation';
 	import type { UserProfile } from '$lib/types/auth';
 	import AuthForm from '$lib/components/AuthForm.svelte';
 	import LettuceAvatar from '$lib/components/LettuceAvatar.svelte';
-	import { crossfade } from 'svelte/transition';
-	import { cubicOut } from 'svelte/easing';
+	import NavLink from './NavLink.svelte';
+
+	import type { NavLinkProps } from '$lib/types/navigation';
 
 	export let user: UserProfile | null | undefined;
-	export let links: {
-		path: string;
-		name: string;
-		margin?: string;
-		prefetch?: boolean;
-		enabled: boolean;
-		icon?: string;
-	}[] = [];
+	export let links: NavLinkProps[] = [];
 
 	let dropdownVisible = false;
 
@@ -31,11 +24,6 @@
 	afterNavigate(() => {
 		if (dropdownVisible) dropdownVisible = false;
 	});
-
-	const [send, recieve] = crossfade({
-		duration: 250,
-		easing: cubicOut
-	});
 </script>
 
 <div class="w-full">
@@ -47,26 +35,28 @@
 			<div class="flex">
 				<div class="hidden gap-4 sm:flex">
 					{#each links.filter((link) => link.enabled) as link}
-						{@const current = $page.url.pathname === link.path}
-						<div class="grid items-center">
+						<!-- {@const current = $page.url.pathname === link.path}
+						<a
+							class="grid h-14 cursor-pointer items-center rounded-xl border-transparent text-3xl font-medium text-snow-300 hover:underline"
+							class:ml-auto={link.margin === 'left'}
+							class:text-snow-100={current}
+							class:after:bg-charade-700={current}
+							aria-current={current}
+							href={link.path}
+						>
 							{#if current}
 								<div
-									in:recieve={{ key: 'current-link' }}
-									out:send={{ key: 'current-link' }}
-									class="col-[1] row-[1] grid h-full items-center rounded-xl hover:bg-charade-700"
+									in:recieve|global={{ key: 'current-link' }}
+									out:send|global={{ key: 'current-link' }}
+									class="col-[1] row-[1] grid h-14 w-full rounded-xl"
 									class:bg-charade-700={current}
 								/>
 							{/if}
-							<a
-								class="col-[1] row-[1] flex h-14 cursor-pointer overflow-hidden rounded-xl border-transparent px-6 py-2 text-3xl font-medium text-snow-300 hover:underline"
-								class:ml-auto={link.margin === 'left'}
-								class:text-snow-100={current}
-								aria-current={current}
-								href={link.path}
+							<span class="z-10 col-[1] row-[1] my-auto grid h-14 items-center px-6 py-2"
+								>{link.name}</span
 							>
-								<span class="z-10">{link.name}</span></a
-							>
-						</div>
+						</a> -->
+						<NavLink {link} />
 					{/each}
 				</div>
 				<div class="ml-auto h-14">
