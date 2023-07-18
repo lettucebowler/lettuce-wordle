@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -9,8 +9,8 @@ devDependencies:
     specifier: 0.9.0
     version: 0.9.0
   '@auth/sveltekit':
-    specifier: 0.3.1
-    version: 0.3.1(@sveltejs/kit@1.22.3)(svelte@4.0.5)
+    specifier: 0.3.5
+    version: 0.3.5(@sveltejs/kit@1.22.3)(svelte@4.0.5)
   '@planetscale/database':
     specifier: ^1.8.0
     version: 1.8.0
@@ -35,6 +35,9 @@ devDependencies:
   autoprefixer:
     specifier: ^10.4.14
     version: 10.4.14(postcss@8.4.26)
+  clsx:
+    specifier: ^2.0.0
+    version: 2.0.0
   cookie:
     specifier: ^0.5.0
     version: 0.5.0
@@ -119,22 +122,6 @@ packages:
       '@jridgewell/trace-mapping': 0.3.18
     dev: true
 
-  /@auth/core@0.5.1:
-    resolution: {integrity: sha512-t9z8F7dkuVceKWBmMy1fd2t6H+vfRju/YJ1lm+6RnJ7pNEvX5qMR874wg0+cYbWvyZazLi8fFK/FA6I3D5sSkA==}
-    peerDependencies:
-      nodemailer: ^6.8.0
-    peerDependenciesMeta:
-      nodemailer:
-        optional: true
-    dependencies:
-      '@panva/hkdf': 1.1.1
-      cookie: 0.5.0
-      jose: 4.14.4
-      oauth4webapi: 2.3.0
-      preact: 10.11.3
-      preact-render-to-string: 5.2.3(preact@10.11.3)
-    dev: true
-
   /@auth/core@0.9.0:
     resolution: {integrity: sha512-W2WO0WCBg1T3P8+yjQPzurTQhPv6ecBYfJ2oE3uvXPAX5ZLWAMSjKFAIa9oLZy5pwrB+YehJZPnlIxVilhrVcg==}
     peerDependencies:
@@ -151,13 +138,13 @@ packages:
       preact-render-to-string: 5.2.3(preact@10.11.3)
     dev: true
 
-  /@auth/sveltekit@0.3.1(@sveltejs/kit@1.22.3)(svelte@4.0.5):
-    resolution: {integrity: sha512-fyWvPfQCEO15M6GmC1+M9YoRo8rHC1oCXNBmEZJwvG4eZ7hmufm/m3B3U1eRaPqLZwfRHO8PQcvERja15yPB5w==}
+  /@auth/sveltekit@0.3.5(@sveltejs/kit@1.22.3)(svelte@4.0.5):
+    resolution: {integrity: sha512-V76eB54YeZ2RG5Copl5ztwpOharhbouj12aP8nZPMgho087Ksq/DbsWJdyS7FTlyj8x57asopJl4gTPMXwmLxA==}
     peerDependencies:
       '@sveltejs/kit': ^1.0.0
-      svelte: ^3.54.0
+      svelte: ^3.54.0 || ^4.0.0
     dependencies:
-      '@auth/core': 0.5.1
+      '@auth/core': 0.9.0
       '@sveltejs/kit': 1.22.3(svelte@4.0.5)(vite@4.4.4)
       svelte: 4.0.5
     transitivePeerDependencies:
@@ -916,7 +903,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001516
-      electron-to-chromium: 1.4.461
+      electron-to-chromium: 1.4.463
       node-releases: 2.0.13
       update-browserslist-db: 1.0.11(browserslist@4.21.9)
     dev: true
@@ -978,6 +965,11 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
+  /clsx@2.0.0:
+    resolution: {integrity: sha512-rQ1+kcj+ttHG0MKVGBUXwayCCF1oh39BF5COIpRzuCEv8Mwjv0XucrI2ExNTOn9IlLifGClWQcU9BrZORvtw6Q==}
+    engines: {node: '>=6'}
+    dev: true
+
   /code-red@1.0.3:
     resolution: {integrity: sha512-kVwJELqiILQyG5aeuyKFbdsI1fmQy1Cmf7dQ8eGmVuJoaRVdwey7WaMknr2ZFeVSYSKT0rExsa8EGw0aoI/1QQ==}
     dependencies:
@@ -1010,7 +1002,7 @@ packages:
     dev: true
 
   /concat-map@0.0.1:
-    resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
+    resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=}
     dev: true
 
   /console-control-strings@1.1.0:
@@ -1115,8 +1107,8 @@ packages:
       esutils: 2.0.3
     dev: true
 
-  /electron-to-chromium@1.4.461:
-    resolution: {integrity: sha512-1JkvV2sgEGTDXjdsaQCeSwYYuhLRphRpc+g6EHTFELJXEiznLt3/0pZ9JuAOQ5p2rI3YxKTbivtvajirIfhrEQ==}
+  /electron-to-chromium@1.4.463:
+    resolution: {integrity: sha512-fT3hvdUWLjDbaTGzyOjng/CQhQJSQP8ThO3XZAoaxHvHo2kUXiRQVMj9M235l8uDFiNPsPa6KHT1p3RaR6ugRw==}
     dev: true
 
   /emoji-regex@8.0.0:
@@ -2211,8 +2203,8 @@ packages:
       glob: 7.2.3
     dev: true
 
-  /rollup@3.26.2:
-    resolution: {integrity: sha512-6umBIGVz93er97pMgQO08LuH3m6PUb3jlDUUGFsNJB6VgTCUaDFpupf5JfU30529m/UKOgmiX+uY6Sx8cOYpLA==}
+  /rollup@3.26.3:
+    resolution: {integrity: sha512-7Tin0C8l86TkpcMtXvQu6saWH93nhG3dGQ1/+l5V2TDMceTxO7kDiK6GzbfLWNNxqJXm591PcEZUozZm51ogwQ==}
     engines: {node: '>=14.18.0', npm: '>=8.0.0'}
     hasBin: true
     optionalDependencies:
@@ -2719,7 +2711,7 @@ packages:
     dependencies:
       esbuild: 0.18.13
       postcss: 8.4.26
-      rollup: 3.26.2
+      rollup: 3.26.3
     optionalDependencies:
       fsevents: 2.3.2
     dev: true

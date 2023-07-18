@@ -35,32 +35,11 @@
 			<div class="flex">
 				<div class="hidden gap-4 sm:flex">
 					{#each links.filter((link) => link.enabled) as link}
-						<!-- {@const current = $page.url.pathname === link.path}
-						<a
-							class="grid h-14 cursor-pointer items-center rounded-xl border-transparent text-3xl font-medium text-snow-300 hover:underline"
-							class:ml-auto={link.margin === 'left'}
-							class:text-snow-100={current}
-							class:after:bg-charade-700={current}
-							aria-current={current}
-							href={link.path}
-						>
-							{#if current}
-								<div
-									in:recieve|global={{ key: 'current-link' }}
-									out:send|global={{ key: 'current-link' }}
-									class="col-[1] row-[1] grid h-14 w-full rounded-xl"
-									class:bg-charade-700={current}
-								/>
-							{/if}
-							<span class="z-10 col-[1] row-[1] my-auto grid h-14 items-center px-6 py-2"
-								>{link.name}</span
-							>
-						</a> -->
 						<NavLink {link} />
 					{/each}
 				</div>
 				<div class="ml-auto h-14">
-					{#if user}
+					<div class="flex h-full flex-col sm:hidden">
 						<label
 							for="subnav-toggle-small"
 							class="box-border flex h-full flex-[0_0_auto] cursor-pointer select-none items-center justify-center gap-2 rounded-xl text-center text-3xl text-snow-100 transition ease-in-out hover:bg-charade-700 active:bg-charade-800 sm:hidden"
@@ -69,22 +48,42 @@
 								class="box-border aspect-square h-full overflow-hidden rounded-xl border-snow-300 transition-transform"
 								class:rotate-180={dropdownVisible}
 							>
-								<LettuceAvatar name={user.login} size={56} />
+								{#if user}
+									<LettuceAvatar name={user.login} size={56} />
+								{:else}
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke-width="1.5"
+										stroke="currentColor"
+										class="aspect-square h-full w-full"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+										/>
+									</svg>
+								{/if}
 							</span>
-						</label><label
-							for="subnav-toggle-big"
-							class="box-border hidden h-full flex-[0_0_auto] cursor-pointer select-none items-center justify-center gap-2 rounded-xl text-center text-3xl text-snow-100 transition ease-in-out hover:bg-charade-700 active:bg-charade-800 sm:flex"
-						>
+						</label>
+					</div>
+					<label
+						for="subnav-toggle-big"
+						class="box-border hidden h-full flex-[0_0_auto] cursor-pointer select-none items-center justify-center gap-2 rounded-xl text-center text-3xl text-snow-100 transition ease-in-out hover:bg-charade-700 active:bg-charade-800 sm:flex"
+					>
+						{#if user}
 							<span
-								class="box-border aspect-square h-full overflow-hidden rounded-xl border-snow-300 transition-transform"
+								class="box-border aspect-square overflow-hidden rounded-xl border-snow-300 transition-transform"
 								class:rotate-180={dropdownVisible}
 							>
 								<LettuceAvatar name={user.login} size={56} />
 							</span>
-						</label>
-					{:else}
-						<AuthForm mode="login" />
-					{/if}
+						{:else}
+							<AuthForm mode="login" />
+						{/if}
+					</label>
 				</div>
 			</div>
 			<div class="sm:hidden">
@@ -102,37 +101,30 @@
 				>
 					<div class="space-y-4 p-4">
 						{#each links.filter((link) => link.enabled) as link}
-							<a
-								class="block cursor-pointer border-charade-700 text-3xl font-medium text-snow-100 hover:text-snow-300"
-								href={link.path}
-							>
-								{link.name}</a
-							>
+							<NavLink {link} />
 						{/each}
 					</div>
-					<div class="flex flex-col justify-start gap-4 border-charade-700 p-4">
-						{#if user && user.image && user.login}
-							<div class="flex items-center justify-start gap-4">
+					<div class="flex flex-col gap-2 border-charade-700 p-4">
+						{#if user?.login}
+							<div class="mb-2 flex items-center justify-start gap-4">
 								<span class="box-border w-max overflow-hidden rounded"
 									><LettuceAvatar name={user.login} size={44} /></span
 								>
 								<span class="text-xl font-medium text-snow-300">{user.login}</span>
 							</div>
-						{/if}
-						<div class="flex flex-col gap-2">
 							{#each subnavItems as subnavItem}
 								<a
 									href={subnavItem.path}
-									class="cursor-pointer p-0 text-2xl font-medium text-snow-100 hover:text-snow-300"
+									class="cursor-pointer p-0 text-2xl font-medium text-snow-300 hover:text-snow-300"
 									>{subnavItem.name}</a
 								>
 							{/each}
-							<AuthForm mode="logout"
-								><button class="text-2xl font-medium text-snow-100 hover:text-snow-300"
-									>logout</button
-								></AuthForm
+						{/if}
+						<AuthForm mode={user?.login ? 'logout' : 'login'}
+							><button class="text-2xl font-medium text-snow-300 hover:text-snow-300"
+								>{user?.login ? 'logout' : 'login'}</button
 							>
-						</div>
+						</AuthForm>
 					</div>
 				</nav>
 			</div>
