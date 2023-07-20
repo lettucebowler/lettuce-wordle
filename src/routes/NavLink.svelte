@@ -3,7 +3,7 @@
 	import type { NavLinkProps } from '$lib/types/navigation';
 	import { navigationSend, navigationRecieve } from './transitions';
 	export let link: NavLinkProps;
-	import clsx from 'clsx';
+	export let enableTransition = true;
 
 	$: current = $page.url.pathname === link.path;
 </script>
@@ -16,16 +16,18 @@
 	aria-current={current}
 	href={link.path}
 >
-	<div class="col-[1] row-[1] grid hidden w-full sm:block sm:h-14">
-		{#if current}
-			<div
-				in:navigationRecieve={{ key: 'current-link' }}
-				out:navigationSend={{ key: 'current-link' }}
-				class="grid h-full rounded-xl"
-				class:bg-charade-700={current}
-			/>
-		{/if}
-	</div>
+	{#if enableTransition}
+		<div class="col-[1] row-[1] grid hidden w-full sm:block sm:h-14">
+			{#if current}
+				<div
+					in:navigationRecieve={{ key: 'current-link' }}
+					out:navigationSend={{ key: 'current-link' }}
+					class="grid h-full rounded-xl"
+					class:bg-charade-700={current}
+				/>
+			{/if}
+		</div>
+	{/if}
 	<span class="z-10 col-[1] row-[1] my-auto grid items-center sm:h-14 sm:px-6 sm:py-2"
 		>{link.name}</span
 	>

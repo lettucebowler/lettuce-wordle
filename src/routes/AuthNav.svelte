@@ -101,7 +101,7 @@
 				>
 					<div class="space-y-4 p-4">
 						{#each links.filter((link) => link.enabled) as link}
-							<NavLink {link} />
+							<NavLink {link} enableTransition={false} />
 						{/each}
 					</div>
 					<div class="flex flex-col gap-2 border-charade-700 p-4">
