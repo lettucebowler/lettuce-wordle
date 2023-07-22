@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import { afterNavigate } from '$app/navigation';
 	import type { UserProfile } from '$lib/types/auth';
 	import AuthForm from '$lib/components/AuthForm.svelte';
@@ -71,7 +70,7 @@
 					</div>
 					<label
 						for="subnav-toggle-big"
-						class="box-border hidden h-full flex-[0_0_auto] cursor-pointer select-none items-center justify-center gap-2 rounded-xl text-center text-3xl text-snow-100 transition ease-in-out hover:bg-charade-700 active:bg-charade-800 sm:flex"
+						class="box-border hidden h-full flex-[0_0_auto] cursor-pointer select-none items-center justify-center gap-2 rounded-xl text-center text-3xl text-snow-100 transition ease-in-out sm:flex"
 					>
 						{#if user}
 							<span
@@ -86,7 +85,7 @@
 					</label>
 				</div>
 			</div>
-			<div class="sm:hidden">
+			<div id="mobile-nav" class="sm:hidden">
 				<input
 					type="checkbox"
 					class="peer hidden"
@@ -115,14 +114,14 @@
 							{#each subnavItems as subnavItem}
 								<a
 									href={subnavItem.path}
-									class="cursor-pointer p-0 text-2xl font-medium text-snow-300 hover:text-snow-300"
+									class="cursor-pointer p-0 text-2xl font-medium text-snow-300 hover:underline"
 									>{subnavItem.name}</a
 								>
 							{/each}
 						{/if}
 						<AuthForm mode={user?.login ? 'logout' : 'login'}
-							><button class="text-2xl font-medium text-snow-300 hover:text-snow-300"
-								>{user?.login ? 'logout' : 'login'}</button
+							><button class="text-2xl font-medium text-snow-300 hover:underline"
+								>{user?.login ? 'Logout' : 'Login'}</button
 							>
 						</AuthForm>
 					</div>
@@ -130,7 +129,7 @@
 			</div>
 		</nav>
 	</div>
-	<div class="hidden sm:block">
+	<div id="desktop-nav" class="hidden sm:block">
 		<input
 			type="checkbox"
 			class="peer hidden"
@@ -144,7 +143,7 @@
 					{#each subnavItems as subnavItem}
 						<a
 							href={subnavItem.path}
-							class="flex cursor-pointer rounded-lg border-transparent p-0 text-lg font-medium text-snow-100 hover:bg-charade-800"
+							class="flex cursor-pointer rounded-lg border-transparent p-0 text-lg font-medium text-snow-100 hover:underline"
 							><span class="grid h-full w-full place-items-center px-6 py-2 text-center"
 								>{subnavItem.name}</span
 							></a
