@@ -6,11 +6,11 @@ settings:
 
 devDependencies:
   '@auth/core':
-    specifier: 0.9.0
-    version: 0.9.0
+    specifier: 0.10.0
+    version: 0.10.0
   '@auth/sveltekit':
-    specifier: 0.3.5
-    version: 0.3.5(@sveltejs/kit@1.22.3)(svelte@4.1.1)
+    specifier: 0.3.6
+    version: 0.3.6(@sveltejs/kit@1.22.3)(svelte@4.1.1)
   '@planetscale/database':
     specifier: ^1.10.0
     version: 1.10.0
@@ -75,8 +75,8 @@ devDependencies:
     specifier: 1.0.4-beta.0
     version: 1.0.4-beta.0(svelte@4.1.1)
   svelte-legos:
-    specifier: ^0.1.9
-    version: 0.1.9(svelte@4.1.1)
+    specifier: ^0.2.1
+    version: 0.2.1(svelte@4.1.1)
   svelte2tsx:
     specifier: ^0.6.19
     version: 0.6.19(svelte@4.1.1)(typescript@5.1.6)
@@ -119,8 +119,8 @@ packages:
       '@jridgewell/trace-mapping': 0.3.18
     dev: true
 
-  /@auth/core@0.9.0:
-    resolution: {integrity: sha512-W2WO0WCBg1T3P8+yjQPzurTQhPv6ecBYfJ2oE3uvXPAX5ZLWAMSjKFAIa9oLZy5pwrB+YehJZPnlIxVilhrVcg==}
+  /@auth/core@0.10.0:
+    resolution: {integrity: sha512-mmvAzFUcDHG0m6avQ6/sYI3wtQtt3Tjbk4wCr27OlCeNnlzqK8lDQJIDFbJOTXEu/dNUx8sUQ0xMp7A6GAaHQw==}
     peerDependencies:
       nodemailer: ^6.8.0
     peerDependenciesMeta:
@@ -135,13 +135,13 @@ packages:
       preact-render-to-string: 5.2.3(preact@10.11.3)
     dev: true
 
-  /@auth/sveltekit@0.3.5(@sveltejs/kit@1.22.3)(svelte@4.1.1):
-    resolution: {integrity: sha512-V76eB54YeZ2RG5Copl5ztwpOharhbouj12aP8nZPMgho087Ksq/DbsWJdyS7FTlyj8x57asopJl4gTPMXwmLxA==}
+  /@auth/sveltekit@0.3.6(@sveltejs/kit@1.22.3)(svelte@4.1.1):
+    resolution: {integrity: sha512-wL9YR8raosHR+iPDvIBExqvYiaOsseM681eYLjfU+ELmkjlKtGk+B4VxiLYMxlPfjqNagrzLNyS58PYXy2oh7A==}
     peerDependencies:
       '@sveltejs/kit': ^1.0.0
       svelte: ^3.54.0 || ^4.0.0
     dependencies:
-      '@auth/core': 0.9.0
+      '@auth/core': 0.10.0
       '@sveltejs/kit': 1.22.3(svelte@4.1.1)(vite@4.4.7)
       svelte: 4.1.1
     transitivePeerDependencies:
@@ -2422,8 +2422,8 @@ packages:
       svelte: 4.1.1
     dev: true
 
-  /svelte-legos@0.1.9(svelte@4.1.1):
-    resolution: {integrity: sha512-CIw1mePW8+pXQVxZEQrNTpJBFQjEmygF7Kcn6uxXNQNSO0ZBSlfKt2DwgpBV9HoUatoCVu5YqgwynMYrX23d1Q==}
+  /svelte-legos@0.2.1(svelte@4.1.1):
+    resolution: {integrity: sha512-M7IncWP2e8FaHzQN1DSzxLSoq/6aQYWZ93REZam9bYlvLEjdPGWLAYdpPNnnZtXlHco+o3zrgYTdwsyyS9beUQ==}
     peerDependencies:
       svelte: ^3.54.0
     dependencies:

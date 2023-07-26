@@ -12,8 +12,8 @@
 		"format": "prettier --write --plugin-search-dir=. ."
 	},
 	"devDependencies": {
-		"@auth/core": "0.9.0",
-		"@auth/sveltekit": "0.3.5",
+		"@auth/core": "0.10.0",
+		"@auth/sveltekit": "0.3.6",
 		"@planetscale/database": "^1.10.0",
 		"@sveltejs/adapter-vercel": "^3.0.2",
 		"@sveltejs/kit": "^1.22.3",
@@ -35,7 +35,7 @@
 		"svelte": "^4.1.1",
 		"svelte-check": "^3.4.6",
 		"svelte-french-toast": "1.0.4-beta.0",
-		"svelte-legos": "^0.1.9",
+		"svelte-legos": "^0.2.1",
 		"svelte2tsx": "^0.6.19",
 		"tailwind-scrollbar": "^3.0.4",
 		"tailwindcss": "^3.3.3",
