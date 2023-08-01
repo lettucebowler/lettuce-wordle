@@ -7,7 +7,8 @@
 	import { appName } from '$lib/stores/appName';
 	import { getGameNum } from '$lib/util/share';
 	import AuthNav from './AuthNav.svelte';
-	export let data;
+	import type { LayoutData } from './$types';
+	export let data: LayoutData;
 </script>
 
 <svelte:head>
