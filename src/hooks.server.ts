@@ -19,7 +19,9 @@ const providerHandler: Handle = async ({ event, resolve }) => {
 	const dbProvider = dbProviderOverride || DEFAULT_DB_PROVIDER;
 	event.locals.dbProvider = dbProvider;
 	event.locals.dbProviderOverwritten = !!dbProviderOverride;
-	const logString = `${event.request.method} ${event.url.pathname}`;
+	const logString = `${event.request.method} ${event.url.pathname}${
+		event.url.search ? `?${event.url.search}` : ''
+	}`;
 	console.time(logString);
 	const response = await resolve(event);
 	console.timeEnd(logString);

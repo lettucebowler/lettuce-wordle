@@ -1,20 +1,43 @@
-import { z } from 'zod';
-export const GuessSchema = z.object({
-	guess: z
-		.string()
-		.max(5)
-		.toLowerCase()
-		.regex(/^[a-z]+$/, 'guess must be only letters'),
-	complete: z.boolean()
-});
-export type Guess = z.infer<typeof GuessSchema>;
+import {
+	string,
+	maxLength,
+	toLowerCase,
+	regex,
+	number,
+	minValue,
+	array,
+	optional,
+	type Output,
+	object,
+	minLength,
+	custom,
+	boolean
+} from 'valibot';
 
-export const GameStateSchema = z.object({
-	gameNum: z.number().int().positive(),
-	guesses: GuessSchema.array()
+import { answerList, allowedGuesses } from '$lib/util/words';
+function allowedGuess() {
+	return custom(
+		(value: string) => answerList.includes(value) || allowedGuesses.includes(value),
+		'Guess not in list of allowed guesses.'
+	);
+}
+export const GuessSchema = object({
+	guess: string([minLength(5), maxLength(5), allowedGuess()]),
+	complete: boolean()
 });
+export type Guess = Output<typeof GuessSchema>;
 
-export type GameState = z.infer<typeof GameStateSchema>;
+export function integer() {
+	return custom((value: number) => Number.isInteger(value), 'Value must be integer.');
+}
+function gameNum() {
+	return number([integer(), minValue(1)]);
+}
+export const GameStateSchema = object({
+	gameNum: gameNum(),
+	guesses: array(GuessSchema)
+});
+export type GameState = Output<typeof GameStateSchema>;
 
 export type LeaderboardResults = {
 	user: string;
@@ -24,11 +47,11 @@ export type LeaderboardResults = {
 	score: number;
 };
 
-export const gameResultSchema = z.object({
-	user: z.string().optional(),
-	user_id: z.number().int().positive(),
-	gamenum: z.number().int().positive(),
-	answers: z.string(),
-	attempts: z.number().int().positive().optional()
+const answerSchema = string([regex(/[xci_]/)]);
+export const GameResultSchema = object({
+	user: optional(string()),
+	user_id: number([integer(), minValue(1)]),
+	gamenum: gameNum(),
+	answers: answerSchema
 });
-export type GameResult = z.infer<typeof gameResultSchema>;
+export type GameResult = Output<typeof GameResultSchema>;
