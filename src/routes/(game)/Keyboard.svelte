@@ -35,8 +35,8 @@
 	method="POST"
 	class="grid h-full flex-auto grid-rows-3 gap-1"
 	id="keyboard"
-	use:enhance={({ cancel, data }) => {
-		const key = data.get('key');
+	use:enhance={({ cancel, formData }) => {
+		const key = formData.get('key');
 		dispatch('key', key);
 		cancel();
 	}}

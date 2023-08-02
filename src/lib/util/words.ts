@@ -12995,6 +12995,20 @@ export const getDailyWord = () => {
 	return getWord(random);
 };
 
+import { minLength, string, maxLength, custom, object, boolean } from 'valibot';
+
+export const GuessSchema = object({
+	guess: string([
+		minLength(5),
+		maxLength(5),
+		custom(function isAllowedGuess(value: string) {
+			const valid = answerList.includes(value) || allowedGuesses.includes(value);
+			return valid;
+		}, 'Guess not in list of allowed guesses.')
+	]),
+	complete: boolean()
+});
+
 export const isValidWord = (word: string) =>
 	answerList.includes(word) || allowedGuesses.includes(word);
 

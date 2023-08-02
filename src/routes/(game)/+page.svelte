@@ -3,13 +3,14 @@
 	import { slide } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
 	import { onMount } from 'svelte';
-	import { enhance, type SubmitFunction } from '$app/forms';
+	import { enhance } from '$app/forms';
 	import Keyboard from './Keyboard.svelte';
 	import { applyKey, getKeyStatuses, applyWord } from '$lib/util/gameFunctions';
 	import { getCookieFromGameState } from '$lib/util/encodeCookie';
 	import Cookies from 'js-cookie';
 	import { browser } from '$app/environment';
 	import toast, { Toaster } from 'svelte-french-toast';
+	import type { SubmitFunction } from '@sveltejs/kit';
 
 	export let data: import('./$types').PageData;
 	export let form: import('./$types').ActionData;
@@ -98,14 +99,25 @@
 		});
 	}
 
-	const enhanceForm: SubmitFunction = async (event) => {
+	let resolvePromise: (value: unknown) => void;
+	const handleWordResult = async ({ update }: { update: () => void }) => {
+		if (resolvePromise) {
+			resolvePromise(undefined);
+		}
+		await new Promise((resolve) => setTimeout(resolve, 500));
+		update();
+		if (form?.success) {
+			openModal(data.answers, data.state?.length || 0, true, data?.session?.user?.login || '');
+		}
+	};
+	const enhanceForm: SubmitFunction = async ({ formData, cancel }) => {
 		if (submitDisabled) {
-			event.cancel();
+			cancel();
 			return;
 		}
-		const guess = event.data.getAll('guess').map((l) => l.toString().toLowerCase());
+		const guess = formData.getAll('guess').map((l) => l.toString().toLowerCase());
 		if (guess.join('').length < 5) {
-			event.cancel();
+			cancel();
 			invalidForm = true;
 			setTimeout(() => {
 				invalidForm = false;
@@ -113,13 +125,17 @@
 			return;
 		}
 
-		const { metadata, updatedAnswers } = applyWord(data.state, guess, data.answers);
+		const { metadata, updatedAnswers, updatedGuesses } = applyWord(data.state, guess, data.answers);
 		form = metadata;
 		if (metadata.invalid) {
 			toastError('invalid word');
+			cancel();
 			return;
 		}
 		data.answers = updatedAnswers;
+		if (!metadata.invalid) {
+			data.state = updatedGuesses;
+		}
 		data = data;
 		Cookies.set('wordLettuce', getCookieFromGameState(data.state), {
 			path: '/',
@@ -129,10 +145,9 @@
 		});
 
 		if (!metadata.success) {
-			event.cancel();
+			cancel();
 			return;
 		}
-		let resolvePromise: (value: unknown) => void;
 		const promise = new Promise((resolve) => {
 			resolvePromise = resolve;
 		});
@@ -141,16 +156,7 @@
 			error: 'oh nooo',
 			success: 'results saved'
 		});
-		return async ({ update }) => {
-			if (resolvePromise) {
-				resolvePromise(undefined);
-			}
-			await new Promise((resolve) => setTimeout(resolve, 500));
-			update();
-			if (form?.success) {
-				openModal(data.answers, data.state?.length || 0, true, data?.session?.user?.login || '');
-			}
-		};
+		return handleWordResult;
 	};
 
 	let formElement: HTMLFormElement;

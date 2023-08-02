@@ -1,6 +1,7 @@
 import { getGameNum } from './share';
 import type { Guess } from '$lib/types/gameresult';
 import { GameStateSchema } from '$lib/types/gameresult';
+import { safeParse } from 'valibot';
 const decodeState = (stateBuffer: string) => {
 	const state: {
 		gameNum: number;
@@ -19,10 +20,11 @@ const decodeState = (stateBuffer: string) => {
 		if (parsed?.gameNum !== currentGameNum) {
 			return state;
 		}
-		const result = GameStateSchema.safeParse(parsed);
+		const result = safeParse(GameStateSchema, parsed);
 		if (!result.success) {
 			return state;
 		}
+
 		return result.data;
 	} catch (e) {
 		console.log('error decoding state', e);

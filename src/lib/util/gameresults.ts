@@ -20,7 +20,6 @@ export const getGameResults = async (
 	provider: string = DEFAULT_DB_PROVIDER,
 	offset = 0
 ) => {
-	console.time(`load game results from ${provider}`);
 	let gameResults: GameResult[] = [];
 	let totalCount = 0;
 	let results;
@@ -38,7 +37,6 @@ export const getGameResults = async (
 		default:
 			throw Error('invalid provider');
 	}
-	console.timeEnd(`load game results from ${provider}`);
 	return {
 		totalCount,
 		results: gameResults as GameResult[]
@@ -46,7 +44,6 @@ export const getGameResults = async (
 };
 
 export const getLeaderBoardResults = async (gamenum: number, provider: string) => {
-	console.time(`get leaderboard results from ${provider}`);
 	let leaderboardResults;
 	switch (provider) {
 		case 'planetscale':
@@ -58,12 +55,10 @@ export const getLeaderBoardResults = async (gamenum: number, provider: string) =
 		default:
 			throw Error('invalid provider');
 	}
-	console.timeEnd(`get leaderboard results from ${provider}`);
 	return leaderboardResults as LeaderboardResults[];
 };
 
 export const saveGameResults = async (gameResult: GameResult, provider: string) => {
-	console.time(`save game results to ${provider}:`);
 	let result;
 	const providers = new Map([
 		['d1', saveGameResultsD1],
@@ -82,13 +77,10 @@ export const saveGameResults = async (gameResult: GameResult, provider: string) 
 		}
 		result = await saveGameFunction(gameResult);
 	}
-
-	console.timeEnd(`save game results to ${provider}:`);
 	return result;
 };
 
 export const upsertUser = async (user: UserRecord, provider: string) => {
-	console.time(`upsert user info to ${provider}:`);
 	let result;
 	const providers = new Map([
 		['planetscale', upserUserPlanetscale],
@@ -107,6 +99,5 @@ export const upsertUser = async (user: UserRecord, provider: string) => {
 		}
 		result = await upsertUserFunction(user);
 	}
-	console.timeEnd(`upsert user info to ${provider}:`);
 	return result;
 };

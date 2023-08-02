@@ -116,6 +116,8 @@ export const applyKey = (key: string, guesses: Guess[], answers: string[]) => {
 	return updatedGuesses;
 };
 
+import { parse, type Output, safeParse } from 'valibot';
+import { GuessSchema } from './words';
 export const applyWord = (
 	guesses: {
 		guess: string;
@@ -139,24 +141,26 @@ export const applyWord = (
 		};
 	}
 	const guess = guesses.at(-1);
-	if (!guess || guess.guess.length !== 5 || !isValidWord(guess.guess)) {
-		metadata.invalid = true;
+	const guessData = safeParse(GuessSchema, guess);
+	if (!guessData.success) {
 		return {
 			updatedGuesses: guesses,
-			metadata,
+			metadata: {
+				...metadata,
+				invalid: true
+			},
 			updatedAnswers: answers
 		};
 	}
-	const statuses = checkWord(guess.guess.split(''), answer);
-	guess.complete = true;
+	const statuses = checkWord(guessData.data.guess.split(''), answer);
+	guessData.data.complete = true;
 	answers.push(statuses);
 
 	if (statuses === 'xxxxx') {
 		metadata.success = true;
 	}
-
 	return {
-		updatedGuesses: guesses,
+		updatedGuesses: [...guesses.slice(0, -1), guessData.data],
 		metadata,
 		updatedAnswers: answers
 	};

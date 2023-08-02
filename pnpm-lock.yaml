@@ -92,12 +92,12 @@ devDependencies:
   typescript:
     specifier: ^5.1.6
     version: 5.1.6
+  valibot:
+    specifier: ^0.8.0
+    version: 0.8.0
   vite:
     specifier: ^4.4.7
     version: 4.4.7
-  zod:
-    specifier: ^3.21.4
-    version: 3.21.4
 
 packages:
 
@@ -2673,6 +2673,10 @@ packages:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
     dev: true
 
+  /valibot@0.8.0:
+    resolution: {integrity: sha512-wQHXVkVFj6Z0R3297icGCp3UX8S66onuIg03ihJ8aVgMn8pMJvYSfmrKb+aIg7w/Aw08togrklaMSqDP2vKtIA==}
+    dev: true
+
   /vite@4.4.7:
     resolution: {integrity: sha512-6pYf9QJ1mHylfVh39HpuSfMPojPSKVxZvnclX1K1FyZ1PXDOcLBibdq5t1qxJSnL63ca8Wf4zts6mD8u8oc9Fw==}
     engines: {node: ^14.18.0 || >=16.0.0}
@@ -2765,8 +2769,4 @@ packages:
   /yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
-    dev: true
-
-  /zod@3.21.4:
-    resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
     dev: true
