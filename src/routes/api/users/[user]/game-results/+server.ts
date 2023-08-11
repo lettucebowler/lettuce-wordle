@@ -1,12 +1,4 @@
-import {
-	safeParse,
-	enumType,
-	number,
-	useDefault,
-	object,
-	coerce,
-	minValue
-} from 'valibot';
+import { safeParse, enumType, number, useDefault, object, coerce, minValue } from 'valibot';
 import { DEFAULT_DB_PROVIDER } from '$env/static/private';
 const getGameResultsRequestSchema = object({
 	offset: useDefault(coerce(number([integer(), minValue(0)]), Number), 0),
