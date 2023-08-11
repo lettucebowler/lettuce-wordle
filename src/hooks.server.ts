@@ -21,15 +21,11 @@ const providerHandler: Handle = async ({ event, resolve }) => {
 	const searchParams = new URL(event.request.url).searchParams;
 	const dbProviderOverride = searchParams.get('dbProvider');
 	let dbProvider;
-	console.time('woop');
 	if (dbProviderOverride) {
 		dbProvider = dbProviderOverride;
 	} else {
-		console.time('get edge config');
 		dbProvider = `${await edgeConfig.get('DEFAULT_DB_PROVIDER')}`;
-		console.timeEnd('get edge config');
 	}
-	console.timeEnd('woop');
 	event.locals.dbProvider = dbProvider;
 	event.locals.dbProviderOverwritten = !!dbProviderOverride;
 	const logString = `${event.request.method} ${event.url.pathname}${
