@@ -10,16 +10,16 @@ devDependencies:
     version: 0.10.0
   '@auth/sveltekit':
     specifier: 0.3.6
-    version: 0.3.6(@sveltejs/kit@1.22.5)(svelte@4.2.0)
+    version: 0.3.6(@sveltejs/kit@1.22.6)(svelte@4.2.0)
   '@planetscale/database':
     specifier: ^1.10.0
     version: 1.10.0
   '@sveltejs/adapter-vercel':
     specifier: ^3.0.3
-    version: 3.0.3(@sveltejs/kit@1.22.5)
+    version: 3.0.3(@sveltejs/kit@1.22.6)
   '@sveltejs/kit':
-    specifier: ^1.22.5
-    version: 1.22.5(svelte@4.2.0)(vite@4.4.9)
+    specifier: ^1.22.6
+    version: 1.22.6(svelte@4.2.0)(vite@4.4.9)
   '@types/cookie':
     specifier: ^0.5.1
     version: 0.5.1
@@ -36,8 +36,8 @@ devDependencies:
     specifier: ^0.2.1
     version: 0.2.1
   autoprefixer:
-    specifier: ^10.4.14
-    version: 10.4.14(postcss@8.4.27)
+    specifier: ^10.4.15
+    version: 10.4.15(postcss@8.4.27)
   cookie:
     specifier: ^0.5.0
     version: 0.5.0
@@ -138,14 +138,14 @@ packages:
       preact-render-to-string: 5.2.3(preact@10.11.3)
     dev: true
 
-  /@auth/sveltekit@0.3.6(@sveltejs/kit@1.22.5)(svelte@4.2.0):
+  /@auth/sveltekit@0.3.6(@sveltejs/kit@1.22.6)(svelte@4.2.0):
     resolution: {integrity: sha512-wL9YR8raosHR+iPDvIBExqvYiaOsseM681eYLjfU+ELmkjlKtGk+B4VxiLYMxlPfjqNagrzLNyS58PYXy2oh7A==}
     peerDependencies:
       '@sveltejs/kit': ^1.0.0
       svelte: ^3.54.0 || ^4.0.0
     dependencies:
       '@auth/core': 0.10.0
-      '@sveltejs/kit': 1.22.5(svelte@4.2.0)(vite@4.4.9)
+      '@sveltejs/kit': 1.22.6(svelte@4.2.0)(vite@4.4.9)
       svelte: 4.2.0
     transitivePeerDependencies:
       - nodemailer
@@ -496,21 +496,21 @@ packages:
       picomatch: 2.3.1
     dev: true
 
-  /@sveltejs/adapter-vercel@3.0.3(@sveltejs/kit@1.22.5):
+  /@sveltejs/adapter-vercel@3.0.3(@sveltejs/kit@1.22.6):
     resolution: {integrity: sha512-0FQMjR6klW4627ewdclSr0lUe/DqiiyOaRTfgb5cXgNbVMsZMOA2fQ77TYQnJdvMfSEWe6y8uznV48XqKh9+vA==}
     peerDependencies:
       '@sveltejs/kit': ^1.5.0
     dependencies:
-      '@sveltejs/kit': 1.22.5(svelte@4.2.0)(vite@4.4.9)
-      '@vercel/nft': 0.23.0
+      '@sveltejs/kit': 1.22.6(svelte@4.2.0)(vite@4.4.9)
+      '@vercel/nft': 0.23.1
       esbuild: 0.18.20
     transitivePeerDependencies:
       - encoding
       - supports-color
     dev: true
 
-  /@sveltejs/kit@1.22.5(svelte@4.2.0)(vite@4.4.9):
-    resolution: {integrity: sha512-LHq+ECucoT6c6/tkrxIQtD8KVNhPFV4QQ+xOKTwBAs/Qdtff8P5gAzsIZiwEaaO6J6sYZoy5RP2VR6m8PSCgLA==}
+  /@sveltejs/kit@1.22.6(svelte@4.2.0)(vite@4.4.9):
+    resolution: {integrity: sha512-SDKxI/QpsReCwIn5czjT53fKlPBybbmMk67d317gUqfeORroBAFN1Z6s/x0E1JYi+04i7kKllS+Sz9wVfmUkAQ==}
     engines: {node: ^16.14 || >=18}
     hasBin: true
     requiresBuild: true
@@ -737,8 +737,8 @@ packages:
       '@vercel/edge-config-fs': 0.1.0
     dev: true
 
-  /@vercel/nft@0.23.0:
-    resolution: {integrity: sha512-1iuPjyltiPqyZrvc/bW1CyICRdng8bVhpJT8MsIXV7Wj+mRFyJs9krsHbVy2pZwu7BMAgforQsT5TCY1JoBDxw==}
+  /@vercel/nft@0.23.1:
+    resolution: {integrity: sha512-NE0xSmGWVhgHF1OIoir71XAd0W0C1UE3nzFyhpFiMr3rVhetww7NvM1kc41trBsPG37Bh+dE5FYCTMzM/gBu0w==}
     engines: {node: '>=14'}
     hasBin: true
     dependencies:
@@ -853,8 +853,8 @@ packages:
     resolution: {integrity: sha512-tLRNUXati5MFePdAk8dw7Qt7DpxPB60ofAgn8WRhW6a2rcimZnYBP9oxHiv0OHy+Wz7kPMG+t4LGdt31+4EmGg==}
     dev: true
 
-  /autoprefixer@10.4.14(postcss@8.4.27):
-    resolution: {integrity: sha512-FQzyfOsTlwVzjHxKEqRIAdJx9niO6VCBCoEwax/VLSoQF29ggECcPuBqUMZ+u8jCZOPSy8b8/8KnuFbp0SaFZQ==}
+  /autoprefixer@10.4.15(postcss@8.4.27):
+    resolution: {integrity: sha512-KCuPB8ZCIqFdA4HwKXsvz7j6gvSDNhDP7WnUjBleRkKjPdvCmHFuQ77ocavI8FT6NdvlBnE2UFr2H4Mycn8Vew==}
     engines: {node: ^10 || ^12 || >=14}
     hasBin: true
     peerDependencies:
@@ -910,7 +910,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001520
-      electron-to-chromium: 1.4.490
+      electron-to-chromium: 1.4.491
       node-releases: 2.0.13
       update-browserslist-db: 1.0.11(browserslist@4.21.10)
     dev: true
@@ -1109,8 +1109,8 @@ packages:
       esutils: 2.0.3
     dev: true
 
-  /electron-to-chromium@1.4.490:
-    resolution: {integrity: sha512-6s7NVJz+sATdYnIwhdshx/N/9O6rvMxmhVoDSDFdj6iA45gHR8EQje70+RYsF4GeB+k0IeNSBnP7yG9ZXJFr7A==}
+  /electron-to-chromium@1.4.491:
+    resolution: {integrity: sha512-ZzPqGKghdVzlQJ+qpfE+r6EB321zed7e5JsvHIlMM4zPFF8okXUkF5Of7h7F3l3cltPL0rG7YVmlp5Qro7RQLA==}
     dev: true
 
   /emoji-regex@8.0.0:
