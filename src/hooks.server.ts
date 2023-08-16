@@ -4,28 +4,19 @@ import GitHub from '@auth/core/providers/github';
 import { skipCSRFCheck } from '@auth/core';
 import {
 	AUTH_SECRET,
-	EDGE_CONFIG,
 	SK_AUTH_GITHUB_CLIENT_ID,
-	SK_AUTH_GITHUB_CLIENT_SECRET
+	SK_AUTH_GITHUB_CLIENT_SECRET,
+	DEFAULT_DB_PROVIDER,
 } from '$env/static/private';
-import { get } from '@vercel/edge-config';
 import { getGameFromCookie } from '$lib/util/decodeCookie.server';
 import { upsertUser } from '$lib/util/gameresults';
 
 import type { Handle } from '@sveltejs/kit';
-import { createClient } from '@vercel/edge-config';
-
-const edgeConfig = createClient(EDGE_CONFIG);
 
 const providerHandler: Handle = async ({ event, resolve }) => {
 	const searchParams = new URL(event.request.url).searchParams;
 	const dbProviderOverride = searchParams.get('dbProvider');
-	let dbProvider;
-	if (dbProviderOverride) {
-		dbProvider = dbProviderOverride;
-	} else {
-		dbProvider = `${await edgeConfig.get('DEFAULT_DB_PROVIDER')}`;
-	}
+	const dbProvider = dbProviderOverride || DEFAULT_DB_PROVIDER;
 	event.locals.dbProvider = dbProvider;
 	event.locals.dbProviderOverwritten = !!dbProviderOverride;
 	const logString = `${event.request.method} ${event.url.pathname}${

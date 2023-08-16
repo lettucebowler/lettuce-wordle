@@ -21,7 +21,6 @@
 		"@types/js-cookie": "^3.0.3",
 		"@typescript-eslint/eslint-plugin": "^5.62.0",
 		"@typescript-eslint/parser": "^5.62.0",
-		"@vercel/edge-config": "^0.2.1",
 		"autoprefixer": "^10.4.15",
 		"cookie": "^0.5.0",
 		"eslint": "^8.47.0",
