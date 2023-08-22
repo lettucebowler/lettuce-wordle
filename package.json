@@ -14,7 +14,7 @@
 	"devDependencies": {
 		"@auth/core": "0.10.0",
 		"@auth/sveltekit": "0.3.6",
-		"@planetscale/database": "^1.10.0",
+		"@planetscale/database": "^1.11.0",
 		"@sveltejs/adapter-vercel": "^3.0.3",
 		"@sveltejs/kit": "^1.22.6",
 		"@types/cookie": "^0.5.1",
@@ -25,7 +25,7 @@
 		"cookie": "^0.5.0",
 		"eslint": "^8.47.0",
 		"eslint-config-prettier": "^8.10.0",
-		"eslint-plugin-svelte": "^2.32.4",
+		"eslint-plugin-svelte": "^2.33.0",
 		"itty-fetcher": "^0.8.1",
 		"js-cookie": "^3.0.5",
 		"postcss": "^8.4.28",
@@ -39,7 +39,7 @@
 		"svelte2tsx": "^0.6.20",
 		"tailwind-scrollbar": "^3.0.5",
 		"tailwindcss": "^3.3.3",
-		"tslib": "^2.6.1",
+		"tslib": "^2.6.2",
 		"typescript": "^5.1.6",
 		"valibot": "^0.8.0",
 		"vite": "^4.4.9"
