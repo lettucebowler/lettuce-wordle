@@ -6,7 +6,7 @@ import {
 	AUTH_SECRET,
 	SK_AUTH_GITHUB_CLIENT_ID,
 	SK_AUTH_GITHUB_CLIENT_SECRET,
-	DEFAULT_DB_PROVIDER,
+	DEFAULT_DB_PROVIDER
 } from '$env/static/private';
 import { getGameFromCookie } from '$lib/util/decodeCookie.server';
 import { upsertUser } from '$lib/util/gameresults';
