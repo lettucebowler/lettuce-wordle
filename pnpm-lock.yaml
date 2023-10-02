@@ -6,7 +6,7 @@ settings:
 
 devDependencies:
   '@auth/core':
-    specifier: ^0.13.0
+    specifier: 0.13.0
     version: 0.13.0
   '@auth/sveltekit':
     specifier: ^0.3.7
