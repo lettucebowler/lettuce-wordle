@@ -10,7 +10,9 @@ import {
 	object,
 	minLength,
 	custom,
-	boolean
+	union,
+	integer,
+	literal
 } from 'valibot';
 
 import { answerList, allowedGuesses } from '$lib/util/words';
@@ -20,23 +22,28 @@ function allowedGuess() {
 		'Guess not in list of allowed guesses.'
 	);
 }
-export const GuessSchema = object({
+export const completeGuessSchema = object({
 	guess: string([minLength(5), maxLength(5), allowedGuess()]),
-	complete: boolean()
+	complete: literal(true)
 });
-export type Guess = Output<typeof GuessSchema>;
+export type CompleteGuess = Output<typeof completeGuessSchema>;
+export const incompleteGuessSchema = object({
+	guess: string(),
+	complete: literal(false)
+});
+export type IncompleteGuess = Output<typeof incompleteGuessSchema>;
+export const guessSchema = union([completeGuessSchema, incompleteGuessSchema]);
+export type Guess = Output<typeof guessSchema>;
+export function isCompleteGuess(guess: Guess): guess is CompleteGuess {
+	return guess.complete;
+}
 
-export function integer() {
-	return custom((value: number) => Number.isInteger(value), 'Value must be integer.');
-}
-function gameNum() {
-	return number([integer(), minValue(1)]);
-}
-export const GameStateSchema = object({
-	gameNum: gameNum(),
-	guesses: array(GuessSchema)
+const gameNumSchema = number([integer(), minValue(1)]);
+export const gameStateSchema = object({
+	gameNum: gameNumSchema,
+	guesses: array(guessSchema)
 });
-export type GameState = Output<typeof GameStateSchema>;
+export type GameState = Output<typeof gameStateSchema>;
 
 export const leaderboardResultSchema = object({
 	user: string(),
@@ -51,7 +58,7 @@ const answerSchema = string([regex(/[xci_]/)]);
 export const gameResultSchema = object({
 	user: optional(string()),
 	user_id: number([integer(), minValue(1)]),
-	gamenum: gameNum(),
+	gamenum: gameNumSchema,
 	answers: answerSchema
 });
 export type GameResult = Output<typeof gameResultSchema>;

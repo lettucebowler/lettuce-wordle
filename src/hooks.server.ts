@@ -30,10 +30,13 @@ const providerHandler: Handle = async ({ event, resolve }) => {
 	return response;
 };
 
-const gameStateHandler: Handle = async ({ event, resolve }) => {
+const createGameStateGetter = (event: RequestEvent) => () => {
 	const wordLettuceState = event.cookies.get('wordLettuce') || '';
 	const gameState = getGameFromCookie(wordLettuceState);
-	event.locals.gameState = gameState?.guesses;
+	return gameState.guesses;
+};
+const gameStateHandler: Handle = async ({ event, resolve }) => {
+	event.locals.getGameState = createGameStateGetter(event);
 	return resolve(event);
 };
 

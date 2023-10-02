@@ -1,4 +1,4 @@
-import { safeParse, enumType, number, object, coerce, minValue, optional } from 'valibot';
+import { safeParse, enumType, number, object, coerce, minValue, optional, integer } from 'valibot';
 import { DEFAULT_DB_PROVIDER } from '$env/static/private';
 const getGameResultsRequestSchema = object({
 	offset: optional(coerce(number([integer(), minValue(0)]), Number), 0),
@@ -8,7 +8,6 @@ const getGameResultsRequestSchema = object({
 
 import { error, json } from '@sveltejs/kit';
 import { getGameResults } from '$lib/util/gameresults';
-import { integer } from '$lib/types/gameresult';
 export async function GET(event) {
 	const session = await event.locals.getWordLettuceSession();
 	if (!session) {
