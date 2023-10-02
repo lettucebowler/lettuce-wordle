@@ -14,26 +14,22 @@ export const getGameResults = async (
 	provider: string = DEFAULT_DB_PROVIDER,
 	offset = 0
 ) => {
-	let gameResults: GameResult[] = [];
-	let totalCount = 0;
-	let results;
+	let gameResults: {
+		results: GameResult[];
+		totalCount: number;
+	};
 	switch (provider) {
 		case 'd1':
-			results = await getGameResultsD1(user, count, offset);
-			gameResults = results.results;
-			totalCount = results.totalCount;
+			gameResults = await getGameResultsD1(user, count, offset);
 			break;
 		default:
 			throw Error('invalid provider');
 	}
-	return {
-		totalCount,
-		results: gameResults as GameResult[]
-	};
+	return gameResults;
 };
 
 export const getLeaderBoardResults = async (gamenum: number, provider: string) => {
-	let leaderboardResults;
+	let leaderboardResults: LeaderboardResult[];
 	switch (provider) {
 		case 'd1':
 			leaderboardResults = await getLeaderBoardResultsD1(gamenum);
@@ -41,7 +37,7 @@ export const getLeaderBoardResults = async (gamenum: number, provider: string) =
 		default:
 			throw Error('invalid provider');
 	}
-	return leaderboardResults as LeaderboardResult[];
+	return leaderboardResults;
 };
 
 export const saveGameResults = async (gameResult: GameResult, provider: string) => {

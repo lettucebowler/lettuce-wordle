@@ -12,7 +12,9 @@ import {
 	custom,
 	union,
 	integer,
-	literal
+	literal,
+	nullType,
+	voidType
 } from 'valibot';
 
 import { answerList, allowedGuesses } from '$lib/util/words';
@@ -57,8 +59,9 @@ export type LeaderboardResult = Output<typeof leaderboardResultSchema>;
 const answerSchema = string([regex(/[xci_]/)]);
 export const gameResultSchema = object({
 	user: optional(string()),
-	user_id: number([integer(), minValue(1)]),
+	user_id: optional(number([integer(), minValue(1)])),
 	gamenum: gameNumSchema,
-	answers: answerSchema
+	answers: answerSchema,
+	attempts: optional(number([integer()]))
 });
 export type GameResult = Output<typeof gameResultSchema>;

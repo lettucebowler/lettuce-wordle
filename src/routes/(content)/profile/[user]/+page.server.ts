@@ -3,27 +3,16 @@ export async function load(event) {
 	const searchParams = event.url.searchParams;
 	const offset = Number(searchParams.get('offset')) || 0;
 	const user = event.params.user;
-	const { totalCount, results: gameResults } = await getGameResults(
+	const { results, totalCount } = await getGameResults(user, 30, event.locals.dbProvider, offset);
+	return {
 		user,
-		30,
-		event.locals.dbProvider,
-		offset
-	);
-	const result = {
-		profile: {
-			gameResults: gameResults,
-			gameCount: totalCount,
-			user
+		results,
+		totalCount,
+		offsets: {
+			current: offset,
+			next: offset + 30,
+			previous: offset >= 30 ? offset - 30 : 0
 		},
-		nextOffset: offset + 30,
-		prevOffset: offset >= 30 ? offset - 30 : 0,
-		currentOffset: offset
+		dbProvider: event.locals.dbProvider
 	};
-	if (event.locals.dbProviderOverwritten) {
-		return {
-			...result,
-			dbProvider: event.locals.dbProvider
-		};
-	}
-	return result;
 }

@@ -46,7 +46,7 @@ export async function load(event) {
 	});
 
 	return {
-		state: gameState as Guess[],
+		state: gameState,
 		answers
 	};
 }
@@ -54,7 +54,7 @@ export async function load(event) {
 export const actions: import('./$types').Actions = {
 	keyboard: async (event) => {
 		const data = await event.request.formData();
-		const key = data.get('key') as string;
+		const key = data.get('key')?.toString();
 		if (!key) {
 			return {
 				invalid: true,

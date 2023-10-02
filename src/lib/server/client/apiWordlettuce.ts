@@ -2,17 +2,7 @@ import { StatusError, fetcher } from 'itty-fetcher';
 import { API_WORDLETTUCE_HOST, API_WORDLETTUCE_TOKEN } from '$env/static/private';
 import { type GameResult, gameResultSchema, leaderboardResultSchema } from '$lib/types/gameresult';
 import type { UserProfile } from '$lib/types/auth';
-import {
-	array,
-	number,
-	object,
-	integer,
-	minValue,
-	safeParse,
-	boolean,
-	literal,
-	string
-} from 'valibot';
+import { array, number, object, integer, minValue, safeParse, literal } from 'valibot';
 
 const apiWordlettuce = fetcher({
 	base: `${API_WORDLETTUCE_HOST}`,
