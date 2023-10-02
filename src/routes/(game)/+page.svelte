@@ -11,9 +11,10 @@
 	import { browser } from '$app/environment';
 	import toast, { Toaster } from 'svelte-french-toast';
 	import type { SubmitFunction } from '@sveltejs/kit';
+	import type { CompleteGuess, IncompleteGuess } from '$lib/types/gameresult';
 
-	export let data: import('./$types').PageData;
-	export let form: import('./$types').ActionData;
+	export let data;
+	export let form;
 
 	let modal: Modal;
 	let invalidForm = false;
@@ -115,8 +116,14 @@
 			cancel();
 			return;
 		}
-		const guess = formData.getAll('guess').map((l) => l.toString().toLowerCase());
-		if (guess.join('').length < 5) {
+		const guess: IncompleteGuess = {
+			guess: formData
+				.getAll('guess')
+				.map((l) => l.toString().toLowerCase())
+				.join(''),
+			complete: false
+		};
+		if (guess.guess.length !== 5) {
 			cancel();
 			invalidForm = true;
 			setTimeout(() => {
@@ -124,8 +131,11 @@
 			}, 150);
 			return;
 		}
-
-		const { metadata, updatedAnswers, updatedGuesses } = applyWord(data.state, guess, data.answers);
+		const { metadata, updatedAnswers, updatedGuesses } = applyWord(
+			data.state.filter((guess): guess is CompleteGuess => guess.complete),
+			guess,
+			data.answers
+		);
 		form = metadata;
 		if (metadata.invalid) {
 			toastError('invalid word');
@@ -169,6 +179,7 @@
 			action="?/enter"
 			id="game"
 			bind:this={formElement}
+			use:enhance={enhanceForm}
 			class="my-auto flex w-full max-w-[min(700px,_55vh)]"
 		>
 			<div class="grid w-full grid-rows-[repeat(6,_1fr)] gap-2">

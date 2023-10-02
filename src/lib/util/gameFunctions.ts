@@ -1,4 +1,9 @@
-import type { CompleteGuess, Guess, IncompleteGuess } from '$lib/types/gameresult';
+import {
+	completeGuessSchema,
+	type CompleteGuess,
+	type Guess,
+	type IncompleteGuess
+} from '$lib/types/gameresult';
 import { getDailyWord } from './words';
 
 const getLetterLocations = (s: string, l: string) => {
@@ -116,14 +121,31 @@ export const applyKey = (key: string, guesses: Guess[], answers: string[]) => {
 	return updatedGuesses;
 };
 
-import { safeParse } from 'valibot';
+import { array, safeParse } from 'valibot';
 import { GuessSchema } from './words';
-export const applyWord = (guesses: CompleteGuess[], guess: IncompleteGuess, answers: string[]) => {
-	const answer = getDailyWord();
+export const applyWord = (
+	guesses: CompleteGuess[],
+	guess: IncompleteGuess,
+	answers: string[]
+): {
+	updatedGuesses: Guess[];
+	metadata: { invalid: boolean; success: boolean };
+	updatedAnswers: string[];
+} => {
 	const metadata = {
 		invalid: false,
 		success: false
 	};
+	const parseGuessesResult = safeParse(array(completeGuessSchema), guesses);
+	if (!parseGuessesResult.success) {
+		metadata.invalid = true;
+		return {
+			updatedGuesses: guesses,
+			metadata,
+			updatedAnswers: answers
+		};
+	}
+	const answer = getDailyWord();
 	if (answers.at(-1) === 'xxxxx') {
 		metadata.success = true;
 		return {

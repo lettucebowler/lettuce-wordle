@@ -1,10 +1,10 @@
 import { getCookieFromGameState } from '$lib/util/encodeCookie';
 import { applyKey, applyWord, checkWords } from '$lib/util/gameFunctions';
-import { fail as invalid, redirect } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { getGameNum } from '$lib/util/share';
 import { getDailyWord } from '$lib/util/words';
 import { saveGameResults } from '$lib/util/gameresults';
-import type { CompleteGuess, GameResult, IncompleteGuess } from '$lib/types/gameresult';
+import type { CompleteGuess, GameResult, Guess, IncompleteGuess } from '$lib/types/gameresult';
 
 export async function load(event) {
 	event.depends('/');
@@ -46,7 +46,7 @@ export async function load(event) {
 	});
 
 	return {
-		state: gameState,
+		state: gameState as Guess[],
 		answers
 	};
 }
@@ -98,7 +98,7 @@ export const actions: import('./$types').Actions = {
 			checkWords(gameState, getDailyWord())
 		);
 		if (metadata.invalid) {
-			return invalid(400, metadata);
+			return fail(400, metadata);
 		}
 		const session = await event.locals.getWordLettuceSession();
 

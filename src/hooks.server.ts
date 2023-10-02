@@ -31,11 +31,8 @@ const providerHandler: Handle = async ({ event, resolve }) => {
 };
 
 const createGameStateGetter = (event: RequestEvent) => () => {
-	const before = performance.now();
 	const wordLettuceState = event.cookies.get('wordLettuce') || '';
 	const gameState = getGameFromCookie(wordLettuceState);
-	const after = performance.now();
-	console.log('get game state', after - before);
 	return gameState.guesses;
 };
 const gameStateHandler: Handle = async ({ event, resolve }) => {
