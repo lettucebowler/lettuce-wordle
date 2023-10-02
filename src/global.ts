@@ -5,5 +5,8 @@ declare namespace App {
 		dbProvider: string;
 		dbProviderOverwritten: boolean;
 		gameState: { guess: string; complete: boolean }[];
+		getWordLettuceSession: () => Promise<
+			import('$lib/types/auth').WordLettuceSession | void | null
+		>;
 	}
 }

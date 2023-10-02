@@ -1,4 +1,5 @@
-export const getGameStatus = (appName: string, statuses: string[]) => {
+import { appName } from '$lib/constants/app-constants';
+export const getGameStatus = (statuses: string[]) => {
 	const gameStatus = statuses.filter((l) => l[0] !== 'none');
 	const gameNum = getGameNum();
 

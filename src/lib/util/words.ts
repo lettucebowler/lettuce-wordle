@@ -13009,7 +13009,4 @@ export const GuessSchema = object({
 	complete: boolean()
 });
 
-export const isValidWord = (word: string) =>
-	answerList.includes(word) || allowedGuesses.includes(word);
-
 export default answerList;

@@ -1,8 +1,18 @@
-import { fetcher } from 'itty-fetcher';
+import { StatusError, fetcher } from 'itty-fetcher';
 import { API_WORDLETTUCE_HOST, API_WORDLETTUCE_TOKEN } from '$env/static/private';
-
-import type { GameResult, LeaderboardResults } from '$lib/types/gameresult';
-import type { UserRecord } from '$lib/types/auth';
+import { type GameResult, gameResultSchema, leaderboardResultSchema } from '$lib/types/gameresult';
+import type { UserProfile } from '$lib/types/auth';
+import {
+	array,
+	number,
+	object,
+	integer,
+	minValue,
+	safeParse,
+	boolean,
+	literal,
+	string
+} from 'valibot';
 
 const apiWordlettuce = fetcher({
 	base: `${API_WORDLETTUCE_HOST}`,
@@ -12,31 +22,52 @@ const apiWordlettuce = fetcher({
 	}
 });
 
+const getGameResultsResponseSchema = object({
+	results: array(gameResultSchema),
+	totalCount: number([integer(), minValue(0)])
+});
 export const getGameResults = async (user: string, count: number, offset = 0) => {
-	const { results, totalCount } = (await apiWordlettuce.get(`/v1/users/${user}/gameresults`, {
+	const getGameResultsResponse = await apiWordlettuce.get(`/v1/users/${user}/gameresults`, {
 		count,
 		offset
-	})) as { results: GameResult[]; totalCount: number };
-	return {
-		results: results as GameResult[],
-		totalCount
-	};
+	});
+	const parseResult = safeParse(getGameResultsResponseSchema, getGameResultsResponse);
+	if (!parseResult.success) {
+		throw new StatusError(500, 'Invalid data from api-wordlettuce');
+	}
+	return parseResult.output;
 };
 
-export const getLeaderBoardResults = async (gamenum: number) => {
-	const leaderboardResults = await apiWordlettuce.get('/v1/rankings', {
+const getRankingsResponseSchema = array(leaderboardResultSchema);
+export const getRankings = async (gamenum: number) => {
+	const response = await apiWordlettuce.get('/v1/rankings', {
 		gamenum
 	});
-	return leaderboardResults as LeaderboardResults[];
+	const parseResult = safeParse(getRankingsResponseSchema, response);
+	if (!parseResult.success) {
+		throw new StatusError(500, 'Invalid data from api-wordlettuce');
+	}
+	return parseResult.output;
 };
 
+const saveGameResultResponseSchema = literal('created');
 export const saveGameResults = async (gameresult: GameResult) => {
 	const { user, gamenum, ...rest } = gameresult;
-	const results = await apiWordlettuce.put(`/v1/users/${user}/gameresults/${gamenum}`, rest);
-	return results;
+	const response = await apiWordlettuce.put(`/v1/users/${user}/gameresults/${gamenum}`, rest);
+	const parseResult = safeParse(saveGameResultResponseSchema, response);
+	if (!parseResult.success) {
+		throw new StatusError(500, 'Failed to save game result');
+	}
+	return parseResult.output;
 };
 
-export const upsertUser = async (user: UserRecord) => {
-	const results = await apiWordlettuce.post('/v1/users', user);
-	return results;
+const upsertUserResponseSchema = literal('created');
+export const upsertUser = async (user: UserProfile) => {
+	const { login: username, id: github_id } = user;
+	const response = await apiWordlettuce.post('/v1/users', { username, github_id });
+	const parseResult = safeParse(upsertUserResponseSchema, response);
+	if (!parseResult.success) {
+		throw new StatusError(500, 'Failed to upsert user');
+	}
+	return parseResult.output;
 };

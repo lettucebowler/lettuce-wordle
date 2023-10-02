@@ -11,7 +11,9 @@ import {
 import { getGameFromCookie } from '$lib/util/decodeCookie.server';
 import { upsertUser } from '$lib/util/gameresults';
 
-import type { Handle } from '@sveltejs/kit';
+import { error, type Handle, type RequestEvent } from '@sveltejs/kit';
+import { userProfileSchema, wordLettuceSessionSchema } from '$lib/types/auth';
+import { safeParse, union, voidType, nullType } from 'valibot';
 
 const providerHandler: Handle = async ({ event, resolve }) => {
 	const searchParams = new URL(event.request.url).searchParams;
@@ -20,7 +22,7 @@ const providerHandler: Handle = async ({ event, resolve }) => {
 	event.locals.dbProvider = dbProvider;
 	event.locals.dbProviderOverwritten = !!dbProviderOverride;
 	const logString = `${event.request.method} ${event.url.pathname}${
-		event.url.search ? `?${event.url.search}` : ''
+		event.url.search ? `${event.url.search}` : ''
 	}`;
 	console.time(logString);
 	const response = await resolve(event);
@@ -32,8 +34,24 @@ const gameStateHandler: Handle = async ({ event, resolve }) => {
 	const wordLettuceState = event.cookies.get('wordLettuce') || '';
 	const gameState = getGameFromCookie(wordLettuceState);
 	event.locals.gameState = gameState?.guesses;
-	const response = await resolve(event);
-	return response;
+	return resolve(event);
+};
+
+const createWordLettuceSessionGetter =
+	(event: RequestEvent<Partial<Record<string, string>>, string | null>) => async () => {
+		const parseResult = safeParse(
+			union([wordLettuceSessionSchema, voidType(), nullType()]),
+			await event.locals.getSession()
+		);
+		if (!parseResult.success) {
+			throw error(401, 'Invalid session data');
+		}
+		return parseResult.output;
+	};
+
+const sessionHandler: Handle = async ({ event, resolve }) => {
+	event.locals.getWordLettuceSession = createWordLettuceSessionGetter(event);
+	return resolve(event);
 };
 
 const authHandler = SvelteKitAuth({
@@ -48,10 +66,9 @@ const authHandler = SvelteKitAuth({
 	trustHost: true,
 	callbacks: {
 		async session({ session, token }) {
-			const { email, image } = session?.user || {};
+			const { email } = session?.user || {};
 			const sessionUser = {
 				email,
-				image,
 				id: token.id,
 				login: token.login
 			};
@@ -68,23 +85,20 @@ const authHandler = SvelteKitAuth({
 				token.provider = account.provider;
 			}
 			if (profile) {
-				const { login, id } = profile as { login: string; id: number };
-				token = {
-					...token,
-					login,
-					id
-				};
-				await upsertUser(
-					{
-						github_id: id,
-						username: login
-					},
-					'all'
-				);
+				const profileParseResult = safeParse(userProfileSchema, profile);
+				if (profileParseResult.success) {
+					const { login, id } = profileParseResult.output;
+					token = {
+						...token,
+						login,
+						id
+					};
+					await upsertUser(profileParseResult.output, 'all');
+				}
 			}
 			return token;
 		}
 	}
 });
 
-export const handle = sequence(authHandler, gameStateHandler, providerHandler);
+export const handle = sequence(authHandler, sessionHandler, gameStateHandler, providerHandler);

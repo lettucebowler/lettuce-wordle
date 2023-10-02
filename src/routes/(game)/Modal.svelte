@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
 	import { getGameStatus } from '$lib/util/share';
-	import { appName } from '$lib/stores/appName';
 	import { clickOutsideAction, clickToCopyAction } from 'svelte-legos';
 	import { timeUntilNextGame } from './stores';
 	import AuthForm from '$lib/components/AuthForm.svelte';
@@ -17,7 +16,7 @@
 
 	export function open(answers: string[], guesses: number, success: boolean, user = '') {
 		authenticated = !!user;
-		share = getGameStatus($appName, answers);
+		share = getGameStatus(answers);
 		attempts = guesses;
 		unsub = timeUntilNextGame.subscribe((value) => {
 			timeUntil = value;

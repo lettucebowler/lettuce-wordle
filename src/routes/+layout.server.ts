@@ -1,9 +1,6 @@
 export const prerender = false;
-
-import type { WordLettuceSession } from '$lib/types/auth';
 import type { NavLinkProps } from '$lib/types/navigation.js';
 export async function load(event) {
-	const session = (await event.locals.getSession()) as WordLettuceSession;
 	const links: NavLinkProps[] = [
 		{
 			path: '/',
@@ -26,6 +23,6 @@ export async function load(event) {
 	];
 	return {
 		nav: links,
-		session
+		session: await event.locals.getWordLettuceSession()
 	};
 }

@@ -1,7 +1,6 @@
 import {
 	string,
 	maxLength,
-	toLowerCase,
 	regex,
 	number,
 	minValue,
@@ -39,19 +38,20 @@ export const GameStateSchema = object({
 });
 export type GameState = Output<typeof GameStateSchema>;
 
-export type LeaderboardResults = {
-	user: string;
-	userId: number;
-	sum: number;
-	count: number;
-	score: number;
-};
+export const leaderboardResultSchema = object({
+	user: string(),
+	userId: number([integer(), minValue(0)]),
+	sum: number([integer(), minValue(0)]),
+	count: number([integer(), minValue(0)]),
+	score: number([integer(), minValue(0)])
+});
+export type LeaderboardResult = Output<typeof leaderboardResultSchema>;
 
 const answerSchema = string([regex(/[xci_]/)]);
-export const GameResultSchema = object({
+export const gameResultSchema = object({
 	user: optional(string()),
 	user_id: number([integer(), minValue(1)]),
 	gamenum: gameNum(),
 	answers: answerSchema
 });
-export type GameResult = Output<typeof GameResultSchema>;
+export type GameResult = Output<typeof gameResultSchema>;

@@ -4,7 +4,6 @@ import { fail as invalid, redirect } from '@sveltejs/kit';
 import { getGameNum } from '$lib/util/share';
 import { getDailyWord } from '$lib/util/words';
 import { saveGameResults } from '$lib/util/gameresults';
-import type { WordLettuceSession } from '$lib/types/auth';
 import type { GameResult } from '$lib/types/gameresult';
 
 export async function load(event) {
@@ -14,14 +13,14 @@ export async function load(event) {
 
 	const answers = checkWords(gameState, getDailyWord());
 
-	const session = (await event.locals.getSession()) as WordLettuceSession;
+	const session = await event.locals.getWordLettuceSession();
 
 	const query = new URL(event.request.url).searchParams;
 
 	const doSaveGame = query.get('saveGame') === 'true';
 
 	if (doSaveGame) {
-		if (!session?.user) {
+		if (!session) {
 			throw redirect(307, '/');
 		}
 		if (!gameState?.length) {
@@ -39,7 +38,6 @@ export async function load(event) {
 				gamenum: getGameNum(),
 				answers: answers.join('')
 			};
-			console.log('save game');
 			await saveGameResults(gameResult, 'all');
 			throw redirect(307, '/');
 		}
@@ -100,14 +98,14 @@ export const actions: import('./$types').Actions = {
 		if (metadata.invalid) {
 			return invalid(400, metadata);
 		}
-		const session = (await event.locals.getSession()) as WordLettuceSession;
-		const user = session?.user;
-		if (user && updatedAnswers?.at(-1) === 'xxxxx') {
+		const session = await event.locals.getWordLettuceSession();
+
+		if (session && updatedAnswers?.at(-1) === 'xxxxx') {
 			const gamenum = getGameNum();
 			const gameResult: GameResult = {
 				gamenum,
-				user: user.login,
-				user_id: user.id,
+				user: session.user.login,
+				user_id: session.user.id,
 				answers: updatedAnswers?.join('') || ''
 			};
 			await saveGameResults(gameResult, 'all');

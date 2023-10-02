@@ -22,10 +22,10 @@
 			searchParams.set('dbProvider', $page.url.searchParams.get('dbProvider') || '');
 		}
 		const oldLength = gameResults.length;
-		const fetchResult = (await fetcher().get(
-			`/api/users/${data.profile.user}/game-results`,
-			searchParams
-		)) as { totalCount: number; results: GameResult[] };
+		const fetchResult = (await fetcher().get(`/api/users/v1/game-results`, searchParams)) as {
+			totalCount: number;
+			results: GameResult[];
+		};
 		if (fetchResult?.results) {
 			gameResults = gameResults.concat(fetchResult.results);
 		}

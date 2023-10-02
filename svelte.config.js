@@ -12,6 +12,7 @@ const config = {
 	kit: {
 		adapter: adapter({
 			out: 'build',
+			split: true,
 			runtime: 'edge'
 		})
 	}

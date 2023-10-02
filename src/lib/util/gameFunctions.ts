@@ -1,5 +1,5 @@
 import type { Guess } from '$lib/types/gameresult';
-import { getDailyWord, isValidWord } from './words';
+import { getDailyWord } from './words';
 
 const getLetterLocations = (s: string, l: string) => {
 	return s
@@ -116,7 +116,7 @@ export const applyKey = (key: string, guesses: Guess[], answers: string[]) => {
 	return updatedGuesses;
 };
 
-import { parse, type Output, safeParse } from 'valibot';
+import { safeParse } from 'valibot';
 import { GuessSchema } from './words';
 export const applyWord = (
 	guesses: {
@@ -133,7 +133,6 @@ export const applyWord = (
 	};
 	if (answers.at(-1) === 'xxxxx') {
 		metadata.success = true;
-		console.log('ignore because success');
 		return {
 			updatedGuesses: guesses,
 			metadata,

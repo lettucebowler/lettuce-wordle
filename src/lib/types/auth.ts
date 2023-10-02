@@ -1,26 +1,16 @@
-export type Profile = {
-	login: string;
-	avatar: string;
-	bio: string;
-};
+import { object, string, number, integer, minValue, email } from 'valibot';
+import type { Output } from 'valibot';
 
-export type UserProfile = {
-	login: string;
-	id: number;
-	email: string;
-	image: string;
-};
+export const userProfileSchema = object({
+	id: number([integer(), minValue(0)]),
+	login: string(),
+	email: string([email()])
+});
+export type UserProfile = Output<typeof userProfileSchema>;
 
-export type WordLettuceSession =
-	| {
-			user: UserProfile;
-			provider: string;
-			expires: string;
-	  }
-	| null
-	| undefined;
-
-export type UserRecord = {
-	username: string;
-	github_id: number;
-};
+export const wordLettuceSessionSchema = object({
+	user: userProfileSchema,
+	provider: string(),
+	expires: string()
+});
+export type WordLettuceSession = Output<typeof wordLettuceSessionSchema>;
