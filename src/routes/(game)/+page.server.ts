@@ -1,6 +1,6 @@
 import { getCookieFromGameState } from '$lib/util/encodeCookie';
 import { applyKey, applyWord, checkWords } from '$lib/util/gameFunctions';
-import { error, fail as invalid, redirect } from '@sveltejs/kit';
+import { fail as invalid, redirect } from '@sveltejs/kit';
 import { getGameNum } from '$lib/util/share';
 import { getDailyWord } from '$lib/util/words';
 import { saveGameResults } from '$lib/util/gameresults';
@@ -98,7 +98,6 @@ export const actions: import('./$types').Actions = {
 			checkWords(gameState, getDailyWord())
 		);
 		if (metadata.invalid) {
-			console.log('invalid');
 			return invalid(400, metadata);
 		}
 		const session = await event.locals.getWordLettuceSession();

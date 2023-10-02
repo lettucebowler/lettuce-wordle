@@ -2,7 +2,6 @@ import { getGameNum } from './share';
 import type { Guess } from '$lib/types/gameresult';
 
 const encodeState = (state: { gameNum: number; guesses: Guess[] }): string => {
-	console.log('encode');
 	const stateString = JSON.stringify(state);
 	const encoded = btoa(stateString);
 	return encoded;

@@ -169,7 +169,6 @@
 			action="?/enter"
 			id="game"
 			bind:this={formElement}
-			use:enhance
 			class="my-auto flex w-full max-w-[min(700px,_55vh)]"
 		>
 			<div class="grid w-full grid-rows-[repeat(6,_1fr)] gap-2">
@@ -205,7 +204,7 @@
 									type="hidden"
 									readonly
 									value={letter.toUpperCase()}
-									name={current ? 'guess' : 'not'}
+									name={current ? 'guess' : undefined}
 								/>
 								{letter.toUpperCase()}
 							</div>

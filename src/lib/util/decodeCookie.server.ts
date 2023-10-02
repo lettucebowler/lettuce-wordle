@@ -3,7 +3,6 @@ import type { Guess } from '$lib/types/gameresult';
 import { gameStateSchema } from '$lib/types/gameresult';
 import { safeParse } from 'valibot';
 const decodeState = (stateBuffer: string) => {
-	console.log('decode');
 	const state: {
 		gameNum: number;
 		guesses: Guess[];
@@ -15,8 +14,10 @@ const decodeState = (stateBuffer: string) => {
 		return state;
 	}
 	try {
+		console.log(performance.now());
 		const stateString = atob(stateBuffer);
 		const parsed = JSON.parse(stateString);
+		console.log(performance.now());
 		const currentGameNum = getGameNum();
 		if (parsed?.gameNum !== currentGameNum) {
 			return state;
