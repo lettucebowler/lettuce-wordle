@@ -8,10 +8,9 @@
 	import { applyKey, getKeyStatuses, applyWord } from '$lib/util/gameFunctions';
 	import { getCookieFromGameState } from '$lib/util/encodeCookie';
 	import Cookies from 'js-cookie';
-	import { browser } from '$app/environment';
 	import toast, { Toaster } from 'svelte-french-toast';
 	import type { SubmitFunction } from '@sveltejs/kit';
-	import type { CompleteGuess, IncompleteGuess } from '$lib/types/gameresult';
+	import type { CompleteGuess, Guess, IncompleteGuess } from '$lib/types/gameresult';
 
 	export let data;
 	export let form;
@@ -20,7 +19,7 @@
 	let invalidForm = false;
 
 	const openModal = (answers: string[], guesses: number, success: boolean, user = '') => {
-		setTimeout(() => modal.open(answers, guesses, success, user), 500);
+		setTimeout(() => modal.open({ answers, guesses, user }), 500);
 	};
 
 	const handleKey = (key: string) => {
@@ -44,23 +43,16 @@
 
 		if (filteredLength < 6) {
 			return i;
-		} else if (answers.at(-1) === 'xxxxx') {
+		} else if (data.success) {
 			return filteredLength - 6 + i;
 		} else {
 			return filteredLength - 5 + i;
 		}
 	};
 
-	$: submitDisabled = data.answers?.at(-1) === 'xxxxx';
 	onMount(() => {
-		const lastAnswer = data.answers?.at(-1) || '_____';
-		if (lastAnswer === 'xxxxx') {
-			openModal(
-				data.answers,
-				data.state?.length || 0,
-				lastAnswer === 'xxxxx',
-				data?.session?.user?.login || ''
-			);
+		if (data.success) {
+			openModal(data.answers, data.state?.length || 0, true, data?.session?.user?.login || '');
 		}
 	});
 
@@ -112,7 +104,8 @@
 		}
 	};
 	const enhanceForm: SubmitFunction = async ({ formData, cancel }) => {
-		if (submitDisabled) {
+		// disable submit if game already won
+		if (data.success) {
 			cancel();
 			return;
 		}
@@ -158,6 +151,7 @@
 			cancel();
 			return;
 		}
+		data.success = true;
 		const promise = new Promise((resolve) => {
 			resolvePromise = resolve;
 		});
@@ -195,7 +189,10 @@
 							{@const answer = (data.answers[realIndex] || '_____')[j]}
 							{@const letter = data.state[realIndex]?.guess?.at(j) || ''}
 							{@const doWiggle = invalidForm && current}
-							{@const doBulge = browser && data.answers[realIndex]?.length === 5}
+							{@const doBulge =
+								data.answers[realIndex]?.length === 5 &&
+								realIndex === data.answers.length - 1 &&
+								data.state.length === data.answers.length}
 							{@const delayTime = doWiggle ? '0s' : `${j * 0.03}s`}
 							<div
 								class="box-border grid aspect-square items-center rounded-xl text-center text-2xl font-bold text-snow-300 shadow sm:text-3xl"

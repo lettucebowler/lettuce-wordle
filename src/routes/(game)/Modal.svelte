@@ -14,7 +14,15 @@
 	let timeUntil: number;
 	let unsub: Function;
 
-	export function open(answers: string[], guesses: number, success: boolean, user = '') {
+	export function open({
+		answers = [],
+		guesses = 0,
+		user = ''
+	}: {
+		answers: string[];
+		guesses: number;
+		user: string;
+	}) {
 		authenticated = !!user;
 		share = getGameStatus(answers);
 		attempts = guesses;

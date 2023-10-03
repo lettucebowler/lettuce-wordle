@@ -5,6 +5,7 @@ import { getGameNum } from '$lib/util/share';
 import { getDailyWord } from '$lib/util/words';
 import { saveGameResults } from '$lib/util/gameresults';
 import type { CompleteGuess, GameResult, Guess, IncompleteGuess } from '$lib/types/gameresult';
+import { successAnswer } from '$lib/constants/app-constants.js';
 
 export async function load(event) {
 	event.depends('/');
@@ -46,8 +47,9 @@ export async function load(event) {
 	});
 
 	return {
-		state: gameState,
-		answers
+		state: gameState as Guess[],
+		answers,
+		success: answers.length && answers.at(-1) === successAnswer
 	};
 }
 
