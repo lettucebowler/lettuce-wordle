@@ -11,7 +11,6 @@
 
 <img
 	style={`width:${size}px;height:${size}px`}
-	loading="lazy"
 	class="pointer-events-none inline"
 	src={`https://api.dicebear.com/5.x/bottts-neutral/svg?${searchParams}`}
 	alt=""

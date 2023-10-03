@@ -5,7 +5,7 @@ import {
 	getRankings as getLeaderBoardResultsD1,
 	saveGameResults as saveGameResultsD1,
 	upsertUser as upsertUserD1
-} from '$lib/server/client/apiWordlettuce';
+} from '$lib/client/apiWordlettuce.server';
 import type { UserProfile } from '$lib/types/auth';
 
 export const getGameResults = async (

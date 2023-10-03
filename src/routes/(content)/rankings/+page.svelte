@@ -1,17 +1,15 @@
 <script lang="ts">
 	import LettuceIcon from '$lib/components/Icon.svelte';
-	import P from '$lib/components/P.svelte';
 	import LettuceAvatar from '$lib/components/LettuceAvatar.svelte';
-
 	export let data;
 </script>
 
 <main class="grid gap-8">
 	<h1 class="text-center text-3xl font-bold text-snow-300">LeaderBoard</h1>
-	<P>
+	<p class="box-border px-4 text-left text-lg text-snow-300">
 		Each successful game earns 1 point, plus a bonus point for the number of guesses under 6 it took
 		to guess the word. 6 guesses is 1 point. 5 guesses is 1 points plus 1 bonus point, etc.
-	</P>
+	</p>
 	<div class="grid w-full gap-2 text-snow-300">
 		<div
 			class="grid w-full grid-cols-[1fr,_50px] gap-4 rounded-lg bg-charade-600 p-2 text-xl font-medium sm:grid-cols-[1fr,_50px,_50px] sm:gap-8"

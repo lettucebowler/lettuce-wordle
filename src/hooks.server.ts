@@ -15,12 +15,20 @@ import { error, type Handle, type RequestEvent } from '@sveltejs/kit';
 import { userProfileSchema, wordLettuceSessionSchema } from '$lib/types/auth';
 import { safeParse, union, voidType, nullType } from 'valibot';
 
-const providerHandler: Handle = async ({ event, resolve }) => {
+const createProviderGetter = (event: RequestEvent) => (): string => {
 	const searchParams = new URL(event.request.url).searchParams;
 	const dbProviderOverride = searchParams.get('dbProvider');
-	const dbProvider = dbProviderOverride || DEFAULT_DB_PROVIDER;
-	event.locals.dbProvider = dbProvider;
-	event.locals.dbProviderOverwritten = !!dbProviderOverride;
+	if (!dbProviderOverride) {
+		return DEFAULT_DB_PROVIDER;
+	}
+
+	event.locals.dbProviderOverwritten = true;
+	return dbProviderOverride;
+};
+const providerHandler: Handle = async ({ event, resolve }) => {
+	event.locals.getDbProvider = createProviderGetter(event);
+	event.locals.dbProviderOverwritten = false;
+
 	const logString = `${event.request.method} ${event.url.pathname}${
 		event.url.search ? `${event.url.search}` : ''
 	}`;

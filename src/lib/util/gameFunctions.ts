@@ -123,6 +123,7 @@ export const applyKey = (key: string, guesses: Guess[], answers: string[]) => {
 
 import { array, safeParse } from 'valibot';
 import { GuessSchema } from './words';
+import { successAnswer } from '$lib/constants/app-constants';
 export const applyWord = (
 	guesses: CompleteGuess[],
 	guess: IncompleteGuess,
@@ -165,15 +166,13 @@ export const applyWord = (
 			updatedAnswers: answers
 		};
 	}
-	const statuses = checkWord(guessParseResult.data.guess.split(''), answer);
-	answers.push(statuses);
-
-	if (statuses === 'xxxxx') {
-		metadata.success = true;
-	}
+	answers.push(checkWord(guessParseResult.data.guess.split(''), answer));
 	return {
 		updatedGuesses: [...guesses, { guess: guessParseResult.output.guess, complete: true }],
-		metadata,
+		metadata: {
+			invalid: false,
+			success: answers.at(-1) === successAnswer
+		},
 		updatedAnswers: answers
 	};
 };

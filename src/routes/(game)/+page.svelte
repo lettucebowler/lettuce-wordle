@@ -10,7 +10,7 @@
 	import Cookies from 'js-cookie';
 	import toast, { Toaster } from 'svelte-french-toast';
 	import type { SubmitFunction } from '@sveltejs/kit';
-	import type { CompleteGuess, Guess, IncompleteGuess } from '$lib/types/gameresult';
+	import type { CompleteGuess, IncompleteGuess } from '$lib/types/gameresult';
 
 	export let data;
 	export let form;
@@ -18,7 +18,15 @@
 	let modal: Modal;
 	let invalidForm = false;
 
-	const openModal = (answers: string[], guesses: number, success: boolean, user = '') => {
+	const openModal = ({
+		answers = [],
+		guesses = 0,
+		user = ''
+	}: {
+		answers: string[];
+		guesses: number;
+		user?: string;
+	}) => {
 		setTimeout(() => modal.open({ answers, guesses, user }), 500);
 	};
 
@@ -52,7 +60,11 @@
 
 	onMount(() => {
 		if (data.success) {
-			openModal(data.answers, data.state?.length || 0, true, data?.session?.user?.login || '');
+			openModal({
+				answers: data.answers,
+				guesses: data.state.length,
+				user: data.session?.user.login
+			});
 		}
 	});
 
@@ -100,7 +112,11 @@
 		await new Promise((resolve) => setTimeout(resolve, 500));
 		update();
 		if (form?.success) {
-			openModal(data.answers, data.state?.length || 0, true, data?.session?.user?.login || '');
+			openModal({
+				answers: data.answers,
+				guesses: data.state.length,
+				user: data.session?.user.login
+			});
 		}
 	};
 	const enhanceForm: SubmitFunction = async ({ formData, cancel }) => {
@@ -166,68 +182,70 @@
 	let formElement: HTMLFormElement;
 </script>
 
-<main class="flex w-full flex-auto flex-col items-center justify-end justify-between gap-2">
-	<div class="flex w-full flex-auto flex-col items-center">
-		<form
-			method="POST"
-			action="?/enter"
-			id="game"
-			bind:this={formElement}
-			use:enhance={enhanceForm}
-			class="my-auto flex w-full max-w-[min(700px,_55vh)]"
-		>
-			<div class="grid w-full grid-rows-[repeat(6,_1fr)] gap-2">
-				{#each [...Array(6).keys()] as i (getRealIndex(i, data.state, data.answers))}
-					{@const realIndex = getRealIndex(i, data.state, data.answers)}
-					{@const current = realIndex === data.answers.length}
-					<div
-						animate:flip={{ duration: 150 }}
-						out:slide|local={{ duration: 150 }}
-						class="grid w-full grid-cols-[repeat(5,_1fr)] gap-2"
-					>
-						{#each [...Array(5).keys()] as j}
-							{@const answer = (data.answers[realIndex] || '_____')[j]}
-							{@const letter = data.state[realIndex]?.guess?.at(j) || ''}
-							{@const doWiggle = invalidForm && current}
-							{@const doBulge =
-								data.answers[realIndex]?.length === 5 &&
-								realIndex === data.answers.length - 1 &&
-								data.state.length === data.answers.length}
-							{@const delayTime = doWiggle ? '0s' : `${j * 0.03}s`}
-							<div
-								class="box-border grid aspect-square items-center rounded-xl text-center text-2xl font-bold text-snow-300 shadow sm:text-3xl"
-								class:border-charade-700={answer === '_'}
-								class:border-4={answer === '_'}
-								class:border-solid={answer === '_'}
-								class:bg-aurora-400={answer === 'x'}
-								class:bg-aurora-300={answer === 'c'}
-								class:bg-charade-700={answer === 'i'}
-								class:bg-transparent={answer === '_'}
-								class:animate-bulge={doBulge}
-								class:animate-wiggle={doWiggle}
-								style:animation-delay={delayTime}
-								style:transition-delay={delayTime}
-							>
-								<input
-									type="hidden"
-									readonly
-									value={letter.toUpperCase()}
-									name={current ? 'guess' : undefined}
-								/>
-								{letter.toUpperCase()}
-							</div>
-						{/each}
-					</div>
-				{/each}
-			</div>
-		</form>
-	</div>
-	<div class="flex h-full max-h-[min(20rem,_30vh)] w-full flex-[5_1_auto] flex-col">
-		<Keyboard
-			on:key={(e) => handleKey(e.detail)}
-			answers={getKeyStatuses(data.state, data.answers)}
-		/>
-	</div>
-</main>
-<Modal bind:this={modal} />
-<Toaster />
+<div class="flex flex-auto flex-col items-center gap-2">
+	<main class="flex w-full flex-auto flex-col items-center justify-end justify-between gap-2">
+		<div class="flex w-full flex-auto flex-col items-center">
+			<form
+				method="POST"
+				action="?/enter"
+				id="game"
+				bind:this={formElement}
+				use:enhance={enhanceForm}
+				class="my-auto flex w-full max-w-[min(700px,_55vh)]"
+			>
+				<div class="grid w-full grid-rows-[repeat(6,_1fr)] gap-2">
+					{#each [...Array(6).keys()] as i (getRealIndex(i, data.state, data.answers))}
+						{@const realIndex = getRealIndex(i, data.state, data.answers)}
+						{@const current = realIndex === data.answers.length}
+						<div
+							animate:flip={{ duration: 150 }}
+							out:slide|local={{ duration: 150 }}
+							class="grid w-full grid-cols-[repeat(5,_1fr)] gap-2"
+						>
+							{#each [...Array(5).keys()] as j}
+								{@const answer = (data.answers[realIndex] || '_____')[j]}
+								{@const letter = data.state[realIndex]?.guess?.at(j) || ''}
+								{@const doWiggle = invalidForm && current}
+								{@const doBulge =
+									data.answers[realIndex]?.length === 5 &&
+									realIndex === data.answers.length - 1 &&
+									data.state.length === data.answers.length}
+								{@const delayTime = doWiggle ? '0s' : `${j * 0.03}s`}
+								<div
+									class="box-border grid aspect-square items-center rounded-xl text-center text-2xl font-bold text-snow-300 shadow sm:text-3xl"
+									class:border-charade-700={answer === '_'}
+									class:border-4={answer === '_'}
+									class:border-solid={answer === '_'}
+									class:bg-aurora-400={answer === 'x'}
+									class:bg-aurora-300={answer === 'c'}
+									class:bg-charade-700={answer === 'i'}
+									class:bg-transparent={answer === '_'}
+									class:animate-bulge={doBulge}
+									class:animate-wiggle={doWiggle}
+									style:animation-delay={delayTime}
+									style:transition-delay={delayTime}
+								>
+									<input
+										type="hidden"
+										readonly
+										value={letter.toUpperCase()}
+										name={current ? 'guess' : undefined}
+									/>
+									{letter.toUpperCase()}
+								</div>
+							{/each}
+						</div>
+					{/each}
+				</div>
+			</form>
+		</div>
+		<div class="flex h-full max-h-[min(20rem,_30vh)] w-full flex-[5_1_auto] flex-col">
+			<Keyboard
+				on:key={(e) => handleKey(e.detail)}
+				answers={getKeyStatuses(data.state, data.answers)}
+			/>
+		</div>
+	</main>
+	<Modal bind:this={modal} />
+	<Toaster />
+</div>

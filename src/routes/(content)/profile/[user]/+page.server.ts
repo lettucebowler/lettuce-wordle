@@ -3,7 +3,8 @@ export async function load(event) {
 	const searchParams = event.url.searchParams;
 	const offset = Number(searchParams.get('offset')) || 0;
 	const user = event.params.user;
-	const { results, totalCount } = await getGameResults(user, 30, event.locals.dbProvider, offset);
+	const dbProvider = event.locals.getDbProvider();
+	const { results, totalCount } = await getGameResults(user, 30, dbProvider, offset);
 	return {
 		user,
 		results,
@@ -13,6 +14,6 @@ export async function load(event) {
 			next: offset + 30,
 			previous: offset >= 30 ? offset - 30 : 0
 		},
-		dbProvider: event.locals.dbProvider
+		dbProvider: dbProvider
 	};
 }
