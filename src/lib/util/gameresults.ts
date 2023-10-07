@@ -28,11 +28,11 @@ export const getGameResults = async (
 	return gameResults;
 };
 
-export const getLeaderBoardResults = async (gamenum: number, provider: string) => {
+export const getLeaderBoardResults = async (provider: string) => {
 	let leaderboardResults: LeaderboardResult[];
 	switch (provider) {
 		case 'd1':
-			leaderboardResults = await getLeaderBoardResultsD1(gamenum);
+			leaderboardResults = await getLeaderBoardResultsD1();
 			break;
 		default:
 			throw Error('invalid provider');
