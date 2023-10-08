@@ -6,13 +6,12 @@ import {
 	array,
 	number,
 	object,
-	integer,
-	minValue,
 	safeParse,
 	literal,
 	union,
 	string,
-	partial
+	partial,
+	boolean
 } from 'valibot';
 
 const apiWordlettuce = fetcher({
@@ -31,14 +30,15 @@ const getGameResultsResponseSchema = union([
 	object({
 		success: literal(true),
 		data: object({
-			results: array(partial(gameResultSchema)),
-			totalCount: number()
+			results: array(gameResultSchema),
+			more: boolean()
 		})
 	})
 ]);
 export const getGameResults = async (user: string, count: number, offset = 0) => {
-	const getGameResultsResponse = await apiWordlettuce.get(`/v1/users/${user}/gameresults`, {
-		count,
+	const getGameResultsResponse = await apiWordlettuce.get(`/v1/game-results`, {
+		username: user,
+		limit: count,
 		offset
 	});
 	const parseResult = safeParse(getGameResultsResponseSchema, getGameResultsResponse);
@@ -76,13 +76,23 @@ const saveGameResultResponseSchema = union([
 	object({
 		success: literal(true),
 		data: object({
-			created: partial(gameResultSchema)
+			gameNum: number(),
+			answers: string(),
+			userId: number()
 		})
 	})
 ]);
-export const saveGameResults = async (gameresult: GameResult) => {
-	const { user, gamenum, ...rest } = gameresult;
-	const response = await apiWordlettuce.put(`/v1/users/${user}/gameresults/${gamenum}`, rest);
+export const saveGameResults = async ({
+	gameResult,
+	userId
+}: {
+	gameResult: GameResult;
+	userId: number;
+}) => {
+	const response = await apiWordlettuce.put(
+		`/v1/users/${userId}/game-results/${gameResult.gameNum}`,
+		gameResult
+	);
 	const parseResult = safeParse(saveGameResultResponseSchema, response);
 	if (!parseResult.success) {
 		throw new StatusError(500, 'Failed to save game result');
@@ -98,17 +108,13 @@ const upsertUserResponseSchema = union([
 	object({
 		success: literal(true),
 		data: object({
-			created: object({
-				github_id: number(),
-				username: string(),
-				id: number()
-			})
+			userId: number(),
+			username: string()
 		})
 	})
 ]);
 export const upsertUser = async (user: UserProfile) => {
-	const { login: username, id: github_id } = user;
-	const response = await apiWordlettuce.post('/v1/users', { username, github_id });
+	const response = await apiWordlettuce.put(`/v1/users/${user.id}`, { username: user.login });
 	const parseResult = safeParse(upsertUserResponseSchema, response);
 	if (!parseResult.success || !parseResult.output.success) {
 		throw new StatusError(500, 'Failed to upsert user');

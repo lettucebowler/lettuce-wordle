@@ -1,18 +1,20 @@
 import { getGameResults } from '$lib/util/gameresults';
+const page_size = 30;
 export async function load(event) {
 	const searchParams = event.url.searchParams;
 	const offset = Number(searchParams.get('offset')) || 0;
 	const user = event.params.user;
 	const dbProvider = event.locals.getDbProvider();
-	const { results, totalCount } = await getGameResults(user, 30, dbProvider, offset);
+	const { results, more } = await getGameResults(user, page_size, dbProvider, offset);
+	console.log(results.length);
 	return {
 		user,
 		results,
-		totalCount,
+		more,
 		offsets: {
 			current: offset,
-			next: offset + 30,
-			previous: offset >= 30 ? offset - 30 : 0
+			next: offset + page_size,
+			previous: offset >= page_size ? offset - page_size : 0
 		},
 		dbProvider: dbProvider
 	};

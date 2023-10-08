@@ -14,10 +14,7 @@ export const getGameResults = async (
 	provider: string = DEFAULT_DB_PROVIDER,
 	offset = 0
 ) => {
-	let gameResults: {
-		results: GameResult[];
-		totalCount: number;
-	};
+	let gameResults;
 	switch (provider) {
 		case 'd1':
 			gameResults = await getGameResultsD1(user, count, offset);
@@ -40,13 +37,24 @@ export const getLeaderBoardResults = async (provider: string) => {
 	return leaderboardResults;
 };
 
-export const saveGameResults = async (gameResult: GameResult, provider: string) => {
+export const saveGameResults = async ({
+	gameResult,
+	userId,
+	provider
+}: {
+	gameResult: GameResult;
+	userId: number;
+	provider: string;
+}) => {
 	let result;
 	const providers = new Map([['d1', saveGameResultsD1]]);
 	if (provider === 'all') {
 		const saveGameFunctions = Array.from(providers.values());
 		for (const saveGameFunction of saveGameFunctions) {
-			await saveGameFunction(gameResult);
+			await saveGameFunction({
+				gameResult,
+				userId
+			});
 		}
 		result = gameResult;
 	} else {
@@ -54,7 +62,10 @@ export const saveGameResults = async (gameResult: GameResult, provider: string) 
 		if (!saveGameFunction) {
 			throw Error('invalid provider');
 		}
-		result = await saveGameFunction(gameResult);
+		result = await saveGameFunction({
+			gameResult,
+			userId
+		});
 	}
 	return result;
 };

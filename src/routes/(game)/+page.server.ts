@@ -25,18 +25,12 @@ export async function load(event) {
 		if (!answers?.length || answers?.at(-1) !== 'xxxxx') {
 			throw redirect(307, '/');
 		}
-		const login = session.user?.login;
-		const id = session.user?.id;
-		if (login && id) {
-			const gameResult: GameResult = {
-				user: login,
-				user_id: id,
-				gamenum: getGameNum(),
-				answers: answers.join('')
-			};
-			await saveGameResults(gameResult, 'all');
-			throw redirect(307, '/');
-		}
+		const gameResult: GameResult = {
+			gameNum: getGameNum(),
+			answers: answers.join('')
+		};
+		await saveGameResults({ gameResult, userId: session.user.id, provider: 'all' });
+		throw redirect(307, '/');
 	}
 
 	event.cookies.set('wordLettuce', getCookieFromGameState(gameState), {
@@ -105,14 +99,16 @@ export const actions: import('./$types').Actions = {
 		const session = await event.locals.getWordLettuceSession();
 
 		if (session && updatedAnswers?.at(-1) === 'xxxxx') {
-			const gamenum = getGameNum();
+			const gameNum = getGameNum();
 			const gameResult: GameResult = {
-				gamenum,
-				user: session.user.login,
-				user_id: session.user.id,
+				gameNum,
 				answers: updatedAnswers?.join('') || ''
 			};
-			await saveGameResults(gameResult, 'all');
+			await saveGameResults({
+				gameResult,
+				userId: session.user.id,
+				provider: event.locals.getDbProvider()
+			});
 		}
 		event.cookies.set('wordLettuce', getCookieFromGameState(updatedGuesses), {
 			httpOnly: false,
