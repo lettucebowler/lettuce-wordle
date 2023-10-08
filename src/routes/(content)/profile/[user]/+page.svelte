@@ -22,7 +22,7 @@
 			searchParams.set('dbProvider', $page.url.searchParams.get('dbProvider') || '');
 		}
 		const oldLength = data.results.length;
-		const fetchResult = (await fetcher().get(`/api/users/v1/game-results`, searchParams)) as {
+		const fetchResult = (await fetcher().get(`/api/v1/game-results`, searchParams)) as {
 			totalCount: number;
 			results: GameResult[];
 		};
