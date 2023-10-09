@@ -6,7 +6,6 @@ export async function load(event) {
 	const user = event.params.user;
 	const dbProvider = event.locals.getDbProvider();
 	const { results, more } = await getGameResults(user, page_size, dbProvider, offset);
-	console.log(results.length);
 	return {
 		user,
 		results,

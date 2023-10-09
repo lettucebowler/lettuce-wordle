@@ -62,7 +62,6 @@ export const getRankings = async () => {
 	const response = await apiWordlettuce.get('/v1/rankings').catch((e) => e);
 	const parseResult = safeParse(getRankingsResponseSchema, response);
 	if (!parseResult.success || !parseResult.output.success) {
-		console.log(parseResult);
 		throw new StatusError(500, 'Invalid data from api-wordlettuce');
 	}
 	return parseResult.output.data;
