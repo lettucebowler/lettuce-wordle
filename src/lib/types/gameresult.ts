@@ -12,10 +12,7 @@ import {
 	custom,
 	union,
 	integer,
-	literal,
-	nullType,
-	voidType,
-	getDefault
+	literal
 } from 'valibot';
 
 import { answerList, allowedGuesses } from '$lib/util/words';

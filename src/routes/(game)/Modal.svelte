@@ -5,6 +5,7 @@
 	import { timeUntilNextGame } from './stores';
 	import AuthForm from '$lib/components/AuthForm.svelte';
 	import { trapFocus } from '$lib/actions/trapFocus';
+	import type { Unsubscriber } from 'svelte/store';
 
 	let dialog: HTMLDialogElement;
 	let share = '';
@@ -12,7 +13,7 @@
 	let message = '';
 	let authenticated = false;
 	let timeUntil: number;
-	let unsub: Function;
+	let unsub: Unsubscriber;
 
 	export function open({
 		answers = [],
