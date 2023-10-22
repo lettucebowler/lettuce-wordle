@@ -1,13 +1,12 @@
 <script lang="ts">
 	import { infiniteScrollAction } from 'svelte-legos';
 	import LettuceAvatar from '$lib/components/LettuceAvatar.svelte';
-	import type { PageData } from './$types';
 	import { fetcher } from 'itty-fetcher';
 	import type { GameResult } from '$lib/types/gameresult';
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
 
-	export let data: PageData;
+	export let data;
 
 	let fetchMore = data.more;
 	async function getNextBatch() {
@@ -92,9 +91,17 @@
 			No wins in the last seven days...
 		</p>
 	{/if}
-	{#if browser && fetchMore}
-		<p class="rounded-xl p-2 text-center text-center text-xl text-snow-300">Loading...</p>
-	{:else if !browser}
+	{#if browser}
+		{#if fetchMore}
+			<div class="flex items-center flex-col gap-2">
+				<svg class="h-8 animate-spin text-snow-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+					<circle class="text-charade-700" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+					<path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+				</svg>
+				<p class="text-center text-snow-100 font-medium text-xl">loading...</p>
+			</div>
+		{/if}
+	{:else}
 		<nav class="mx-4 flex justify-between gap-2">
 			{#each [{ offset: data.offsets.previous, title: 'Previous', enabled: data.offsets.current - 30 >= 0 }, { offset: data.offsets.next, title: 'Next', enabled: data.more }] as offset}
 				<a
