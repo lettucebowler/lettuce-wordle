@@ -15,11 +15,11 @@ import { error, type Handle, type RequestEvent } from '@sveltejs/kit';
 import { userProfileSchema, wordLettuceSessionSchema } from '$lib/types/auth';
 import { safeParse, union, voidType, nullType } from 'valibot';
 
-const createProviderGetter = (event: RequestEvent) => (): string => {
+const createProviderGetter = (event: RequestEvent) => (): string | undefined => {
 	const searchParams = new URL(event.request.url).searchParams;
 	const dbProviderOverride = searchParams.get('dbProvider');
 	if (!dbProviderOverride) {
-		return DEFAULT_DB_PROVIDER;
+		return;
 	}
 
 	event.locals.dbProviderOverwritten = true;

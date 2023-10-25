@@ -7,6 +7,6 @@ declare namespace App {
 			import('$lib/types/auth').WordLettuceSession | void | null
 		>;
 		getGameState: () => import('$lib/types/gameresult').Guess[];
-		getDbProvider: () => string;
+		getDbProvider: () => string | undefined;
 	}
 }

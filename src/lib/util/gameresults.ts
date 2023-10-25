@@ -25,7 +25,7 @@ export const getGameResults = async (
 	return gameResults;
 };
 
-export const getLeaderBoardResults = async (provider: string) => {
+export const getLeaderBoardResults = async (provider: string = DEFAULT_DB_PROVIDER) => {
 	let leaderboardResults: LeaderboardResult[];
 	switch (provider) {
 		case 'd1':
@@ -40,7 +40,7 @@ export const getLeaderBoardResults = async (provider: string) => {
 export const saveGameResults = async ({
 	gameResult,
 	userId,
-	provider
+	provider = DEFAULT_DB_PROVIDER
 }: {
 	gameResult: GameResult;
 	userId: number;
@@ -70,7 +70,7 @@ export const saveGameResults = async ({
 	return result;
 };
 
-export const upsertUser = async (user: UserProfile, provider: string) => {
+export const upsertUser = async (user: UserProfile, provider: string = DEFAULT_DB_PROVIDER) => {
 	let result;
 	const providers = new Map([['d1', upsertUserD1]]);
 	if (provider === 'all') {

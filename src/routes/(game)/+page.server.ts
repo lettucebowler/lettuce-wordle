@@ -107,7 +107,7 @@ export const actions: import('./$types').Actions = {
 			await saveGameResults({
 				gameResult,
 				userId: session.user.id,
-				provider: event.locals.getDbProvider()
+				provider: 'all'
 			});
 		}
 		event.cookies.set('wordLettuce', getCookieFromGameState(updatedGuesses), {
