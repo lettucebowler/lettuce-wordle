@@ -13,7 +13,7 @@ import { upsertUser } from '$lib/util/gameresults';
 
 import { error, type Handle, type RequestEvent } from '@sveltejs/kit';
 import { userProfileSchema, wordLettuceSessionSchema } from '$lib/types/auth';
-import { safeParse, union, voidType, nullType } from 'valibot';
+import { safeParse, union, void_, null_ } from 'valibot';
 
 const createProviderGetter = (event: RequestEvent) => (): string | undefined => {
 	const searchParams = new URL(event.request.url).searchParams;
@@ -51,7 +51,7 @@ const gameStateHandler: Handle = async ({ event, resolve }) => {
 const createWordLettuceSessionGetter =
 	(event: RequestEvent<Partial<Record<string, string>>, string | null>) => async () => {
 		const parseResult = safeParse(
-			union([wordLettuceSessionSchema, voidType(), nullType()]),
+			union([wordLettuceSessionSchema, void_(), null_()]),
 			await event.locals.getSession()
 		);
 		if (!parseResult.success) {

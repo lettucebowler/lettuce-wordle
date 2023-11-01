@@ -1,9 +1,9 @@
-import { safeParse, enumType, number, object, coerce, minValue, optional, integer } from 'valibot';
+import { safeParse, picklist, number, object, coerce, minValue, optional, integer } from 'valibot';
 import { DEFAULT_DB_PROVIDER } from '$env/static/private';
 const getGameResultsRequestSchema = object({
 	offset: optional(coerce(number([integer(), minValue(0)]), Number), 0),
 	count: optional(coerce(number([integer(), minValue(0)]), Number), 0),
-	dbProvider: optional(enumType(['d1', DEFAULT_DB_PROVIDER]), DEFAULT_DB_PROVIDER)
+	dbProvider: optional(picklist(['d1', DEFAULT_DB_PROVIDER]), DEFAULT_DB_PROVIDER)
 });
 
 import { error, json } from '@sveltejs/kit';
