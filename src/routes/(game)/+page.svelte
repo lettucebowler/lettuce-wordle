@@ -203,14 +203,9 @@
 							class="grid w-full grid-cols-[repeat(5,_1fr)] gap-2"
 						>
 							{#each [...Array(5).keys()] as j}
-								{@const answer = (data.answers[realIndex] || '_____')[j]}
+								{@const answer = (data.answers[realIndex] ?? '_____')[j]}
 								{@const letter = data.state[realIndex]?.guess?.at(j) || ''}
-								{@const doWiggle = invalidForm && current}
-								{@const doBulge =
-									data.answers[realIndex]?.length === 5 &&
-									realIndex === data.answers.length - 1 &&
-									data.state.length === data.answers.length}
-								{@const delayTime = doWiggle ? '0s' : `${j * 0.03}s`}
+								{@const delayTime = `${j * 0.03}s`}
 								<div
 									class="box-border grid aspect-square items-center rounded-xl text-center text-2xl font-bold text-snow-300 shadow sm:text-3xl"
 									class:border-charade-700={answer === '_'}
@@ -220,8 +215,8 @@
 									class:bg-aurora-300={answer === 'c'}
 									class:bg-charade-700={answer === 'i'}
 									class:bg-transparent={answer === '_'}
-									class:animate-bulge={doBulge}
-									class:animate-wiggle={doWiggle}
+									class:animate-bulge={data.answers.at(realIndex)?.length === 5}
+									class:animate-wiggle={invalidForm && current}
 									style:animation-delay={delayTime}
 									style:transition-delay={delayTime}
 								>
