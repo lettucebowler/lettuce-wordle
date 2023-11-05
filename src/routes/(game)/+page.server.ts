@@ -28,7 +28,11 @@ export async function load(event) {
 			gameNum: getGameNum(),
 			answers: answers.join('')
 		};
-		await saveGameResults({ gameResult, userId: session.user.id, provider: 'all' });
+		await saveGameResults({
+			event,
+			provider: 'all',
+			data: { gameResult, userId: session.user.id }
+		});
 		throw redirect(307, '/');
 	}
 
@@ -104,9 +108,12 @@ export const actions: import('./$types').Actions = {
 				answers: updatedAnswers?.join('') || ''
 			};
 			await saveGameResults({
-				gameResult,
-				userId: session.user.id,
-				provider: 'all'
+				event,
+				provider: 'all',
+				data: {
+					gameResult,
+					userId: session.user.id
+				}
 			});
 		}
 		event.cookies.set('wordLettuce', getCookieFromGameState(updatedGuesses), {

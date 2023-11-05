@@ -7,7 +7,7 @@ const getGameResultsRequestSchema = object({
 });
 
 import { error, json } from '@sveltejs/kit';
-import { getGameResults } from '$lib/util/gameresults';
+import { getGameResults, type Provider } from '$lib/util/gameresults';
 export async function GET(event) {
 	const session = await event.locals.getWordLettuceSession();
 	if (!session) {
@@ -21,12 +21,14 @@ export async function GET(event) {
 		throw error(400, result.error);
 	}
 	const data = result.output;
-	const gameResults = await getGameResults(
-		session.user.login,
-		data.count,
-		data.dbProvider,
-		data.offset
-	);
+	const gameResults = await getGameResults({
+		event,
+		provider: (data.dbProvider as Provider) ?? (DEFAULT_DB_PROVIDER as Provider),
+		data: {
+			...data,
+			user: session.user.login
+		}
+	});
 	return json({
 		...gameResults
 	});

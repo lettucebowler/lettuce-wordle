@@ -1,90 +1,91 @@
-import type { GameResult, LeaderboardResult } from '$lib/types/gameresult';
-import { DEFAULT_DB_PROVIDER } from '$env/static/private';
-import {
-	getGameResults as getGameResultsD1,
-	getRankings as getLeaderBoardResultsD1,
-	saveGameResults as saveGameResultsD1,
-	upsertUser as upsertUserD1
-} from '$lib/client/apiWordlettuce.server';
+import type { GameResult } from '$lib/types/gameresult';
+import { createApiWordlettuceClient } from '$lib/client/apiWordlettuce.server';
 import type { UserProfile } from '$lib/types/auth';
+import type { RequestEvent } from '@sveltejs/kit';
 
-export const getGameResults = async (
-	user: string,
-	count: number,
-	provider: string = DEFAULT_DB_PROVIDER,
-	offset = 0
-) => {
-	let gameResults;
-	switch (provider) {
-		case 'd1':
-			gameResults = await getGameResultsD1(user, count, offset);
-			break;
-		default:
-			throw Error('invalid provider');
-	}
-	return gameResults;
-};
+export const providerEnum = ['all', 'd1'] as const;
+type ProviderTuple = typeof providerEnum;
+export type Provider = ProviderTuple[number];
 
-export const getLeaderBoardResults = async (provider: string = DEFAULT_DB_PROVIDER) => {
-	let leaderboardResults: LeaderboardResult[];
-	switch (provider) {
-		case 'd1':
-			leaderboardResults = await getLeaderBoardResultsD1();
-			break;
-		default:
-			throw Error('invalid provider');
-	}
-	return leaderboardResults;
-};
-
-export const saveGameResults = async ({
-	gameResult,
-	userId,
-	provider = DEFAULT_DB_PROVIDER
+export type getGameResultsInput = { user: string; count: number; offset: number };
+export async function getGameResults({
+	event,
+	provider,
+	data
 }: {
-	gameResult: GameResult;
-	userId: number;
-	provider: string;
-}) => {
-	let result;
-	const providers = new Map([['d1', saveGameResultsD1]]);
-	if (provider === 'all') {
-		const saveGameFunctions = Array.from(providers.values());
-		for (const saveGameFunction of saveGameFunctions) {
-			await saveGameFunction({
-				gameResult,
-				userId
-			});
-		}
-		result = gameResult;
-	} else {
-		const saveGameFunction = providers.get(provider);
-		if (!saveGameFunction) {
-			throw Error('invalid provider');
-		}
-		result = await saveGameFunction({
-			gameResult,
-			userId
-		});
+	event: RequestEvent;
+	provider: Provider;
+	data: getGameResultsInput;
+}) {
+	switch (provider) {
+		case 'd1':
+			const { getGameResults } = createApiWordlettuceClient(event);
+			return getGameResults(data);
+		default:
+			throw new Error('invalid provider');
 	}
-	return result;
-};
+}
 
-export const upsertUser = async (user: UserProfile, provider: string = DEFAULT_DB_PROVIDER) => {
-	let result;
-	const providers = new Map([['d1', upsertUserD1]]);
-	if (provider === 'all') {
-		const upsertUserFunctions = Array.from(providers.values());
-		for (const upsertUserFunction of upsertUserFunctions) {
-			await upsertUserFunction(user);
-		}
-		result = user;
-	} else {
-		const upsertUserFunction = providers.get(provider);
-		if (!upsertUserFunction) {
-			throw Error('invalid provider');
-		}
-		result = await upsertUserFunction(user);
+export async function getRankings({
+	event,
+	provider
+}: {
+	event: RequestEvent;
+	provider: Provider;
+}) {
+	switch (provider) {
+		case 'd1':
+			const { getRankings } = createApiWordlettuceClient(event);
+			return getRankings();
+		default:
+			throw new Error('invalid provider');
 	}
-	return result;
-};
+}
+
+export type saveGameResultsInput = { gameResult: GameResult; userId: number };
+export async function saveGameResults({
+	event,
+	provider,
+	data
+}: {
+	event: RequestEvent;
+	provider: Provider;
+	data: saveGameResultsInput;
+}) {
+	switch (provider) {
+		case 'all':
+			const { saveGameResults: saveGameResultsD1 } = createApiWordlettuceClient(event);
+			await saveGameResultsD1(data);
+			return data.gameResult;
+		case 'd1':
+			const { saveGameResults } = createApiWordlettuceClient(event);
+			await saveGameResults(data);
+			return data.gameResult;
+		default:
+			throw new Error('invalid provider');
+	}
+}
+
+export type upsertUserInput = Pick<UserProfile, 'login' | 'id'>;
+export async function upsertUser({
+	event,
+	provider,
+	data
+}: {
+	event: RequestEvent;
+	provider: Provider;
+	data: upsertUserInput;
+}) {
+	switch (provider) {
+		case 'all':
+			const { upsertUser: upsertUserD1 } = createApiWordlettuceClient(event);
+			await upsertUserD1(data);
+			return data;
+		case 'd1':
+			const { upsertUser } = createApiWordlettuceClient(event);
+			await upsertUser(data);
+			return data;
+		default:
+			throw new Error('invalid provider');
+	}
+}

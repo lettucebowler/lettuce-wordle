@@ -1,17 +1,14 @@
-import { StatusError, fetcher } from 'itty-fetcher';
+import { StatusError, fetcher, type FetcherType } from 'itty-fetcher';
 import { API_WORDLETTUCE_HOST, API_WORDLETTUCE_TOKEN } from '$env/static/private';
-import { type GameResult, gameResultSchema, leaderboardResultSchema } from '$lib/types/gameresult';
-import type { UserProfile } from '$lib/types/auth';
+import { gameResultSchema, leaderboardResultSchema } from '$lib/types/gameresult';
 import { array, number, object, safeParse, literal, union, string, boolean } from 'valibot';
+import type { LoadEvent, RequestEvent, ServerLoadEvent } from '@sveltejs/kit';
 
-const apiWordlettuce = fetcher({
-	base: `${API_WORDLETTUCE_HOST}`,
-	transformRequest(req) {
-		req.headers['Authorization'] = `Bearer ${API_WORDLETTUCE_TOKEN}`;
-		return req;
-	}
-});
-
+import type {
+	getGameResultsInput,
+	saveGameResultsInput,
+	upsertUserInput
+} from '$lib/util/gameresults';
 const getGameResultsResponseSchema = union([
 	object({
 		success: literal(false),
@@ -25,18 +22,19 @@ const getGameResultsResponseSchema = union([
 		})
 	})
 ]);
-export const getGameResults = async (user: string, count: number, offset = 0) => {
-	const getGameResultsResponse = await apiWordlettuce.get(`/v1/game-results`, {
-		username: user,
-		limit: count,
-		offset
+async function getGameResults(fetcher: FetcherType, data: getGameResultsInput) {
+	console.log('get game results');
+	const getGameResultsResponse = await fetcher.get(`/v1/game-results`, {
+		username: data.user,
+		limit: data.count,
+		offset: data.offset
 	});
 	const parseResult = safeParse(getGameResultsResponseSchema, getGameResultsResponse);
 	if (!parseResult.success || !parseResult.output.success) {
 		throw new StatusError(500, 'Invalid data from api-wordlettuce');
 	}
 	return parseResult.output.data;
-};
+}
 
 const getRankingsResponseSchema = union([
 	object({
@@ -48,14 +46,15 @@ const getRankingsResponseSchema = union([
 		message: string()
 	})
 ]);
-export const getRankings = async () => {
-	const response = await apiWordlettuce.get('/v1/rankings').catch((e) => e);
+async function getRankings(fetcher: FetcherType) {
+	console.log('get rankings');
+	const response = await fetcher.get('/v1/rankings').catch((e) => e);
 	const parseResult = safeParse(getRankingsResponseSchema, response);
 	if (!parseResult.success || !parseResult.output.success) {
 		throw new StatusError(500, 'Invalid data from api-wordlettuce');
 	}
 	return parseResult.output.data;
-};
+}
 
 const saveGameResultResponseSchema = union([
 	object({
@@ -71,23 +70,18 @@ const saveGameResultResponseSchema = union([
 		})
 	})
 ]);
-export const saveGameResults = async ({
-	gameResult,
-	userId
-}: {
-	gameResult: GameResult;
-	userId: number;
-}) => {
-	const response = await apiWordlettuce.put(
-		`/v1/users/${userId}/game-results/${gameResult.gameNum}`,
-		gameResult
+async function saveGameResults(fetcher: FetcherType, data: saveGameResultsInput) {
+	console.log('save game results');
+	const response = await fetcher.put(
+		`/v1/users/${data.userId}/game-results/${data.gameResult.gameNum}`,
+		data.gameResult
 	);
 	const parseResult = safeParse(saveGameResultResponseSchema, response);
 	if (!parseResult.success) {
 		throw new StatusError(500, 'Failed to save game result');
 	}
 	return parseResult.output;
-};
+}
 
 const upsertUserResponseSchema = union([
 	object({
@@ -102,11 +96,31 @@ const upsertUserResponseSchema = union([
 		})
 	})
 ]);
-export const upsertUser = async (user: UserProfile) => {
-	const response = await apiWordlettuce.put(`/v1/users/${user.id}`, { username: user.login });
+async function upsertUser(fetcher: FetcherType, data: upsertUserInput) {
+	console.log('upser user');
+	const response = await fetcher.put(`/v1/users/${data.id}`, { username: data.login });
 	const parseResult = safeParse(upsertUserResponseSchema, response);
 	if (!parseResult.success || !parseResult.output.success) {
 		throw new StatusError(500, 'Failed to upsert user');
 	}
 	return parseResult.output.data;
-};
+}
+
+export function createApiWordlettuceClient(event: ServerLoadEvent | LoadEvent | RequestEvent) {
+	const apiWordlettuce = fetcher({
+		base: `${API_WORDLETTUCE_HOST}`,
+		transformRequest(req) {
+			req.headers['Authorization'] = `Bearer ${API_WORDLETTUCE_TOKEN}`;
+			return req;
+		},
+		fetch: event.fetch
+	});
+
+	return {
+		fetcher: apiWordlettuce,
+		upsertUser: (data: upsertUserInput) => upsertUser(apiWordlettuce, data),
+		saveGameResults: (data: saveGameResultsInput) => saveGameResults(apiWordlettuce, data),
+		getRankings: () => getRankings(apiWordlettuce),
+		getGameResults: (data: getGameResultsInput) => getGameResults(apiWordlettuce, data)
+	};
+}
