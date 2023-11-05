@@ -8,7 +8,6 @@ import type { CompleteGuess, GameResult, Guess, IncompleteGuess } from '$lib/typ
 import { successAnswer } from '$lib/constants/app-constants.js';
 
 export async function load(event) {
-	event.depends('/');
 	const gameState = event.locals.getGameState();
 	const answers = checkWords(gameState, getDailyWord());
 	const session = await event.locals.getWordLettuceSession();
