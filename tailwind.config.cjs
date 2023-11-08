@@ -43,14 +43,15 @@ module.exports = {
 				}
 			},
 			animation: {
-				bulge: 'bulge 0.3s ease-in 1',
-				wiggle: 'wiggle 0.15s ease-in 1',
+				jump: 'jump 0.3s ease-in 1',
+				wiggle: 'wiggle 0.15s ease-in infinite',
+				'wiggle-once': 'wiggle 0.15s ease-in 1',
 				flyup: 'flyup 0.5s ease-in 1',
 				fadein: 'fadein 0.5s ease-in 1'
 			},
 			keyframes: {
-				bulge: {
-					'50%': { transform: 'scale(1.05) translateY(-5%)' },
+				jump: {
+					'50%': { transform: 'scale(1.05) translateY(-7%)' },
 					'0%, 100%': { transform: 'scale(1)' }
 				},
 				wiggle: {

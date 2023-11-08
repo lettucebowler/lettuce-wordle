@@ -1,4 +1,4 @@
-import { derived, readable } from 'svelte/store';
+import { derived, readable, writable } from 'svelte/store';
 
 const time = readable(new Date(), function start(set) {
 	const interval = setInterval(() => {
@@ -24,3 +24,30 @@ const msInADay = 1000 * 60 * 60 * 24;
 export const gameNum = derived(time, ($time) =>
 	Math.floor(($time.getTime() - initial.getTime()) / msInADay)
 );
+
+export function createExpiringBoolean() {
+	let id: number | undefined;
+	const store = writable(false);
+	const period = 150;
+	let startTime = 0;
+	let remaining = 0;
+	function setTrue() {
+		if (id) {
+			remaining = 150 - (performance.now() - startTime);
+			clearTimeout(id);
+		} else {
+			remaining = 0;
+		}
+		store.set(true);
+		startTime = performance.now();
+		id = setTimeout(() => {
+			store.set(false);
+			id = undefined;
+		}, remaining + period);
+	}
+
+	return {
+		value: { subscribe: store.subscribe },
+		setTrue
+	};
+}

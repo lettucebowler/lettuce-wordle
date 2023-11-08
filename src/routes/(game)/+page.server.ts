@@ -57,8 +57,7 @@ export const actions: import('./$types').Actions = {
 		if (!key) {
 			return {
 				invalid: true,
-				success: false,
-				failure: false
+				success: false
 			};
 		}
 		const gameState = event.locals.getGameState();
@@ -72,8 +71,7 @@ export const actions: import('./$types').Actions = {
 		});
 		const form = {
 			invalid: false,
-			success: false,
-			failure: false
+			success: false
 		};
 		return form;
 	},

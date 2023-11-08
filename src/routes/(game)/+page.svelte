@@ -11,12 +11,14 @@
 	import toast, { Toaster } from 'svelte-french-toast';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import type { CompleteGuess, IncompleteGuess } from '$lib/types/gameresult';
+	import { createExpiringBoolean } from './stores';
+	import { browser } from '$app/environment';
 
 	export let data;
 	export let form;
 
 	let modal: Modal;
-	let invalidForm = false;
+	const { value: invalidForm, setTrue: setInvalidFormTrue } = createExpiringBoolean();
 
 	const openModal = ({
 		answers = [],
@@ -67,15 +69,6 @@
 			});
 		}
 	});
-
-	$: {
-		if (form?.invalid) {
-			invalidForm = true;
-			setTimeout(() => {
-				invalidForm = false;
-			}, 150);
-		}
-	}
 
 	function toastError(message: string) {
 		const style =
@@ -134,10 +127,7 @@
 		};
 		if (guess.guess.length !== 5) {
 			cancel();
-			invalidForm = true;
-			setTimeout(() => {
-				invalidForm = false;
-			}, 150);
+			setInvalidFormTrue();
 			return;
 		}
 		const { metadata, updatedAnswers, updatedGuesses } = applyWord(
@@ -203,22 +193,26 @@
 							class="grid w-full grid-cols-[repeat(5,_1fr)] gap-2"
 						>
 							{#each [...Array(5).keys()] as j}
-								{@const answer = (data.answers[realIndex] ?? '_____')[j]}
-								{@const letter = data.state[realIndex]?.guess?.at(j) || ''}
+								{@const answer = data.answers?.at(realIndex)?.at(j) ?? ''}
+								{@const letter = data.state[realIndex]?.guess?.at(j) ?? ''}
+								{@const doJump = browser && data.answers.at(realIndex)?.length === 5}
+								{@const doWiggle = browser && $invalidForm  && current}
+								{@const doWiggleOnce = !browser && form?.invalid && current}
 								{@const delayTime = `${j * 0.03}s`}
 								<div
-									class="box-border grid aspect-square items-center rounded-xl text-center text-2xl font-bold text-snow-300 shadow sm:text-3xl"
-									class:border-charade-700={answer === '_'}
-									class:border-4={answer === '_'}
-									class:border-solid={answer === '_'}
+									class="box-border grid aspect-square items-center rounded-xl text-center text-2xl font-bold text-snow-300 shadow sm:text-3xl transition-colors"
+									class:border-charade-700={!answer}
+									class:border-4={!answer}
+									class:border-solid={!answer}
 									class:bg-aurora-400={answer === 'x'}
 									class:bg-aurora-300={answer === 'c'}
 									class:bg-charade-700={answer === 'i'}
-									class:bg-transparent={answer === '_'}
-									class:animate-bulge={data.answers.at(realIndex)?.length === 5}
-									class:animate-wiggle={invalidForm && current}
-									style:animation-delay={delayTime}
+									class:bg-transparent={!answer}
+									class:animate-wiggle={doWiggle}
+									class:animate-wiggle-once={doWiggleOnce}
+									style:animation-delay={doWiggle || doWiggleOnce ? undefined : delayTime}
 									style:transition-delay={delayTime}
+									class:animate-jump={doJump}
 								>
 									<input
 										type="hidden"
