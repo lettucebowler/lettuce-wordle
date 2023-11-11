@@ -34,9 +34,11 @@ export async function getRankings({
 	provider: Provider;
 }) {
 	switch (provider) {
-		case 'd1':
+		case 'd1': {
 			const { getRankings } = createApiWordlettuceClient(event);
-			return getRankings();
+			const { rankings } = await getRankings();
+			return rankings;
+		}
 		default:
 			throw new Error('invalid provider');
 	}

@@ -23,7 +23,6 @@ const getGameResultsResponseSchema = union([
 	})
 ]);
 async function getGameResults(fetcher: FetcherType, data: getGameResultsInput) {
-	console.log('get game results');
 	const getGameResultsResponse = await fetcher.get(`/v1/game-results`, {
 		username: data.user,
 		limit: data.count,
@@ -39,7 +38,9 @@ async function getGameResults(fetcher: FetcherType, data: getGameResultsInput) {
 const getRankingsResponseSchema = union([
 	object({
 		success: literal(true),
-		data: array(leaderboardResultSchema)
+		data: object({
+			rankings: array(leaderboardResultSchema)
+		})
 	}),
 	object({
 		success: literal(false),
@@ -47,8 +48,7 @@ const getRankingsResponseSchema = union([
 	})
 ]);
 async function getRankings(fetcher: FetcherType) {
-	console.log('get rankings');
-	const response = await fetcher.get('/v1/rankings').catch((e) => e);
+	const response = await fetcher.get('/v2/rankings').catch((e) => e);
 	const parseResult = safeParse(getRankingsResponseSchema, response);
 	if (!parseResult.success || !parseResult.output.success) {
 		throw new StatusError(500, 'Invalid data from api-wordlettuce');
@@ -71,7 +71,6 @@ const saveGameResultResponseSchema = union([
 	})
 ]);
 async function saveGameResults(fetcher: FetcherType, data: saveGameResultsInput) {
-	console.log('save game results');
 	const response = await fetcher.put(
 		`/v1/users/${data.userId}/game-results/${data.gameResult.gameNum}`,
 		data.gameResult
@@ -97,7 +96,6 @@ const upsertUserResponseSchema = union([
 	})
 ]);
 async function upsertUser(fetcher: FetcherType, data: upsertUserInput) {
-	console.log('upser user');
 	const response = await fetcher.put(`/v1/users/${data.id}`, { username: data.login });
 	const parseResult = safeParse(upsertUserResponseSchema, response);
 	if (!parseResult.success || !parseResult.output.success) {
