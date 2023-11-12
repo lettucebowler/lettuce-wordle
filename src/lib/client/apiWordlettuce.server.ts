@@ -71,10 +71,10 @@ const saveGameResultResponseSchema = union([
 	})
 ]);
 async function saveGameResults(fetcher: FetcherType, data: saveGameResultsInput) {
-	const response = await fetcher.put(
-		`/v1/users/${data.userId}/game-results/${data.gameResult.gameNum}`,
-		data.gameResult
-	);
+	const response = await fetcher.post('/v1/game-results', {
+		userId: data.userId,
+		...data.gameResult
+	});
 	const parseResult = safeParse(saveGameResultResponseSchema, response);
 	if (!parseResult.success) {
 		throw new StatusError(500, 'Failed to save game result');
