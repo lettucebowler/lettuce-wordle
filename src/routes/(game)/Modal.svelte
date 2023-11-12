@@ -1,11 +1,14 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
-	import { getGameStatus } from '$lib/util/share';
 	import { clickOutsideAction, clickToCopyAction } from 'svelte-legos';
+	import { getGameNum } from '$lib/util/words';
+	import { appName } from '$lib/constants/app-constants';
 	import { timeUntilNextGame } from './stores';
 	import AuthForm from '$lib/components/AuthForm.svelte';
 	import { trapFocus } from '$lib/actions/trapFocus';
 	import type { Unsubscriber } from 'svelte/store';
+	import { letterStatusEnum, type Answers, type LetterStatus } from '$lib/types/gameresult';
+	import { safeParse } from 'valibot';
 
 	let dialog: HTMLDialogElement;
 	let share = '';
@@ -35,20 +38,59 @@
 		}
 	}
 
-	const closeModal = () => {
+	function closeModal() {
 		dialog.close();
 		if (unsub) {
 			unsub();
 		}
 	};
 
-	const formatTime = (secondsUntil: number) => {
+	function formatTime(secondsUntil: number) {
 		const hours = Math.floor(secondsUntil / 3600);
 		const minutes = Math.floor((secondsUntil % 3600) / 60);
 		const seconds = secondsUntil % 60;
 		return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds
 			.toString()
 			.padStart(2, '0')}`;
+	};
+
+	function getGameStatus(statuses: Answers[]) {
+		const gameNum = getGameNum();
+		const today = `${appName} ${gameNum} ${statuses.length}/6`;
+		const strings = statuses.map((k) =>{
+			return k
+				.split('')
+				.map((w) => {
+					const parseResult = safeParse(letterStatusEnum, w);
+					if (!parseResult.success) {
+						return '';
+					}
+					return getStatusEmoji(parseResult.output);
+				})
+				.join('')
+		});
+		return [today, ...strings].join('\n');
+	};
+	
+	const green = '🟩';
+	const yellow = '🟨';
+	const black = '⬛';
+	function getStatusEmoji(status: string) {
+		const parseResult = safeParse(letterStatusEnum, status);
+
+		if (!parseResult.success) {
+			return black;
+		}
+		
+		switch (parseResult.output) {
+			case 'x':
+				return green;
+			case 'c':
+				return yellow;
+			case '_':
+			case 'i':
+				return black;
+		}
 	};
 </script>
 

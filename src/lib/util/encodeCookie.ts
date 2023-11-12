@@ -1,4 +1,4 @@
-import { getGameNum } from './share';
+import { getGameNum } from './words';
 import type { Guess } from '$lib/types/gameresult';
 
 const encodeState = (state: { gameNum: number; guesses: Guess[] }): string => {

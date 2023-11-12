@@ -1,8 +1,7 @@
 import { getCookieFromGameState } from '$lib/util/encodeCookie';
 import { applyKey, applyWord, checkWords } from '$lib/util/gameFunctions';
 import { fail, redirect } from '@sveltejs/kit';
-import { getGameNum } from '$lib/util/share';
-import { getDailyWord } from '$lib/util/words';
+import { getDailyWord, getGameNum } from '$lib/util/words';
 import { saveGameResults } from '$lib/util/gameresults';
 import type { CompleteGuess, GameResult, Guess, IncompleteGuess } from '$lib/types/gameresult';
 import { successAnswer } from '$lib/constants/app-constants.js';

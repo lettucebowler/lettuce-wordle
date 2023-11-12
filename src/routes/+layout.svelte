@@ -5,7 +5,7 @@
 	import safariPinnedTabIcon from '$lib/assets/safari-pinned-tab.svg';
 	import '$lib/assets/app.css';
 	import { appName } from '$lib/constants/app-constants';
-	import { getGameNum } from '$lib/util/share';
+	import { getGameNum } from '$lib/util/words';
 	import AuthNav from './AuthNav.svelte';
 	export let data;
 </script>

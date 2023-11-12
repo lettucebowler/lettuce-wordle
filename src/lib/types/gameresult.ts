@@ -12,11 +12,13 @@ import {
 	custom,
 	union,
 	integer,
-	literal
+	literal,
+	picklist,
+	safeParse
 } from 'valibot';
 
 import { answerList, allowedGuesses } from '$lib/util/words';
-import { getGameNum } from '$lib/util/share';
+import { getGameNum } from '$lib/util/words';
 function allowedGuess() {
 	return custom(
 		(value: string) => answerList.includes(value) || allowedGuesses.includes(value),
@@ -53,10 +55,17 @@ export const leaderboardResultSchema = object({
 });
 export type LeaderboardResult = Output<typeof leaderboardResultSchema>;
 
+export const letterStatusEnum = picklist(['x', 'c', 'i', '_']);
+export type LetterStatus = Output<typeof letterStatusEnum>;
+
 const answerSchema = string([
-	regex(/[xci_]/),
+	custom(
+		(input) => input.split('').every((status) => safeParse(letterStatusEnum, status).success),
+		'answer must only contain letter statuses'
+	),
 	custom((input) => input.length % 5 === 0, 'answers must be multiple of 5 characters')
 ]);
+export type Answers = Output<typeof answerSchema>;
 export const gameResultSchema = object({
 	gameNum: gameNumSchema,
 	answers: answerSchema
