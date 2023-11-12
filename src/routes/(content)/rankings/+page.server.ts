@@ -24,6 +24,7 @@ export async function load(event) {
 	return {
 		leaderboard: {
 			scores: !event.isDataRequest ? await rankings : result ? result : rankings
+			// scores: await rankings,
 		}
 	};
 }
