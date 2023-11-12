@@ -1,4 +1,4 @@
-import { derived, readable, writable } from 'svelte/store';
+import { derived, readable, writable, type Readable } from 'svelte/store';
 
 const time = readable(new Date(), function start(set) {
 	const interval = setInterval(() => {
@@ -11,19 +11,12 @@ const time = readable(new Date(), function start(set) {
 	};
 });
 
-export const timeUntilNextGame = derived(time, ($time) => {
+export const timeUntilNextGame = derived<Readable<Date>, number>(time, ($time: Date) => {
 	const tomorrow = new Date();
 	tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
 	tomorrow.setUTCHours(0, 0, 0, 0);
 	return Math.round((tomorrow.getTime() - $time.getTime()) / 1000);
 });
-
-// Midnight on some day in February 2022, can't remember the exact date. You can look it up if you care.
-const initial = new Date(1643673600000);
-const msInADay = 1000 * 60 * 60 * 24;
-export const gameNum = derived(time, ($time) =>
-	Math.floor(($time.getTime() - initial.getTime()) / msInADay)
-);
 
 export function createExpiringBoolean() {
 	let id: number | undefined;

@@ -196,7 +196,7 @@
 								{@const answer = data.answers?.at(realIndex)?.at(j) ?? ''}
 								{@const letter = data.state[realIndex]?.guess?.at(j) ?? ''}
 								{@const doJump = browser && data.answers.at(realIndex)?.length === 5}
-								{@const doWiggle = browser && $invalidForm  && current}
+								{@const doWiggle = browser && $invalidForm && current}
 								{@const doWiggleOnce = !browser && form?.invalid && current}
 								{@const delayTime = `${j * 0.03}s`}
 								<div

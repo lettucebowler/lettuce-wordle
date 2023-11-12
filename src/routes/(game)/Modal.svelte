@@ -1,13 +1,12 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
-	import { clickOutsideAction, clickToCopyAction } from 'svelte-legos';
+	import { clickOutsideAction, trapFocus } from './actions';
 	import { getGameNum } from '$lib/util/words';
 	import { appName } from '$lib/constants/app-constants';
 	import { timeUntilNextGame } from './stores';
 	import AuthForm from '$lib/components/AuthForm.svelte';
-	import { trapFocus } from '$lib/actions/trapFocus';
 	import type { Unsubscriber } from 'svelte/store';
-	import { letterStatusEnum, type Answers, type LetterStatus } from '$lib/types/gameresult';
+	import { letterStatusEnum, type Answers } from '$lib/types/gameresult';
 	import { safeParse } from 'valibot';
 
 	let dialog: HTMLDialogElement;
@@ -43,7 +42,27 @@
 		if (unsub) {
 			unsub();
 		}
-	};
+	}
+
+	function shareGame() {
+		message = 'Results Copied to clipboard!';
+		setTimeout(() => {
+			message = '';
+		}, 4000);
+
+		if (!navigator?.clipboard) {
+			message = 'Failed to copy to clipboard.';
+		}
+
+		navigator.clipboard
+			.writeText(share)
+			.then(() => {
+				message = 'Results copied to clipboard';
+			})
+			.catch(() => {
+				message = 'Failed clipboard copy.';
+			});
+	}
 
 	function formatTime(secondsUntil: number) {
 		const hours = Math.floor(secondsUntil / 3600);
@@ -52,12 +71,12 @@
 		return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds
 			.toString()
 			.padStart(2, '0')}`;
-	};
+	}
 
 	function getGameStatus(statuses: Answers[]) {
 		const gameNum = getGameNum();
 		const today = `${appName} ${gameNum} ${statuses.length}/6`;
-		const strings = statuses.map((k) =>{
+		const strings = statuses.map((k) => {
 			return k
 				.split('')
 				.map((w) => {
@@ -67,11 +86,11 @@
 					}
 					return getStatusEmoji(parseResult.output);
 				})
-				.join('')
+				.join('');
 		});
 		return [today, ...strings].join('\n');
-	};
-	
+	}
+
 	const green = '🟩';
 	const yellow = '🟨';
 	const black = '⬛';
@@ -81,7 +100,7 @@
 		if (!parseResult.success) {
 			return black;
 		}
-		
+
 		switch (parseResult.output) {
 			case 'x':
 				return green;
@@ -91,7 +110,7 @@
 			case 'i':
 				return black;
 		}
-	};
+	}
 </script>
 
 <dialog
@@ -151,11 +170,7 @@
 		{/if}
 		<div class="flex w-full flex-row justify-center gap-3">
 			<button
-				use:clickToCopyAction={share}
-				on:copy-done={() => {
-					message = 'Results copied to clipboard';
-					setTimeout(() => (message = ''), 4000);
-				}}
+				on:click={shareGame}
 				class="h-12 w-full cursor-pointer rounded-lg border-transparent bg-frost-400 p-0 font-bold text-snow-300 active:brightness-90"
 				><span
 					class="grid h-full items-center duration-500 hover:backdrop-brightness-90 hover:backdrop-filter"

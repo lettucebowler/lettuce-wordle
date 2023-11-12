@@ -19,8 +19,7 @@ export async function getGameResults({
 }) {
 	switch (provider) {
 		case 'd1':
-			const { getGameResults } = createApiWordlettuceClient(event);
-			return getGameResults(data);
+			return createApiWordlettuceClient(event).getGameResults(data);
 		default:
 			throw new Error('invalid provider');
 	}
@@ -56,12 +55,10 @@ export async function saveGameResults({
 }) {
 	switch (provider) {
 		case 'all':
-			const { saveGameResults: saveGameResultsD1 } = createApiWordlettuceClient(event);
-			await saveGameResultsD1(data);
+			await createApiWordlettuceClient(event).saveGameResults(data);
 			return data.gameResult;
 		case 'd1':
-			const { saveGameResults } = createApiWordlettuceClient(event);
-			await saveGameResults(data);
+			await createApiWordlettuceClient(event).saveGameResults(data);
 			return data.gameResult;
 		default:
 			throw new Error('invalid provider');
@@ -80,12 +77,10 @@ export async function upsertUser({
 }) {
 	switch (provider) {
 		case 'all':
-			const { upsertUser: upsertUserD1 } = createApiWordlettuceClient(event);
-			await upsertUserD1(data);
+			await createApiWordlettuceClient(event).upsertUser(data);
 			return data;
 		case 'd1':
-			const { upsertUser } = createApiWordlettuceClient(event);
-			await upsertUser(data);
+			await createApiWordlettuceClient(event).upsertUser(data);
 			return data;
 		default:
 			throw new Error('invalid provider');

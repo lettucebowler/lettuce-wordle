@@ -1,7 +1,6 @@
 import {
 	string,
 	maxLength,
-	regex,
 	number,
 	minValue,
 	array,
