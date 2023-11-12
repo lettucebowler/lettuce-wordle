@@ -10,6 +10,15 @@
 		Each successful game earns 1 point, plus a bonus point for the number of guesses under 6 it took
 		to guess the word. 6 guesses is 1 point. 5 guesses is 1 points plus 1 bonus point, etc.
 	</p>
+	{#await data.leaderboard.scores}
+		<div class="flex flex-col items-center text-snow-300 gap-2">
+			<svg class="animate-spin h-20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+				<circle class="text-charade-700" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+				<path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+			  </svg>
+			<p class="font-medium text-sm">Just a sec...</p>
+		</div>
+	{:then scores}
 	<div class="grid w-full gap-2 text-snow-300">
 		<div
 			class="grid w-full grid-cols-[1fr,_50px] gap-4 rounded-lg bg-charade-600 p-2 text-xl font-medium sm:grid-cols-[1fr,_50px,_50px] sm:gap-8"
@@ -19,8 +28,8 @@
 			<div class="text-right">Rank</div>
 		</div>
 		<div class="grid w-full gap-2">
-			{#each data.leaderboard.scores as score, i (i)}
-				{@const position = data.leaderboard.scores.filter((s) => s.score > score.score).length + 1}
+			{#each scores as score, i (i)}
+				{@const position = scores.filter((s) => s.score > score.score).length + 1}
 				<a href={`/profile/${score.user}`}>
 					<div
 						class="box-border grid w-full grid-cols-[1fr,_50px] gap-2 rounded-xl p-2 text-xl font-medium sm:grid-cols-[1fr,_50px,_50px] sm:gap-8"
@@ -50,4 +59,5 @@
 			{/each}
 		</div>
 	</div>
+	{/await}
 </main>
