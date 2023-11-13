@@ -12,6 +12,7 @@ import { upsertUser, type Provider, providerEnum } from '$lib/util/gameresults';
 import { error, type Handle, type RequestEvent } from '@sveltejs/kit';
 import { userProfileSchema, wordLettuceSessionSchema } from '$lib/types/auth';
 import { safeParse, union, void_, null_ } from 'valibot';
+import type { Session } from '@auth/core/types';
 
 function isProvider(input: string): input is Provider {
 	return providerEnum.includes(input as Provider);
@@ -61,6 +62,7 @@ const createWordLettuceSessionGetter =
 			await event.locals.getSession()
 		);
 		if (!parseResult.success) {
+			console.log(JSON.stringify(parseResult.issues, null, 2));
 			throw error(401, 'Invalid session data');
 		}
 		return parseResult.output;
@@ -69,6 +71,13 @@ const createWordLettuceSessionGetter =
 const sessionHandler: Handle = async ({ event, resolve }) => {
 	event.locals.getWordLettuceSession = createWordLettuceSessionGetter(event);
 	return resolve(event);
+};
+
+type ExtendedSession = Session & {
+	user: {
+		id: number;
+		login: string;
+	};
 };
 
 const authHandler: Handle = ({ event, resolve }) =>
@@ -84,19 +93,18 @@ const authHandler: Handle = ({ event, resolve }) =>
 		trustHost: true,
 		callbacks: {
 			async session({ session, token }) {
-				const { email } = session?.user || {};
+				if (!session || !session.user) {
+					return session;
+				}
 				const sessionUser = {
-					email,
+					...session.user,
 					id: token.id,
 					login: token.login
 				};
-
-				const provider = token.provider;
 				return {
 					...session,
-					user: sessionUser,
-					provider
-				};
+					user: sessionUser
+				} as ExtendedSession;
 			},
 			async jwt({ token, account, profile }) {
 				if (account) {

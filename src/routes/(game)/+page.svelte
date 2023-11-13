@@ -13,6 +13,7 @@
 	import type { CompleteGuess, IncompleteGuess } from '$lib/types/gameresult';
 	import { createExpiringBoolean } from './stores';
 	import { browser } from '$app/environment';
+	import { beforeNavigate } from '$app/navigation';
 
 	export let data;
 	export let form;
@@ -20,6 +21,13 @@
 	let modal: Modal;
 	const { value: invalidForm, setTrue: setInvalidFormTrue } = createExpiringBoolean();
 
+	beforeNavigate(() => {
+		if (modalTimer) {
+			clearTimeout(modalTimer);
+		}
+	});
+
+	let modalTimer: number;
 	const openModal = ({
 		answers = [],
 		guesses = 0,
@@ -29,7 +37,7 @@
 		guesses: number;
 		user?: string;
 	}) => {
-		setTimeout(() => modal.open({ answers, guesses, user }), 500);
+		modalTimer = setTimeout(() => modal.open({ answers, guesses, user }), 500);
 	};
 
 	const handleKey = (key: string) => {

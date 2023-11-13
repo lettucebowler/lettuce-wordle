@@ -10,7 +10,6 @@ export type UserProfile = Output<typeof userProfileSchema>;
 
 export const wordLettuceSessionSchema = object({
 	user: userProfileSchema,
-	provider: string(),
 	expires: string()
 });
 export type WordLettuceSession = Output<typeof wordLettuceSessionSchema>;
