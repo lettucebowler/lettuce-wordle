@@ -1,5 +1,3 @@
-import { listen } from 'svelte/internal';
-
 export const CHECK_INTERVAL = 50;
 export const DEFAULT_DELAY = 200;
 export const DEFAULT_DISTANCE = 0;
@@ -149,14 +147,12 @@ export function infiniteScrollAction<T extends HTMLElement>(
 			check.bind(null, { ...params, scrollEventTarget, element: node }),
 			params.delay
 		);
-		const fn = listen(scrollEventTarget, 'scroll', scrollEventListener);
+		scrollEventTarget.addEventListener('scroll', scrollEventListener);
 		if (params.immediate) {
 			check({ ...params, scrollEventTarget, element: node });
 		}
 
-		stop = () => {
-			fn();
-		};
+		stop = () => scrollEventTarget.removeEventListener('scroll', scrollEventListener);
 	};
 
 	update({ ...defaultParams, ...params });

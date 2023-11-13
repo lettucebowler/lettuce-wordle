@@ -1,4 +1,3 @@
-import { listen } from 'svelte/internal';
 import type { ActionReturn } from 'svelte/action';
 
 interface Attributes {
@@ -18,11 +17,10 @@ export function clickOutsideAction(
 		}
 	};
 
-	const stop = listen(document, 'click', handleClick, true);
-
+	document.addEventListener('click', handleClick, true);
 	return {
 		destroy() {
-			stop();
+			document.removeEventListener('click', handleClick, true);
 		}
 	};
 }
