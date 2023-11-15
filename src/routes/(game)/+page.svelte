@@ -209,7 +209,7 @@
 								{@const delayTime = `${j * 0.03}s`}
 								<div
 									class="box-border grid aspect-square items-center rounded-xl text-center text-2xl font-bold text-snow-300 shadow sm:text-3xl transition-all border-charade-700"
-									class:border-[0px]={!!answer}
+									class:border-0={!!answer}
 									class:border-4={!answer}
 									class:border-solid={!answer}
 									class:bg-aurora-400={answer === 'x'}
@@ -219,6 +219,7 @@
 									class:animate-wiggle-once={doWiggleOnce}
 									style:animation-delay={doWiggle || doWiggleOnce ? undefined : delayTime}
 									style:transition-delay={delayTime}
+									style:transition-duration={'300ms'}
 									class:animate-jump={doJump}
 								>
 									<input
