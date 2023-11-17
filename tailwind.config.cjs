@@ -43,7 +43,7 @@ module.exports = {
 				}
 			},
 			animation: {
-				jump: 'jump 0.3s ease-in 1',
+				jump: 'jump 0.3s ease-in-out 1',
 				wiggle: 'wiggle 0.15s ease-in infinite',
 				'wiggle-once': 'wiggle 0.15s ease-in 1',
 				flyup: 'flyup 0.5s ease-in 1',

@@ -178,6 +178,9 @@
 	};
 
 	let formElement: HTMLFormElement;
+
+	const delayScale = 0.03;
+	const duration = 0.15;
 </script>
 
 <div class="flex flex-auto flex-col items-center gap-2">
@@ -196,8 +199,8 @@
 						{@const realIndex = getRealIndex(i, data.state, data.answers)}
 						{@const current = realIndex === data.answers.length}
 						<div
-							animate:flip={{ duration: 150 }}
-							out:slide|local={{ duration: 150 }}
+							animate:flip={{ duration: duration * 1000 }}
+							out:slide|local={{ duration: duration * 1000 }}
 							class="grid w-full grid-cols-[repeat(5,_1fr)] gap-2"
 						>
 							{#each [...Array(5).keys()] as j}
@@ -206,21 +209,22 @@
 								{@const doJump = browser && data.answers.at(realIndex)?.length === 5}
 								{@const doWiggle = browser && $invalidForm && current}
 								{@const doWiggleOnce = !browser && form?.invalid && current}
-								{@const delayTime = `${j * 0.03}s`}
 								<div
 									class="box-border grid aspect-square items-center rounded-xl text-center text-2xl font-bold text-snow-300 shadow sm:text-3xl transition-all border-charade-700"
 									class:border-0={!!answer}
 									class:border-4={!answer}
+									class:bg-charade-900={!answer}
 									class:border-solid={!answer}
 									class:bg-aurora-400={answer === 'x'}
 									class:bg-aurora-300={answer === 'c'}
 									class:bg-charade-700={answer === 'i'}
 									class:animate-wiggle={doWiggle}
 									class:animate-wiggle-once={doWiggleOnce}
-									style:animation-delay={doWiggle || doWiggleOnce ? undefined : delayTime}
-									style:transition-delay={delayTime}
-									style:transition-duration={'300ms'}
+									style:transition-delay={`${j * delayScale + duration}s`}
+									style:animation-delay={`${j * delayScale}s`}
+									style:transition-duration={`${duration}ms`}
 									class:animate-jump={doJump}
+									style:z-index={realIndex}
 								>
 									<input
 										type="hidden"
