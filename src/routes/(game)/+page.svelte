@@ -191,7 +191,7 @@
 				action="?/enter"
 				id="game"
 				bind:this={formElement}
-				use:enhance
+				use:enhance={enhanceForm}
 				class="my-auto flex w-full max-w-[min(700px,_55vh)]"
 			>
 				<div class="grid w-full grid-rows-[repeat(6,_1fr)] gap-2">
