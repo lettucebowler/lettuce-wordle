@@ -15,7 +15,8 @@
 		}
 		const searchParams = new URLSearchParams({
 			count: '30',
-			offset: `${data.results.length + Number($page.url.searchParams.get('offset') || 0)}`
+			offset: `${data.results.length + Number($page.url.searchParams.get('offset') || 0)}`,
+			user: data.user
 		});
 		if ($page.url.searchParams.get('dbProvider')) {
 			searchParams.set('dbProvider', $page.url.searchParams.get('dbProvider') || '');
@@ -23,7 +24,7 @@
 		const oldLength = data.results.length;
 		const fetchResult = (await fetcher().get(`/api/v1/game-results`, searchParams)) as {
 			totalCount: number;
-			results: GameResult[];
+			results: { answers: string; gameNum: number }[];
 		};
 		if (fetchResult?.results) {
 			data.results = data.results.concat(fetchResult.results);

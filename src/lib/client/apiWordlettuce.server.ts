@@ -1,7 +1,17 @@
 import { StatusError, fetcher, type FetcherType } from 'itty-fetcher';
 import { API_WORDLETTUCE_HOST, API_WORDLETTUCE_TOKEN } from '$env/static/private';
 import { gameResultSchema, leaderboardResultSchema } from '$lib/types/gameresult';
-import { array, number, object, safeParse, literal, union, string, boolean } from 'valibot';
+import {
+	array,
+	number,
+	object,
+	safeParse,
+	literal,
+	union,
+	string,
+	boolean,
+	required
+} from 'valibot';
 import type { LoadEvent, RequestEvent, ServerLoadEvent } from '@sveltejs/kit';
 
 import type {
@@ -9,7 +19,7 @@ import type {
 	saveGameResultsInput,
 	upsertUserInput
 } from '$lib/util/gameresults';
-const getGameResultsResponseSchema = union([
+export const getGameResultsResponseSchema = union([
 	object({
 		success: literal(false),
 		message: string()
@@ -17,7 +27,7 @@ const getGameResultsResponseSchema = union([
 	object({
 		success: literal(true),
 		data: object({
-			results: array(gameResultSchema),
+			results: array(required(gameResultSchema)),
 			more: boolean()
 		})
 	})
