@@ -37,7 +37,9 @@
 		guesses: number;
 		user?: string;
 	}) => {
-		modalTimer = setTimeout(() => modal.open({ answers, guesses, user }), 500);
+		if (modal) {
+			modalTimer = setTimeout(() => modal.open({ answers, guesses, user }), 500);
+		}
 	};
 
 	const handleKey = (key: string) => {
@@ -68,14 +70,18 @@
 		}
 	};
 
-	onMount(() => {
-		if (data.success) {
+	$: {
+		if (data.success || form?.success) {
 			openModal({
 				answers: data.answers,
 				guesses: data.state.length,
 				user: data.session?.user.login
 			});
 		}
+	}
+
+	onMount(() => {
+		data = data;
 	});
 
 	function toastError(message: string) {
@@ -112,13 +118,6 @@
 		}
 		await new Promise((resolve) => setTimeout(resolve, 500));
 		update();
-		if (form?.success) {
-			openModal({
-				answers: data.answers,
-				guesses: data.state.length,
-				user: data.session?.user.login
-			});
-		}
 	};
 	const enhanceForm: SubmitFunction = async ({ formData, cancel }) => {
 		// disable submit if game already won
