@@ -169,7 +169,11 @@
 					{#each [...Array(6).keys()] as i (getRealIndex(i, data.state, data.answers))}
 						{@const realIndex = getRealIndex(i, data.state, data.answers)}
 						{@const current = realIndex === data.answers.length}
-						<div class="grid w-full grid-cols-[repeat(5,_1fr)] gap-2">
+						<div
+							class="grid w-full grid-cols-[repeat(5,_1fr)] gap-2"
+							out:slide={{ duration: duration * 1000 }}
+							animate:flip={{ duration: duration * 1000 }}
+						>
 							{#each [...Array(5).keys()] as j}
 								{@const answer = data.answers?.at(realIndex)?.at(j) ?? ''}
 								{@const letter = data.state[realIndex]?.guess?.at(j) ?? ''}
