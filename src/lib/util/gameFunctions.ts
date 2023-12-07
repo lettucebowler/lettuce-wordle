@@ -59,6 +59,9 @@ export const getKeyStatuses = (
 	}[],
 	statuses: string[]
 ) => {
+	if (!words || !statuses) {
+		return {};
+	}
 	const letters = Array.from(
 		new Set(
 			words
