@@ -44,9 +44,7 @@
 
 	const handleKey = (key: string) => {
 		form = { invalid: false, success: false };
-		if (key.toLowerCase() === 'enter') {
-			formElement.requestSubmit();
-		} else {
+		if (key.toLowerCase() !== 'enter') {
 			data.state = applyKey(key, data.state, data.answers);
 			data = data;
 		}
@@ -96,13 +94,10 @@
 		});
 	}
 
-	function toastPromise(
-		promise: Promise<unknown>,
-		opts: { success: string; error: string; loading: string }
-	) {
+	function toastSuccess(message: string) {
 		const style =
 			'border-radius: 0.5rem; color: var(--snow-300); background: var(--charade-700); padding: 1rem 1.5rem; font-size: 18px;';
-		toast.promise(promise, opts, {
+		toast.success(message, {
 			style,
 			iconTheme: {
 				primary: 'var(--aurora-400)',
@@ -162,22 +157,14 @@
 		// }
 		// data.success = true;
 
-		// let resolvePromise: (value: unknown) => void;
-		// const promise = new Promise((resolve) => {
-		// 	resolvePromise = resolve;
-		// });
-		// toastPromise(promise, {
-		// 	loading: 'saving results',
-		// 	error: 'oh nooo',
-		// 	success: 'results saved'
-		// });
-		// return async ({ update }: { update: () => void }) => {
-		// 	// if (resolvePromise) {
-		// 	// 	resolvePromise(undefined);
-		// 	// }
-		// 	// await new Promise((resolve) => setTimeout(resolve, 500));
-		// 	update();
-		// };
+		return async ({ result, update }) => {
+			if (result.type === 'success') {
+				if (result.data?.success) {
+					toastSuccess('Game results saved successfully');
+				}
+			}
+			update();
+		};
 	};
 
 	$: {
@@ -185,8 +172,6 @@
 			invalidWord();
 		}
 	}
-
-	let formElement: HTMLFormElement;
 
 	const delayScale = 0.03;
 	const duration = 0.15;
@@ -199,7 +184,6 @@
 				method="POST"
 				action="?/enter"
 				id="game"
-				bind:this={formElement}
 				use:enhance={enhanceForm}
 				class="my-auto flex w-full max-w-[min(700px,_55vh)]"
 			>
