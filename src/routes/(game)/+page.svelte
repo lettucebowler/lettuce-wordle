@@ -5,12 +5,12 @@
 	import { onMount } from 'svelte';
 	import { applyAction, enhance } from '$app/forms';
 	import Keyboard from './Keyboard.svelte';
-	import { getKeyStatuses, applyWord } from '$lib/util/gameFunctions';
+	import { applyKey, getKeyStatuses, applyWord } from '$lib/util/gameFunctions';
 	import { getCookieFromGameState } from '$lib/util/encodeCookie';
 	import Cookies from 'js-cookie';
 	import { Toaster } from 'svelte-french-toast';
 	import type { SubmitFunction } from '@sveltejs/kit';
-	import type { CompleteGuess, IncompleteGuess, gameStateSchema } from '$lib/types/gameresult';
+	import type { CompleteGuess, IncompleteGuess } from '$lib/types/gameresult';
 	import { createExpiringBoolean } from './stores';
 	import { browser } from '$app/environment';
 	import { beforeNavigate } from '$app/navigation';
@@ -18,15 +18,6 @@
 
 	export let data;
 	export let form;
-
-	let gameState = {
-		state: data.state,
-		answers: data.answers,
-		success: data.success
-	};
-	$: formState = form;
-	$: currentGuess = gameState.state.at(gameState.answers.length)?.guess ?? '';
-	$: currentGuessIndex = gameState.answers.length;
 
 	let modal: Modal;
 	const { value: wordIsInvalid, setTrue: setInvalidFormTrue } = createExpiringBoolean();
@@ -49,12 +40,9 @@
 	};
 
 	const handleKey = (key: string) => {
-		if (key.toLowerCase() === 'backspace') {
-			if (currentGuess.length) {
-				currentGuess = currentGuess.split('').slice(0, -1).join('');
-			}
-		} else if (key.toLowerCase() !== 'enter') {
-			currentGuess += key;
+		if (key.toLowerCase() !== 'enter') {
+			data.state = applyKey(key, data.state, data.answers);
+			data = data;
 		}
 	};
 
@@ -69,7 +57,7 @@
 
 		if (filteredLength < 6) {
 			return i;
-		} else if (gameState.success) {
+		} else if (data.success) {
 			return filteredLength - 6 + i;
 		} else {
 			return filteredLength - 5 + i;
@@ -83,7 +71,7 @@
 
 	const enhanceForm: SubmitFunction = async ({ formData, cancel }) => {
 		// disable submit if game already won
-		if (gameState.success) {
+		if (data.success) {
 			cancel();
 			return;
 		}
@@ -94,29 +82,25 @@
 				.join(''),
 			complete: false
 		};
-
 		if (guess.guess.length !== 5) {
 			cancel();
 			invalidWord();
 			return;
 		}
 		const { metadata, updatedAnswers, updatedGuesses } = applyWord(
-			gameState.state.filter((guess): guess is CompleteGuess => guess.complete),
+			data.state.filter((guess): guess is CompleteGuess => guess.complete),
 			guess,
-			gameState.answers
+			data.answers
 		);
 		if (metadata.invalid) {
 			cancel();
 			return;
 		}
 		if (!metadata.invalid) {
-			const newGuess = updatedGuesses.at(-1);
-			if (newGuess) {
-				gameState.state.push(newGuess);
-				gameState.answers = updatedAnswers;
-			}
+			data.state = updatedGuesses;
+			data.answers = updatedAnswers;
 		}
-		Cookies.set('wordLettuce', getCookieFromGameState(gameState.state), {
+		Cookies.set('wordLettuce', getCookieFromGameState(data.state), {
 			path: '/',
 			httpOnly: false,
 			expires: 1,
@@ -125,26 +109,28 @@
 
 		if (!metadata.success) {
 			cancel();
-			formState = metadata;
+			data = data;
+			form = metadata;
 			return;
 		}
 
+		data = data;
+		data.success = true;
 		const id = toastLoading('beep boop...');
 		return async ({ result, update }) => {
-			applyAction(result);
-			if (data.session?.user.login) {
-				if (result.type === 'success') {
-					toastSuccess('Game results saved', { id });
-				} else {
-					toastError('Failed to save game results', { id });
-				}
+			// applyAction(result);
+			update();
+			if (result.type === 'success') {
+				toastSuccess('Game results saved', { id });
+			} else {
+				toastError('Failed to save game results', { id });
 			}
 		};
 	};
 
-	// onMount(() => {
-	// 	data = data;
-	// });
+	onMount(() => {
+		data = data;
+	});
 
 	beforeNavigate(() => {
 		if (modalTimer) {
@@ -153,16 +139,16 @@
 	});
 
 	$: {
-		if (formState?.invalid) {
+		if (form?.invalid) {
 			invalidWord();
 		}
 	}
 
 	$: {
-		if (gameState.success) {
+		if (data.success) {
 			openModal({
-				answers: gameState.answers,
-				guesses: gameState.state.length,
+				answers: data.answers,
+				guesses: data.state.length,
 				user: data.session?.user.login
 			});
 		}
@@ -180,25 +166,14 @@
 				class="my-auto flex w-full max-w-[min(700px,_55vh)]"
 			>
 				<div class="grid w-full grid-rows-[repeat(6,_1fr)] gap-2">
-					{#each [...gameState.state
-							.map((g, index) => {
-								return { index, ...g };
-							})
-							.slice(-5), { guess: currentGuess, complete: false, index: currentGuessIndex }, ...Array(gameState.state.length < 5 ? 5 - gameState.state.length : 0)
-							.fill(null)
-							.map( (_, index) => ({ guess: '', complete: false, index: index + 1 + currentGuessIndex }) )] as guess (guess.index)}
-						{@const realIndex = guess.index}
-						{@const current = guess.index === currentGuessIndex}
-						<div
-							animate:flip={{ duration: duration * 1000 }}
-							out:slide|local={{ duration: duration * 1000 }}
-							class="grid w-full grid-cols-[repeat(5,_1fr)] gap-2"
-							id={guess.index.toString()}
-						>
-							{#each [...Array(5).keys()] as j (`${guess.index}-${j}`)}
-								{@const answer = gameState.answers?.at(realIndex)?.at(j) ?? ''}
-								{@const letter = guess.guess?.at(j) ?? ''}
-								{@const doJump = browser && gameState.answers.at(realIndex)?.length === 5}
+					{#each [...Array(6).keys()] as i (getRealIndex(i, data.state, data.answers))}
+						{@const realIndex = getRealIndex(i, data.state, data.answers)}
+						{@const current = realIndex === data.answers.length}
+						<div class="grid w-full grid-cols-[repeat(5,_1fr)] gap-2">
+							{#each [...Array(5).keys()] as j}
+								{@const answer = data.answers?.at(realIndex)?.at(j) ?? ''}
+								{@const letter = data.state[realIndex]?.guess?.at(j) ?? ''}
+								{@const doJump = browser && data.answers.at(realIndex)?.length === 5}
 								{@const doWiggle = browser && $wordIsInvalid && current}
 								{@const doWiggleOnce = !browser && form?.invalid && current}
 								<div
@@ -216,7 +191,6 @@
 									style:animation-delay={$wordIsInvalid ? '0s' : `${j * delayScale}s`}
 									style:transition-duration={`${duration}ms`}
 									class:animate-jump={doJump}
-									style:z-index={guess.index}
 								>
 									<input
 										type="hidden"
@@ -235,7 +209,7 @@
 		<div class="flex h-full max-h-[min(20rem,_30vh)] w-full flex-[5_1_auto] flex-col">
 			<Keyboard
 				on:key={(e) => handleKey(e.detail)}
-				answers={getKeyStatuses(gameState.state, gameState.answers)}
+				answers={getKeyStatuses(data.state, data.answers)}
 			/>
 		</div>
 	</main>
