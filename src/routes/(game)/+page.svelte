@@ -20,12 +20,8 @@
 
 	let modal: Modal;
 	const { value: wordIsInvalid, setTrue: setInvalidFormTrue } = createExpiringBoolean();
-
-	beforeNavigate(() => {
-		if (modalTimer) {
-			clearTimeout(modalTimer);
-		}
-	});
+	const delayScale = 0.03;
+	const duration = 0.15;
 
 	let modalTimer: number;
 	const openModal = ({
@@ -43,7 +39,6 @@
 	};
 
 	const handleKey = (key: string) => {
-		form = { invalid: false, success: false };
 		if (key.toLowerCase() !== 'enter') {
 			data.state = applyKey(key, data.state, data.answers);
 			data = data;
@@ -68,25 +63,12 @@
 		}
 	};
 
-	$: {
-		if (data.success || form?.success) {
-			openModal({
-				answers: data.answers,
-				guesses: data.state.length,
-				user: data.session?.user.login
-			});
-		}
-	}
-
-	onMount(() => {
-		data = data;
-	});
-
-	function toastError(message: string) {
+	function toastError(message: string, opts?: { id: string | undefined }) {
 		const style =
 			'border-radius: 0.5rem; color: var(--snow-300); background: var(--charade-700); padding: 1rem 1.5rem; font-size: 18px;';
-		toast.error(message, {
+		const g = toast.error(message, {
 			style,
+			id: opts ? opts.id : undefined,
 			iconTheme: {
 				primary: 'var(--aurora-100)',
 				secondary: 'var(--snow-300)'
@@ -94,14 +76,28 @@
 		});
 	}
 
-	function toastSuccess(message: string) {
+	function toastSuccess(message: string, opts?: { id: string | undefined }) {
 		const style =
 			'border-radius: 0.5rem; color: var(--snow-300); background: var(--charade-700); padding: 1rem 1.5rem; font-size: 18px;';
-		toast.success(message, {
+		toast.error(message, {
 			style,
+			id: opts ? opts.id : undefined,
 			iconTheme: {
 				primary: 'var(--aurora-400)',
 				secondary: 'var(--snow-300)'
+			}
+		});
+	}
+
+	function toastLoading(message: string, opts?: { id: string | undefined } | undefined) {
+		const style =
+			'border-radius: 0.5rem; color: var(--snow-300); background: var(--charade-700); padding: 1rem 1.5rem; font-size: 18px;';
+		return toast.loading(message, {
+			style,
+			id: opts ? opts.id : undefined,
+			iconTheme: {
+				primary: 'var(--snow-300)',
+				secondary: 'var(--charade-300)'
 			}
 		});
 	}
@@ -129,43 +125,54 @@
 			invalidWord();
 			return;
 		}
-		// const { metadata, updatedAnswers, updatedGuesses } = applyWord(
-		// 	data.state.filter((guess): guess is CompleteGuess => guess.complete),
-		// 	guess,
-		// 	data.answers
-		// );
-		// form = metadata;
-		// if (metadata.invalid) {
-		// 	cancel();
-		// 	return;
-		// }
-		// data.answers = updatedAnswers;
-		// if (!metadata.invalid) {
-		// 	data.state = updatedGuesses;
-		// }
-		// data = data;
-		// Cookies.set('wordLettuce', getCookieFromGameState(data.state), {
-		// 	path: '/',
-		// 	httpOnly: false,
-		// 	expires: 1,
-		// 	secure: false
-		// });
+		const { metadata, updatedAnswers, updatedGuesses } = applyWord(
+			data.state.filter((guess): guess is CompleteGuess => guess.complete),
+			guess,
+			data.answers
+		);
+		if (metadata.invalid) {
+			cancel();
+			return;
+		}
+		if (!metadata.invalid) {
+			data.state = updatedGuesses;
+			data.answers = updatedAnswers;
+		}
+		Cookies.set('wordLettuce', getCookieFromGameState(data.state), {
+			path: '/',
+			httpOnly: false,
+			expires: 1,
+			secure: false
+		});
 
-		// if (!metadata.success) {
-		// 	cancel();
-		// 	return;
-		// }
-		// data.success = true;
+		if (!metadata.success) {
+			cancel();
+			data = data;
+			form = metadata;
+			return;
+		}
 
+		data = data;
+		const id = toastLoading('beep boop...');
 		return async ({ result, update }) => {
-			if (result.type === 'success') {
-				if (result.data?.success) {
-					toastSuccess('Game results saved successfully');
-				}
-			}
 			update();
+			if (result.type === 'success') {
+				toastSuccess('Game results saved', { id });
+			} else {
+				toastError('Failed to save game results', { id });
+			}
 		};
 	};
+
+	onMount(() => {
+		data = data;
+	});
+
+	beforeNavigate(() => {
+		if (modalTimer) {
+			clearTimeout(modalTimer);
+		}
+	});
 
 	$: {
 		if (form?.invalid) {
@@ -173,8 +180,15 @@
 		}
 	}
 
-	const delayScale = 0.03;
-	const duration = 0.15;
+	$: {
+		if (data.success) {
+			openModal({
+				answers: data.answers,
+				guesses: data.state.length,
+				user: data.session?.user.login
+			});
+		}
+	}
 </script>
 
 <div class="flex flex-auto flex-col items-center gap-2">
