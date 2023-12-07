@@ -104,7 +104,7 @@ export const actions: import('./$types').Actions = {
 				gameNum,
 				answers: updatedAnswers?.join('') || ''
 			};
-			await saveGameResults({
+			saveGameResults({
 				event,
 				provider: 'all',
 				data: {

@@ -19,7 +19,7 @@
 	export let form;
 
 	let modal: Modal;
-	const { value: invalidForm, setTrue: setInvalidFormTrue } = createExpiringBoolean();
+	const { value: wordIsInvalid, setTrue: setInvalidFormTrue } = createExpiringBoolean();
 
 	beforeNavigate(() => {
 		if (modalTimer) {
@@ -111,14 +111,11 @@
 		});
 	}
 
-	let resolvePromise: (value: unknown) => void;
-	const handleWordResult = async ({ update }: { update: () => void }) => {
-		if (resolvePromise) {
-			resolvePromise(undefined);
-		}
-		await new Promise((resolve) => setTimeout(resolve, 500));
-		update();
-	};
+	function invalidWord() {
+		setInvalidFormTrue();
+		toastError('Invalid word');
+	}
+
 	const enhanceForm: SubmitFunction = async ({ formData, cancel }) => {
 		// disable submit if game already won
 		if (data.success) {
@@ -134,47 +131,60 @@
 		};
 		if (guess.guess.length !== 5) {
 			cancel();
-			setInvalidFormTrue();
+			invalidWord();
 			return;
 		}
-		const { metadata, updatedAnswers, updatedGuesses } = applyWord(
-			data.state.filter((guess): guess is CompleteGuess => guess.complete),
-			guess,
-			data.answers
-		);
-		form = metadata;
-		if (metadata.invalid) {
-			toastError('invalid word');
-			cancel();
-			return;
-		}
-		data.answers = updatedAnswers;
-		if (!metadata.invalid) {
-			data.state = updatedGuesses;
-		}
-		data = data;
-		Cookies.set('wordLettuce', getCookieFromGameState(data.state), {
-			path: '/',
-			httpOnly: false,
-			expires: 1,
-			secure: false
-		});
+		// const { metadata, updatedAnswers, updatedGuesses } = applyWord(
+		// 	data.state.filter((guess): guess is CompleteGuess => guess.complete),
+		// 	guess,
+		// 	data.answers
+		// );
+		// form = metadata;
+		// if (metadata.invalid) {
+		// 	cancel();
+		// 	return;
+		// }
+		// data.answers = updatedAnswers;
+		// if (!metadata.invalid) {
+		// 	data.state = updatedGuesses;
+		// }
+		// data = data;
+		// Cookies.set('wordLettuce', getCookieFromGameState(data.state), {
+		// 	path: '/',
+		// 	httpOnly: false,
+		// 	expires: 1,
+		// 	secure: false
+		// });
 
-		if (!metadata.success) {
-			cancel();
-			return;
-		}
-		data.success = true;
-		const promise = new Promise((resolve) => {
-			resolvePromise = resolve;
-		});
-		toastPromise(promise, {
-			loading: 'saving results',
-			error: 'oh nooo',
-			success: 'results saved'
-		});
-		return handleWordResult;
+		// if (!metadata.success) {
+		// 	cancel();
+		// 	return;
+		// }
+		// data.success = true;
+
+		// let resolvePromise: (value: unknown) => void;
+		// const promise = new Promise((resolve) => {
+		// 	resolvePromise = resolve;
+		// });
+		// toastPromise(promise, {
+		// 	loading: 'saving results',
+		// 	error: 'oh nooo',
+		// 	success: 'results saved'
+		// });
+		// return async ({ update }: { update: () => void }) => {
+		// 	// if (resolvePromise) {
+		// 	// 	resolvePromise(undefined);
+		// 	// }
+		// 	// await new Promise((resolve) => setTimeout(resolve, 500));
+		// 	update();
+		// };
 	};
+
+	$: {
+		if (form?.invalid) {
+			invalidWord();
+		}
+	}
 
 	let formElement: HTMLFormElement;
 
@@ -190,7 +200,7 @@
 				action="?/enter"
 				id="game"
 				bind:this={formElement}
-				use:enhance
+				use:enhance={enhanceForm}
 				class="my-auto flex w-full max-w-[min(700px,_55vh)]"
 			>
 				<div class="grid w-full grid-rows-[repeat(6,_1fr)] gap-2">
@@ -206,7 +216,7 @@
 								{@const answer = data.answers?.at(realIndex)?.at(j) ?? ''}
 								{@const letter = data.state[realIndex]?.guess?.at(j) ?? ''}
 								{@const doJump = browser && data.answers.at(realIndex)?.length === 5}
-								{@const doWiggle = browser && $invalidForm && current}
+								{@const doWiggle = browser && $wordIsInvalid && current}
 								{@const doWiggleOnce = !browser && form?.invalid && current}
 								<div
 									class="box-border grid aspect-square items-center rounded-xl text-center text-2xl font-bold text-snow-300 shadow sm:text-3xl transition-all border-charade-700"
@@ -220,10 +230,9 @@
 									class:animate-wiggle={doWiggle}
 									class:animate-wiggle-once={doWiggleOnce}
 									style:transition-delay={`${j * delayScale + duration}s`}
-									style:animation-delay={`${j * delayScale}s`}
+									style:animation-delay={$wordIsInvalid ? '0s' : `${j * delayScale}s`}
 									style:transition-duration={`${duration}ms`}
 									class:animate-jump={doJump}
-									style:z-index={realIndex}
 								>
 									<input
 										type="hidden"
