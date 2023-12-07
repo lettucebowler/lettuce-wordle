@@ -3,7 +3,7 @@
 	import { slide } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
 	import { onMount } from 'svelte';
-	import { applyAction, enhance } from '$app/forms';
+	import { enhance } from '$app/forms';
 	import Keyboard from './Keyboard.svelte';
 	import { applyKey, getKeyStatuses, applyWord } from '$lib/util/gameFunctions';
 	import { getCookieFromGameState } from '$lib/util/encodeCookie';
@@ -120,16 +120,24 @@
 		return async ({ result, update }) => {
 			// applyAction(result);
 			update();
-			if (result.type === 'success') {
-				toastSuccess('Game results saved', { id });
-			} else {
-				toastError('Failed to save game results', { id });
+			if (data.session?.user.login) {
+				if (result.type === 'success') {
+					toastSuccess('Game results saved', { id });
+				} else {
+					toastError('Failed to save game results', { id });
+				}
 			}
 		};
 	};
 
 	onMount(() => {
-		data = data;
+		if (data.success) {
+			openModal({
+				answers: data.answers,
+				guesses: data.state.length,
+				user: data.session?.user.login
+			});
+		}
 	});
 
 	beforeNavigate(() => {
@@ -141,16 +149,6 @@
 	$: {
 		if (form?.invalid) {
 			invalidWord();
-		}
-	}
-
-	$: {
-		if (data.success) {
-			openModal({
-				answers: data.answers,
-				guesses: data.state.length,
-				user: data.session?.user.login
-			});
 		}
 	}
 </script>
