@@ -3,7 +3,7 @@
 	import { slide } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
 	import { onMount } from 'svelte';
-	import { enhance } from '$app/forms';
+	import { applyAction, enhance } from '$app/forms';
 	import Keyboard from './Keyboard.svelte';
 	import { getKeyStatuses, applyWord } from '$lib/util/gameFunctions';
 	import { getCookieFromGameState } from '$lib/util/encodeCookie';
@@ -19,7 +19,7 @@
 	export let data;
 	export let form;
 
-	$: gameState = {
+	let gameState = {
 		state: data.state,
 		answers: data.answers,
 		success: data.success
@@ -131,18 +131,20 @@
 
 		const id = toastLoading('beep boop...');
 		return async ({ result, update }) => {
-			update();
-			if (result.type === 'success') {
-				toastSuccess('Game results saved', { id });
-			} else {
-				toastError('Failed to save game results', { id });
+			applyAction(result);
+			if (data.session?.user.login) {
+				if (result.type === 'success') {
+					toastSuccess('Game results saved', { id });
+				} else {
+					toastError('Failed to save game results', { id });
+				}
 			}
 		};
 	};
 
-	onMount(() => {
-		data = data;
-	});
+	// onMount(() => {
+	// 	data = data;
+	// });
 
 	beforeNavigate(() => {
 		if (modalTimer) {
