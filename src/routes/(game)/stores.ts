@@ -18,15 +18,14 @@ export const timeUntilNextGame = derived<Readable<Date>, number>(time, ($time: D
 	return Math.round((tomorrow.getTime() - $time.getTime()) / 1000);
 });
 
-export function createExpiringBoolean() {
+export function createExpiringBoolean({ duration = 150 } = {}) {
 	let id: number | undefined;
 	const store = writable(false);
-	const period = 150;
 	let startTime = 0;
 	let remaining = 0;
 	function setTrue() {
 		if (id) {
-			remaining = 150 - (performance.now() - startTime);
+			remaining = startTime + duration - performance.now();
 			clearTimeout(id);
 		} else {
 			remaining = 0;
@@ -36,11 +35,11 @@ export function createExpiringBoolean() {
 		id = setTimeout(() => {
 			store.set(false);
 			id = undefined;
-		}, remaining + period);
+		}, remaining + duration);
 	}
 
 	return {
-		value: { subscribe: store.subscribe },
+		subscribe: store.subscribe,
 		setTrue
 	};
 }

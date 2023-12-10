@@ -3,7 +3,7 @@
 	import { slide } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
 	import { onMount } from 'svelte';
-	import { enhance } from '$app/forms';
+	import { applyAction, enhance } from '$app/forms';
 	import Keyboard from './Keyboard.svelte';
 	import { applyKey, getKeyStatuses, applyWord } from '$lib/util/gameFunctions';
 	import { getCookieFromGameState } from '$lib/util/encodeCookie';
@@ -11,16 +11,19 @@
 	import { Toaster } from 'svelte-french-toast';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import type { CompleteGuess, IncompleteGuess } from '$lib/types/gameresult';
+	import { allowedGuess } from '$lib/types/gameresult';
 	import { createExpiringBoolean } from './stores';
 	import { browser } from '$app/environment';
 	import { beforeNavigate } from '$app/navigation';
 	import { toastError, toastLoading, toastSuccess } from './toast';
+	import { safeParse, string } from 'valibot';
 
 	export let data;
 	export let form;
 
 	let modal: Modal;
-	const { value: wordIsInvalid, setTrue: setInvalidFormTrue } = createExpiringBoolean();
+	const wordIsInvalid = createExpiringBoolean();
+	const submittingWord = createExpiringBoolean();
 	const delayScale = 0.03;
 	const duration = 0.15;
 
@@ -64,29 +67,31 @@
 		}
 	};
 
-	function invalidWord() {
-		setInvalidFormTrue();
-		toastError('Invalid word');
-	}
-
 	const enhanceForm: SubmitFunction = async ({ formData, cancel }) => {
-		// disable submit if game already won
-		if (data.success) {
+		if ($submittingWord || data.success) {
 			cancel();
+			return;
+		}
+		submittingWord.setTrue();
+		const guessData = safeParse(
+			string([allowedGuess()]),
+			formData
+				.getAll('guess')
+				.map((l) => l.toString().toLowerCase())
+				.join('')
+		);
+		if (!guessData.success) {
+			cancel();
+			form = {
+				success: false,
+				invalid: true
+			};
 			return;
 		}
 		const guess: IncompleteGuess = {
-			guess: formData
-				.getAll('guess')
-				.map((l) => l.toString().toLowerCase())
-				.join(''),
+			guess: guessData.output,
 			complete: false
 		};
-		if (guess.guess.length !== 5) {
-			cancel();
-			invalidWord();
-			return;
-		}
 		const { metadata, updatedAnswers, updatedGuesses } = applyWord(
 			data.state.filter((guess): guess is CompleteGuess => guess.complete),
 			guess,
@@ -94,12 +99,14 @@
 		);
 		if (metadata.invalid) {
 			cancel();
+			form = {
+				success: false,
+				invalid: true
+			};
 			return;
 		}
-		if (!metadata.invalid) {
-			data.state = updatedGuesses;
-			data.answers = updatedAnswers;
-		}
+		data.state = updatedGuesses;
+		data.answers = updatedAnswers;
 		Cookies.set('wordLettuce', getCookieFromGameState(data.state), {
 			path: '/',
 			httpOnly: false,
@@ -107,25 +114,30 @@
 			secure: false
 		});
 
+		data.success = metadata.success;
+		data = data;
 		if (!metadata.success) {
 			cancel();
-			data = data;
-			form = metadata;
+			form = {
+				success: false,
+				invalid: false
+			};
 			return;
 		}
-
-		data = data;
-		data.success = true;
 		const id = toastLoading('beep boop...');
-		return async ({ result, update }) => {
-			// applyAction(result);
-			update();
+		return async ({ result }) => {
+			applyAction(result);
 			if (data.session?.user.login) {
 				if (result.type === 'success') {
 					toastSuccess('Game results saved', { id });
 				} else {
 					toastError('Failed to save game results', { id });
 				}
+				openModal({
+					answers: data.answers,
+					guesses: data.state.length,
+					user: data.session?.user.login
+				});
 			}
 		};
 	};
@@ -148,7 +160,8 @@
 
 	$: {
 		if (form?.invalid) {
-			invalidWord();
+			wordIsInvalid.setTrue();
+			toastError('Invalid word');
 		}
 	}
 </script>
@@ -179,7 +192,7 @@
 								{@const doWiggle = browser && $wordIsInvalid && current}
 								{@const doWiggleOnce = !browser && form?.invalid && current}
 								<div
-									class="box-border grid aspect-square items-center rounded-xl text-center text-2xl font-bold text-snow-300 shadow sm:text-3xl transition-all border-charade-700"
+									class="box-border grid aspect-square items-center rounded-xl border-charade-700 text-center text-2xl font-bold text-snow-300 shadow transition-all sm:text-3xl"
 									class:border-0={!!answer}
 									class:border-4={!answer}
 									class:bg-charade-900={!answer}

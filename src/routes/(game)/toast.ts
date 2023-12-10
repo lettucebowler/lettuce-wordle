@@ -4,7 +4,7 @@ const baseToastStyles =
 	'border-radius: 0.5rem; color: var(--snow-300); background: var(--charade-700); padding: 1rem 1.5rem; font-size: 18px;';
 
 export function toastError(message: string, opts?: { id: string | undefined }) {
-	const g = toast.error(message, {
+	toast.error(message, {
 		style: baseToastStyles,
 		id: opts ? opts.id : undefined,
 		iconTheme: {
@@ -15,7 +15,7 @@ export function toastError(message: string, opts?: { id: string | undefined }) {
 }
 
 export function toastSuccess(message: string, opts?: { id: string | undefined }) {
-	toast.error(message, {
+	toast.success(message, {
 		style: baseToastStyles,
 		id: opts ? opts.id : undefined,
 		iconTheme: {

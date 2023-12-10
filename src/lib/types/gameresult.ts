@@ -18,7 +18,7 @@ import {
 
 import { answerList, allowedGuesses } from '$lib/util/words';
 import { getGameNum } from '$lib/util/words';
-function allowedGuess() {
+export function allowedGuess() {
 	return custom(
 		(value: string) => answerList.includes(value) || allowedGuesses.includes(value),
 		'Guess not in list of allowed guesses.'
