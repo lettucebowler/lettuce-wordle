@@ -25,7 +25,7 @@ export async function GET(event) {
 		Object.fromEntries(event.url.searchParams.entries())
 	);
 	if (!result.success) {
-		throw error(400, 'Bad request');
+		error(400, 'Bad request');
 	}
 	const data = result.output;
 	const gameResults = await getGameResults({

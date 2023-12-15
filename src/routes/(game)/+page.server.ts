@@ -15,13 +15,13 @@ export async function load(event) {
 
 	if (doSaveGame) {
 		if (!session) {
-			throw redirect(307, '/');
+			redirect(307, '/');
 		}
 		if (!gameState?.length) {
-			throw redirect(307, '/');
+			redirect(307, '/');
 		}
 		if (!answers?.length || answers?.at(-1) !== 'xxxxx') {
-			throw redirect(307, '/');
+			redirect(307, '/');
 		}
 		const gameResult: GameResult = {
 			gameNum: getGameNum(),
@@ -32,7 +32,7 @@ export async function load(event) {
 			provider: 'all',
 			data: { gameResult, userId: session.user.id }
 		});
-		throw redirect(307, '/');
+		redirect(307, '/');
 	}
 
 	event.cookies.set('wordLettuce', getCookieFromGameState(gameState), {

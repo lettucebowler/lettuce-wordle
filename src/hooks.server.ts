@@ -63,7 +63,7 @@ const createWordLettuceSessionGetter =
 		);
 		if (!parseResult.success) {
 			console.log(JSON.stringify(parseResult.issues, null, 2));
-			throw error(401, 'Invalid session data');
+			error(401, 'Invalid session data');
 		}
 		return parseResult.output;
 	};
