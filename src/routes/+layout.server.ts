@@ -26,3 +26,5 @@ export async function load(event) {
 		session: await event.locals.getWordLettuceSession()
 	};
 }
+
+export const trailingSlash = 'never';
