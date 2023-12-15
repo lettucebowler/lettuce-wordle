@@ -6,6 +6,8 @@ import { saveGameResults } from '$lib/util/gameresults';
 import type { CompleteGuess, GameResult, Guess, IncompleteGuess } from '$lib/types/gameresult';
 import { successAnswer } from '$lib/constants/app-constants.js';
 
+export const trailingSlash = 'never';
+
 export async function load(event) {
 	const gameState = event.locals.getGameState();
 	const answers = checkWords(gameState, getDailyWord());
