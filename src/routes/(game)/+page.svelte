@@ -202,10 +202,10 @@
 									class:bg-charade-700={answer === 'i'}
 									class:animate-wiggle={doWiggle}
 									class:animate-wiggle-once={doWiggleOnce}
+									class:animate-jump={doJump}
 									style:transition-delay={`${j * delayScale + duration}s`}
 									style:animation-delay={$wordIsInvalid ? '0s' : `${j * delayScale}s`}
 									style:transition-duration={`${duration}ms`}
-									class:animate-jump={doJump}
 								>
 									<input
 										type="hidden"
