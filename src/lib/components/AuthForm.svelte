@@ -11,7 +11,7 @@
 	<input type="hidden" name="callbackUrl" value={mode === 'login' ? callback : ''} />
 	<slot>
 		<button
-			class="grid h-full items-center rounded-xl px-6 py-2 text-center font-medium text-snow-100 hover:underline capitalize"
+			class="grid h-full items-center rounded-xl px-6 py-2 text-center font-medium capitalize text-snow-100 hover:underline"
 			class:text-lg={mode === 'logout'}
 			class:text-3xl={mode === 'login'}>{mode}</button
 		>

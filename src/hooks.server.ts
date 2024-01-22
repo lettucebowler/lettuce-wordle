@@ -1,5 +1,5 @@
 import { sequence } from '@sveltejs/kit/hooks';
-import { SvelteKitAuth } from '@auth/sveltekit';
+import { SvelteKitAuth, type SvelteKitAuthConfig } from '@auth/sveltekit';
 import GitHub from '@auth/core/providers/github';
 import { skipCSRFCheck } from '@auth/core';
 import {
@@ -13,6 +13,7 @@ import { error, type Handle, type RequestEvent } from '@sveltejs/kit';
 import { userProfileSchema, wordLettuceSessionSchema } from '$lib/types/auth';
 import { safeParse, union, void_, null_ } from 'valibot';
 import type { Session } from '@auth/core/types';
+import type { JWT } from '@auth/core/jwt';
 
 function isProvider(input: string): input is Provider {
 	return providerEnum.includes(input as Provider);
@@ -80,19 +81,27 @@ type ExtendedSession = Session & {
 	};
 };
 
-const authHandler: Handle = ({ event, resolve }) =>
-	SvelteKitAuth({
-		skipCSRFCheck,
-		secret: AUTH_SECRET,
+function isJWTSession(params: any): params is { session: Session; token: JWT } {
+	return !!params?.token;
+}
+
+const authHandler = SvelteKitAuth(async (event) => {
+	const authOptions: SvelteKitAuthConfig = {
 		providers: [
 			GitHub({
 				clientId: SK_AUTH_GITHUB_CLIENT_ID,
 				clientSecret: SK_AUTH_GITHUB_CLIENT_SECRET
 			})
 		],
+		secret: AUTH_SECRET,
 		trustHost: true,
+		skipCSRFCheck,
 		callbacks: {
-			async session({ session, token }) {
+			async session(params) {
+				if (!isJWTSession(params)) {
+					return params.session;
+				}
+				const { session, token } = params;
 				if (!session || !session.user) {
 					return session;
 				}
@@ -106,10 +115,7 @@ const authHandler: Handle = ({ event, resolve }) =>
 					user: sessionUser
 				} as ExtendedSession;
 			},
-			async jwt({ token, account, profile }) {
-				if (account) {
-					token.provider = account.provider;
-				}
+			async jwt({ token, profile }) {
 				if (profile) {
 					const profileParseResult = safeParse(userProfileSchema, profile);
 					if (profileParseResult.success) {
@@ -125,6 +131,8 @@ const authHandler: Handle = ({ event, resolve }) =>
 				return token;
 			}
 		}
-	})({ event, resolve });
+	};
+	return authOptions;
+});
 
 export const handle = sequence(authHandler, sessionHandler, gameStateHandler, providerHandler);
