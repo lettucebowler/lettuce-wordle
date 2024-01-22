@@ -46,11 +46,23 @@ const providerHandler: Handle = async ({ event, resolve }) => {
 	return response;
 };
 
-const createGameStateGetter = (event: RequestEvent) => () => {
-	const wordLettuceState = event.cookies.get('wordLettuce') || '';
-	const gameState = getGameFromCookie(wordLettuceState);
-	return gameState.guesses;
-};
+// const createGameStateGetter = (event: RequestEvent) => () => {
+// 	const wordLettuceState = event.cookies.get('wordLettuce') || '';
+// 	const gameState = getGameFromCookie(wordLettuceState);
+// 	return gameState.guesses;
+// };
+function createGameStateGetter(event: RequestEvent) {
+	return () => {
+		if (event.locals._gameState) {
+			return event.locals._gameState;
+		} else {
+			const wordLettuceState = event.cookies.get('wordLettuce') || '';
+			const { guesses } = getGameFromCookie(wordLettuceState);
+			event.locals._gameState = guesses;
+			return guesses;
+		}
+	};
+}
 const gameStateHandler: Handle = async ({ event, resolve }) => {
 	event.locals.getGameState = createGameStateGetter(event);
 	return resolve(event);
@@ -60,7 +72,7 @@ const createWordLettuceSessionGetter =
 	(event: RequestEvent<Partial<Record<string, string>>, string | null>) => async () => {
 		const parseResult = safeParse(
 			union([wordLettuceSessionSchema, void_(), null_()]),
-			await event.locals.getSession()
+			await event.locals.auth()
 		);
 		if (!parseResult.success) {
 			console.log(JSON.stringify(parseResult.issues, null, 2));

@@ -32,4 +32,6 @@ const decodeState = (stateBuffer: string) => {
 	}
 };
 
-export const getGameFromCookie = (wordLettuceState: string) => decodeState(wordLettuceState);
+export function getGameFromCookie(wordLettuceState: string) {
+	return decodeState(wordLettuceState);
+}
