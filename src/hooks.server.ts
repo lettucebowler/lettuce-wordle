@@ -8,49 +8,13 @@ import {
 	SK_AUTH_GITHUB_CLIENT_SECRET
 } from '$env/static/private';
 import { getGameFromCookie } from '$lib/util/decodeCookie.server';
-import { upsertUser, type Provider, providerEnum } from '$lib/util/gameresults';
 import { error, type Handle, type RequestEvent } from '@sveltejs/kit';
 import { userProfileSchema, wordLettuceSessionSchema } from '$lib/types/auth';
 import { safeParse, union, void_, null_ } from 'valibot';
 import type { Session } from '@auth/core/types';
 import type { JWT } from '@auth/core/jwt';
+import { createApiWordlettuceClient } from '$lib/client/api-wordlettuce.server';
 
-function isProvider(input: string): input is Provider {
-	return providerEnum.includes(input as Provider);
-}
-
-const createProviderGetter = (event: RequestEvent) => (): Provider | undefined => {
-	const searchParams = new URL(event.request.url).searchParams;
-	const dbProviderOverride = searchParams.get('dbProvider');
-	if (!dbProviderOverride) {
-		return;
-	}
-
-	if (!isProvider(dbProviderOverride)) {
-		return;
-	}
-
-	event.locals.dbProviderOverwritten = true;
-	return dbProviderOverride;
-};
-const providerHandler: Handle = async ({ event, resolve }) => {
-	event.locals.getDbProvider = createProviderGetter(event);
-	event.locals.dbProviderOverwritten = false;
-
-	const logString = `${event.request.method} ${event.url.pathname}${
-		event.url.search ? `${event.url.search}` : ''
-	}`;
-	console.time(logString);
-	const response = await resolve(event);
-	console.timeEnd(logString);
-	return response;
-};
-
-// const createGameStateGetter = (event: RequestEvent) => () => {
-// 	const wordLettuceState = event.cookies.get('wordLettuce') || '';
-// 	const gameState = getGameFromCookie(wordLettuceState);
-// 	return gameState.guesses;
-// };
 function createGameStateGetter(event: RequestEvent) {
 	return () => {
 		if (event.locals._gameState) {
@@ -75,7 +39,6 @@ const createWordLettuceSessionGetter =
 			await event.locals.auth()
 		);
 		if (!parseResult.success) {
-			console.log(JSON.stringify(parseResult.issues, null, 2));
 			error(401, 'Invalid session data');
 		}
 		return parseResult.output;
@@ -137,7 +100,8 @@ const authHandler = SvelteKitAuth(async (event) => {
 							login,
 							id
 						};
-						await upsertUser({ event, provider: 'all', data: profileParseResult.output });
+						const { upsertUser } = createApiWordlettuceClient(event);
+						await upsertUser(profileParseResult.output);
 					}
 				}
 				return token;
@@ -147,4 +111,4 @@ const authHandler = SvelteKitAuth(async (event) => {
 	return authOptions;
 });
 
-export const handle = sequence(authHandler, sessionHandler, gameStateHandler, providerHandler);
+export const handle = sequence(authHandler, sessionHandler, gameStateHandler);

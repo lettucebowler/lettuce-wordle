@@ -7,7 +7,18 @@
 	import { appName } from '$lib/constants/app-constants';
 	import { getGameNum } from '$lib/util/words';
 	import AuthNav from './AuthNav.svelte';
+	import { browser } from '$app/environment';
+	import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query';
+
 	export let data;
+
+	const queryClient = new QueryClient({
+		defaultOptions: {
+			queries: {
+				enabled: browser
+			}
+		}
+	});
 </script>
 
 <svelte:head>
@@ -25,5 +36,7 @@
 	data-sveltekit-preload-data="hover"
 >
 	<AuthNav links={data.nav} user={data?.session?.user} />
-	<slot />
+	<QueryClientProvider client={queryClient}>
+		<slot />
+	</QueryClientProvider>
 </div>

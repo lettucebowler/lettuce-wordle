@@ -23,8 +23,8 @@
 				<div class="text-right">Rank</div>
 			</div>
 			<div class="grid w-full gap-2">
-				{#each scores as score, i (i)}
-					{@const position = scores.filter((s) => s.score > score.score).length + 1}
+				{#each scores.rankings as score, i (i)}
+					{@const position = scores.rankings.filter((s) => s.score > score.score).length + 1}
 					<a href={`/profile/${score.user}`}>
 						<div
 							class="box-border grid w-full grid-cols-[1fr,_50px] gap-2 rounded-xl p-2 text-xl font-medium sm:grid-cols-[1fr,_50px,_50px] sm:gap-8"

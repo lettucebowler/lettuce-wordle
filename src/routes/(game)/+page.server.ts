@@ -2,8 +2,8 @@ import { getCookieFromGameState } from '$lib/util/encodeCookie';
 import { applyKey, applyWord, checkWords } from '$lib/util/gameFunctions';
 import { fail, redirect } from '@sveltejs/kit';
 import { getDailyWord, getGameNum } from '$lib/util/words';
-import { saveGameResults } from '$lib/util/gameresults';
-import type { CompleteGuess, GameResult, Guess, IncompleteGuess } from '$lib/types/gameresult';
+import { createApiWordlettuceClient } from '$lib/client/api-wordlettuce.server.js';
+import type { CompleteGuess, Guess, IncompleteGuess } from '$lib/types/gameresult';
 import { successAnswer } from '$lib/constants/app-constants.js';
 
 export const trailingSlash = 'never';
@@ -25,15 +25,8 @@ export async function load(event) {
 		if (!answers?.length || answers?.at(-1) !== 'xxxxx') {
 			redirect(307, '/');
 		}
-		const gameResult: GameResult = {
-			gameNum: getGameNum(),
-			answers: answers.join('')
-		};
-		await saveGameResults({
-			event,
-			provider: 'all',
-			data: { gameResult, userId: session.user.id }
-		});
+		const { saveGame } = createApiWordlettuceClient(event);
+		await saveGame({ userId: session.user.id, gameNum: getGameNum(), answers: answers.join('') });
 		redirect(307, '/');
 	}
 
@@ -101,18 +94,11 @@ export const actions: import('./$types').Actions = {
 		const session = await event.locals.getWordLettuceSession();
 
 		if (session && updatedAnswers?.at(-1) === 'xxxxx') {
-			const gameNum = getGameNum();
-			const gameResult: GameResult = {
-				gameNum,
-				answers: updatedAnswers?.join('') || ''
-			};
-			await saveGameResults({
-				event,
-				provider: 'all',
-				data: {
-					gameResult,
-					userId: session.user.id
-				}
+			const { saveGame } = createApiWordlettuceClient(event);
+			await saveGame({
+				userId: session.user.id,
+				gameNum: getGameNum(),
+				answers: updatedAnswers.join('')
 			});
 		}
 		event.cookies.set('wordLettuce', getCookieFromGameState(updatedGuesses), {

@@ -1,39 +1,22 @@
-import {
-	safeParse,
-	picklist,
-	number,
-	object,
-	coerce,
-	minValue,
-	optional,
-	integer,
-	string
-} from 'valibot';
-import { DEFAULT_DB_PROVIDER } from '$env/static/private';
+import { safeParse, number, object, coerce, minValue, optional, integer, string } from 'valibot';
+import { createApiWordlettuceClient } from '$lib/client/api-wordlettuce.server.js';
 const getGameResultsRequestSchema = object({
 	offset: optional(coerce(number([integer(), minValue(0)]), Number), 0),
 	count: optional(coerce(number([integer(), minValue(0)]), Number), 0),
-	dbProvider: optional(picklist(['d1', DEFAULT_DB_PROVIDER]), DEFAULT_DB_PROVIDER),
 	user: string()
 });
 
 import { error, json } from '@sveltejs/kit';
-import { getGameResults, type Provider } from '$lib/util/gameresults';
 export async function GET(event) {
-	const result = safeParse(
+	const requestParseResult = safeParse(
 		getGameResultsRequestSchema,
 		Object.fromEntries(event.url.searchParams.entries())
 	);
-	if (!result.success) {
+	if (!requestParseResult.success) {
 		error(400, 'Bad request');
 	}
-	const data = result.output;
-	const gameResults = await getGameResults({
-		event,
-		provider: (data.dbProvider as Provider) ?? (DEFAULT_DB_PROVIDER as Provider),
-		data
-	});
-	return json({
-		...gameResults
-	});
+	const { user, count, offset } = requestParseResult.output;
+	const { getGames } = createApiWordlettuceClient(event);
+	const gameResults = await getGames({ user, count, offset });
+	return json(gameResults);
 }
