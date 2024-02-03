@@ -23,9 +23,6 @@ devDependencies:
   '@sveltejs/vite-plugin-svelte':
     specifier: ^3.0.2
     version: 3.0.2(svelte@4.2.9)(vite@5.0.12)
-  '@tanstack/svelte-query':
-    specifier: ^5.18.0
-    version: 5.18.0(svelte@4.2.9)
   '@types/cookie':
     specifier: ^0.6.0
     version: 0.6.0
@@ -964,19 +961,6 @@ packages:
       vitefu: 0.2.5(vite@5.0.12)
     transitivePeerDependencies:
       - supports-color
-    dev: true
-
-  /@tanstack/query-core@5.18.0:
-    resolution: {integrity: sha512-8c6nxeAnGHxIDZIyDmHdmgFt4D+LprAQaJmjsnM4szcIjsWOyFlzxdqQUuQ/XuQRvUgqYaqlJTtDADlSS7pTPQ==}
-    dev: true
-
-  /@tanstack/svelte-query@5.18.0(svelte@4.2.9):
-    resolution: {integrity: sha512-XDgJaGwSOD8gCD2rATSm16N2UfiztDA8aLsQ3mtj/isBEW4DG5DpXzlxYKc2WuGtQVYFELoPIh1wqIt6wHbSbw==}
-    peerDependencies:
-      svelte: ^3.54.0 || ^4.0.0 || ^5.0.0-next.0
-    dependencies:
-      '@tanstack/query-core': 5.18.0
-      svelte: 4.2.9
     dev: true
 
   /@types/cookie@0.6.0:
