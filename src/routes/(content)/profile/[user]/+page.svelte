@@ -2,43 +2,31 @@
 	import { infiniteScrollAction } from './actions.js';
 	import LettuceAvatar from '$lib/components/LettuceAvatar.svelte';
 	import { fetcher } from 'itty-fetcher';
-	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
+	import type { GameResult } from '$lib/types/gameresult.js';
 
 	export let data;
 
+	let items = data.results;
 	let fetchMore = data.more;
-	async function getNextBatch() {
-		if (!fetchMore) {
-			return;
-		}
-		const searchParams = new URLSearchParams({
-			count: '30',
-			offset: `${data.results.length + Number($page.url.searchParams.get('offset') || 0)}`,
-			user: data.user
-		});
-		if ($page.url.searchParams.get('dbProvider')) {
-			searchParams.set('dbProvider', $page.url.searchParams.get('dbProvider') || '');
-		}
-		const oldLength = data.results.length;
-		const fetchResult = (await fetcher().get(`/api/v1/game-results`, searchParams)) as {
-			totalCount: number;
-			results: { answers: string; gameNum: number }[];
-		};
-		if (fetchResult?.results) {
-			data.results = data.results.concat(fetchResult.results);
-		}
-		const newLength = data.results.length;
-		if (newLength - oldLength < 30) {
+
+	async function getNextPage() {
+		const newItems = await fetcher({ base: window.location.origin }).get<{
+			results: GameResult[];
+			more: boolean;
+		}>('/api/v1/game-results', { user: data.user, page: data.page + items.length / 30 });
+		if (!newItems.more) {
 			fetchMore = false;
 		}
+		items = [...items, ...newItems.results];
 	}
 </script>
 
 <svelte:body
 	use:infiniteScrollAction={{
 		distance: 100,
-		cb: getNextBatch,
+		cb: getNextPage,
+		delay: 100,
 		immediate: false,
 		disabled: !fetchMore
 	}}
@@ -58,7 +46,7 @@
 	<h1 class="text-center text-3xl font-bold text-snow-300">Play History</h1>
 
 	<div class="grid w-full grid-cols-2 gap-2 sm:grid-cols-3">
-		{#each data.results.sort((a, b) => b.gameNum - a.gameNum) as gameResult (gameResult.gameNum)}
+		{#each items as gameResult (gameResult.gameNum)}
 			{@const answers = gameResult.answers}
 			<div
 				class="flex w-full flex-[1_1_200px] flex-col gap-2 rounded-2xl border-4 border-solid border-charade-700 p-2"
@@ -84,50 +72,50 @@
 					{/each}
 				</div>
 			</div>
+		{:else}
+			<p class="rounded-xl p-2 text-center text-center text-xl text-snow-300 col-span-3">
+				No wins in the last seven days...
+			</p>
 		{/each}
 	</div>
-	{#if !data.results.length}
-		<p class="rounded-xl p-2 text-center text-center text-xl text-snow-300">
-			No wins in the last seven days...
-		</p>
-	{/if}
-	{#if browser}
-		{#if fetchMore}
-			<div class="flex flex-col items-center gap-2">
-				<svg
-					class="h-8 animate-spin text-snow-100"
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					viewBox="0 0 24 24"
-				>
-					<circle
-						class="text-charade-700"
-						cx="12"
-						cy="12"
-						r="10"
-						stroke="currentColor"
-						stroke-width="4"
-					></circle>
-					<path
-						fill="currentColor"
-						d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-					></path>
-				</svg>
-				<p class="text-center text-xl font-medium text-snow-100">loading...</p>
-			</div>
-		{/if}
-	{:else}
+	{#if browser && fetchMore}
+		<div class="flex flex-col items-center gap-2">
+			<svg
+				class="h-8 animate-spin text-snow-100"
+				xmlns="http://www.w3.org/2000/svg"
+				fill="none"
+				viewBox="0 0 24 24"
+			>
+				<circle
+					class="text-charade-700"
+					cx="12"
+					cy="12"
+					r="10"
+					stroke="currentColor"
+					stroke-width="4"
+				></circle>
+				<path
+					fill="currentColor"
+					d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+				></path>
+			</svg>
+			<p class="text-center text-xl font-medium text-snow-100">loading...</p>
+		</div>
+	{:else if !browser && (data.page > 1 || data.more)}
 		<nav class="mx-4 flex justify-between gap-2">
-			{#each [{ offset: data.offsets.previous, title: 'Previous', enabled: data.offsets.current - 30 >= 0 }, { offset: data.offsets.next, title: 'Next', enabled: data.more }] as offset}
-				<a
-					href="?offset={offset.offset}"
-					title={offset.title}
-					class="text-lg font-medium text-snow-300"
-					class:invisible={!offset.enabled}>{offset.title}</a
+			{#if data.page > 1}
+				<a href="?page={data.page - 1}" title="Previous" class="text-lg font-medium text-snow-300"
+					>Previous</a
 				>
-			{/each}
+			{/if}
+			{#if data.more}
+				<a
+					href="?page={data.page + 1}"
+					title="Next"
+					class="ml-auto text-lg font-medium text-snow-300">Next</a
+				>
+			{/if}
 		</nav>
 	{/if}
-
 	<div class="h-5" />
 </main>

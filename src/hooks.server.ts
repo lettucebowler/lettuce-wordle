@@ -111,4 +111,8 @@ const authHandler = SvelteKitAuth(async (event) => {
 	return authOptions;
 });
 
-export const handle = sequence(authHandler, sessionHandler, gameStateHandler);
+const fetchHandler: Handle = ({ event, resolve }) => {
+	return resolve(event, { filterSerializedResponseHeaders: (name) => name === 'content-type' });
+};
+
+export const handle = sequence(authHandler, sessionHandler, gameStateHandler, fetchHandler);
