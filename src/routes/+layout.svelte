@@ -3,22 +3,13 @@
 	import bigFavicon from '$lib/assets/favicon-32x32.png';
 	import appleTouchIcon from '$lib/assets/apple-touch-icon.png';
 	import safariPinnedTabIcon from '$lib/assets/safari-pinned-tab.svg';
-	import '$lib/assets/app.css';
 	import { appName } from '$lib/constants/app-constants';
 	import { getGameNum } from '$lib/util/words';
 	import AuthNav from './AuthNav.svelte';
-	import { browser } from '$app/environment';
-	import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query';
+
+	import '$lib/assets/app.css';
 
 	export let data;
-
-	const queryClient = new QueryClient({
-		defaultOptions: {
-			queries: {
-				enabled: browser
-			}
-		}
-	});
 </script>
 
 <svelte:head>
@@ -35,8 +26,6 @@
 	class="mx-auto flex w-full max-w-screen-md flex-auto flex-col p-1"
 	data-sveltekit-preload-data="hover"
 >
-	<AuthNav links={data.nav} user={data?.session?.user} />
-	<QueryClientProvider client={queryClient}>
-		<slot />
-	</QueryClientProvider>
+	<AuthNav links={data.nav} user={data.session?.user} />
+	<slot />
 </div>

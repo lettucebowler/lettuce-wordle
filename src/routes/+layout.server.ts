@@ -21,9 +21,10 @@ export async function load(event) {
 			prefetch: true
 		}
 	];
+	const auth = await event.locals.auth();
 	return {
 		nav: links,
-		session: await event.locals.getWordLettuceSession()
+		session: auth
 	};
 }
 

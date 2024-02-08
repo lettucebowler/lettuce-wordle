@@ -11,24 +11,24 @@ export const trailingSlash = 'never';
 export async function load(event) {
 	const gameState = event.locals.getGameState();
 	const answers = checkWords(gameState, getDailyWord());
-	const session = await event.locals.getWordLettuceSession();
+	const session = await event.locals.auth();
 	const query = new URL(event.request.url).searchParams;
 	const doSaveGame = query.get('saveGame') === 'true';
 
-	if (doSaveGame) {
-		if (!session) {
-			redirect(307, '/');
-		}
-		if (!gameState?.length) {
-			redirect(307, '/');
-		}
-		if (!answers?.length || answers?.at(-1) !== 'xxxxx') {
-			redirect(307, '/');
-		}
-		const { saveGame } = createApiWordlettuceClient(event);
-		await saveGame({ userId: session.user.id, gameNum: getGameNum(), answers: answers.join('') });
-		redirect(307, '/');
-	}
+	// if (doSaveGame) {
+	// 	if (!session?.user) {
+	// 		redirect(307, '/');
+	// 	}
+	// 	if (!gameState?.length) {
+	// 		redirect(307, '/');
+	// 	}
+	// 	if (!answers?.length || answers?.at(-1) !== 'xxxxx') {
+	// 		redirect(307, '/');
+	// 	}
+	// 	const { saveGame } = createApiWordlettuceClient(event);
+	// 	await saveGame({ userId: session.user.githubId, gameNum: getGameNum(), answers: answers.join('') });
+	// 	redirect(307, '/');
+	// }
 
 	event.cookies.set('wordLettuce', getCookieFromGameState(gameState), {
 		httpOnly: false,
@@ -91,16 +91,16 @@ export const actions: import('./$types').Actions = {
 		if (metadata.invalid) {
 			return fail(400, metadata);
 		}
-		const session = await event.locals.getWordLettuceSession();
+		const session = await event.locals.auth();
 
-		if (session && updatedAnswers?.at(-1) === 'xxxxx') {
-			const { saveGame } = createApiWordlettuceClient(event);
-			await saveGame({
-				userId: session.user.id,
-				gameNum: getGameNum(),
-				answers: updatedAnswers.join('')
-			});
-		}
+		// if (session?.user && updatedAnswers?.at(-1) === 'xxxxx') {
+		// 	const { saveGame } = createApiWordlettuceClient(event);
+		// 	await saveGame({
+		// 		userId: session.user.githubId,
+		// 		gameNum: getGameNum(),
+		// 		answers: updatedAnswers.join('')
+		// 	});
+		// }
 		event.cookies.set('wordLettuce', getCookieFromGameState(updatedGuesses), {
 			httpOnly: false,
 			path: '/',

@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { afterNavigate } from '$app/navigation';
-	import type { UserProfile } from '$lib/types/auth';
 	import AuthForm from '$lib/components/AuthForm.svelte';
 	import LettuceAvatar from '$lib/components/LettuceAvatar.svelte';
 	import NavLink from './NavLink.svelte';
 
 	import type { NavLinkProps } from '$lib/types/navigation';
+	import type { User } from '@auth/sveltekit';
 
-	export let user: UserProfile | null | undefined;
+	export let user: User | undefined;
 	export let links: NavLinkProps[] = [];
 
 	let dropdownVisible = false;

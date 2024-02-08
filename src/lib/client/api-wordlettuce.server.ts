@@ -123,7 +123,6 @@ export function createApiWordlettuceClient(event: RequestEvent) {
 			throw error(500, result.error);
 		}
 		const parseResult = safeParse(saveGameResultSchema, result.data);
-		console.log(JSON.stringify(parseResult));
 		if (!parseResult.success) {
 			throw error(500, 'Invalid data from api-wordlettuce.');
 		}

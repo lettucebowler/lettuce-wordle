@@ -1,14 +1,12 @@
 <script lang="ts">
 	export let mode: 'login' | 'logout' = 'login';
-	export let callback = '/?saveGame=true';
+	export let redirectTo = '/?saveGame=true';
+	export let provider: string = 'github';
 </script>
 
-<form
-	method="POST"
-	action={mode === 'login' ? '/auth/signin/github' : '/auth/signout'}
-	class="h-full"
->
-	<input type="hidden" name="callbackUrl" value={mode === 'login' ? callback : ''} />
+<form method="POST" action={mode === 'login' ? '/signin' : '/signout'} class="h-full">
+	<input type="hidden" name="redirectTo" value={mode === 'login' ? redirectTo : ''} />
+	<input type="hidden" name="providerId" value={provider} />
 	<slot>
 		<button
 			class="grid h-full items-center rounded-xl px-6 py-2 text-center font-medium capitalize text-snow-100 hover:underline"

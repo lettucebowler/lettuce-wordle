@@ -27,7 +27,7 @@
 	const delayScale = 0.03;
 	const duration = 0.15;
 
-	let modalTimer: number;
+	let modalTimer: NodeJS.Timeout;
 	const openModal = ({
 		answers = [],
 		guesses = 0,
@@ -124,21 +124,24 @@
 			};
 			return;
 		}
-		const id = toastLoading('beep boop...');
+		let id: string;
+		if (data.session?.user) {
+			id = toastLoading('beep boop...');
+		}
 		return async ({ result }) => {
 			applyAction(result);
-			if (data.session?.user.login) {
+			if (data.session?.user?.login) {
 				if (result.type === 'success') {
 					toastSuccess('Game results saved', { id });
 				} else {
 					toastError('Failed to save game results', { id });
 				}
-				openModal({
-					answers: data.answers,
-					guesses: data.state.length,
-					user: data.session?.user.login
-				});
 			}
+			openModal({
+				answers: data.answers,
+				guesses: data.state.length,
+				user: data.session?.user?.login
+			});
 		};
 	};
 
@@ -147,7 +150,7 @@
 			openModal({
 				answers: data.answers,
 				guesses: data.state.length,
-				user: data.session?.user.login
+				user: data.session?.user?.login
 			});
 		}
 	});
