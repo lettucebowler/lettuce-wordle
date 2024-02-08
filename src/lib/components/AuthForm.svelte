@@ -1,11 +1,9 @@
 <script lang="ts">
 	export let mode: 'login' | 'logout' = 'login';
-	export let redirectTo = '/?saveGame=true';
 	export let provider: string = 'github';
 </script>
 
 <form method="POST" action={mode === 'login' ? '/signin' : '/signout'} class="h-full">
-	<input type="hidden" name="redirectTo" value={mode === 'login' ? redirectTo : ''} />
 	<input type="hidden" name="providerId" value={provider} />
 	<slot>
 		<button
