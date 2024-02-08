@@ -58,13 +58,18 @@ export const { handle, signIn, signOut } = SvelteKitAuth(async (event) => {
 						};
 						const { upsertUser, saveGame } = createApiWordlettuceClient(event);
 						await upsertUser(profileParseResult.output);
-						const gameState = event.locals.getGameState();
-						const answers = checkWords(gameState, getDailyWord());
-						await saveGame({
-							userId: profileParseResult.output.id,
-							gameNum: getGameNum(),
-							answers: answers.join('')
-						});
+						
+						try {
+							const gameState = event.locals.getGameState();
+							const answers = checkWords(gameState, getDailyWord());
+							await saveGame({
+								userId: profileParseResult.output.id,
+								gameNum: getGameNum(),
+								answers: answers.join('')
+							});
+						} catch (e) {
+							console.log(e);
+						}
 					}
 				}
 				return token;
