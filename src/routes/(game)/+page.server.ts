@@ -1,6 +1,6 @@
 import { getCookieFromGameState } from '$lib/util/encodeCookie';
 import { applyKey, applyWord, checkWords } from '$lib/util/gameFunctions';
-import { fail, redirect } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
 import { getDailyWord, getGameNum } from '$lib/util/words';
 import { createApiWordlettuceClient } from '$lib/client/api-wordlettuce.server.js';
 import type { CompleteGuess, Guess, IncompleteGuess } from '$lib/types/gameresult';
@@ -11,24 +11,6 @@ export const trailingSlash = 'never';
 export async function load(event) {
 	const gameState = event.locals.getGameState();
 	const answers = checkWords(gameState, getDailyWord());
-	const session = await event.locals.auth();
-	const query = new URL(event.request.url).searchParams;
-	const doSaveGame = query.get('saveGame') === 'true';
-
-	// if (doSaveGame) {
-	// 	if (!session?.user) {
-	// 		redirect(307, '/');
-	// 	}
-	// 	if (!gameState?.length) {
-	// 		redirect(307, '/');
-	// 	}
-	// 	if (!answers?.length || answers?.at(-1) !== 'xxxxx') {
-	// 		redirect(307, '/');
-	// 	}
-	// 	const { saveGame } = createApiWordlettuceClient(event);
-	// 	await saveGame({ userId: session.user.githubId, gameNum: getGameNum(), answers: answers.join('') });
-	// 	redirect(307, '/');
-	// }
 
 	event.cookies.set('wordLettuce', getCookieFromGameState(gameState), {
 		httpOnly: false,
