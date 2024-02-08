@@ -93,14 +93,14 @@ export const actions: import('./$types').Actions = {
 		}
 		const session = await event.locals.auth();
 
-		// if (session?.user && updatedAnswers?.at(-1) === 'xxxxx') {
-		// 	const { saveGame } = createApiWordlettuceClient(event);
-		// 	await saveGame({
-		// 		userId: session.user.githubId,
-		// 		gameNum: getGameNum(),
-		// 		answers: updatedAnswers.join('')
-		// 	});
-		// }
+		if (session?.user && updatedAnswers?.at(-1) === 'xxxxx') {
+			const { saveGame } = createApiWordlettuceClient(event);
+			await saveGame({
+				userId: session.user.githubId,
+				gameNum: getGameNum(),
+				answers: updatedAnswers.join('')
+			});
+		}
 		event.cookies.set('wordLettuce', getCookieFromGameState(updatedGuesses), {
 			httpOnly: false,
 			path: '/',
