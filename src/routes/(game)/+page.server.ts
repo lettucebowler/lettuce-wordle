@@ -76,6 +76,7 @@ export const actions: import('./$types').Actions = {
 		const session = await event.locals.auth();
 
 		if (session?.user && updatedAnswers?.at(-1) === 'xxxxx') {
+			console.log('save game');
 			const { saveGame } = createApiWordlettuceClient(event);
 			const result = await saveGame({
 				userId: session.user.githubId,
