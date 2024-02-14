@@ -37,8 +37,13 @@
 		guesses: number;
 		user?: string;
 	}) => {
+		console.log(modal);
 		if (modal) {
-			modalTimer = setTimeout(() => modal.open({ answers, guesses, user }), 500);
+			modalTimer = setTimeout(() => {
+				if (modal?.open) {
+					modal.open({ answers, guesses, user })
+				}
+			}, 500);
 		}
 	};
 
