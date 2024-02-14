@@ -40,7 +40,7 @@
 		if (modal) {
 			modalTimer = setTimeout(() => {
 				if (modal?.open) {
-					modal.open({ answers, guesses, user })
+					modal.open({ answers, guesses, user });
 				}
 			}, 500);
 		}
