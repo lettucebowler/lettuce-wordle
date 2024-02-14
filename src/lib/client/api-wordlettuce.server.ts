@@ -116,18 +116,14 @@ export function createApiWordlettuceClient(event: RequestEvent) {
 		gameNum: number;
 		answers: string;
 	}) {
-		console.log('inner save game');
 		const result = await toResult(
 			wordlettuce.post('/v1/game-results', { userId, gameNum, answers })
 		);
-		console.log('save result', result);
 		if (result.status === 'ERROR') {
-			console.log('error', result.error);
 			throw error(500, result.error);
 		}
 		const parseResult = safeParse(saveGameResultSchema, result.data);
 		if (!parseResult.success) {
-			console.log('invalid data from api-wordlettuce');
 			throw error(500, 'Invalid data from api-wordlettuce.');
 		}
 		return parseResult.output.data;

@@ -76,14 +76,12 @@ export const actions: import('./$types').Actions = {
 		const session = await event.locals.auth();
 
 		if (session?.user && updatedAnswers?.at(-1) === 'xxxxx') {
-			console.log('save game');
 			const { saveGame } = createApiWordlettuceClient(event);
-			const result = await saveGame({
+			await saveGame({
 				userId: session.user.githubId,
 				gameNum: getGameNum(),
 				answers: updatedAnswers.join('')
 			});
-			console.log('result', result);
 		}
 		event.cookies.set('wordLettuce', getCookieFromGameState(updatedGuesses), {
 			httpOnly: false,
