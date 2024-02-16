@@ -12982,24 +12982,18 @@ export const allowedGuesses = [
 	'zymic'
 ];
 
-const mulberry32 = (a: number) => {
-	return () => {
-		let t = (a += 0x6d2b79f5);
-		t = Math.imul(t ^ (t >>> 15), t | 1);
-		t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-		return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-	};
-};
+function mulberry(a: number) {
+	let t = (a += 0x6d2b79f5);
+	t = Math.imul(t ^ (t >>> 15), t | 1);
+	t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+	return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+}
 
-const getWord = (random: () => number) => {
-	return answerList[Math.floor(random() * answerList.length)];
-};
-
-export const getDailyWord = () => {
+export function getDailyWord() {
 	const gameNum = getGameNum();
-	const random = mulberry32(gameNum);
-	return getWord(random);
-};
+	const wordIndex = mulberry(gameNum) * answerList.length;
+	return answerList.at(wordIndex);
+}
 
 import { minLength, string, maxLength, custom, object, boolean } from 'valibot';
 
