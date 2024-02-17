@@ -1,6 +1,9 @@
 <script lang="ts">
-	export let mode: 'login' | 'logout' = 'login';
-	export let provider: string = 'github';
+	type AuthFormProps = {
+		mode: 'login' | 'logout';
+		provider: string;
+	};
+	let { mode, provider = 'github' } = $props<AuthFormProps>();
 </script>
 
 <form method="POST" action={mode === 'login' ? '/signin' : '/signout'} class="h-full">

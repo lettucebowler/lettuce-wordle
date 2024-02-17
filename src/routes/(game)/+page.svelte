@@ -18,16 +18,52 @@
 	import { toastError, toastLoading, toastSuccess } from './toast';
 	import { safeParse, string } from 'valibot';
 
-	export let data;
-	export let form;
+	let { data, form } = $props();
+	let modal = $state<Modal>();
+	let modalTimer = $state<NodeJS.Timeout>();
+	let game = $state({
+		state: data.state,
+		answers: data.answers,
+		success: data.success
+	});
+	let formState = $state(
+		form
+			? {
+					success: form.success,
+					invalid: form.invalid
+				}
+			: null
+	);
 
-	let modal: Modal;
+	$effect(() => {
+		game = {
+			state: data.state,
+			answers: data.answers,
+			success: data.success
+		};
+	});
+
+	$effect(() => {
+		formState = form
+			? {
+					success: form.success,
+					invalid: form.invalid
+				}
+			: null;
+	});
+
+	$effect(() => {
+		if (formState?.invalid) {
+			wordIsInvalid.setTrue();
+			toastError('Invalid word');
+		}
+	});
+
 	const wordIsInvalid = createExpiringBoolean();
 	const submittingWord = createExpiringBoolean();
 	const delayScale = 0.03;
 	const duration = 0.15;
 
-	let modalTimer: NodeJS.Timeout;
 	const openModal = ({
 		answers = [],
 		guesses = 0,
@@ -48,8 +84,7 @@
 
 	const handleKey = (key: string) => {
 		if (key.toLowerCase() !== 'enter') {
-			data.state = applyKey(key, data.state, data.answers);
-			data = data;
+			game.state = applyKey(key, game.state, game.answers);
 		}
 	};
 
@@ -64,7 +99,7 @@
 
 		if (filteredLength < 6) {
 			return i;
-		} else if (data.success) {
+		} else if (game.success) {
 			return filteredLength - 6 + i;
 		} else {
 			return filteredLength - 5 + i;
@@ -72,7 +107,7 @@
 	};
 
 	const enhanceForm: SubmitFunction = async ({ formData, cancel }) => {
-		if ($submittingWord || data.success) {
+		if ($submittingWord || game.success) {
 			cancel();
 			return;
 		}
@@ -86,7 +121,7 @@
 		);
 		if (!guessData.success) {
 			cancel();
-			form = {
+			formState = {
 				success: false,
 				invalid: true
 			};
@@ -97,32 +132,31 @@
 			complete: false
 		};
 		const { metadata, updatedAnswers, updatedGuesses } = applyWord(
-			data.state.filter((guess): guess is CompleteGuess => guess.complete),
+			game.state.filter((guess): guess is CompleteGuess => guess.complete),
 			guess,
-			data.answers
+			game.answers
 		);
 		if (metadata.invalid) {
 			cancel();
-			form = {
+			formState = {
 				success: false,
 				invalid: true
 			};
 			return;
 		}
-		data.state = updatedGuesses;
-		data.answers = updatedAnswers;
-		Cookies.set('wordLettuce', getCookieFromGameState(data.state), {
+		game.state = updatedGuesses;
+		game.answers = updatedAnswers;
+		Cookies.set('wordLettuce', getCookieFromGameState(game.state), {
 			path: '/',
 			httpOnly: false,
 			expires: 1,
 			secure: false
 		});
 
-		data.success = metadata.success;
-		data = data;
+		game.success = metadata.success;
 		if (!metadata.success) {
 			cancel();
-			form = {
+			formState = {
 				success: false,
 				invalid: false
 			};
@@ -142,18 +176,18 @@
 				}
 			}
 			openModal({
-				answers: data.answers,
-				guesses: data.state.length,
+				answers: game.answers,
+				guesses: game.state.length,
 				user: data.session?.user?.login
 			});
 		};
 	};
 
 	onMount(() => {
-		if (data.success) {
+		if (game.success) {
 			openModal({
-				answers: data.answers,
-				guesses: data.state.length,
+				answers: game.answers,
+				guesses: game.state.length,
 				user: data.session?.user?.login
 			});
 		}
@@ -164,13 +198,6 @@
 			clearTimeout(modalTimer);
 		}
 	});
-
-	$: {
-		if (form?.invalid) {
-			wordIsInvalid.setTrue();
-			toastError('Invalid word');
-		}
-	}
 </script>
 
 <div class="flex flex-auto flex-col items-center gap-2">
@@ -184,18 +211,18 @@
 				class="my-auto flex w-full max-w-[min(700px,_55vh)]"
 			>
 				<div class="grid w-full grid-rows-[repeat(6,_1fr)] gap-2">
-					{#each [...Array(6).keys()] as i (getRealIndex(i, data.state, data.answers))}
-						{@const realIndex = getRealIndex(i, data.state, data.answers)}
-						{@const current = realIndex === data.answers.length}
+					{#each [...Array(6).keys()] as i (getRealIndex(i, game.state, game.answers))}
+						{@const realIndex = getRealIndex(i, game.state, game.answers)}
+						{@const current = realIndex === game.answers.length}
 						<div
 							class="grid w-full grid-cols-[repeat(5,_1fr)] gap-2"
 							out:slide={{ duration: duration * 1000 }}
 							animate:flip={{ duration: duration * 1000 }}
 						>
 							{#each [...Array(5).keys()] as j}
-								{@const answer = data.answers?.at(realIndex)?.at(j) ?? ''}
-								{@const letter = data.state[realIndex]?.guess?.at(j) ?? ''}
-								{@const doJump = browser && data.answers.at(realIndex)?.length === 5}
+								{@const answer = game.answers?.at(realIndex)?.at(j) ?? ''}
+								{@const letter = game.state[realIndex]?.guess?.at(j) ?? ''}
+								{@const doJump = browser && game.answers.at(realIndex)?.length === 5}
 								{@const doWiggle = browser && $wordIsInvalid && current}
 								{@const doWiggleOnce = !browser && form?.invalid && current}
 								<div
@@ -231,7 +258,7 @@
 		<div class="flex h-full max-h-[min(20rem,_30vh)] w-full flex-[5_1_auto] flex-col">
 			<Keyboard
 				on:key={(e) => handleKey(e.detail)}
-				answers={getKeyStatuses(data.state, data.answers)}
+				answers={getKeyStatuses(game.state, game.answers)}
 			/>
 		</div>
 	</main>

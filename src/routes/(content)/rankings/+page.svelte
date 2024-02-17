@@ -2,7 +2,7 @@
 	import LettuceIcon from '$lib/components/Icon.svelte';
 	import LettuceAvatar from '$lib/components/LettuceAvatar.svelte';
 	import Spinner from '../Spinner.svelte';
-	export let data;
+	let { data } = $props();
 </script>
 
 <main class="grid gap-8">

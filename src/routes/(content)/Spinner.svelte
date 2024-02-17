@@ -1,5 +1,8 @@
 <script lang="ts">
-	export let message: string = 'just a sec...';
+	type SpinnerProps = {
+		message?: string;
+	};
+	let { message = 'just a sec...' } = $props<SpinnerProps>();
 </script>
 
 <div class="flex flex-col items-center gap-2 text-snow-300">

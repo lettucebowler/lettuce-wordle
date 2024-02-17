@@ -1,7 +1,11 @@
 <script lang="ts">
-	export let icon = '';
-	export let flip = false;
-	export let dark = false;
+	type IconProps = {
+		icon: string;
+		flip: boolean;
+		dark: boolean;
+	};
+
+	let { icon, flip, dark } = $props<IconProps>();
 
 	type Path = {
 		path: string;

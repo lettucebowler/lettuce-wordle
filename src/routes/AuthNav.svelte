@@ -9,18 +9,13 @@
 	import { crossfade } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
 
-	export let user: User | undefined;
-	export let links: NavLinkProps[] = [];
+	type AuthNavProps = {
+		user?: User;
+		links: NavLinkProps[];
+	};
 
-	let dropdownVisible = false;
-
-	$: subnavItems = [
-		{
-			path: user ? `/profile/${user.login}` : '/profile',
-			name: 'Profile',
-			prefetch: true
-		}
-	];
+	let { user, links } = $props<AuthNavProps>();
+	let dropdownVisible = $state(false);
 
 	afterNavigate(() => {
 		if (dropdownVisible) dropdownVisible = false;

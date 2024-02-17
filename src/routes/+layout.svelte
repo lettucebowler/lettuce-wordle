@@ -9,7 +9,7 @@
 
 	import '$lib/assets/app.css';
 
-	export let data;
+	let { data } = $props();
 </script>
 
 <svelte:head>

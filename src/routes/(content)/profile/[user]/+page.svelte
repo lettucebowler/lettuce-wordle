@@ -5,10 +5,17 @@
 	import { browser } from '$app/environment';
 	import type { GameResult } from '$lib/types/gameresult.js';
 
-	export let data;
+	let { data } = $props();
+	let items = $state(data.results);
+	let fetchMore = $state(data.more);
 
-	let items = data.results;
-	let fetchMore = data.more;
+	$effect(() => {
+		items = data.results;
+	});
+
+	$effect(() => {
+		fetchMore = data.more;
+	});
 
 	async function getNextPage() {
 		const newItems = await fetcher({ base: window.location.origin }).get<{
