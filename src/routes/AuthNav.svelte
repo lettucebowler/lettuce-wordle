@@ -2,10 +2,12 @@
 	import { afterNavigate } from '$app/navigation';
 	import AuthForm from '$lib/components/AuthForm.svelte';
 	import LettuceAvatar from '$lib/components/LettuceAvatar.svelte';
-	import NavLink from './NavLink.svelte';
 
 	import type { NavLinkProps } from '$lib/types/navigation';
 	import type { User } from '@auth/sveltekit';
+	import { page } from '$app/stores';
+	import { crossfade } from 'svelte/transition';
+	import { cubicOut } from 'svelte/easing';
 
 	export let user: User | undefined;
 	export let links: NavLinkProps[] = [];
@@ -23,6 +25,11 @@
 	afterNavigate(() => {
 		if (dropdownVisible) dropdownVisible = false;
 	});
+
+	const [send, recieve] = crossfade({
+		duration: 250,
+		easing: cubicOut
+	});
 </script>
 
 <div class="w-full">
@@ -34,7 +41,29 @@
 			<div class="flex">
 				<div class="hidden gap-4 sm:flex">
 					{#each links.filter((link) => link.enabled) as link}
-						<NavLink {link} />
+						{@const current = $page.url.pathname === link.path}
+						<a
+							class="grid cursor-pointer items-center rounded-xl border-transparent text-3xl font-medium text-snow-300 hover:underline sm:h-14"
+							class:ml-auto={link.margin === 'left'}
+							class:text-snow-100={current}
+							class:after:bg-charade-700={current}
+							aria-current={current}
+							href={link.path}
+						>
+							<div class="col-[1] row-[1] grid hidden w-full sm:block sm:h-14">
+								{#if current}
+									<div
+										class="grid h-full rounded-xl duration-0"
+										class:bg-charade-700={current}
+										in:recieve={{ key: 'current-item' }}
+										out:send={{ key: 'current-item' }}
+									/>
+								{/if}
+							</div>
+							<span class="z-10 col-[1] row-[1] my-auto grid items-center sm:h-14 sm:px-6 sm:py-2"
+								>{link.name}</span
+							>
+						</a>
 					{/each}
 				</div>
 				<div class="ml-auto h-14">
@@ -100,7 +129,16 @@
 				>
 					<div class="space-y-4 p-4">
 						{#each links.filter((link) => link.enabled) as link}
-							<NavLink {link} enableTransition={false} />
+							{@const current = $page.url.pathname === link.path}
+							<a
+								class="grid cursor-pointer items-center rounded-xl border-transparent text-3xl font-medium text-snow-300 hover:underline sm:h-14"
+								class:ml-auto={link.margin === 'left'}
+								class:text-snow-100={current}
+								aria-current={current}
+								href={link.path}
+							>
+								<span class="grid items-center sm:h-14 sm:px-6 sm:py-2">{link.name}</span>
+							</a>
 						{/each}
 					</div>
 					<div class="flex flex-col gap-2 border-charade-700 p-4">
@@ -111,13 +149,13 @@
 								>
 								<span class="text-xl font-medium text-snow-300">{user.login}</span>
 							</div>
-							{#each subnavItems as subnavItem}
+							{#if user}
 								<a
-									href={subnavItem.path}
+									href="/profile/{user.login}"
 									class="cursor-pointer p-0 text-2xl font-medium text-snow-300 hover:underline"
-									>{subnavItem.name}</a
+									>Profile</a
 								>
-							{/each}
+							{/if}
 						{/if}
 						<AuthForm mode={user?.login ? 'logout' : 'login'}
 							><button class="text-2xl font-medium text-snow-300 hover:underline"
@@ -140,15 +178,15 @@
 		<div class="grid grid-rows-[0fr] transition transition-all peer-checked:grid-rows-[1fr]">
 			<nav id="subnav-content" class="overflow-hidden">
 				<div class="mx-4 mt-2 flex justify-evenly gap-4 rounded-xl bg-charade-700 p-1 font-medium">
-					{#each subnavItems as subnavItem}
+					{#if user}
 						<a
-							href={subnavItem.path}
+							href="/profile/{user.login}"
 							class="flex cursor-pointer rounded-lg border-transparent p-0 text-lg font-medium text-snow-100 hover:underline"
 							><span class="grid h-full w-full place-items-center px-6 py-2 text-center"
-								>{subnavItem.name}</span
+								>Profile</span
 							></a
 						>
-					{/each}
+					{/if}
 					<AuthForm mode="logout" />
 				</div>
 			</nav>

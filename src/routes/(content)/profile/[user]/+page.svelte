@@ -48,29 +48,27 @@
 	<div class="grid w-full grid-cols-2 gap-2 sm:grid-cols-3">
 		{#each items as gameResult (gameResult.gameNum)}
 			{@const answers = gameResult.answers}
-			<div
-				class="flex w-full flex-[1_1_200px] flex-col gap-2 rounded-2xl border-4 border-solid border-charade-700 p-2"
-			>
-				<h2 class="flex justify-between text-center text-xl font-medium text-snow-300">
+			<div class="grid grid-cols-5 gap-1 rounded-2xl border-4 border-solid border-charade-700 p-2">
+				<h2
+					class="col-span-5 mb-1 flex justify-between text-center text-xl font-medium text-snow-300"
+				>
 					<span class="text-left">#{gameResult.gameNum}</span><span class="text-right"
 						>{1 + 6 - gameResult.answers.length / 5} pts</span
 					>
 				</h2>
-				<div class="grid grid-cols-5 gap-1">
-					{#each [...Array(30).keys()] as i}
-						{@const answer = answers.charAt(i) || '_'}
-						<div
-							class="box-border grid aspect-square w-full grid-rows-3 rounded-lg text-center text-2xl font-bold text-snow-300 sm:text-3xl"
-							class:border-charade-700={answer === '_'}
-							class:border-2={answer === '_'}
-							class:border-solid={answer === '_'}
-							class:bg-charade-900={answer === '_'}
-							class:bg-aurora-400={answer === 'x'}
-							class:bg-aurora-300={answer === 'c'}
-							class:bg-charade-700={answer === 'i'}
-						/>
-					{/each}
-				</div>
+				{#each [...Array(30).keys()] as i}
+					{@const answer = answers.charAt(i) || '_'}
+					<div
+						class="box-border grid aspect-square w-full grid-rows-3 rounded-lg text-center text-2xl font-bold text-snow-300 sm:text-3xl"
+						class:border-charade-700={answer === '_'}
+						class:border-2={answer === '_'}
+						class:border-solid={answer === '_'}
+						class:bg-charade-900={answer === '_'}
+						class:bg-aurora-400={answer === 'x'}
+						class:bg-aurora-300={answer === 'c'}
+						class:bg-charade-700={answer === 'i'}
+					/>
+				{/each}
 			</div>
 		{:else}
 			<p class="rounded-xl p-2 text-center text-center text-xl text-snow-300 col-span-3">
