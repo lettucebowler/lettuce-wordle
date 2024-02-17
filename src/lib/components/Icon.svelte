@@ -1,11 +1,11 @@
 <script lang="ts">
 	type IconProps = {
 		icon: string;
-		flip: boolean;
-		dark: boolean;
+		flip?: boolean;
+		dark?: boolean;
 	};
 
-	let { icon, flip, dark } = $props<IconProps>();
+	let { icon, flip = false, dark = false } = $props<IconProps>();
 
 	type Path = {
 		path: string;

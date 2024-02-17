@@ -1,7 +1,7 @@
 <script lang="ts">
 	type AuthFormProps = {
 		mode: 'login' | 'logout';
-		provider: string;
+		provider?: string;
 	};
 	let { mode, provider = 'github' } = $props<AuthFormProps>();
 </script>
