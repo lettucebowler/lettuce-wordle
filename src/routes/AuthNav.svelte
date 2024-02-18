@@ -6,8 +6,6 @@
 	import type { NavLinkProps } from '$lib/types/navigation';
 	import type { User } from '@auth/sveltekit';
 	import { page } from '$app/stores';
-	import { crossfade } from 'svelte/transition';
-	import { cubicOut } from 'svelte/easing';
 
 	type AuthNavProps = {
 		user?: User;
@@ -19,11 +17,6 @@
 
 	afterNavigate(() => {
 		if (dropdownVisible) dropdownVisible = false;
-	});
-
-	const [send, recieve] = crossfade({
-		duration: 250,
-		easing: cubicOut
 	});
 </script>
 
@@ -47,12 +40,7 @@
 						>
 							<div class="col-[1] row-[1] grid hidden w-full sm:block sm:h-14">
 								{#if current}
-									<div
-										class="grid h-full rounded-xl duration-0"
-										class:bg-charade-700={current}
-										in:recieve={{ key: 'current-item' }}
-										out:send={{ key: 'current-item' }}
-									/>
+									<div class="grid h-full rounded-xl duration-0" class:bg-charade-700={current} />
 								{/if}
 							</div>
 							<span class="z-10 col-[1] row-[1] my-auto grid items-center sm:h-14 sm:px-6 sm:py-2"
