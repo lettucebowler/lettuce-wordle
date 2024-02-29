@@ -84,7 +84,11 @@
 
 	const handleKey = (key: string) => {
 		if (key.toLowerCase() !== 'enter') {
-			game.state = applyKey(key, game.state, game.answers);
+			const newState = applyKey(key, game.state, game.answers);
+			game = {
+				...game,
+				state: newState
+			};
 		}
 	};
 
