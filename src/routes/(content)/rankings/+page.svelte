@@ -9,7 +9,7 @@
 	<h1 class="text-center text-3xl font-bold text-snow-300">LeaderBoard</h1>
 	<p class="box-border px-4 text-left text-lg text-snow-300">
 		Each successful game earns 1 point, plus a bonus point for the number of guesses under 6 it took
-		to guess the word. 6 guesses is 1 point. 5 guesses is 1 points plus 1 bonus point, etc.
+		to guess the word. 6 guesses is 1 point. 5 guesses is 2 points, etc.
 	</p>
 	{#await data.leaderboard.scores}
 		<Spinner />
