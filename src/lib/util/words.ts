@@ -12992,7 +12992,7 @@ function mulberry(a: number) {
 export function getDailyWord() {
 	const gameNum = getGameNum();
 	const wordIndex = mulberry(gameNum) * answerList.length;
-	return answerList.at(wordIndex);
+	return answerList.at(wordIndex) ?? 'slate';
 }
 
 import { minLength, string, maxLength, custom, object, boolean } from 'valibot';

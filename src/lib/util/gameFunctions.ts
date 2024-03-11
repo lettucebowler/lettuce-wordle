@@ -169,7 +169,7 @@ export const applyWord = (
 			updatedAnswers: answers
 		};
 	}
-	answers.push(checkWord(guessParseResult.data.guess.split(''), answer));
+	answers.push(checkWord(guessParseResult.output.guess.split(''), answer));
 	return {
 		updatedGuesses: [...guesses, { guess: guessParseResult.output.guess, complete: true }],
 		metadata: {
