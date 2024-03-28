@@ -234,6 +234,6 @@
 			var(--tw-ring-offset-shadow, 0 0 #0000),
 			var(--tw-ring-shadow, 0 0 #0000),
 			inset 0 4px 4px 0 rgb(0 0 0 / 0.2),
-			inset 0 -4px 0 0 theme(colors.charade.800);
+			inset 0 -3px 0 0 theme('colors.charade.800');
 	}
 </style>
