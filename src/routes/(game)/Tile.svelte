@@ -21,8 +21,9 @@
 	class={cx(
 		'box-border grid aspect-square items-center rounded-xl text-center text-2xl font-bold transition-all sm:text-3xl',
 		answer && 'offset border-t-4',
-		!answer &&
-			'inset border-b-4 border-t-0 border-b-charade-800 bg-charade-950 text-charade-100 shadow-inner',
+		// !answer &&
+		// 	'inset border-b-4 border-t-0 border-b-charade-800 bg-charade-950 text-charade-100 shadow-inner',
+		!answer && 'text-charade-100',
 		answer === 'x' && 'etched-x border-t-swamp-green-400 bg-swamp-green-500 text-swamp-green-800',
 		answer === 'i' && 'etched-i border-t-charade-600 bg-charade-700 text-charade-100',
 		answer === 'c' && 'etched-c border-t-putty-400 bg-putty-500 text-putty-800',
@@ -50,13 +51,6 @@
 
 	.etched-i {
 		text-shadow: 0 2px theme(colors.charade.600);
-	}
-
-	.inset {
-		box-shadow:
-			var(--tw-ring-offset-shadow, 0 0 #0000),
-			var(--tw-ring-shadow, 0 0 #0000),
-			inset 0 4px 4px 0 rgb(0 0 0 / 0.2);
 	}
 
 	.offset {

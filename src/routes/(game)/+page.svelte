@@ -199,16 +199,18 @@
 								{@const doJump = browser && data.answers.at(realIndex)?.length === 5}
 								{@const doWiggle = browser && $wordIsInvalid && current}
 								{@const doWiggleOnce = !browser && form?.invalid && current}
-								<Tile
-									{letter}
-									{answer}
-									{doJump}
-									{doWiggle}
-									{doWiggleOnce}
-									wordIsInvalid={$wordIsInvalid}
-									column={j}
-									{current}
-								/>
+								<div class="inset rounded-xl bg-charade-950">
+									<Tile
+										{letter}
+										{answer}
+										{doJump}
+										{doWiggle}
+										{doWiggleOnce}
+										wordIsInvalid={$wordIsInvalid}
+										column={j}
+										{current}
+									/>
+								</div>
 							{/each}
 						</div>
 					{/each}
@@ -225,3 +227,13 @@
 	<Modal bind:this={modal} />
 	<Toaster />
 </div>
+
+<style>
+	.inset {
+		box-shadow:
+			var(--tw-ring-offset-shadow, 0 0 #0000),
+			var(--tw-ring-shadow, 0 0 #0000),
+			inset 0 4px 4px 0 rgb(0 0 0 / 0.2),
+			inset 0 -4px 0 0 theme(colors.charade.800);
+	}
+</style>
