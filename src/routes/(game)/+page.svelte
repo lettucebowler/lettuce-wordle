@@ -5,6 +5,7 @@
 	import { onMount } from 'svelte';
 	import { applyAction, enhance } from '$app/forms';
 	import Keyboard from './Keyboard.svelte';
+	import Tile from './Tile.svelte';
 	import { applyKey, getKeyStatuses, applyWord } from '$lib/util/gameFunctions';
 	import { getCookieFromGameState } from '$lib/util/encodeCookie';
 	import Cookies from 'js-cookie';
@@ -198,30 +199,16 @@
 								{@const doJump = browser && data.answers.at(realIndex)?.length === 5}
 								{@const doWiggle = browser && $wordIsInvalid && current}
 								{@const doWiggleOnce = !browser && form?.invalid && current}
-								<div
-									class="box-border grid aspect-square items-center rounded-xl border-charade-700 text-center text-2xl font-bold text-snow-300 shadow transition-all sm:text-3xl"
-									class:border-0={!!answer}
-									class:border-4={!answer}
-									class:bg-charade-900={!answer}
-									class:border-solid={!answer}
-									class:bg-aurora-400={answer === 'x'}
-									class:bg-aurora-300={answer === 'c'}
-									class:bg-charade-700={answer === 'i'}
-									class:animate-wiggle={doWiggle}
-									class:animate-wiggle-once={doWiggleOnce}
-									class:animate-jump={doJump}
-									style:transition-delay={`${j * delayScale + duration}s`}
-									style:animation-delay={$wordIsInvalid ? '0s' : `${j * delayScale}s`}
-									style:transition-duration={`${duration}ms`}
-								>
-									<input
-										type="hidden"
-										readonly
-										value={letter.toUpperCase()}
-										name={current ? 'guess' : undefined}
-									/>
-									{letter.toUpperCase()}
-								</div>
+								<Tile
+									{letter}
+									{answer}
+									{doJump}
+									{doWiggle}
+									{doWiggleOnce}
+									wordIsInvalid={$wordIsInvalid}
+									column={j}
+									{current}
+								/>
 							{/each}
 						</div>
 					{/each}

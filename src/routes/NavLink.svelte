@@ -12,7 +12,7 @@
 	class="grid cursor-pointer items-center rounded-xl border-transparent text-3xl font-medium text-snow-300 hover:underline sm:h-14"
 	class:ml-auto={link.margin === 'left'}
 	class:text-snow-100={current}
-	class:after:bg-charade-700={current}
+	class:after:bg-charade-800={current}
 	aria-current={current}
 	href={link.path}
 >
@@ -23,7 +23,7 @@
 					in:navigationRecieve={{ key: 'current-link' }}
 					out:navigationSend={{ key: 'current-link' }}
 					class="grid h-full rounded-xl"
-					class:bg-charade-700={current}
+					class:bg-charade-800={current}
 				/>
 			{/if}
 		</div>

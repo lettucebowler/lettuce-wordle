@@ -28,18 +28,72 @@ module.exports = {
 					400: 'var(--aurora-400)',
 					500: 'var(--aurora-500)'
 				},
+				contessa: {
+					DEFAULT: '#BF616A',
+					50: '#F4E4E5',
+					100: '#EED5D8',
+					200: '#E2B8BC',
+					300: '#D79BA1',
+					400: '#CB7E85',
+					500: '#BF616A',
+					600: '#A5434C',
+					700: '#7D333A',
+					800: '#552327',
+					900: '#2D1215',
+					950: '#190A0C'
+				},
+				// charade: {
+				// 	DEFAULT: 'var(--charade-800)',
+				// 	50: 'var(--charade-50)',
+				// 	100: 'var(--charade-100)',
+				// 	200: 'var(--charade-200)',
+				// 	300: 'var(--charade-300)',
+				// 	400: 'var(--charade-400)',
+				// 	500: 'var(--charade-500)',
+				// 	600: 'var(--charade-600)',
+				// 	700: 'var(--charade-700)',
+				// 	800: 'var(--charade-800)',
+				// 	900: 'var(--charade-900)'
+				// }
+				'swamp-green': {
+					DEFAULT: 'var(--swamp-green-500)',
+					50: 'var(--swamp-green-50)',
+					100: 'var(--swamp-green-100)',
+					200: 'var(--swamp-green-200)',
+					300: 'var(--swamp-green-300)',
+					400: 'var(--swamp-green-400)',
+					500: 'var(--swamp-green-500)',
+					600: 'var(--swamp-green-600)',
+					700: 'var(--swamp-green-700)',
+					800: 'var(--swamp-green-800)',
+					900: 'var(--swamp-green-900)'
+				},
+				putty: {
+					DEFAULT: 'var(--putty-500)',
+					50: 'var(--putty-50)',
+					100: 'var(--putty-100)',
+					200: 'var(--putty-200)',
+					300: 'var(--putty-300)',
+					400: 'var(--putty-400)',
+					500: 'var(--putty-500)',
+					600: 'var(--putty-600)',
+					700: 'var(--putty-700)',
+					800: 'var(--putty-800)',
+					900: 'var(--putty-900)'
+				},
 				charade: {
-					DEFAULT: 'var(--charade-800)',
-					50: 'var(--charade-50)',
-					100: 'var(--charade-100)',
-					200: 'var(--charade-200)',
-					300: 'var(--charade-300)',
-					400: 'var(--charade-400)',
-					500: 'var(--charade-500)',
-					600: 'var(--charade-600)',
-					700: 'var(--charade-700)',
-					800: 'var(--charade-800)',
-					900: 'var(--charade-900)'
+					DEFAULT: '#434C5E',
+					50: '#E6E8ED',
+					100: '#DADEE5',
+					200: '#C2C8D4',
+					300: '#AAB2C3',
+					400: '#939DB2',
+					500: '#7B87A1',
+					600: '#65738E',
+					700: '#545F76',
+					800: '#434C5E',
+					900: '#323946',
+					950: '#2A2F3A'
 				}
 			},
 			animation: {

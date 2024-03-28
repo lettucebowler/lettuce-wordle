@@ -49,7 +49,7 @@
 		{#each items as gameResult (gameResult.gameNum)}
 			{@const answers = gameResult.answers}
 			<div
-				class="flex w-full flex-[1_1_200px] flex-col gap-2 rounded-2xl border-4 border-solid border-charade-700 p-2"
+				class="flex w-full flex-[1_1_200px] flex-col gap-2 rounded-2xl border-4 border-solid border-charade-800 p-2"
 			>
 				<h2 class="flex justify-between text-center text-xl font-medium text-snow-300">
 					<span class="text-left">#{gameResult.gameNum}</span><span class="text-right"
@@ -61,13 +61,13 @@
 						{@const answer = answers.charAt(i) || '_'}
 						<div
 							class="box-border grid aspect-square w-full grid-rows-3 rounded-lg text-center text-2xl font-bold text-snow-300 sm:text-3xl"
-							class:border-charade-700={answer === '_'}
+							class:border-charade-800={answer === '_'}
 							class:border-2={answer === '_'}
 							class:border-solid={answer === '_'}
-							class:bg-charade-900={answer === '_'}
+							class:bg-charade-950={answer === '_'}
 							class:bg-aurora-400={answer === 'x'}
 							class:bg-aurora-300={answer === 'c'}
-							class:bg-charade-700={answer === 'i'}
+							class:bg-charade-800={answer === 'i'}
 						/>
 					{/each}
 				</div>
@@ -87,7 +87,7 @@
 				viewBox="0 0 24 24"
 			>
 				<circle
-					class="text-charade-700"
+					class="text-charade-800"
 					cx="12"
 					cy="12"
 					r="10"

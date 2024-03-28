@@ -28,7 +28,7 @@
 <div class="w-full">
 	<div id="big-papa-nav" class="flex justify-end">
 		<nav
-			class="h-18 ml-0 ml-auto box-border max-h-[72px] w-full justify-end gap-x-4 rounded-2xl bg-charade-600 p-1 shadow"
+			class="h-18 ml-0 ml-auto box-border max-h-[72px] w-full justify-end gap-x-4 rounded-2xl bg-charade-700 p-1 shadow"
 			id="primary-nav"
 		>
 			<div class="flex">
@@ -41,7 +41,7 @@
 					<div class="flex h-full flex-col sm:hidden">
 						<label
 							for="subnav-toggle-small"
-							class="box-border flex h-full flex-[0_0_auto] cursor-pointer select-none items-center justify-center gap-2 rounded-xl text-center text-3xl text-snow-100 transition ease-in-out hover:bg-charade-700 active:bg-charade-800 sm:hidden"
+							class="box-border flex h-full flex-[0_0_auto] cursor-pointer select-none items-center justify-center gap-2 rounded-xl text-center text-3xl text-snow-100 transition ease-in-out hover:bg-charade-800 active:bg-charade-900 sm:hidden"
 						>
 							<span
 								class="box-border aspect-square h-full overflow-hidden rounded-xl border-snow-300 transition-transform"
@@ -95,7 +95,7 @@
 				/>
 				<nav
 					id="subnav-content"
-					class="absolute bottom-0 left-0 right-0 top-[72px] z-10 hidden flex-col divide-y bg-charade-900 peer-checked:block"
+					class="absolute bottom-0 left-0 right-0 top-[72px] z-10 hidden flex-col divide-y bg-charade-950 peer-checked:block"
 					class:hidden={!dropdownVisible}
 				>
 					<div class="space-y-4 p-4">
@@ -103,7 +103,7 @@
 							<NavLink {link} enableTransition={false} />
 						{/each}
 					</div>
-					<div class="flex flex-col gap-2 border-charade-700 p-4">
+					<div class="flex flex-col gap-2 border-charade-800 p-4">
 						{#if user?.login}
 							<div class="mb-2 flex items-center justify-start gap-4">
 								<span class="box-border w-max overflow-hidden rounded"
@@ -139,7 +139,7 @@
 		/>
 		<div class="grid grid-rows-[0fr] transition transition-all peer-checked:grid-rows-[1fr]">
 			<nav id="subnav-content" class="overflow-hidden">
-				<div class="mx-4 mt-2 flex justify-evenly gap-4 rounded-xl bg-charade-700 p-1 font-medium">
+				<div class="mx-4 mt-2 flex justify-evenly gap-4 rounded-xl bg-charade-800 p-1 font-medium">
 					{#each subnavItems as subnavItem}
 						<a
 							href={subnavItem.path}

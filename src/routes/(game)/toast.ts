@@ -1,7 +1,7 @@
 import toast from 'svelte-french-toast';
 
 const baseToastStyles =
-	'border-radius: 0.5rem; color: var(--snow-300); background: var(--charade-700); padding: 1rem 1.5rem; font-size: 18px;';
+	'border-radius: 0.5rem; color: var(--snow-300); background: var(--charade-800); padding: 1rem 1.5rem; font-size: 18px;';
 
 export function toastError(message: string, opts?: { id: string | undefined }) {
 	toast.error(message, {

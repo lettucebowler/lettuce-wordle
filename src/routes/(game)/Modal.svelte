@@ -115,7 +115,7 @@
 
 <dialog
 	bind:this={dialog}
-	class="open:opacity-1 box-border w-full max-w-xs rounded-2xl bg-charade-800 p-2 backdrop:animate-fadein backdrop:backdrop-blur-sm open:pointer-events-auto open:animate-flyup"
+	class="open:opacity-1 box-border w-full max-w-xs rounded-2xl bg-charade-900 p-2 backdrop:animate-fadein backdrop:backdrop-blur-sm open:pointer-events-auto open:animate-flyup"
 	open={false}
 	use:trapFocus
 >
@@ -125,7 +125,7 @@
 			<h2 class="col-start-2 mt-0 flex-auto text-center text-2xl text-snow-300">&nbsp;Success!</h2>
 			<button
 				on:click={closeModal}
-				class="aspect-square h-8 rounded p-1 text-snow-300 transition transition-all hover:bg-charade-900 hover:p-0"
+				class="aspect-square h-8 rounded p-1 text-snow-300 transition transition-all hover:bg-charade-950 hover:p-0"
 				><svg
 					xmlns="http://www.w3.org/2000/svg"
 					fill="none"

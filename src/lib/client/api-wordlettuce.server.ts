@@ -82,6 +82,7 @@ export function createApiWordlettuceClient(event: RequestEvent) {
 		count: number;
 		offset: number;
 	}) {
+		console.log('bleh');
 		const result = await toResult(
 			wordlettuce.get('/v1/game-results', { username: user, count, offset })
 		);
