@@ -20,9 +20,7 @@
 <div
 	class={cx(
 		'box-border grid aspect-square items-center rounded-xl text-center text-2xl font-bold transition-all sm:text-3xl',
-		answer && 'offset border-t-2',
-		// !answer &&
-		// 	'inset border-b-4 border-t-0 border-b-charade-800 bg-charade-950 text-charade-100 shadow-inner',
+		answer && 'border-t-2 shadow-[0_4px_4px_0_rgb(0_0_0_/_0.2)]',
 		!answer && 'text-charade-100',
 		answer === 'x' && 'etched-x border-t-swamp-green-300 bg-swamp-green-500 text-swamp-green-800',
 		answer === 'i' && 'etched-i border-t-charade-500 bg-charade-700 text-charade-100',
@@ -51,12 +49,5 @@
 
 	.etched-i {
 		text-shadow: 0 2px theme('colors.charade.500');
-	}
-
-	.offset {
-		box-shadow:
-			var(--tw-ring-offset-shadow, 0 0 #0000),
-			var(--tw-ring-shadow, 0 0 #0000),
-			0 4px 4px 0 rgb(0 0 0 / 0.2);
 	}
 </style>

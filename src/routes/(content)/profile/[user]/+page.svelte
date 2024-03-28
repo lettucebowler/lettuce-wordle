@@ -20,6 +20,7 @@
 		}
 		items = [...items, ...newItems.results];
 	}
+	import { cx } from 'classix';
 </script>
 
 <svelte:body
@@ -58,13 +59,15 @@
 					{#each [...Array(30).keys()] as i}
 						{@const answer = answers.charAt(i) || '_'}
 						<div
-							class="box-border grid aspect-square w-full grid-rows-3 rounded-lg text-center text-2xl font-bold text-snow-300 sm:text-3xl"
-							class:border-charade-800={answer === '_'}
-							class:border-2={answer === '_'}
-							class:border-solid={answer === '_'}
-							class:bg-charade-950={answer === '_'}
-							class:bg-aurora-400={answer === 'x'}
-							class:bg-aurora-300={answer === 'c'}
+							class={cx(
+								'aspect-square w-full rounded-lg',
+								answer === '_' &&
+									'bg-charade-950 shadow-[inset_0_2px_4px_0_rgb(0_0_0_/_0.2),_inset_0_-2px_0_0_theme(colors.charade.800)]',
+								answer !== '_' && 'shadow-[0_4px_4px_0_rgb(0_0_0_/_0.2)]',
+								answer === 'x' && 'border-t-2 border-t-swamp-green-300 bg-swamp-green-500',
+								answer === 'c' && 'border-t-2 border-t-putty-300 bg-putty-500',
+								answer === 'i' && 'border-t-2 border-t-charade-600 bg-charade-800'
+							)}
 							class:bg-charade-800={answer === 'i'}
 						/>
 					{/each}
