@@ -199,7 +199,9 @@
 								{@const doJump = browser && data.answers.at(realIndex)?.length === 5}
 								{@const doWiggle = browser && $wordIsInvalid && current}
 								{@const doWiggleOnce = !browser && form?.invalid && current}
-								<div class="inset rounded-xl bg-charade-950">
+								<div
+									class="rounded-xl bg-charade-950 shadow-[inset_0_3px_4px_0_rgb(0_0_0_/_0.2),_inset_0_-3px_0_0_theme('colors.charade.800')]"
+								>
 									<Tile
 										{letter}
 										{answer}
@@ -227,13 +229,3 @@
 	<Modal bind:this={modal} />
 	<Toaster />
 </div>
-
-<style>
-	.inset {
-		box-shadow:
-			var(--tw-ring-offset-shadow, 0 0 #0000),
-			var(--tw-ring-shadow, 0 0 #0000),
-			inset 0 4px 4px 0 rgb(0 0 0 / 0.2),
-			inset 0 -3px 0 0 theme('colors.charade.800');
-	}
-</style>
