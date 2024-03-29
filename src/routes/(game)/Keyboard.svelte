@@ -27,6 +27,7 @@
 			}
 		]
 	]);
+	import { cx } from 'classix';
 </script>
 
 <svelte:window on:keydown={(e) => keys[e.key.toLowerCase()]?.click()} />
@@ -55,7 +56,14 @@
 							name="key"
 							value={letter}
 							bind:this={keys[letter]}
-							class="col-span-4 grid h-full w-full cursor-pointer place-items-center rounded-md border-solid border-transparent text-center text-sm font-bold text-snow-300 shadow hover:shadow-inner hover:brightness-[90%] active:brightness-[75%] xl:text-base"
+							class={cx(
+								'col-span-4 grid h-full w-full cursor-pointer place-items-center rounded-md border-t-2 border-solid border-transparent text-center text-sm font-bold text-snow-300 shadow-[0_2px_4px_0_rgb(0_0_0_/_0.2)] hover:brightness-[90%] active:brightness-[75%] xl:text-base',
+								status === '_' && 'border-t-charade-500 bg-charade-700',
+								status === 'c' && 'border-t-putty-300 bg-putty-500',
+								status === 'x' && 'border-t-swamp-green-300 bg-swamp-green-500',
+								// status === 'i' && 'border-t-contessa-300 bg-contessa-500'
+								status === 'i' && 'border-t-charade-700 bg-charade-800 brightness-90'
+							)}
 							class:bg-charade-700={status === '_'}
 							class:bg-aurora-300={status === 'c'}
 							class:bg-aurora-400={status === 'x'}
