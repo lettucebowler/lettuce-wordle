@@ -19,9 +19,9 @@
 		'box-border grid aspect-square items-center rounded-xl text-center text-2xl font-bold transition-all sm:text-3xl',
 		answer && 'border-t-[3px] shadow-[0_4px_4px_0_rgb(0_0_0_/_0.2)]',
 		!answer && 'text-charade-100',
-		answer === 'x' && 'border-t-swamp-green-300 bg-swamp-green-500 text-swamp-green-800',
-		answer === 'i' && 'border-t-charade-500 bg-charade-700 text-charade-100',
-		answer === 'c' && 'border-t-putty-300 bg-putty-500 text-putty-800',
+		answer === 'x' && 'border-swamp-green-300 bg-swamp-green-500 text-swamp-green-800',
+		answer === 'i' && 'border-charade-500 bg-charade-700 text-charade-100',
+		answer === 'c' && 'border-putty-300 bg-putty-500 text-putty-800',
 		doWiggle && 'animate-wiggle',
 		doWiggleOnce && 'animate-wiggle-once',
 		doJump && 'animate-jump'

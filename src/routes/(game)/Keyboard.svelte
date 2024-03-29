@@ -57,17 +57,12 @@
 							value={letter}
 							bind:this={keys[letter]}
 							class={cx(
-								'col-span-4 grid h-full w-full cursor-pointer place-items-center rounded-md border-t-2 border-solid border-transparent text-center text-sm font-bold text-snow-300 shadow-[0_2px_4px_0_rgb(0_0_0_/_0.2)] hover:brightness-[90%] active:brightness-[75%] xl:text-base',
-								status === '_' && 'border-t-charade-500 bg-charade-700',
-								status === 'c' && 'border-t-putty-300 bg-putty-500',
-								status === 'x' && 'border-t-swamp-green-300 bg-swamp-green-500',
-								// status === 'i' && 'border-t-contessa-300 bg-contessa-500'
-								status === 'i' && 'border-t-charade-700 bg-charade-800 brightness-90'
+								'col-span-4 box-content grid h-full w-full cursor-pointer place-items-center rounded-md border-t-[2px] border-solid text-center text-sm font-bold shadow-[0_2px_4px_0_rgb(0_0_0_/_0.2)] active:border-none active:shadow-none xl:text-base',
+								status === '_' && 'border-charade-500 bg-charade-700 text-charade-100',
+								status === 'c' && 'border-putty-200 bg-putty-500 text-putty-900',
+								status === 'x' && 'border-swamp-green-200 bg-swamp-green-500 text-swamp-green-900',
+								status === 'i' && 'border-charade-700 bg-charade-800 text-charade-100 brightness-90'
 							)}
-							class:bg-charade-700={status === '_'}
-							class:bg-aurora-300={status === 'c'}
-							class:bg-aurora-400={status === 'x'}
-							class:bg-charade-800={status === 'i'}
 						>
 							{#if icons.get(letter)}
 								<span class="h-5"><LettuceIcon {...icons.get(letter)} /></span>
