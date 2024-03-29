@@ -12,9 +12,6 @@
 	const duration = 0.15;
 
 	import { cx } from 'classix';
-
-	const b =
-		'box-border grid aspect-square items-center rounded-xl border-charade-950 text-center text-2xl font-bold text-snow-300 transition-all sm:text-3xl';
 </script>
 
 <div

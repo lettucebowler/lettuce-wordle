@@ -35,7 +35,7 @@
 <main class="grid w-full gap-8">
 	<figure class="flex flex-col gap-2">
 		{#each [data.user] as user (user)}
-			<div class="mx-auto h-full overflow-hidden rounded-2xl">
+			<div class="mx-auto h-full max-h-[10rem] sm:h-full">
 				<LettuceAvatar name={user} size={256} />
 			</div>
 		{/each}
@@ -46,10 +46,10 @@
 
 	<h1 class="text-center text-3xl font-bold text-snow-300">Play History</h1>
 
-	<div class="grid w-full grid-cols-2 gap-2 sm:grid-cols-3">
+	<div class="grid w-full grid-cols-2 gap-2 px-1 sm:grid-cols-3 sm:gap-3">
 		{#each items as gameResult (gameResult.gameNum)}
 			{@const answers = gameResult.answers}
-			<div class="flex w-full flex-[1_1_200px] flex-col gap-2 rounded-2xl p-2">
+			<div class="flex w-full flex-[1_1_200px] flex-col gap-2 rounded-2xl">
 				<h2 class="flex justify-between text-center text-xl font-medium text-snow-300">
 					<span class="text-left">#{gameResult.gameNum}</span><span class="text-right"
 						>{1 + 6 - gameResult.answers.length / 5} pts</span

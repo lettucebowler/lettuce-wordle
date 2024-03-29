@@ -10,8 +10,7 @@
 </script>
 
 <img
-	style={`width:${size}px;height:${size}px`}
-	class="pointer-events-none inline"
+	class="pointer-events-none inline aspect-square h-full w-full rounded-xl"
 	src={`https://api.dicebear.com/7.x/bottts-neutral/svg?${searchParams}&seed=${name}`}
 	alt=""
 />

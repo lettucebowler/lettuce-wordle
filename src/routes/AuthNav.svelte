@@ -28,7 +28,7 @@
 <div class="w-full">
 	<div id="big-papa-nav" class="flex justify-end">
 		<nav
-			class="h-18 ml-0 ml-auto box-border max-h-[72px] w-full justify-end gap-x-4 rounded-2xl bg-charade-700 p-1 shadow"
+			class="h-18 ml-0 ml-auto box-content max-h-[72px] w-full justify-end gap-x-4 rounded-2xl border-t-[2px] border-t-charade-500 bg-charade-700 p-1 shadow-[0_2px_4px_0_rgb(0_0_0_/_0.2)]"
 			id="primary-nav"
 		>
 			<div class="flex">
@@ -74,7 +74,7 @@
 					>
 						{#if user}
 							<span
-								class="box-border aspect-square overflow-hidden rounded-xl border-snow-300 transition-transform"
+								class="box-border aspect-square h-14 overflow-hidden rounded-xl border-snow-300 transition-transform"
 								class:rotate-180={dropdownVisible}
 							>
 								<LettuceAvatar name={user.login} size={56} />
@@ -95,7 +95,7 @@
 				/>
 				<nav
 					id="subnav-content"
-					class="absolute bottom-0 left-0 right-0 top-[72px] z-10 hidden flex-col divide-y bg-charade-950 peer-checked:block"
+					class="absolute bottom-0 left-0 right-0 top-[72px] z-10 hidden flex-col divide-y bg-charade-900 peer-checked:block"
 					class:hidden={!dropdownVisible}
 				>
 					<div class="space-y-4 p-4">
@@ -106,7 +106,7 @@
 					<div class="flex flex-col gap-2 border-charade-800 p-4">
 						{#if user?.login}
 							<div class="mb-2 flex items-center justify-start gap-4">
-								<span class="box-border w-max overflow-hidden rounded"
+								<span class="box-border h-11 h-[44px] w-[44px] w-max overflow-hidden rounded"
 									><LettuceAvatar name={user.login} size={44} /></span
 								>
 								<span class="text-xl font-medium text-snow-300">{user.login}</span>

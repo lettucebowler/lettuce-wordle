@@ -22,7 +22,7 @@
 				<div
 					in:navigationRecieve={{ key: 'current-link' }}
 					out:navigationSend={{ key: 'current-link' }}
-					class="grid h-full rounded-xl"
+					class="grid h-full rounded-xl shadow-[inset_0_2px_4px_0_rgb(0_0_0_/_0.2),_inset_0_-2px_0_0_theme(colors.charade.500)]"
 					class:bg-charade-800={current}
 				/>
 			{/if}
