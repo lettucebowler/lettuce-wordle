@@ -16,7 +16,7 @@
 	{:then scores}
 		<div class="grid w-full gap-2 text-snow-300">
 			<div
-				class="grid w-full grid-cols-[1fr,_50px] gap-4 rounded-2xl bg-charade-700 p-2 text-xl font-medium sm:grid-cols-[1fr,_50px,_50px] sm:gap-8"
+				class="grid w-full grid-cols-[1fr,_50px] gap-4 rounded-2xl bg-charade-700 px-4 py-3 text-xl font-medium sm:grid-cols-[1fr,_50px,_50px] sm:gap-8"
 			>
 				<div class="text-left">User</div>
 				<div class="hidden text-center sm:grid">Score</div>

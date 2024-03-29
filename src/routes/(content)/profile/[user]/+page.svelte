@@ -39,7 +39,7 @@
 				<LettuceAvatar name={user} size={256} />
 			</div>
 		{/each}
-		<figcaption class="text-center text-2xl font-medium text-snow-300">
+		<figcaption class="text-center text-xl font-medium text-snow-300">
 			{data.user}
 		</figcaption>
 	</figure>

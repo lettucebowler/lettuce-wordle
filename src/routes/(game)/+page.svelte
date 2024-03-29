@@ -205,6 +205,7 @@
 										'rounded-xl bg-charade-950',
 										'shadow-[inset_0_3px_4px_0_rgb(0_0_0_/_0.2),_inset_0_-3px_0_0_theme(colors.charade.800)]'
 									)}
+									style:z-index={i}
 								>
 									<Tile
 										{letter}

@@ -105,7 +105,7 @@ module.exports = {
 			},
 			keyframes: {
 				jump: {
-					'50%': { transform: 'scale(1.05) translateY(-7%)' },
+					'50%': { transform: 'scale(1.05) translateY(-10%) translateX(5%)' },
 					'0%, 100%': { transform: 'scale(1)' }
 				},
 				wiggle: {

@@ -1,3 +1,3 @@
-<div class="flex flex-col items-center pt-6">
+<div class="flex flex-col items-center pt-10">
 	<slot />
 </div>
