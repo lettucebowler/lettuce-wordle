@@ -62,11 +62,11 @@
 							class={cx(
 								'aspect-square w-full rounded-lg',
 								answer === '_' &&
-									'bg-charade-950 shadow-[inset_0_2px_4px_0_rgb(0_0_0_/_0.2),_inset_0_-2px_0_0_theme(colors.charade.800)]',
+									'bg-charade-950 shadow-[inset_0_1px_4px_0_rgb(0_0_0_/_0.2),_inset_0_-1px_0_0_theme(colors.charade.800)]',
 								answer !== '_' && 'shadow-[0_4px_4px_0_rgb(0_0_0_/_0.2)]',
-								answer === 'x' && 'border-t-2 border-t-swamp-green-300 bg-swamp-green-500',
-								answer === 'c' && 'border-t-2 border-t-putty-300 bg-putty-500',
-								answer === 'i' && 'border-t-2 border-t-charade-600 bg-charade-800'
+								answer === 'x' && 'border-t-[1px] border-t-swamp-green-300 bg-swamp-green-500',
+								answer === 'c' && 'border-t-[1px] border-t-putty-300 bg-putty-500',
+								answer === 'i' && 'border-t-[1px] border-t-charade-600 bg-charade-800'
 							)}
 							class:bg-charade-800={answer === 'i'}
 						/>

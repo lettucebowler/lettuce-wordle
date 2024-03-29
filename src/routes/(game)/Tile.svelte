@@ -20,12 +20,11 @@
 <div
 	class={cx(
 		'box-border grid aspect-square items-center rounded-xl text-center text-2xl font-bold transition-all sm:text-3xl',
-		answer && 'border-t-2 shadow-[0_4px_4px_0_rgb(0_0_0_/_0.2)]',
+		answer && 'border-t-[3px] shadow-[0_4px_4px_0_rgb(0_0_0_/_0.2)]',
 		!answer && 'text-charade-100',
-		answer === 'x' && 'etched-x border-t-swamp-green-300 bg-swamp-green-500 text-swamp-green-800',
-		answer === 'i' && 'etched-i border-t-charade-500 bg-charade-700 text-charade-100',
-		answer === 'c' && 'etched-c border-t-putty-300 bg-putty-500 text-putty-800',
-		answer === '_' && 'border-b-4 border-t-0 border-b-charade-600 text-charade-100',
+		answer === 'x' && 'border-t-swamp-green-300 bg-swamp-green-500 text-swamp-green-800',
+		answer === 'i' && 'border-t-charade-500 bg-charade-700 text-charade-100',
+		answer === 'c' && 'border-t-putty-300 bg-putty-500 text-putty-800',
 		doWiggle && 'animate-wiggle',
 		doWiggleOnce && 'animate-wiggle-once',
 		doJump && 'animate-jump'
@@ -37,17 +36,3 @@
 	<input type="hidden" readonly value={letter.toUpperCase()} name={current ? 'guess' : undefined} />
 	{letter.toUpperCase()}
 </div>
-
-<style>
-	.etched-x {
-		text-shadow: 0 2px theme('colors.swamp-green.300');
-	}
-
-	.etched-c {
-		text-shadow: 0 2px theme('colors.putty.300');
-	}
-
-	.etched-i {
-		text-shadow: 0 2px theme('colors.charade.500');
-	}
-</style>

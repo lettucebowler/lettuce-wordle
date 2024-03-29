@@ -18,6 +18,7 @@
 	import { beforeNavigate } from '$app/navigation';
 	import { toastError, toastLoading, toastSuccess } from './toast';
 	import { safeParse, string } from 'valibot';
+	import cx from 'classix';
 
 	export let data;
 	export let form;
@@ -200,7 +201,10 @@
 								{@const doWiggle = browser && $wordIsInvalid && current}
 								{@const doWiggleOnce = !browser && form?.invalid && current}
 								<div
-									class="rounded-xl bg-charade-950 shadow-[inset_0_3px_4px_0_rgb(0_0_0_/_0.2),_inset_0_-3px_0_0_theme('colors.charade.800')]"
+									class={cx(
+										'rounded-xl bg-charade-950',
+										'shadow-[inset_0_3px_4px_0_rgb(0_0_0_/_0.2),_inset_0_-3px_0_0_theme(colors.charade.800)]'
+									)}
 								>
 									<Tile
 										{letter}
