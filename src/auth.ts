@@ -1,4 +1,4 @@
-import { SvelteKitAuth, type Session, type SvelteKitAuthConfig } from '@auth/sveltekit';
+import { SvelteKitAuth, type SvelteKitAuthConfig } from '@auth/sveltekit';
 import GitHub from '@auth/core/providers/github';
 import { skipCSRFCheck } from '@auth/core';
 import {
