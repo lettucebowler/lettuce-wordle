@@ -4,6 +4,7 @@
 	import { fetcher } from 'itty-fetcher';
 	import { browser } from '$app/environment';
 	import type { GameResult } from '$lib/types/gameresult.js';
+	import GameSummary from './GameSummary.svelte';
 
 	export let data;
 
@@ -48,30 +49,13 @@
 
 	<div class="grid w-full grid-cols-2 gap-2 px-1 sm:grid-cols-3 sm:gap-3">
 		{#each items as gameResult (gameResult.gameNum)}
-			{@const answers = gameResult.answers}
 			<div class="flex w-full flex-[1_1_200px] flex-col gap-2 rounded-2xl">
 				<h2 class="flex justify-between text-center text-xl font-medium text-snow-300">
 					<span class="text-left">#{gameResult.gameNum}</span><span class="text-right"
 						>{1 + 6 - gameResult.answers.length / 5} pts</span
 					>
 				</h2>
-				<div class="grid grid-cols-5 gap-1">
-					{#each [...Array(30).keys()] as i}
-						{@const answer = answers.charAt(i) || '_'}
-						<div
-							class={cx(
-								'aspect-square w-full rounded-lg',
-								answer === '_' &&
-									'bg-charade-950 shadow-[inset_0_1px_4px_0_rgb(0_0_0_/_0.2),_inset_0_-1px_0_0_theme(colors.charade.800)]',
-								answer !== '_' && 'shadow-[0_4px_4px_0_rgb(0_0_0_/_0.2)]',
-								answer === 'x' && 'border-t-[1px] border-t-swamp-green-300 bg-swamp-green-500',
-								answer === 'c' && 'border-t-[1px] border-t-putty-300 bg-putty-500',
-								answer === 'i' && 'border-t-[1px] border-t-charade-600 bg-charade-800'
-							)}
-							class:bg-charade-800={answer === 'i'}
-						/>
-					{/each}
-				</div>
+				<GameSummary answers={gameResult.answers} />
 			</div>
 		{:else}
 			<p class="rounded-xl p-2 text-center text-center text-xl text-snow-300 col-span-3">

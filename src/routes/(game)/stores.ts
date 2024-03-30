@@ -19,7 +19,7 @@ export const timeUntilNextGame = derived<Readable<Date>, number>(time, ($time: D
 });
 
 export function createExpiringBoolean({ duration = 150 } = {}) {
-	let id: number | undefined;
+	let id: NodeJS.Timeout | undefined;
 	const store = writable(false);
 	let startTime = 0;
 	let remaining = 0;
