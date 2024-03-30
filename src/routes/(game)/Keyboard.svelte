@@ -56,12 +56,9 @@
 							name="key"
 							value={letter}
 							bind:this={keys[letter]}
+							data-answer={status}
 							class={cx(
-								'col-span-4 box-content grid h-full w-full cursor-pointer place-items-center rounded-md border-t-[2px] border-solid text-center text-sm font-bold shadow-[0_2px_4px_0_rgb(0_0_0_/_0.2)] active:border-none active:shadow-none xl:text-base',
-								status === '_' && 'border-charade-500 bg-charade-700 text-charade-100',
-								status === 'c' && 'border-putty-200 bg-putty-500 text-putty-900',
-								status === 'x' && 'border-swamp-green-200 bg-swamp-green-500 text-swamp-green-900',
-								status === 'i' && 'border-charade-700 bg-charade-800 text-charade-100 brightness-90'
+								'col-span-4 mt-[--keyboard-height] box-content grid h-full w-full cursor-pointer place-items-center rounded-md bg-[--bg-color] text-center text-sm font-bold text-[--text-color] shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--highlight-color)] active:mt-0 active:shadow-none xl:text-base'
 							)}
 						>
 							{#if icons.get(letter)}
@@ -78,3 +75,29 @@
 		</div>
 	{/each}
 </form>
+
+<style>
+	[data-answer='c'] {
+		--bg-color: theme('colors.putty.500');
+		--highlight-color: theme('colors.putty.300');
+		--text-color: theme('colors.putty.900');
+	}
+
+	[data-answer='x'] {
+		--bg-color: theme('colors.swamp-green.500');
+		--highlight-color: theme('colors.swamp-green.300');
+		--text-color: theme('colors.swamp-green.900');
+	}
+
+	[data-answer='_'] {
+		--bg-color: theme('colors.charade.800');
+		--highlight-color: theme('colors.charade.600');
+	}
+
+	button {
+		--keyboard-height: var(--height, 2px);
+		--bg-color: theme('colors.charade.700');
+		--highlight-color: theme('colors.charade.500');
+		--text-color: theme('colors.charade.100');
+	}
+</style>

@@ -189,6 +189,7 @@
 					{#each [...Array(6).keys()] as i (getRealIndex(i, data.state, data.answers))}
 						{@const realIndex = getRealIndex(i, data.state, data.answers)}
 						{@const current = realIndex === data.answers.length}
+						{@const guess = data.state?.at(realIndex)?.guess ?? ''}
 						<div
 							class="grid w-full grid-cols-[repeat(5,_1fr)] gap-2"
 							out:slide={{ duration: duration * 1000 }}
@@ -196,25 +197,25 @@
 						>
 							{#each [...Array(5).keys()] as j}
 								{@const answer = data.answers?.at(realIndex)?.at(j) ?? ''}
-								{@const letter = data.state[realIndex]?.guess?.at(j) ?? ''}
+								{@const letter = guess?.at(j) ?? ''}
 								{@const doJump = browser && data.answers.at(realIndex)?.length === 5}
 								{@const doWiggle = browser && $wordIsInvalid && current}
 								{@const doWiggleOnce = !browser && form?.invalid && current}
 								<div
 									class={cx(
-										'rounded-xl bg-charade-950',
-										'shadow-[inset_0_3px_4px_0_rgb(0_0_0_/_0.2),_inset_0_-3px_0_0_theme(colors.charade.800)]'
+										'z-[--z-index] aspect-square min-h-0 w-full rounded-xl bg-charade-950',
+										/* shadows and highlights */ 'shadow-[inset_0_var(--height)_4px_0_rgb(0_0_0_/_0.2),_inset_0_calc(-1_*_var(--height))_0_0_theme(colors.charade.800)]',
+										!guess && $wordIsInvalid && 'animate-wiggle-once'
 									)}
-									style:z-index={i}
 								>
 									<Tile
+										--column={j}
 										{letter}
 										{answer}
 										{doJump}
 										{doWiggle}
 										{doWiggleOnce}
 										wordIsInvalid={$wordIsInvalid}
-										column={j}
 										{current}
 									/>
 								</div>
@@ -226,11 +227,19 @@
 		</div>
 		<div class="flex h-full max-h-[min(20rem,_30vh)] w-full flex-[5_1_auto] flex-col">
 			<Keyboard
+				--height="1px"
 				on:key={(e) => handleKey(e.detail)}
 				answers={getKeyStatuses(data.state, data.answers)}
 			/>
 		</div>
+		<div />
 	</main>
 	<Modal bind:this={modal} />
 	<Toaster />
 </div>
+
+<style>
+	:root {
+		--height: 3px;
+	}
+</style>
