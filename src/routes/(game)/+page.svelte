@@ -204,7 +204,7 @@
 								<div
 									class={cx(
 										'z-[--z-index] aspect-square min-h-0 w-full rounded-xl bg-charade-950',
-										/* shadows and highlights */ 'shadow-[inset_0_var(--height)_4px_0_rgb(0_0_0_/_0.2),_inset_0_calc(-1_*_var(--height))_0_0_theme(colors.charade.800)]',
+										/* shadows and highlights */ 'shadow-[inset_0_var(--height)_var(--height)_0_rgb(0_0_0_/_0.2),_inset_0_calc(-1_*_var(--height))_0_0_theme(colors.charade.800)]',
 										!guess && $wordIsInvalid && 'animate-wiggle-once'
 									)}
 								>

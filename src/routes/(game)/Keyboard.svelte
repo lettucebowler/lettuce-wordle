@@ -27,7 +27,6 @@
 			}
 		]
 	]);
-	import { cx } from 'classix';
 </script>
 
 <svelte:window on:keydown={(e) => keys[e.key.toLowerCase()]?.click()} />
@@ -57,9 +56,7 @@
 							value={letter}
 							bind:this={keys[letter]}
 							data-answer={status}
-							class={cx(
-								'col-span-4 mt-[--keyboard-height] box-content grid h-full w-full cursor-pointer place-items-center rounded-md bg-[--bg-color] text-center text-sm font-bold text-[--text-color] shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--highlight-color)] active:mt-0 active:shadow-none xl:text-base'
-							)}
+							class="col-span-4 mt-[--keyboard-height] box-content grid h-full w-full cursor-pointer place-items-center rounded-md bg-[--bg-color] text-center text-sm font-bold text-[--text-color] shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--highlight-color)] active:mt-0 active:shadow-none xl:text-base"
 						>
 							{#if icons.get(letter)}
 								<span class="h-5"><LettuceIcon {...icons.get(letter)} /></span>
@@ -79,13 +76,13 @@
 <style>
 	[data-answer='c'] {
 		--bg-color: theme('colors.putty.500');
-		--highlight-color: theme('colors.putty.300');
+		--highlight-color: theme('colors.putty.200');
 		--text-color: theme('colors.putty.900');
 	}
 
 	[data-answer='x'] {
 		--bg-color: theme('colors.swamp-green.500');
-		--highlight-color: theme('colors.swamp-green.300');
+		--highlight-color: theme('colors.swamp-green.200');
 		--text-color: theme('colors.swamp-green.900');
 	}
 

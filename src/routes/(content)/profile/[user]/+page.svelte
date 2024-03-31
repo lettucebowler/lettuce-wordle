@@ -21,7 +21,6 @@
 		}
 		items = [...items, ...newItems.results];
 	}
-	import { cx } from 'classix';
 </script>
 
 <svelte:body
