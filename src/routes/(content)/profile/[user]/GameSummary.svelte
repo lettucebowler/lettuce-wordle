@@ -11,7 +11,7 @@
 			class={cx(
 				`tile aspect-square w-full rounded-lg bg-[--bg-color]`,
 				answer === '_'
-					? 'shadow-[inset_0_var(--depth)_4px_0_rgb(0_0_0_/_0.2),_inset_0_calc(-1_*_var(--depth))_0_0_var(--highlight-color)]'
+					? ''
 					: 'border-t-[1px] border-[--highlight-color] shadow-[0_var(--depth)_4px_0_rgb(0_0_0_/_0.2)]'
 			)}
 		/>
