@@ -3,7 +3,7 @@ export function getGameNum() {
 	const initial = new Date(1643673600000);
 	const now = new Date();
 	const gameNum = Math.floor((now.getTime() - initial.getTime()) / msInADay);
-	return gameNum;
+	return 802;
 }
 
 export const answerList = [

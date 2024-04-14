@@ -8,9 +8,6 @@
 	export let current = false;
 
 	import { cx } from 'classix';
-
-	const b =
-		'shadow-[0_var(--tile-height)_4px_0_rgb(0_0_0_/_0.2),_0_calc(-1_*_var(--tile-height))_0_0_var(--highlight-color)]';
 </script>
 
 <div
@@ -21,10 +18,10 @@
 			: 'text-charade-100',
 		doWiggle && 'animate-wiggle',
 		doWiggleOnce && 'animate-wiggle-once',
-		doJump && 'animate-jump'
+		doJump && 'animate-jump',
+		doWiggle || doWiggleOnce ? null : 'column-delay'
 	)}
 	data-answer={answer}
-	data-word-invalid={wordIsInvalid ? '' : undefined}
 >
 	<input type="hidden" readonly value={letter.toUpperCase()} name={current ? 'guess' : undefined} />
 	{letter.toUpperCase()}
@@ -56,13 +53,12 @@
 		--tile_duration: var(--duration, 0.15);
 		--text-color: theme('colors.snow.300');
 		--tile-row: var(--row, 0);
+	}
+
+	.column-delay {
+		animation-delay: calc(1s * (var(--tile_column) * var(--tile_delay-scale)));
 		transition-delay: calc(
 			(var(--tile_column) * var(--tile_delay-scale) + var(--tile_duration)) * 1s
 		);
-		animation-delay: calc(1s * (var(--tile_column) * var(--tile_delay-scale)));
-	}
-
-	[data-word-invalid] {
-		animation-delay: 0s;
 	}
 </style>
