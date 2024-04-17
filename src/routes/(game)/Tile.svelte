@@ -11,7 +11,10 @@
 
 <div
 	class={cx(
-		'aspect-square rounded-xl bg-[--highlight-color] pt-[--tile-height]',
+		'aspect-square rounded-xl pt-[--tile-height]',
+		answer === 'c' && 'bg-putty-300',
+		answer === 'x' && 'bg-swamp-green-300',
+		answer === 'i' && 'bg-charade-500',
 		doWiggle && 'animate-wiggle',
 		doWiggleOnce && 'animate-wiggle-once',
 		doJump && 'animate-jump',
@@ -21,10 +24,11 @@
 >
 	<div
 		class={cx(
-			'relative box-content grid aspect-square items-center rounded-xl text-center text-2xl font-bold text-[--text-color] transition-all duration-0 sm:text-3xl',
-			answer
-				? 'bg-[--bg-color] shadow-[0_var(--tile-height)_4px_0_rgb(0_0_0_/_0.2)]'
-				: 'text-charade-100'
+			'relative box-content grid aspect-square items-center rounded-xl text-center text-2xl font-bold transition-all duration-0 sm:text-3xl',
+			answer === 'c' && 'bg-putty-500 text-putty-800',
+			answer === 'x' && 'bg-swamp-green-500 text-swamp-green-800',
+			answer === 'i' && 'bg-charade-700 text-charade-100',
+			answer ? 'shadow-[0_var(--tile-height)_4px_0_rgb(0_0_0_/_0.2)]' : 'text-charade-100'
 		)}
 	>
 		<input
@@ -38,37 +42,14 @@
 </div>
 
 <style>
-	[data-answer='c'] {
-		--bg-color: theme('colors.putty.500');
-		--highlight-color: theme('colors.putty.300');
-		--text-color: theme('colors.putty.800');
-	}
-
-	[data-answer='x'] {
-		--bg-color: theme('colors.swamp-green.500');
-		--highlight-color: theme('colors.swamp-green.300');
-		--text-color: theme('colors.swamp-green.800');
-	}
-
-	[data-answer='i'] {
-		--bg-color: theme('colors.charade.700');
-		--highlight-color: theme('colors.charade.500');
-		--text-color: theme('colors.charade.100');
-	}
-
-	div {
-		--tile-height: var(--height, 3px);
-		--tile_column: var(--column, 0);
-		--tile_delay-scale: var(--delay-scale, 0.03);
-		--tile_duration: var(--duration, 0.15);
-		--text-color: theme('colors.snow.300');
-		--tile-row: var(--row, 0);
-	}
-
-	.column-delay {
-		animation-delay: calc(1s * (var(--tile_column) * var(--tile_delay-scale)));
+	.column-delay,
+	.column-delay * {
+		--tile-column: var(--column, 0);
+		--tile-delay-scale: var(--delay-scale, 0.03);
+		--tile-duration: var(--duration, 0.15);
+		animation-delay: calc(1s * (var(--tile-column) * var(--tile-delay-scale)));
 		transition-delay: calc(
-			(var(--tile_column) * var(--tile_delay-scale) + var(--tile_duration)) * 1s
+			(var(--tile-column) * var(--tile-delay-scale) + var(--tile-duration)) * 1s
 		);
 	}
 </style>

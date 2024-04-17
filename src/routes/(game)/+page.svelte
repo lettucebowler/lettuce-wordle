@@ -210,12 +210,12 @@
 								>
 									<Tile
 										--column={j}
+										--tile-height="3px"
 										{letter}
 										{answer}
 										{doJump}
 										{doWiggle}
 										{doWiggleOnce}
-										wordIsInvalid={$wordIsInvalid}
 										{current}
 									/>
 								</div>
