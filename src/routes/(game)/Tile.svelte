@@ -4,7 +4,6 @@
 	export let doJump = false;
 	export let doWiggle = false;
 	export let doWiggleOnce = false;
-	export let wordIsInvalid = false;
 	export let current = false;
 
 	import { cx } from 'classix';
@@ -12,10 +11,7 @@
 
 <div
 	class={cx(
-		'relative box-content grid aspect-square items-center rounded-xl text-center text-2xl font-bold text-[--text-color] transition-all duration-0 sm:text-3xl',
-		answer
-			? 'mt-[--tile-height] bg-[--bg-color] shadow-[0_var(--tile-height)_4px_0_rgb(0_0_0_/_0.2),_0_calc(-1_*_var(--tile-height))_0_0_var(--highlight-color)]'
-			: 'text-charade-100',
+		'aspect-square rounded-xl bg-[--highlight-color] pt-[--tile-height]',
 		doWiggle && 'animate-wiggle',
 		doWiggleOnce && 'animate-wiggle-once',
 		doJump && 'animate-jump',
@@ -23,8 +19,22 @@
 	)}
 	data-answer={answer}
 >
-	<input type="hidden" readonly value={letter.toUpperCase()} name={current ? 'guess' : undefined} />
-	{letter.toUpperCase()}
+	<div
+		class={cx(
+			'relative box-content grid aspect-square items-center rounded-xl text-center text-2xl font-bold text-[--text-color] transition-all duration-0 sm:text-3xl',
+			answer
+				? 'bg-[--bg-color] shadow-[0_var(--tile-height)_4px_0_rgb(0_0_0_/_0.2)]'
+				: 'text-charade-100'
+		)}
+	>
+		<input
+			type="hidden"
+			readonly
+			value={letter.toUpperCase()}
+			name={current ? 'guess' : undefined}
+		/>
+		{letter.toUpperCase()}
+	</div>
 </div>
 
 <style>

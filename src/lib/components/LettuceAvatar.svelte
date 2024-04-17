@@ -1,6 +1,5 @@
 <script>
 	export let name = '';
-	export let size = 40;
 	const backgroundColors = ['BF616A', 'D08770', 'EBCB8B', 'A3BE8C', 'B48EAD', '88C0D0', '81A1C1'];
 
 	const searchParams = new URLSearchParams();
