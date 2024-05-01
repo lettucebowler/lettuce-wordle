@@ -14,7 +14,7 @@
 					? ''
 					: 'border-t-[1px] border-[--highlight-color] shadow-[0_var(--depth)_4px_0_rgb(0_0_0_/_0.2)]'
 			)}
-		/>
+		></div>
 	{/each}
 </div>
 

@@ -1,5 +1,5 @@
 import { fetcher } from 'itty-fetcher';
-import type { GameResult } from '$lib/types/gameresult';
+import type { GameResultOutput } from '$lib/types/gameresult';
 
 export async function load(event) {
 	const { user } = event.params;
@@ -7,7 +7,7 @@ export async function load(event) {
 	const page = Number(searchParams.get('page')) || 1;
 
 	const { results, more } = await fetcher({ fetch: event.fetch }).get<{
-		results: GameResult[];
+		results: GameResultOutput[];
 		more: boolean;
 	}>('/api/v1/game-results', { user, page });
 	return {

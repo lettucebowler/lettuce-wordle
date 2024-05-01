@@ -1,72 +1,56 @@
-import {
-	string,
-	maxLength,
-	number,
-	minValue,
-	array,
-	optional,
-	type Output,
-	object,
-	minLength,
-	custom,
-	union,
-	integer,
-	literal,
-	picklist,
-	safeParse
-} from 'valibot';
+import * as v from 'valibot';
 
 import { answerList, allowedGuesses } from '$lib/util/words';
 import { getGameNum } from '$lib/util/words';
-export function allowedGuess() {
-	return custom(
-		(value: string) => answerList.includes(value) || allowedGuesses.includes(value),
-		'Guess not in list of allowed guesses.'
-	);
-}
-export const completeGuessSchema = object({
-	guess: string([minLength(5), maxLength(5), allowedGuess()]),
-	complete: literal(true)
+
+export const AllowedWordSchema = v.picklist([...answerList, ...allowedGuesses]);
+export type AllowedWordInput = v.Input<typeof AllowedWordSchema>;
+export type AllowedWordOutput = v.Output<typeof AllowedWordSchema>;
+
+export const CompleteGuessSchema = v.object({
+	guess: AllowedWordSchema,
+	complete: v.literal(true)
 });
-export type CompleteGuess = Output<typeof completeGuessSchema>;
-export const incompleteGuessSchema = object({
-	guess: string(),
-	complete: literal(false)
+export type CompleteGuessOutput = v.Output<typeof CompleteGuessSchema>;
+export const IncompleteGuessSchema = v.object({
+	guess: v.string(),
+	complete: v.literal(false)
 });
-export type IncompleteGuess = Output<typeof incompleteGuessSchema>;
-export const guessSchema = union([completeGuessSchema, incompleteGuessSchema]);
-export type Guess = Output<typeof guessSchema>;
-export function isCompleteGuess(guess: Guess): guess is CompleteGuess {
+export type IncompleteGuess = v.Output<typeof IncompleteGuessSchema>;
+export const GuessSchema = v.union([CompleteGuessSchema, IncompleteGuessSchema]);
+export type GuessOutput = v.Output<typeof GuessSchema>;
+export function isCompleteGuess(guess: GuessOutput): guess is CompleteGuessOutput {
 	return guess.complete;
 }
 
-const gameNumSchema = optional(number([integer(), minValue(1)]), getGameNum);
-export const gameStateSchema = object({
-	gameNum: gameNumSchema,
-	guesses: array(guessSchema)
+const GameNumSchema = v.optional(v.number([v.integer(), v.minValue(1)]), getGameNum);
+export const GameStateSchema = v.object({
+	gameNum: GameNumSchema,
+	guesses: v.array(GuessSchema)
 });
-export type GameState = Output<typeof gameStateSchema>;
+export type GameStateOutput = v.Output<typeof GameStateSchema>;
 
-export const leaderboardResultSchema = object({
-	user: string(),
-	games: number([integer(), minValue(0)]),
-	score: number([integer(), minValue(0)])
+export const LeaderboardResultSchema = v.object({
+	user: v.string(),
+	games: v.number([v.integer(), v.minValue(0)]),
+	score: v.number([v.integer(), v.minValue(0)])
 });
-export type LeaderboardResult = Output<typeof leaderboardResultSchema>;
+export type LeaderboardResultOutput = v.Output<typeof LeaderboardResultSchema>;
 
-export const letterStatusEnum = picklist(['x', 'c', 'i', '_']);
-export type LetterStatus = Output<typeof letterStatusEnum>;
+const letterStatuses: ReadonlyArray<string> = ['x', 'c', 'i', '_'];
+export const LetterStatusSchema = v.picklist(letterStatuses);
+export type LetterStatusOutput = v.Output<typeof LetterStatusSchema>;
 
-const answerSchema = string([
-	custom(
-		(input) => input.split('').every((status) => safeParse(letterStatusEnum, status).success),
+export const AnswerStringSchema = v.string([
+	v.custom(
+		(input) => input.split('').every((status) => letterStatuses.includes(status)),
 		'answer must only contain letter statuses'
 	),
-	custom((input) => input.length % 5 === 0, 'answers must be multiple of 5 characters')
+	v.custom((input) => input.length % 5 === 0, 'answers must be multiple of 5 characters')
 ]);
-export type Answers = Output<typeof answerSchema>;
-export const gameResultSchema = object({
-	gameNum: gameNumSchema,
-	answers: answerSchema
+export type AnswerStringOutput = v.Output<typeof AnswerStringSchema>;
+export const gameResultSchema = v.object({
+	gameNum: GameNumSchema,
+	answers: AnswerStringSchema
 });
-export type GameResult = Output<typeof gameResultSchema>;
+export type GameResultOutput = v.Output<typeof gameResultSchema>;

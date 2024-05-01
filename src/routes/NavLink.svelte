@@ -24,7 +24,7 @@
 					out:navigationSend={{ key: 'current-link' }}
 					class="grid h-full rounded-xl"
 					class:bg-charade-800={current}
-				/>
+				></div>
 			{/if}
 		</div>
 	{/if}

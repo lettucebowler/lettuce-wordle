@@ -1,11 +1,11 @@
 import { getGameNum } from './words';
-import type { Guess } from '$lib/types/gameresult';
-import { gameStateSchema } from '$lib/types/gameresult';
+import type { GuessOutput } from '$lib/types/gameresult';
+import { GameStateSchema } from '$lib/types/gameresult';
 import { safeParse } from 'valibot';
 const decodeState = (stateBuffer: string) => {
 	const state: {
 		gameNum: number;
-		guesses: Guess[];
+		guesses: GuessOutput[];
 	} = {
 		gameNum: getGameNum(),
 		guesses: []
@@ -20,7 +20,7 @@ const decodeState = (stateBuffer: string) => {
 		if (parsed?.gameNum !== currentGameNum) {
 			return state;
 		}
-		const result = safeParse(gameStateSchema, parsed);
+		const result = safeParse(GameStateSchema, parsed);
 		if (!result.success) {
 			return state;
 		}

@@ -6,7 +6,7 @@ export function getGameNum() {
 	return gameNum;
 }
 
-export const answerList = [
+export const answerList: ReadonlyArray<string> = [
 	'aback',
 	'abase',
 	'abate',
@@ -2320,7 +2320,7 @@ export const answerList = [
 	'zonal'
 ];
 
-export const allowedGuesses = [
+export const allowedGuesses: ReadonlyArray<string> = [
 	'aping',
 	'ralph',
 	'aahed',

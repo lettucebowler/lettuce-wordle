@@ -2,7 +2,7 @@
 	import LettuceIcon from '$lib/components/Icon.svelte';
 	import LettuceAvatar from '$lib/components/LettuceAvatar.svelte';
 	import Spinner from '../Spinner.svelte';
-	export let data;
+	let { data } = $props();
 </script>
 
 <main class="grid gap-8">
@@ -33,7 +33,7 @@
 						>
 							<div class="flex w-max justify-start gap-2 text-left sm:gap-4">
 								<span class="box-border h-11 w-max overflow-hidden rounded"
-									><LettuceAvatar name={score.user} size={44} /></span
+									><LettuceAvatar name={score.user} /></span
 								>
 								<span class="grid items-center">
 									{score.user}

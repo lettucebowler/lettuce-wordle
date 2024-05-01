@@ -11,22 +11,27 @@
 	import Cookies from 'js-cookie';
 	import { Toaster } from 'svelte-french-toast';
 	import type { SubmitFunction } from '@sveltejs/kit';
-	import type { CompleteGuess, IncompleteGuess } from '$lib/types/gameresult';
-	import { allowedGuess } from '$lib/types/gameresult';
+	import type { CompleteGuessOutput, IncompleteGuess } from '$lib/types/gameresult';
+	import { AllowedWordSchema } from '$lib/types/gameresult';
 	import { createExpiringBoolean } from './stores';
 	import { browser } from '$app/environment';
 	import { beforeNavigate } from '$app/navigation';
 	import { toastError, toastLoading, toastSuccess } from './toast';
-	import { safeParse, string } from 'valibot';
+	import * as v from 'valibot';
 	import cx from 'classix';
 
-	export let data;
-	export let form;
+	let { form, data } = $props();
+
+	$effect(() => {
+		if (form?.invalid) {
+			wordIsInvalid.setTrue();
+			toastError('Invalid word');
+		}
+	});
 
 	let modal: Modal;
 	const wordIsInvalid = createExpiringBoolean();
 	const submittingWord = createExpiringBoolean();
-	const delayScale = 0.03;
 	const duration = 0.15;
 
 	let modalTimer: NodeJS.Timeout;
@@ -79,8 +84,8 @@
 			return;
 		}
 		submittingWord.setTrue();
-		const guessData = safeParse(
-			string([allowedGuess()]),
+		const guessData = v.safeParse(
+			AllowedWordSchema,
 			formData
 				.getAll('guess')
 				.map((l) => l.toString().toLowerCase())
@@ -99,7 +104,7 @@
 			complete: false
 		};
 		const { metadata, updatedAnswers, updatedGuesses } = applyWord(
-			data.state.filter((guess): guess is CompleteGuess => guess.complete),
+			data.state.filter((guess): guess is CompleteGuessOutput => guess.complete),
 			guess,
 			data.answers
 		);
@@ -166,13 +171,6 @@
 			clearTimeout(modalTimer);
 		}
 	});
-
-	$: {
-		if (form?.invalid) {
-			wordIsInvalid.setTrue();
-			toastError('Invalid word');
-		}
-	}
 </script>
 
 <div class="flex flex-auto flex-col items-center gap-2">
@@ -232,7 +230,7 @@
 				answers={getKeyStatuses(data.state, data.answers)}
 			/>
 		</div>
-		<div />
+		<div></div>
 	</main>
 	<Modal bind:this={modal} />
 	<Toaster />

@@ -1,13 +1,13 @@
 import { getGameNum } from './words';
-import type { Guess } from '$lib/types/gameresult';
+import type { GuessOutput } from '$lib/types/gameresult';
 
-const encodeState = (state: { gameNum: number; guesses: Guess[] }): string => {
+const encodeState = (state: { gameNum: number; guesses: GuessOutput[] }): string => {
 	const stateString = JSON.stringify(state);
 	const encoded = btoa(stateString);
 	return encoded;
 };
 
-export const getCookieFromGameState = (gameState: Guess[]) => {
+export const getCookieFromGameState = (gameState: GuessOutput[]) => {
 	const gameNum = getGameNum();
 	const saveState = {
 		gameNum,

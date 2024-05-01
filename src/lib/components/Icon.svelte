@@ -1,7 +1,5 @@
 <script lang="ts">
-	export let icon = '';
-	export let flip = false;
-	export let dark = false;
+	let { icon = '', flip = false, dark = false } = $props();
 
 	type Path = {
 		path: string;

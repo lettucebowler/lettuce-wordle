@@ -2,7 +2,7 @@ import { type StatusError, fetcher } from 'itty-fetcher';
 import { API_WORDLETTUCE_HOST, API_WORDLETTUCE_TOKEN } from '$env/static/private';
 import { error, type RequestEvent } from '@sveltejs/kit';
 import { array, boolean, integer, number, object, required, safeParse, string } from 'valibot';
-import { gameResultSchema, leaderboardResultSchema } from '$lib/types/gameresult';
+import { gameResultSchema, LeaderboardResultSchema } from '$lib/types/gameresult';
 
 export function createApiWordLettuceFetcher(event: RequestEvent) {
 	return fetcher({
@@ -16,13 +16,13 @@ export function createApiWordLettuceFetcher(event: RequestEvent) {
 
 type Result<T extends unknown> =
 	| {
-			status: 'SUCCESS';
-			data: T;
-	  }
+		status: 'SUCCESS';
+		data: T;
+	}
 	| {
-			status: 'ERROR';
-			error: StatusError;
-	  };
+		status: 'ERROR';
+		error: StatusError;
+	};
 async function toResult<T extends unknown>(promise: Promise<T>): Promise<Result<T>> {
 	return promise
 		.then((data) => ({ status: 'SUCCESS' as 'SUCCESS', data }))
@@ -31,7 +31,7 @@ async function toResult<T extends unknown>(promise: Promise<T>): Promise<Result<
 
 const getRankinsResultSchema = object({
 	data: object({
-		rankings: array(leaderboardResultSchema)
+		rankings: array(LeaderboardResultSchema)
 	})
 });
 const getGameResultsResultSchema = object({

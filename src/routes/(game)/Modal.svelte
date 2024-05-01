@@ -1,13 +1,14 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
 	import { clickOutsideAction, trapFocus } from './actions';
-	import { getGameNum } from '$lib/util/words';
 	import { appName } from '$lib/constants/app-constants';
 	import { timeUntilNextGame } from './stores';
 	import AuthForm from '$lib/components/AuthForm.svelte';
 	import type { Unsubscriber } from 'svelte/store';
-	import { letterStatusEnum, type Answers } from '$lib/types/gameresult';
+	import { LetterStatusSchema } from '$lib/types/gameresult';
+	import type { AnswerStringOutput } from '$lib/types/gameresult';
 	import { safeParse } from 'valibot';
+	import { getGameNum } from '$lib/util/words';
 
 	let dialog: HTMLDialogElement;
 	let share = '';
@@ -73,14 +74,14 @@
 			.padStart(2, '0')}`;
 	}
 
-	function getGameStatus(statuses: Answers[]) {
+	function getGameStatus(statuses: AnswerStringOutput[]) {
 		const gameNum = getGameNum();
 		const today = `${appName} ${gameNum} ${statuses.length}/6`;
 		const strings = statuses.map((k) => {
 			return k
 				.split('')
 				.map((w) => {
-					const parseResult = safeParse(letterStatusEnum, w);
+					const parseResult = safeParse(LetterStatusSchema, w);
 					if (!parseResult.success) {
 						return '';
 					}
@@ -95,7 +96,7 @@
 	const yellow = '🟨';
 	const black = '⬛';
 	function getStatusEmoji(status: string) {
-		const parseResult = safeParse(letterStatusEnum, status);
+		const parseResult = safeParse(LetterStatusSchema, status);
 
 		if (!parseResult.success) {
 			return black;
@@ -121,7 +122,7 @@
 >
 	<div class="flex flex-col gap-2" use:clickOutsideAction on:clickoutside={closeModal}>
 		<div class="flex h-8 justify-between">
-			<div class="aspect-square h-full" />
+			<div class="aspect-square h-full"></div>
 			<h2 class="col-start-2 mt-0 flex-auto text-center text-2xl text-snow-300">&nbsp;Success!</h2>
 			<button
 				on:click={closeModal}

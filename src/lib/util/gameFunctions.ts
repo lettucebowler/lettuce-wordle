@@ -1,7 +1,7 @@
 import {
-	completeGuessSchema,
-	type CompleteGuess,
-	type Guess,
+	CompleteGuessSchema,
+	type CompleteGuessOutput,
+	type GuessOutput,
 	type IncompleteGuess
 } from '$lib/types/gameresult';
 import { getDailyWord } from './words';
@@ -90,7 +90,7 @@ export const getKeyStatuses = (
 	return { ...incorrect, ...contains, ...correct };
 };
 
-export const applyKey = (key: string, guesses: Guess[], answers: string[]) => {
+export const applyKey = (key: string, guesses: GuessOutput[], answers: string[]) => {
 	if (answers?.at(-1) === 'xxxxx') {
 		return guesses;
 	}
@@ -128,19 +128,20 @@ import { array, safeParse } from 'valibot';
 import { GuessSchema } from './words';
 import { successAnswer } from '$lib/constants/app-constants';
 export const applyWord = (
-	guesses: CompleteGuess[],
+	guesses: CompleteGuessOutput[],
 	guess: IncompleteGuess,
 	answers: string[]
 ): {
-	updatedGuesses: Guess[];
+	updatedGuesses: GuessOutput[];
 	metadata: { invalid: boolean; success: boolean };
 	updatedAnswers: string[];
 } => {
 	const metadata = {
 		invalid: false,
-		success: false
+		success: false,
+		message: ''
 	};
-	const parseGuessesResult = safeParse(array(completeGuessSchema), guesses);
+	const parseGuessesResult = safeParse(array(CompleteGuessSchema), guesses);
 	if (!parseGuessesResult.success) {
 		metadata.invalid = true;
 		return {

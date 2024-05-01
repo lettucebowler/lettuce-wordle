@@ -3,7 +3,7 @@ import { applyKey, applyWord, checkWords } from '$lib/util/gameFunctions';
 import { fail } from '@sveltejs/kit';
 import { getDailyWord, getGameNum } from '$lib/util/words';
 import { createApiWordlettuceClient } from '$lib/client/api-wordlettuce.server.js';
-import type { CompleteGuess, Guess, IncompleteGuess } from '$lib/types/gameresult';
+import type { CompleteGuessOutput, GuessOutput, IncompleteGuessOutput } from '$lib/types/gameresult';
 import { successAnswer } from '$lib/constants/app-constants.js';
 
 export const trailingSlash = 'never';
@@ -20,7 +20,7 @@ export async function load(event) {
 	});
 
 	return {
-		state: gameState as Guess[],
+		state: gameState as GuessOutput[],
 		answers,
 		success: answers.length && answers.at(-1) === successAnswer
 	};
@@ -54,10 +54,10 @@ export const actions: import('./$types').Actions = {
 
 	enter: async (event) => {
 		const data = await event.request.formData();
-		const gameState: CompleteGuess[] = event.locals
+		const gameState: CompleteGuessOutput[] = event.locals
 			.getGameState()
-			.filter((guess): guess is CompleteGuess => guess.complete);
-		const guess: IncompleteGuess = {
+			.filter((guess): guess is CompleteGuessOutput => guess.complete);
+		const guess: IncompleteGuessOutput = {
 			guess: data
 				.getAll('guess')
 				.map((l) => l.toString().toLowerCase())

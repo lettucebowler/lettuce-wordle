@@ -65,7 +65,7 @@
 							{/if}
 						</button>
 					{:else}
-						<div />
+						<div></div>
 					{/if}
 				{/each}
 			</div>

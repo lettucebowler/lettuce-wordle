@@ -48,7 +48,7 @@
 								class:rotate-180={dropdownVisible}
 							>
 								{#if user}
-									<LettuceAvatar name={user.login} size={56} />
+									<LettuceAvatar name={user.login} />
 								{:else}
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
@@ -77,7 +77,7 @@
 								class="box-border aspect-square h-14 overflow-hidden rounded-xl border-snow-300 transition-transform"
 								class:rotate-180={dropdownVisible}
 							>
-								<LettuceAvatar name={user.login} size={56} />
+								<LettuceAvatar name={user.login} />
 							</span>
 						{:else}
 							<AuthForm mode="login" />
@@ -107,7 +107,7 @@
 						{#if user?.login}
 							<div class="mb-2 flex items-center justify-start gap-4">
 								<span class="box-border h-11 h-[44px] w-[44px] w-max overflow-hidden rounded"
-									><LettuceAvatar name={user.login} size={44} /></span
+									><LettuceAvatar name={user.login} /></span
 								>
 								<span class="text-xl font-medium text-snow-300">{user.login}</span>
 							</div>
