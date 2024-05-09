@@ -16,13 +16,13 @@ export function createApiWordLettuceFetcher(event: RequestEvent) {
 
 type Result<T extends unknown> =
 	| {
-		status: 'SUCCESS';
-		data: T;
-	}
+			status: 'SUCCESS';
+			data: T;
+	  }
 	| {
-		status: 'ERROR';
-		error: StatusError;
-	};
+			status: 'ERROR';
+			error: StatusError;
+	  };
 async function toResult<T extends unknown>(promise: Promise<T>): Promise<Result<T>> {
 	return promise
 		.then((data) => ({ status: 'SUCCESS' as 'SUCCESS', data }))

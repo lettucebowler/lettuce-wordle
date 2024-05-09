@@ -14,7 +14,8 @@ declare global {
 		interface Locals {
 			_gameState: import('$lib/types/gameresult').GuessOutput[];
 			getGameState: () => import('$lib/types/gameresult').GuessOutput[];
+			gameState: import('$lib/types/gameresult').GuessOutput[];
 		}
 	}
 }
-export { };
+export {};
