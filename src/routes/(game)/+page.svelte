@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Modal from './Modal.svelte';
+	import BetterModal from './BetterModal.svelte';
 	import { slide } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
 	import { onMount } from 'svelte';
@@ -29,7 +30,7 @@
 		}
 	});
 
-	let modal: Modal;
+	let modal: Modal | BetterModal;
 	const wordIsInvalid = createExpiringBoolean();
 	const submittingWord = createExpiringBoolean();
 	const duration = 0.15;
@@ -56,7 +57,6 @@
 	const handleKey = (key: string) => {
 		if (key.toLowerCase() !== 'enter') {
 			data.state = applyKey(key, data.state, data.answers);
-			data = data;
 		}
 	};
 
@@ -126,7 +126,6 @@
 		});
 
 		data.success = metadata.success;
-		data = data;
 		if (!metadata.success) {
 			cancel();
 			form = {
@@ -156,7 +155,7 @@
 		};
 	};
 
-	onMount(() => {
+	$effect(() => {
 		if (data.success) {
 			openModal({
 				answers: data.answers,
@@ -232,7 +231,8 @@
 		</div>
 		<div></div>
 	</main>
-	<Modal bind:this={modal} />
+	<!-- <Modal bind:this={modal} /> -->
+	<BetterModal bind:this={modal} answers={data.answers} user={data.session?.user?.login} />
 	<Toaster />
 </div>
 
