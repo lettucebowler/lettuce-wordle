@@ -30,29 +30,10 @@
 		}
 	});
 
-	let modal: Modal | BetterModal;
 	const wordIsInvalid = createExpiringBoolean();
 	const submittingWord = createExpiringBoolean();
+	let modalOpen = $state(false);
 	const duration = 0.15;
-
-	let modalTimer: NodeJS.Timeout;
-	const openModal = ({
-		answers = [],
-		guesses = 0,
-		user = ''
-	}: {
-		answers: string[];
-		guesses: number;
-		user?: string;
-	}) => {
-		if (modal) {
-			modalTimer = setTimeout(() => {
-				if (modal?.open) {
-					modal.open({ answers, guesses, user });
-				}
-			}, 500);
-		}
-	};
 
 	const handleKey = (key: string) => {
 		if (key.toLowerCase() !== 'enter') {
@@ -147,28 +128,18 @@
 					toastError('Failed to save game results', { id });
 				}
 			}
-			openModal({
-				answers: data.answers,
-				guesses: data.state.length,
-				user: data.session?.user?.login
-			});
+			modalOpen = true;
 		};
 	};
 
 	$effect(() => {
 		if (data.success) {
-			openModal({
-				answers: data.answers,
-				guesses: data.state.length,
-				user: data.session?.user?.login
-			});
+			modalOpen = true;
 		}
 	});
 
 	beforeNavigate(() => {
-		if (modalTimer) {
-			clearTimeout(modalTimer);
-		}
+		modalOpen = false;
 	});
 </script>
 
@@ -232,7 +203,7 @@
 		<div></div>
 	</main>
 	<!-- <Modal bind:this={modal} /> -->
-	<BetterModal bind:this={modal} answers={data.answers} user={data.session?.user?.login} />
+	<BetterModal answers={data.answers} user={data.session?.user?.login} open={modalOpen} />
 	<Toaster />
 </div>
 

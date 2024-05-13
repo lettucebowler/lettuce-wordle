@@ -11,26 +11,31 @@
 
 	type ModalProps = {
 		answers: Array<string>;
-		user: string | undefined;
+		user?: string;
+		open?: boolean;
 	};
-	let { answers, user }: ModalProps = $props();
+	let { answers, user, open = false }: ModalProps = $props();
 	let isAuthenticated = $derived(!!user);
 	let attempts = $derived(answers.length);
 	const clipboardMessage = createExpiringString();
 	let dialog: HTMLDialogElement | undefined = $state();
 	const timeUntilNextGame = createNewGameCountDownTimer();
 
-	export function open() {
-		if (dialog && !dialog.open) {
-			dialog.showModal();
+	let modalTimeout: NodeJS.Timeout | undefined = $state();
+	$effect(() => {
+		if (open) {
+			modalTimeout = setTimeout(() => {
+				console.log('open modal');
+				dialog?.showModal();
+			}, 2000);
+			timeUntilNextGame.resume();
+		} else {
+			console.log('close modal');
+			dialog?.close();
+			clearTimeout(modalTimeout);
+			timeUntilNextGame.pause();
 		}
-	}
-
-	function closeModal() {
-		if (dialog?.close) {
-			dialog.close();
-		}
-	}
+	});
 
 	function shareGame() {
 		if (!navigator?.clipboard) {
@@ -74,24 +79,16 @@
 		return [today, ...strings].join('\n');
 	}
 
-	const green = '🟩';
-	const yellow = '🟨';
-	const black = '⬛';
 	function getStatusEmoji(status: string) {
-		const parseResult = safeParse(LetterStatusSchema, status);
-
-		if (!parseResult.success) {
-			return black;
-		}
-
-		switch (parseResult.output) {
+		switch (status) {
 			case 'x':
-				return green;
+				return '🟩';
 			case 'c':
-				return yellow;
+				return '🟨';
 			case '_':
 			case 'i':
-				return black;
+			default:
+				return '⬛';
 		}
 	}
 </script>
@@ -102,12 +99,12 @@
 	open={false}
 	use:trapFocus
 >
-	<div class="flex flex-col gap-2" use:clickOutsideAction={closeModal}>
+	<div class="flex flex-col gap-2" use:clickOutsideAction={() => dialog?.close()}>
 		<div class="flex h-8 justify-between">
 			<div class="aspect-square h-full"></div>
 			<h2 class="col-start-2 mt-0 flex-auto text-center text-2xl text-snow-300">&nbsp;Success!</h2>
 			<button
-				onclick={closeModal}
+				onclick={() => dialog?.close()}
 				class="aspect-square h-8 rounded p-1 text-snow-300 transition transition-all hover:bg-charade-950 hover:p-0"
 				><svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -126,11 +123,11 @@
 			tomorrow and play again!
 		</p>
 		<div class="grid h-8 place-items-center">
-			{#if clipboardMessage}
+			{#if clipboardMessage.value}
 				<span
 					class="-z-10 p-2 text-center text-snow-300"
 					in:fly={{ duration: 400, y: 50, opacity: 0 }}
-					out:fly={{ duration: 400, y: 50, opacity: 0 }}>{clipboardMessage}</span
+					out:fly={{ duration: 400, y: 50, opacity: 0 }}>{clipboardMessage.value}</span
 				>
 			{/if}
 		</div>

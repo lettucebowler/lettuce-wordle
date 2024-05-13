@@ -1,22 +1,35 @@
 export function timeUntilNextGame() {
     const tomorrow = new Date();
     tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
-	tomorrow.setUTCHours(0, 0, 0, 0);
+    tomorrow.setUTCHours(0, 0, 0, 0);
     return Math.round((tomorrow.getTime() - new Date().getTime()) / 1000)
 }
 
 export function createNewGameCountDownTimer() {
     let value = $state(timeUntilNextGame());
+    let countdownInterval: NodeJS.Timeout | undefined = $state();
 
-    $effect(() => {
-        setInterval(() => {
+    function resume() {
+        if (countdownInterval) {
+            console.log('no-op resume');
+            return;
+        }
+        console.log("resume");
+        countdownInterval = setInterval(() => {
             console.log('updating countdown timer');
             value = timeUntilNextGame();
         }, 1000);
-    });
+    }
+
+    $effect(() => resume());
 
     return {
-        get value(){ return value; },
+        get value() { return value; },
+        pause() {
+            console.log('pause');
+            clearInterval(countdownInterval);
+        },
+        resume,
     }
 }
 
