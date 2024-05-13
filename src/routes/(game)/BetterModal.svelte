@@ -12,9 +12,8 @@
 	type ModalProps = {
 		answers: Array<string>;
 		user?: string;
-		open?: boolean;
 	};
-	let { answers, user, open = false }: ModalProps = $props();
+	let { answers, user }: ModalProps = $props();
 	let isAuthenticated = $derived(!!user);
 	let attempts = $derived(answers.length);
 	const clipboardMessage = createExpiringString();
@@ -22,20 +21,22 @@
 	const timeUntilNextGame = createNewGameCountDownTimer();
 
 	let modalTimeout: NodeJS.Timeout | undefined = $state();
-	$effect(() => {
-		if (open) {
-			modalTimeout = setTimeout(() => {
-				console.log('open modal');
-				dialog?.showModal();
-			}, 2000);
-			timeUntilNextGame.resume();
-		} else {
-			console.log('close modal');
-			dialog?.close();
+	export function openModal() {
+		modalTimeout = setTimeout(() => {
+			dialog?.showModal();
+			timeUntilNextGame.start();
+		}, 500);
+	}
+
+	export function closeModal() {
+		if (modalTimeout) {
 			clearTimeout(modalTimeout);
+		}
+		if (dialog?.open) {
+			dialog?.close();
 			timeUntilNextGame.pause();
 		}
-	});
+	}
 
 	function shareGame() {
 		if (!navigator?.clipboard) {
@@ -99,12 +100,12 @@
 	open={false}
 	use:trapFocus
 >
-	<div class="flex flex-col gap-2" use:clickOutsideAction={() => dialog?.close()}>
+	<div class="flex flex-col gap-2" use:clickOutsideAction={closeModal}>
 		<div class="flex h-8 justify-between">
 			<div class="aspect-square h-full"></div>
 			<h2 class="col-start-2 mt-0 flex-auto text-center text-2xl text-snow-300">&nbsp;Success!</h2>
 			<button
-				onclick={() => dialog?.close()}
+				onclick={closeModal}
 				class="aspect-square h-8 rounded p-1 text-snow-300 transition transition-all hover:bg-charade-950 hover:p-0"
 				><svg
 					xmlns="http://www.w3.org/2000/svg"

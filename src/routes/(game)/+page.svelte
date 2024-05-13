@@ -1,9 +1,7 @@
 <script lang="ts">
-	import Modal from './Modal.svelte';
 	import BetterModal from './BetterModal.svelte';
 	import { slide } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
-	import { onMount } from 'svelte';
 	import { applyAction, enhance } from '$app/forms';
 	import Keyboard from './Keyboard.svelte';
 	import Tile from './Tile.svelte';
@@ -14,7 +12,7 @@
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import type { CompleteGuessOutput, IncompleteGuess } from '$lib/types/gameresult';
 	import { AllowedWordSchema } from '$lib/types/gameresult';
-	import { createExpiringBoolean } from './stores';
+	import { createExpiringBoolean } from './spells.svelte';
 	import { browser } from '$app/environment';
 	import { beforeNavigate } from '$app/navigation';
 	import { toastError, toastLoading, toastSuccess } from './toast';
@@ -22,17 +20,17 @@
 	import cx from 'classix';
 
 	let { form, data } = $props();
+	let modal: BetterModal | undefined = $state();
 
 	$effect(() => {
 		if (form?.invalid) {
-			wordIsInvalid.setTrue();
+			wordIsInvalid.truthify();
 			toastError('Invalid word');
 		}
 	});
 
-	const wordIsInvalid = createExpiringBoolean();
-	const submittingWord = createExpiringBoolean();
-	let modalOpen = $state(false);
+	const wordIsInvalid = createExpiringBoolean({ name: 'wordIsInvalid' });
+	const submittingWord = createExpiringBoolean({ name: 'submittingWord' });
 	const duration = 0.15;
 
 	const handleKey = (key: string) => {
@@ -60,11 +58,12 @@
 	};
 
 	const enhanceForm: SubmitFunction = async ({ formData, cancel }) => {
-		if ($submittingWord || data.success) {
+		if (submittingWord.value || data.success) {
+			console.log('cancel submit');
 			cancel();
 			return;
 		}
-		submittingWord.setTrue();
+		submittingWord.truthify();
 		const guessData = v.safeParse(
 			AllowedWordSchema,
 			formData
@@ -128,18 +127,17 @@
 					toastError('Failed to save game results', { id });
 				}
 			}
-			modalOpen = true;
 		};
 	};
 
 	$effect(() => {
-		if (data.success) {
-			modalOpen = true;
+		if (data?.success) {
+			modal?.openModal();
 		}
 	});
 
 	beforeNavigate(() => {
-		modalOpen = false;
+		modal?.closeModal();
 	});
 </script>
 
@@ -167,13 +165,13 @@
 								{@const answer = data.answers?.at(realIndex)?.at(j) ?? ''}
 								{@const letter = guess?.at(j) ?? ''}
 								{@const doJump = browser && data.answers.at(realIndex)?.length === 5}
-								{@const doWiggle = browser && $wordIsInvalid && current}
+								{@const doWiggle = browser && wordIsInvalid.value && current}
 								{@const doWiggleOnce = !browser && form?.invalid && current}
 								<div
 									class={cx(
 										'z-[--z-index] aspect-square min-h-0 w-full rounded-xl bg-charade-950',
 										/* shadows and highlights */ 'shadow-[inset_0_var(--height)_var(--height)_0_rgb(0_0_0_/_0.2),_inset_0_calc(-1_*_var(--height))_0_0_theme(colors.charade.800)]',
-										!guess && current && $wordIsInvalid && 'animate-wiggle-once'
+										!guess && current && wordIsInvalid.value && 'animate-wiggle-once'
 									)}
 								>
 									<Tile
@@ -203,7 +201,7 @@
 		<div></div>
 	</main>
 	<!-- <Modal bind:this={modal} /> -->
-	<BetterModal answers={data.answers} user={data.session?.user?.login} open={modalOpen} />
+	<BetterModal answers={data.answers} user={data.session?.user?.login} bind:this={modal} />
 	<Toaster />
 </div>
 
