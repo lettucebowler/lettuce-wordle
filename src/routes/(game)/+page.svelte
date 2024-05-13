@@ -226,7 +226,7 @@
 		<div class="flex h-full max-h-[min(20rem,_30vh)] w-full flex-[5_1_auto] flex-col">
 			<Keyboard
 				--height="1px"
-				on:key={(e) => handleKey(e.detail)}
+				onkey={handleKey}
 				answers={getKeyStatuses(data.state, data.answers)}
 			/>
 		</div>

@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { createEventDispatcher } from 'svelte';
 	import LettuceIcon from '$lib/components/Icon.svelte';
 
-	export let answers: { [x: string]: string } = {};
+	type KeyboardProps = {
+		answers: { [x: string]: string };
+		onkey?: (key: string) => void;
+	};
 
-	const dispatch = createEventDispatcher();
+	let { onkey = (key) => undefined, answers }: KeyboardProps = $props();
 
 	let keys: {
 		[x: string]: HTMLButtonElement;
@@ -36,8 +38,8 @@
 	class="grid h-full flex-auto grid-rows-3 gap-1"
 	id="keyboard"
 	use:enhance={({ cancel, formData }) => {
-		const key = formData.get('key');
-		dispatch('key', key);
+		const key = formData.get('key')?.toString() ?? '';
+		onkey(key);
 		cancel();
 	}}
 >

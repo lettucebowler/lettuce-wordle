@@ -1,5 +1,8 @@
 <script lang="ts">
-	export let answers: string;
+	type GameSummaryProps = {
+		answers: string;
+	};
+	let { answers }: GameSummaryProps = $props();
 	import { cx } from 'classix';
 </script>
 

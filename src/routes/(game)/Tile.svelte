@@ -1,10 +1,21 @@
 <script lang="ts">
-	export let letter = '';
-	export let answer: string;
-	export let doJump = false;
-	export let doWiggle = false;
-	export let doWiggleOnce = false;
-	export let current = false;
+	type TileProps = {
+		letter: string;
+		answer: string;
+		doJump?: boolean;
+		doWiggle?: boolean;
+		doWiggleOnce?: boolean;
+		current: boolean;
+	};
+
+	let {
+		letter = '',
+		answer = '',
+		doJump = false,
+		doWiggle = false,
+		doWiggleOnce = false,
+		current = false
+	} = $props();
 
 	import { cx } from 'classix';
 </script>
