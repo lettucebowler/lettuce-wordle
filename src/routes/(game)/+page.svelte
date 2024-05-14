@@ -10,7 +10,7 @@
 	import Cookies from 'js-cookie';
 	import { Toaster } from 'svelte-french-toast';
 	import type { SubmitFunction } from '@sveltejs/kit';
-	import type { CompleteGuessOutput, IncompleteGuess } from '$lib/types/gameresult';
+	import type { CompleteGuessOutput, GuessOutput, IncompleteGuess } from '$lib/types/gameresult';
 	import { AllowedWordSchema } from '$lib/types/gameresult';
 	import { createExpiringBoolean } from './spells.svelte';
 	import { browser } from '$app/environment';
@@ -22,22 +22,44 @@
 	let { form, data } = $props();
 	let modal: BetterModal | undefined = $state();
 
-	$effect(() => {
-		if (form?.invalid) {
-			wordIsInvalid.truthify();
-			toastError('Invalid word');
-		}
-	});
-
 	const wordIsInvalid = createExpiringBoolean({ name: 'wordIsInvalid' });
 	const submittingWord = createExpiringBoolean({ name: 'submittingWord' });
 	const duration = 0.15;
 
-	const handleKey = (key: string) => {
+	$effect(() => {
+		if (data?.success) {
+			modal?.openModal();
+		}
+	});
+
+	function writeStateToCookie(state: GuessOutput[]) {
+		Cookies.set('wordLettuce', getCookieFromGameState(state), {
+			path: '/',
+			httpOnly: false,
+			expires: 1,
+			secure: false
+		});
+	}
+
+	beforeNavigate(() => {
+		modal?.closeModal();
+	});
+
+	function handleKey(key: string) {
 		if (key.toLowerCase() !== 'enter') {
+			console.log('apply key');
 			data.state = applyKey(key, data.state, data.answers);
 		}
-	};
+	}
+
+	function invalidForm(message = 'Invalid word') {
+		form = {
+			success: false,
+			invalid: true
+		};
+		wordIsInvalid.truthify();
+		toastError(message);
+	}
 
 	const getRealIndex = (
 		i: number,
@@ -73,10 +95,7 @@
 		);
 		if (!guessData.success) {
 			cancel();
-			form = {
-				success: false,
-				invalid: true
-			};
+			invalidForm();
 			return;
 		}
 		const guess: IncompleteGuess = {
@@ -90,22 +109,13 @@
 		);
 		if (metadata.invalid) {
 			cancel();
-			form = {
-				success: false,
-				invalid: true
-			};
+			invalidForm();
 			return;
 		}
 		data.state = updatedGuesses;
 		data.answers = updatedAnswers;
-		Cookies.set('wordLettuce', getCookieFromGameState(data.state), {
-			path: '/',
-			httpOnly: false,
-			expires: 1,
-			secure: false
-		});
-
 		data.success = metadata.success;
+		writeStateToCookie(updatedGuesses);
 		if (!metadata.success) {
 			cancel();
 			form = {
@@ -129,16 +139,6 @@
 			}
 		};
 	};
-
-	$effect(() => {
-		if (data?.success) {
-			modal?.openModal();
-		}
-	});
-
-	beforeNavigate(() => {
-		modal?.closeModal();
-	});
 </script>
 
 <div class="flex flex-auto flex-col items-center gap-2">
@@ -200,7 +200,6 @@
 		</div>
 		<div></div>
 	</main>
-	<!-- <Modal bind:this={modal} /> -->
 	<BetterModal answers={data.answers} user={data.session?.user?.login} bind:this={modal} />
 	<Toaster />
 </div>
