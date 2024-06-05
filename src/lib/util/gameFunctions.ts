@@ -110,7 +110,7 @@ export const applyKey = (key: string, guesses: GuessOutput[], answers: string[])
 	return updatedGuesses;
 };
 
-import { array, safeParse } from 'valibot';
+import * as v from 'valibot';
 import { GuessSchema } from './words';
 import { successAnswer } from '$lib/constants/app-constants';
 export const applyWord = (
@@ -127,7 +127,7 @@ export const applyWord = (
 		success: false,
 		message: ''
 	};
-	const parseGuessesResult = safeParse(array(CompleteGuessSchema), guesses);
+	const parseGuessesResult = v.safeParse(v.array(CompleteGuessSchema), guesses);
 	if (!parseGuessesResult.success) {
 		metadata.invalid = true;
 		return {
@@ -145,7 +145,7 @@ export const applyWord = (
 			updatedAnswers: answers
 		};
 	}
-	const guessParseResult = safeParse(GuessSchema, guess);
+	const guessParseResult = v.safeParse(GuessSchema, guess);
 	if (!guessParseResult.success) {
 		return {
 			updatedGuesses: guesses,

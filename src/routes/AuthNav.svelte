@@ -4,7 +4,7 @@
 	import LettuceAvatar from '$lib/components/LettuceAvatar.svelte';
 	import NavLink from './NavLink.svelte';
 
-	import type { NavLinkProps } from '$lib/types/navigation';
+	import type { NavLinkProps } from '$lib/types';
 	import type { User } from '@auth/sveltekit';
 
 	export let user: User | undefined;

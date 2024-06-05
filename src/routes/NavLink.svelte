@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import type { NavLinkProps } from '$lib/types/navigation';
+	import type { NavLinkProps } from '$lib/types';
 	import { navigationSend, navigationRecieve } from './transitions';
 	export let link: NavLinkProps;
 	export let enableTransition = true;

@@ -1,5 +1,5 @@
 export const prerender = false;
-import type { NavLinkProps } from '$lib/types/navigation.js';
+import type { NavLinkProps } from '$lib/types.js';
 export async function load(event) {
 	const links: NavLinkProps[] = [
 		{

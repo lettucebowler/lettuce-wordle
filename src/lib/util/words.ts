@@ -13009,4 +13009,6 @@ export const GuessSchema = object({
 	complete: boolean()
 });
 
-export default answerList;
+export function isAllowedGuess({ guess }: { guess: string }) {
+	return answerList.includes(guess) || allowedGuesses.includes(guess);
+}
