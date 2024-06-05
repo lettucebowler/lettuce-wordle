@@ -1,5 +1,5 @@
 <script lang="ts">
-	import BetterModal from './BetterModal.svelte';
+	import BetterModal from './Modal.svelte';
 	import { slide } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
 	import { applyAction, enhance } from '$app/forms';
