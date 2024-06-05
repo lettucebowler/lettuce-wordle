@@ -47,7 +47,6 @@
 
 	function handleKey(key: string) {
 		if (key.toLowerCase() !== 'enter') {
-			console.log('apply key');
 			data.state = applyKey(key, data.state, data.answers);
 		}
 	}
@@ -81,7 +80,6 @@
 
 	const enhanceForm: SubmitFunction = async ({ formData, cancel }) => {
 		if (submittingWord.value || data.success) {
-			console.log('cancel submit');
 			cancel();
 			return;
 		}

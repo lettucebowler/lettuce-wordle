@@ -6,49 +6,35 @@ import {
 } from '$lib/types/gameresult';
 import { getDailyWord } from './words';
 
-const getLetterLocations = (s: string, l: string) => {
-	return s
-		.split('')
-		.map((l: string, i: number) => ({ letter: l, index: i }))
-		.filter((slot) => slot.letter === l)
-		.map((slot) => slot.index);
-};
-
-const containsLetter = (letter: string, index: number, guess: string, answer: string) => {
-	const guessLocations = getLetterLocations(guess, letter);
-	const answerLocations = getLetterLocations(answer, letter);
-	const correctCount = guessLocations.filter((location) =>
-		answerLocations.includes(location)
-	).length;
-	const previousContainsCount = getLetterLocations(guess.slice(0, index), letter).filter(
-		(index) => !answerLocations.includes(index)
-	).length;
-	return correctCount + previousContainsCount < answerLocations.length;
-};
-
-export const checkWord = (word: string[], answer: string) => {
-	// _ => none
-	// x => correct
-	// c => contains
-	// i => incorrect
-	if (!word) {
+export function checkWord({ guess, answer }: { guess: string; answer: string }) {
+	if (!guess.length) {
 		return '_____';
 	}
-
-	const contains = word.map((char, i) =>
-		containsLetter(char, i, word.join(''), answer) ? 'c' : 'i'
-	);
-	const correct = word.map((char, i) => (answer[i] === char ? 'x' : ''));
-
-	const statuses = correct.map((status, i) => (status ? status : contains[i]));
-	return statuses.join('');
-};
+	const guessLetters = guess.split('').map((l) => l.toLowerCase());
+	const answerLetters = answer.split('').map((l) => l.toLowerCase());
+	return guessLetters
+		.map((guessLetter, index) => {
+			if (answerLetters.at(index) === guessLetter) {
+				return 'x';
+			}
+			const letterPosition = guess
+				.split('')
+				.slice(0, index)
+				.filter((l) => l === guessLetter).length;
+			const answerLetterCount = answerLetters.filter((l) => l === guessLetter).length;
+			if (answerLetterCount > 0 && letterPosition < answerLetterCount) {
+				return 'c';
+			}
+			return 'i';
+		})
+		.join('');
+}
 
 export const checkWords = (guesses: { guess: string; complete: boolean }[], answer: string) => {
 	return guesses
 		.filter((guess) => guess?.guess?.length === 5 && guess?.complete)
 		.map((guess) => {
-			return checkWord(guess.guess.split(''), answer);
+			return checkWord({ guess: guess.guess, answer });
 		});
 };
 
@@ -170,7 +156,7 @@ export const applyWord = (
 			updatedAnswers: answers
 		};
 	}
-	answers.push(checkWord(guessParseResult.output.guess.split(''), answer));
+	answers.push(checkWord({ guess: guessParseResult.output.guess, answer }));
 	return {
 		updatedGuesses: [...guesses, { guess: guessParseResult.output.guess, complete: true }],
 		metadata: {

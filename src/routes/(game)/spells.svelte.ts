@@ -38,7 +38,6 @@ export function createExpiringBoolean({ duration = 150, name = 'boolean' } = {})
 				clearTimeout(timeout);
 			}
 			timeout = setTimeout(() => {
-				console.log(`expiring ${name}`);
 				value = false;
 			}, duration);
 		}
