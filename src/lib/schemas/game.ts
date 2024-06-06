@@ -7,11 +7,12 @@ function allowedGuess() {
 
 const GuessWordSchema = v.string([v.minLength(5), v.maxLength(5), allowedGuess()]);
 
-export const GuessSchema = v.object({
-	guess: GuessWordSchema,
-	complete: v.boolean()
+export const GameNumSchema = v.optional(v.number([v.integer(), v.minValue(1)]), getGameNum);
+
+export const GameStateSchema = v.object({
+	gameNum: GameNumSchema,
+	guesses: v.array(GuessWordSchema),
+	currentGuess: v.string()
 });
 
-export type Guess = v.Output<typeof GuessSchema>;
-
-export const GameNumSchema = v.optional(v.number([v.integer(), v.minValue(1)]), getGameNum);
+export type GameState = v.Output<typeof GameStateSchema>;

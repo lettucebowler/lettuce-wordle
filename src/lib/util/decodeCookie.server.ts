@@ -32,6 +32,23 @@ const decodeState = (stateBuffer: string) => {
 	}
 };
 
+export function decodeStateV2(state: string) {
+	const decoded = atob(state);
+	const [gameNum, guesses, currentGuess] = decoded.split(';');
+	if (!gameNum || Number(gameNum) !== getGameNum()) {
+		return {
+			gameNum: getGameNum(),
+			guesses: [],
+			currentGuess: ''
+		};
+	}
+	return {
+		gameNum: gameNum ? Number(gameNum) : getGameNum(),
+		guesses: guesses.split(','),
+		currentGuess
+	};
+}
+
 export function getGameFromCookie(wordLettuceState: string) {
 	return decodeState(wordLettuceState);
 }

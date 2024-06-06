@@ -1,5 +1,5 @@
 import { sequence } from '@sveltejs/kit/hooks';
-import { getGameFromCookie } from '$lib/util/decodeCookie.server';
+import { decodeStateV2, getGameFromCookie } from '$lib/util/decodeCookie.server';
 import { type Handle, type RequestEvent } from '@sveltejs/kit';
 import { handle as authHandler } from './auth';
 
@@ -10,8 +10,21 @@ function createGameStateGetter(event: RequestEvent) {
 		return guesses;
 	};
 }
+
+function createNewGameStateHandler(event: RequestEvent) {
+	return () => {
+		const stateString = event.cookies.get('wordlettuce-state') || '';
+		const { guesses, currentGuess } = decodeStateV2(stateString);
+		return {
+			guesses,
+			currentGuess
+		};
+	};
+}
+
 const gameStateHandler: Handle = async ({ event, resolve }) => {
 	event.locals.getGameState = createGameStateGetter(event);
+	event.locals.getGameStateV2 = createNewGameStateHandler(event);
 	return resolve(event);
 };
 
