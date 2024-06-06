@@ -8,7 +8,7 @@
 		link: NavLinkProps;
 	}>();
 
-	let current = $state(false);
+	let current = $state($page.url.pathname === link.path);
 
 	$effect(() => {
 		current = $page.url.pathname === link.path;
