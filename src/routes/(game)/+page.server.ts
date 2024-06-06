@@ -3,8 +3,13 @@ import { applyKey, applyWord, checkWords } from '$lib/util/gameFunctions';
 import { fail } from '@sveltejs/kit';
 import { getDailyWord, getGameNum } from '$lib/util/words';
 import { createApiWordlettuceClient } from '$lib/client/api-wordlettuce.server.js';
-import type { CompleteGuessOutput, GuessOutput } from '$lib/types/gameresult';
+import {
+	AllowedWordSchema,
+	type CompleteGuessOutput,
+	type GuessOutput
+} from '$lib/types/gameresult';
 import { successAnswer } from '$lib/constants/app-constants.js';
+import * as v from 'valibot';
 
 export const trailingSlash = 'never';
 
@@ -50,6 +55,34 @@ export const actions: import('./$types').Actions = {
 			success: false
 		};
 		return form;
+	},
+
+	word: async (event) => {
+		const data = await event.request.formData();
+		const gameState = event.locals.getGameStateV2();
+		const guess = data
+			.getAll('guess')
+			.map((letter) => letter.toString().toLowerCase())
+			.join('');
+		const checkedGuess = v.safeParse(AllowedWordSchema, guess);
+		if (!checkedGuess.success) {
+			return fail(400, {
+				success: false,
+				invalid: true
+			});
+		}
+		const answer = getDailyWord();
+		if (guess === answer) {
+			return {
+				success: true,
+				invalid: false
+			};
+		} else {
+			return {
+				success: false,
+				invalid: false
+			};
+		}
 	},
 
 	enter: async (event) => {
