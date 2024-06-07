@@ -3,10 +3,8 @@
 	import type { NavLinkProps } from '$lib/types';
 	import { navigationSend, navigationRecieve } from './transitions';
 
-	let { link, enableTransition = true } = $props<{
-		enableTransition?: boolean;
-		link: NavLinkProps;
-	}>();
+	let { link, enableTransition = true }: { enableTransition?: boolean; link: NavLinkProps } =
+		$props();
 
 	let current = $state($page.url.pathname === link.path);
 

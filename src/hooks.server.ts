@@ -1,29 +1,41 @@
 import { sequence } from '@sveltejs/kit/hooks';
-import { decodeStateV2, getGameFromCookie } from '$lib/util/decodeCookie.server';
 import { type Handle, type RequestEvent } from '@sveltejs/kit';
 import { handle as authHandler } from './auth';
+import { getGameNum } from '$lib/util/words';
+import { STATE_COOKIE_NAME_V2 } from '$lib/constants/app-constants';
 
-function createGameStateGetter(event: RequestEvent) {
-	return () => {
-		const wordLettuceState = event.cookies.get('wordLettuce') || '';
-		const { guesses } = getGameFromCookie(wordLettuceState);
-		return guesses;
+function decodeStateV2(state: string) {
+	if (!state) {
+		return {
+			gameNum: getGameNum(),
+			guesses: [],
+			currentGuess: ''
+		};
+	}
+	const decoded = atob(state);
+	const [gameNum, guesses, currentGuess] = decoded.split(';');
+	if (!gameNum || Number(gameNum) !== getGameNum()) {
+		return {
+			gameNum: getGameNum(),
+			guesses: [],
+			currentGuess: ''
+		};
+	}
+	return {
+		gameNum: gameNum ? Number(gameNum) : getGameNum(),
+		guesses: guesses.length ? guesses.split(',') : [],
+		currentGuess
 	};
 }
 
 function createNewGameStateHandler(event: RequestEvent) {
 	return () => {
-		const stateString = event.cookies.get('wordlettuce-state') || '';
-		const { guesses, currentGuess } = decodeStateV2(stateString);
-		return {
-			guesses,
-			currentGuess
-		};
+		const stateString = event.cookies.get(STATE_COOKIE_NAME_V2) || '';
+		return decodeStateV2(stateString);
 	};
 }
 
 const gameStateHandler: Handle = async ({ event, resolve }) => {
-	event.locals.getGameState = createGameStateGetter(event);
 	event.locals.getGameStateV2 = createNewGameStateHandler(event);
 	return resolve(event);
 };

@@ -15,7 +15,7 @@
 		doWiggle = false,
 		doWiggleOnce = false,
 		current = false
-	} = $props();
+	}: TileProps = $props();
 
 	import { cx } from 'classix';
 </script>
@@ -39,7 +39,9 @@
 			answer === 'c' && 'bg-putty-500 text-putty-800',
 			answer === 'x' && 'bg-swamp-green-500 text-swamp-green-800',
 			answer === 'i' && 'bg-charade-700 text-charade-100',
-			answer ? 'shadow-[0_var(--tile-height)_4px_0_rgb(0_0_0_/_0.2)]' : 'text-charade-100'
+			['c', 'x', 'i'].includes(answer)
+				? 'shadow-[0_var(--tile-height)_4px_0_rgb(0_0_0_/_0.2)]'
+				: 'text-charade-100'
 		)}
 	>
 		<input

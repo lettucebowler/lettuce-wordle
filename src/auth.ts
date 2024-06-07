@@ -9,7 +9,8 @@ import {
 import { object, safeParse, string, parse, number, integer, minValue, email } from 'valibot';
 import { createApiWordlettuceClient } from '$lib/client/api-wordlettuce.server';
 import { getDailyWord, getGameNum } from '$lib/util/words';
-import { checkWords } from '$lib/util/gameFunctions';
+import { checkWords, checkWordsV2 } from '$lib/util/gameFunctions';
+import { successAnswer } from '$lib/constants/app-constants';
 
 const tokenSchema = object({
 	login: string(),
@@ -60,9 +61,9 @@ export const { handle, signIn, signOut } = SvelteKitAuth(async (event) => {
 						await upsertUser(profileParseResult.output);
 
 						try {
-							const gameState = event.locals.getGameState();
-							if (gameState.length) {
-								const answers = checkWords(gameState, getDailyWord());
+							const gameState = event.locals.getGameStateV2();
+							const answers = checkWordsV2({ guesses: gameState.guesses });
+							if (answers.length && answers?.at(-1) === successAnswer) {
 								await saveGame({
 									userId: profileParseResult.output.id,
 									gameNum: getGameNum(),

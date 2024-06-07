@@ -3,8 +3,6 @@
 	import { clickOutsideAction, trapFocus } from './actions';
 	import { appName } from '$lib/constants/app-constants';
 	import AuthForm from '$lib/components/AuthForm.svelte';
-	import { LetterStatusSchema } from '$lib/types/gameresult';
-	import type { AnswerStringOutput } from '$lib/types/gameresult';
 	import { safeParse } from 'valibot';
 	import { getGameNum } from '$lib/util/words';
 	import { createExpiringString, createNewGameCountDownTimer } from './spells.svelte';
@@ -62,18 +60,14 @@
 			.padStart(2, '0')}`;
 	}
 
-	function getGameStatus(statuses: AnswerStringOutput[]) {
+	function getGameStatus(statuses: Array<string>) {
 		const gameNum = getGameNum();
 		const today = `${appName} ${gameNum} ${statuses.length}/6`;
 		const strings = statuses.map((k) => {
 			return k
 				.split('')
 				.map((w) => {
-					const parseResult = safeParse(LetterStatusSchema, w);
-					if (!parseResult.success) {
-						return '';
-					}
-					return getStatusEmoji(parseResult.output);
+					return getStatusEmoji(w);
 				})
 				.join('');
 		});

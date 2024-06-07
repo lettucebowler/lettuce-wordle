@@ -1,23 +1,20 @@
-import { getCookieFromGameState } from '$lib/util/encodeCookie';
-import { applyKey, applyWord, checkWords } from '$lib/util/gameFunctions';
+import { encodeStateV2 } from '$lib/util/encodeCookie';
+import { checkWordsV2, checkWord } from '$lib/util/gameFunctions';
 import { fail } from '@sveltejs/kit';
-import { getDailyWord, getGameNum } from '$lib/util/words';
-import { createApiWordlettuceClient } from '$lib/client/api-wordlettuce.server.js';
-import {
-	AllowedWordSchema,
-	type CompleteGuessOutput,
-	type GuessOutput
-} from '$lib/types/gameresult';
-import { successAnswer } from '$lib/constants/app-constants.js';
+import { STATE_COOKIE_NAME_V2, successAnswer } from '$lib/constants/app-constants.js';
 import * as v from 'valibot';
+import type { GameState } from '$lib/schemas/game';
+import { guessKeySchema } from '$lib/schemas/game';
+import { createApiWordlettuceClient } from '$lib/client/api-wordlettuce.server';
+import { isAllowedGuess } from '$lib/util/words.js';
 
 export const trailingSlash = 'never';
 
 export async function load(event) {
-	const gameState = event.locals.getGameState();
-	const answers = checkWords(gameState, getDailyWord());
+	const gameState2 = event.locals.getGameStateV2();
+	const answers2 = checkWordsV2({ guesses: gameState2.guesses });
 
-	event.cookies.set('wordLettuce', getCookieFromGameState(gameState), {
+	event.cookies.set(STATE_COOKIE_NAME_V2, encodeStateV2(gameState2), {
 		httpOnly: false,
 		path: '/',
 		maxAge: 86400,
@@ -25,54 +22,104 @@ export async function load(event) {
 	});
 
 	return {
-		state: gameState as GuessOutput[],
-		answers,
-		success: answers.length && answers.at(-1) === successAnswer
+		state: gameState2.guesses.map((guess) => {
+			return {
+				guess,
+				complete: true
+			};
+		}) as Array<{ guess: string; complete: boolean }>,
+		currentGuess: gameState2.currentGuess,
+		answers: answers2,
+		success: answers2.length ? answers2.at(-1) === successAnswer : false,
+		gameState: gameState2 as GameState
 	};
 }
 
 export const actions: import('./$types').Actions = {
-	keyboard: async (event) => {
-		const data = await event.request.formData();
-		const key = data.get('key')?.toString();
-		if (!key) {
+	letter: async (event) => {
+		const gameState = event.locals.getGameStateV2();
+		const lastGuessResult = checkWord({ guess: gameState.guesses.at(-1) ?? '' });
+		if (lastGuessResult === successAnswer) {
 			return {
-				invalid: true,
-				success: false
+				success: true,
+				invalid: false
 			};
 		}
-		const gameState = event.locals.getGameState();
-		const guesses = gameState || [];
-
-		const updatedGuesses = applyKey(key, guesses, checkWords(guesses, getDailyWord()));
-		event.cookies.set('wordLettuce', getCookieFromGameState(updatedGuesses), {
-			httpOnly: false,
-			path: '/',
-			maxAge: 86400
-		});
-		const form = {
-			invalid: false,
-			success: false
-		};
-		return form;
-	},
-
-	word: async (event) => {
 		const data = await event.request.formData();
-		const gameState = event.locals.getGameStateV2();
-		const guess = data
-			.getAll('guess')
-			.map((letter) => letter.toString().toLowerCase())
-			.join('');
-		const checkedGuess = v.safeParse(AllowedWordSchema, guess);
-		if (!checkedGuess.success) {
+		const key = v.safeParse(guessKeySchema, data.get('key')?.toString());
+		if (!key.success) {
 			return fail(400, {
 				success: false,
 				invalid: true
 			});
 		}
-		const answer = getDailyWord();
-		if (guess === answer) {
+		let newGameState;
+		if (key.output.toLowerCase() === 'backspace') {
+			newGameState = {
+				...gameState,
+				currentGuess: gameState.currentGuess.slice(0, -1)
+			};
+		} else {
+			newGameState = {
+				...gameState,
+				currentGuess: gameState.currentGuess + key.output.toLowerCase()
+			};
+		}
+		event.cookies.set(STATE_COOKIE_NAME_V2, encodeStateV2(newGameState), {
+			httpOnly: false,
+			path: '/',
+			maxAge: 86400,
+			secure: false
+		});
+		return {
+			success: false,
+			invalid: false
+		};
+	},
+
+	word: async (event) => {
+		const data = await event.request.formData();
+		const gameState = event.locals.getGameStateV2();
+		const answers = checkWordsV2({ guesses: gameState.guesses });
+		if (answers.at(-1) === 'xxxxx') {
+			console.log('woah');
+			return {
+				success: true,
+				invalid: false
+			};
+		}
+		const guess = data
+			.getAll('guess')
+			.map((letter) => letter.toString().toLowerCase())
+			.join('');
+		if (!isAllowedGuess({ guess })) {
+			return fail(400, {
+				success: false,
+				invalid: true
+			});
+		}
+		const newGameState = {
+			gameNum: gameState.gameNum,
+			currentGuess: '',
+			guesses: gameState.guesses.concat([guess])
+		};
+		event.cookies.set(STATE_COOKIE_NAME_V2, encodeStateV2(newGameState), {
+			httpOnly: false,
+			path: '/',
+			maxAge: 86400,
+			secure: false
+		});
+		const guessStatus = checkWord({ guess });
+		if (guessStatus === successAnswer) {
+			const session = await event.locals.auth();
+			if (session?.user) {
+				const { saveGame } = createApiWordlettuceClient(event);
+				await saveGame({
+					userId: session.user.githubId,
+					gameNum: newGameState.gameNum,
+					answers: checkWordsV2({ guesses: newGameState.guesses }).join('')
+				});
+			}
 			return {
 				success: true,
 				invalid: false
@@ -83,45 +130,5 @@ export const actions: import('./$types').Actions = {
 				invalid: false
 			};
 		}
-	},
-
-	enter: async (event) => {
-		const data = await event.request.formData();
-		const gameState: CompleteGuessOutput[] = event.locals
-			.getGameState()
-			.filter((guess): guess is CompleteGuessOutput => guess.complete);
-		const guess: GuessOutput = {
-			guess: data
-				.getAll('guess')
-				.map((l) => l.toString().toLowerCase())
-				.join(''),
-			complete: false
-		};
-
-		const { metadata, updatedGuesses, updatedAnswers } = applyWord(
-			gameState,
-			guess,
-			checkWords(gameState, getDailyWord())
-		);
-		if (metadata.invalid) {
-			return fail(400, metadata);
-		}
-		const session = await event.locals.auth();
-
-		if (session?.user && updatedAnswers?.at(-1) === 'xxxxx') {
-			const { saveGame } = createApiWordlettuceClient(event);
-			await saveGame({
-				userId: session.user.githubId,
-				gameNum: getGameNum(),
-				answers: updatedAnswers.join('')
-			});
-		}
-		event.cookies.set('wordLettuce', getCookieFromGameState(updatedGuesses), {
-			httpOnly: false,
-			path: '/',
-			maxAge: 86400,
-			secure: false
-		});
-		return metadata;
 	}
 };

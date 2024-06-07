@@ -1,23 +1,23 @@
 <script lang="ts">
 	import BetterModal from './Modal.svelte';
-	import { slide } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
 	import { applyAction, enhance } from '$app/forms';
 	import Keyboard from './Keyboard.svelte';
 	import Tile from './Tile.svelte';
-	import { applyKey, getKeyStatuses, applyWord } from '$lib/util/gameFunctions';
-	import { getCookieFromGameState } from '$lib/util/encodeCookie';
+	import { getKeyStatuses, checkWord } from '$lib/util/gameFunctions';
+	import { encodeStateV2 } from '$lib/util/encodeCookie';
 	import Cookies from 'js-cookie';
 	import { Toaster } from 'svelte-french-toast';
 	import type { SubmitFunction } from '@sveltejs/kit';
-	import type { CompleteGuessOutput, GuessOutput, IncompleteGuess } from '$lib/types/gameresult';
-	import { AllowedWordSchema } from '$lib/types/gameresult';
 	import { createExpiringBoolean } from './spells.svelte';
 	import { browser } from '$app/environment';
 	import { beforeNavigate } from '$app/navigation';
 	import { toastError, toastLoading, toastSuccess } from './toast';
 	import * as v from 'valibot';
 	import cx from 'classix';
+	import type { PageData } from './$types';
+	import { guessKeySchema, guessWordSchema, type GameState } from '$lib/schemas/game';
+	import { STATE_COOKIE_NAME_V2, successAnswer } from '$lib/constants/app-constants';
 
 	let { form, data } = $props();
 	let modal: BetterModal | undefined = $state();
@@ -32,8 +32,8 @@
 		}
 	});
 
-	function writeStateToCookie(state: GuessOutput[]) {
-		Cookies.set('wordLettuce', getCookieFromGameState(state), {
+	function writeStateToCookie(state: GameState) {
+		Cookies.set(STATE_COOKIE_NAME_V2, encodeStateV2(state), {
 			path: '/',
 			httpOnly: false,
 			expires: 1,
@@ -46,9 +46,19 @@
 	});
 
 	function handleKey(key: string) {
-		if (key.toLowerCase() !== 'enter') {
-			data.state = applyKey(key, data.state, data.answers);
+		const keyParseResult = v.safeParse(guessKeySchema, key);
+		if (!keyParseResult.success) {
+			return;
 		}
+
+		if (key === 'enter') {
+			return;
+		}
+		if (key === 'backspace') {
+			data.gameState.currentGuess = data.gameState.currentGuess.slice(0, -1);
+			return;
+		}
+		data.gameState.currentGuess += key;
 	}
 
 	function invalidForm(message = 'Invalid word') {
@@ -60,23 +70,32 @@
 		toastError(message);
 	}
 
-	const getRealIndex = (
-		i: number,
-		guesses: { guess: string; complete: boolean }[],
-		answers: string[]
-	) => {
-		const filteredLength = guesses.filter(
-			(g, j) => g.guess.length === 5 && answers[j]?.length === 5
-		).length;
+	function getItemsForGrid(data: PageData) {
+		const maxPreviousGuesses = data.success ? 6 : 5;
+		const maxFillerGuesses = 5;
 
-		if (filteredLength < 6) {
-			return i;
-		} else if (data.success) {
-			return filteredLength - 6 + i;
-		} else {
-			return filteredLength - 5 + i;
-		}
-	};
+		const previousGuesses = data.gameState.guesses
+			.map((guess, index) => ({ index, guess }))
+			.slice(-1 * maxPreviousGuesses);
+		const currentGuesses = data.success
+			? []
+			: [
+					{
+						index: data.gameState.guesses.length,
+						guess: data.gameState.currentGuess
+					}
+				];
+		const fillerGuesses = Array(maxFillerGuesses)
+			.fill(null)
+			.map((_, index) => ({
+				index: data.gameState.guesses.length + (data.success ? 0 : 1) + index,
+				guess: ''
+			}));
+		const items = [...previousGuesses, ...currentGuesses, ...fillerGuesses]
+			.filter(Boolean)
+			.slice(0, 6);
+		return items;
+	}
 
 	const enhanceForm: SubmitFunction = async ({ formData, cancel }) => {
 		if (submittingWord.value || data.success) {
@@ -84,49 +103,43 @@
 			return;
 		}
 		submittingWord.truthify();
-		const guessData = v.safeParse(
-			AllowedWordSchema,
+		const guessParseResult = v.safeParse(
+			guessWordSchema,
 			formData
 				.getAll('guess')
 				.map((l) => l.toString().toLowerCase())
 				.join('')
 		);
-		if (!guessData.success) {
+		if (!guessParseResult.success) {
 			cancel();
 			invalidForm();
 			return;
 		}
-		const guess: IncompleteGuess = {
-			guess: guessData.output,
-			complete: false
-		};
-		const { metadata, updatedAnswers, updatedGuesses } = applyWord(
-			data.state.filter((guess): guess is CompleteGuessOutput => guess.complete),
-			guess,
-			data.answers
-		);
-		if (metadata.invalid) {
-			cancel();
-			invalidForm();
-			return;
-		}
-		data.state = updatedGuesses;
-		data.answers = updatedAnswers;
-		data.success = metadata.success;
-		writeStateToCookie(updatedGuesses);
-		if (!metadata.success) {
+		const guess = guessParseResult.output;
+		const guessAnswer = checkWord({ guess });
+		if (guessAnswer !== successAnswer) {
 			cancel();
 			form = {
 				success: false,
 				invalid: false
 			};
+			data.gameState.guesses.push(guess);
+			data.answers.push(guessAnswer);
+			data.gameState.currentGuess = '';
+			writeStateToCookie(data.gameState);
 			return;
 		}
+		data.success = true;
+		data.gameState.currentGuess = '';
+		writeStateToCookie(data.gameState);
+		data.gameState.guesses.push(guess);
+		data.answers.push(guessAnswer);
+
 		let id: string;
 		if (data.session?.user) {
 			id = toastLoading('beep boop...');
 		}
-		return async ({ result }) => {
+		return async ({ result, update }) => {
 			applyAction(result);
 			if (data.session?.user?.login) {
 				if (result.type === 'success') {
@@ -144,39 +157,35 @@
 		<div class="flex w-full flex-auto flex-col items-center">
 			<form
 				method="POST"
-				action="?/enter"
-				id="game"
+				action="?/word"
 				use:enhance={enhanceForm}
+				id="game"
 				class="my-auto flex w-full max-w-[min(700px,_55vh)]"
 			>
-				<div class="grid w-full grid-rows-[repeat(6,_1fr)] gap-2">
-					{#each [...Array(6).keys()] as i (getRealIndex(i, data.state, data.answers))}
-						{@const realIndex = getRealIndex(i, data.state, data.answers)}
-						{@const current = realIndex === data.answers.length}
-						{@const guess = data.state?.at(realIndex)?.guess ?? ''}
+				<div class="max-w-700 grid w-full grid-rows-[repeat(6,_1fr)] gap-2">
+					{#each getItemsForGrid(data) as item (item.index)}
+						{@const current = item.index === data.answers.length}
 						<div
 							class="grid w-full grid-cols-[repeat(5,_1fr)] gap-2"
-							out:slide={{ duration: duration * 1000 }}
 							animate:flip={{ duration: duration * 1000 }}
+							data-index={item.index}
 						>
-							{#each [...Array(5).keys()] as j}
-								{@const answer = data.answers?.at(realIndex)?.at(j) ?? ''}
-								{@const letter = guess?.at(j) ?? ''}
-								{@const doJump = browser && data.answers.at(realIndex)?.length === 5}
+							{#each item.guess.padEnd(5, ' ').slice(0, 5).split('') as letter, j}
+								{@const doJump = browser && data.answers.at(item.index)?.length === 5}
 								{@const doWiggle = browser && wordIsInvalid.value && current}
 								{@const doWiggleOnce = !browser && form?.invalid && current}
 								<div
 									class={cx(
 										'z-[--z-index] aspect-square min-h-0 w-full rounded-xl bg-charade-950',
 										/* shadows and highlights */ 'shadow-[inset_0_var(--height)_var(--height)_0_rgb(0_0_0_/_0.2),_inset_0_calc(-1_*_var(--height))_0_0_theme(colors.charade.800)]',
-										!guess && current && wordIsInvalid.value && 'animate-wiggle-once'
+										!item.guess && current && wordIsInvalid.value && 'animate-wiggle-once'
 									)}
 								>
 									<Tile
 										--column={j}
 										--tile-height="3px"
-										{letter}
-										{answer}
+										letter={letter === ' ' ? '' : letter}
+										answer={data.answers.at(item.index)?.charAt(j) || '_'}
 										{doJump}
 										{doWiggle}
 										{doWiggleOnce}
@@ -193,7 +202,7 @@
 			<Keyboard
 				--height="1px"
 				onkey={handleKey}
-				answers={getKeyStatuses(data.state, data.answers)}
+				answers={getKeyStatuses(data.gameState.guesses, data.answers)}
 			/>
 		</div>
 		<div></div>
