@@ -1,5 +1,5 @@
 import * as v from 'valibot';
-import { getGameNum, isAllowedGuess } from '$lib/util/words';
+import { allowedGuesses, answerList, getGameNum, isAllowedGuess } from '$lib/util/words';
 
 function allowedGuess() {
 	return v.custom<string>((value) => isAllowedGuess({ guess: value }), 'Not on allowed guess list');

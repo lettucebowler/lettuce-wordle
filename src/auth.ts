@@ -8,8 +8,8 @@ import {
 } from '$env/static/private';
 import { object, safeParse, string, parse, number, integer, minValue, email } from 'valibot';
 import { createApiWordlettuceClient } from '$lib/client/api-wordlettuce.server';
-import { getDailyWord, getGameNum } from '$lib/util/words';
-import { checkWords, checkWordsV2 } from '$lib/util/gameFunctions';
+import { getGameNum } from '$lib/util/words';
+import { checkWordsV2 } from '$lib/util/gameFunctions';
 import { successAnswer } from '$lib/constants/app-constants';
 
 const tokenSchema = object({

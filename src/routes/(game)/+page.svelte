@@ -4,7 +4,13 @@
 	import { applyAction, enhance } from '$app/forms';
 	import Keyboard from './Keyboard.svelte';
 	import Tile from './Tile.svelte';
-	import { getKeyStatuses, checkWord } from '$lib/util/gameFunctions';
+	import {
+		getKeyStatuses,
+		checkWord,
+		applyKey,
+		applyWord,
+		checkWordsV2
+	} from '$lib/util/gameFunctions';
 	import { encodeStateV2 } from '$lib/util/encodeCookie';
 	import Cookies from 'js-cookie';
 	import { Toaster } from 'svelte-french-toast';
@@ -46,19 +52,11 @@
 	});
 
 	function handleKey(key: string) {
-		const keyParseResult = v.safeParse(guessKeySchema, key);
-		if (!keyParseResult.success) {
+		const { error, gameState: newGameState } = applyKey({ gameState: data.gameState, key });
+		if (error) {
 			return;
 		}
-
-		if (key === 'enter') {
-			return;
-		}
-		if (key === 'backspace') {
-			data.gameState.currentGuess = data.gameState.currentGuess.slice(0, -1);
-			return;
-		}
-		data.gameState.currentGuess += key;
+		data.gameState = newGameState;
 	}
 
 	function invalidForm(message = 'Invalid word') {
@@ -103,38 +101,29 @@
 			return;
 		}
 		submittingWord.truthify();
-		const guessParseResult = v.safeParse(
-			guessWordSchema,
-			formData
-				.getAll('guess')
-				.map((l) => l.toString().toLowerCase())
-				.join('')
-		);
-		if (!guessParseResult.success) {
+		const guess = formData
+			.getAll('guess')
+			.map((l) => l.toString().toLowerCase())
+			.join('');
+		const { error, gameState: newGameState } = applyWord({ gameState: data.gameState, guess });
+		if (error) {
 			cancel();
-			invalidForm();
-			return;
+			return invalidForm();
 		}
-		const guess = guessParseResult.output;
-		const guessAnswer = checkWord({ guess });
-		if (guessAnswer !== successAnswer) {
+		const newAnswers = checkWordsV2({ guesses: newGameState.guesses });
+		const success = checkWord({ guess: newGameState.guesses.at(-1) ?? '' }) === successAnswer;
+		data.answers = newAnswers;
+		data.gameState = newGameState;
+		form = {
+			success,
+			invalid: false
+		};
+		if (!success) {
 			cancel();
-			form = {
-				success: false,
-				invalid: false
-			};
-			data.gameState.guesses.push(guess);
-			data.answers.push(guessAnswer);
-			data.gameState.currentGuess = '';
-			writeStateToCookie(data.gameState);
+			writeStateToCookie(newGameState);
 			return;
 		}
 		data.success = true;
-		data.gameState.currentGuess = '';
-		writeStateToCookie(data.gameState);
-		data.gameState.guesses.push(guess);
-		data.answers.push(guessAnswer);
-
 		let id: string;
 		if (data.session?.user) {
 			id = toastLoading('beep boop...');

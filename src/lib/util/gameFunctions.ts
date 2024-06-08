@@ -1,4 +1,7 @@
-import { getDailyWord } from './words';
+import { successAnswer } from '$lib/constants/app-constants';
+import { guessKeySchema, type GameState } from '$lib/schemas/game';
+import { getDailyWord, isAllowedGuess } from './words';
+import * as v from 'valibot';
 
 const getLetterLocations = (s: string, l: string) => {
 	return s
@@ -80,3 +83,80 @@ export const getKeyStatuses = (words: Array<string>, statuses: string[]) => {
 
 	return { ...incorrect, ...contains, ...correct };
 };
+
+type ApplyResult =
+	| {
+			error: {
+				message: string;
+			};
+			gameState?: undefined;
+	  }
+	| {
+			error?: undefined;
+			gameState: GameState;
+	  };
+
+export function applyKey({ gameState, key }: { gameState: GameState; key: string }): ApplyResult {
+	const lastGuess = gameState.guesses.at(0) ?? '';
+	if (checkWord({ guess: lastGuess }) === successAnswer) {
+		return {
+			gameState
+		};
+	}
+	const keyParseResult = v.safeParse(guessKeySchema, key);
+	if (!keyParseResult.success) {
+		return {
+			error: {
+				message: 'Invalid key'
+			}
+		};
+	}
+	if (keyParseResult.output === 'enter') {
+		return {
+			gameState
+		};
+	}
+	if (keyParseResult.output === 'backspace') {
+		return {
+			gameState: {
+				...gameState,
+				currentGuess: gameState.currentGuess.slice(0, -1)
+			}
+		};
+	}
+	return {
+		gameState: {
+			...gameState,
+			currentGuess: `${gameState.currentGuess}${keyParseResult.output}`.slice(0, 5)
+		}
+	};
+}
+
+export function applyWord({
+	gameState,
+	guess
+}: {
+	gameState: GameState;
+	guess: string;
+}): ApplyResult {
+	const lastGuess = gameState.guesses.at(-1) ?? '';
+	if (checkWord({ guess: lastGuess }) === successAnswer) {
+		return {
+			gameState
+		};
+	}
+	if (!isAllowedGuess({ guess })) {
+		return {
+			error: {
+				message: 'Invalid word'
+			}
+		};
+	}
+	return {
+		gameState: {
+			gameNum: gameState.gameNum,
+			currentGuess: '',
+			guesses: [...gameState.guesses, guess]
+		}
+	};
+}
