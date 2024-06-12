@@ -1,21 +1,21 @@
 import * as v from 'valibot';
-import { allowedGuesses, answerList, getGameNum, isAllowedGuess } from '$lib/util/words';
+import { getGameNum, isAllowedGuess } from '$lib/util/words';
+import { PositiveIntegerSchema } from './util';
 
-function allowedGuess() {
-	return v.custom<string>((value) => isAllowedGuess({ guess: value }), 'Not on allowed guess list');
-}
+export const GuessWordSchema = v.pipe(
+	v.string(),
+	v.check((input) => isAllowedGuess({ guess: input }))
+);
 
-export const guessWordSchema = v.string([v.minLength(5), v.maxLength(5), allowedGuess()]);
-
-export const GameNumSchema = v.optional(v.number([v.integer(), v.minValue(1)]), getGameNum);
+export const GameNumSchema = v.optional(PositiveIntegerSchema, getGameNum);
 
 export const GameStateSchema = v.object({
 	gameNum: GameNumSchema,
-	guesses: v.array(guessWordSchema),
+	guesses: v.array(GuessWordSchema),
 	currentGuess: v.string()
 });
 
-export type GameState = v.Output<typeof GameStateSchema>;
+export type GameState = v.InferOutput<typeof GameStateSchema>;
 
 export const guessKeySchema = v.picklist([
 	'a',
@@ -48,11 +48,11 @@ export const guessKeySchema = v.picklist([
 	'backspace'
 ]);
 
-export type GuessKey = v.Output<typeof guessKeySchema>;
+export type GuessKey = v.InferOutput<typeof guessKeySchema>;
 
-export const gameResultSchema = v.object({
+export const GameResultSchema = v.object({
 	gameNum: GameNumSchema,
 	answers: v.string()
 });
 
-export type GameResult = v.Output<typeof gameResultSchema>;
+export type GameResult = v.InferOutput<typeof GameResultSchema>;

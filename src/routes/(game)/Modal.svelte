@@ -3,7 +3,6 @@
 	import { clickOutsideAction, trapFocus } from './actions';
 	import { appName } from '$lib/constants/app-constants';
 	import AuthForm from '$lib/components/AuthForm.svelte';
-	import { safeParse } from 'valibot';
 	import { getGameNum } from '$lib/util/words';
 	import { createExpiringString, createNewGameCountDownTimer } from './spells.svelte';
 

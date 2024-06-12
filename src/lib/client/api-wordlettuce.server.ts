@@ -1,10 +1,10 @@
 import { type StatusError, fetcher } from 'itty-fetcher';
 import { API_WORDLETTUCE_HOST, API_WORDLETTUCE_TOKEN } from '$env/static/private';
 import { error, type RequestEvent } from '@sveltejs/kit';
-import { array, boolean, integer, number, object, required, safeParse, string } from 'valibot';
+import { NonNegativeIntegerSchema, PositiveIntegerSchema } from '$lib/schemas/util';
 import * as v from 'valibot';
 
-import { gameResultSchema } from '$lib/schemas/game';
+import { GameNumSchema, GameResultSchema } from '$lib/schemas/game';
 
 export function createApiWordLettuceFetcher(event: RequestEvent) {
 	return fetcher({
@@ -31,38 +31,39 @@ async function toResult<T extends unknown>(promise: Promise<T>): Promise<Result<
 		.catch((error) => ({ status: 'ERROR' as 'ERROR', error }));
 }
 
-const getRankinsResultSchema = object({
-	data: object({
-		rankings: array(
+const GetRankingsResultSchema = v.object({
+	data: v.object({
+		rankings: v.array(
 			v.object({
 				user: v.string(),
-				games: v.number([v.integer(), v.minValue(0)]),
-				score: v.number([v.integer(), v.minValue(0)])
+				games: PositiveIntegerSchema,
+				score: PositiveIntegerSchema
 			})
 		)
 	})
 });
-const getGameResultsResultSchema = object({
-	data: object({
-		results: array(required(gameResultSchema)),
-		more: boolean(),
-		offset: number([integer()]),
-		limit: number([integer()])
+
+const GetGamesResultSchema = v.object({
+	data: v.object({
+		results: v.array(v.required(GameResultSchema)),
+		more: v.boolean(),
+		offset: NonNegativeIntegerSchema,
+		limit: PositiveIntegerSchema
 	})
 });
 
-const upsertUserResultSchema = object({
-	data: object({
-		userId: number(),
-		username: string()
+const UpsertUserResultSchema = v.object({
+	data: v.object({
+		userId: PositiveIntegerSchema,
+		username: v.string()
 	})
 });
 
-const saveGameResultSchema = object({
-	data: object({
-		gameNum: number(),
-		answers: string(),
-		userId: number()
+const SaveGameResultSchema = v.object({
+	data: v.object({
+		gameNum: GameNumSchema,
+		answers: v.string(),
+		userId: PositiveIntegerSchema
 	})
 });
 
@@ -74,7 +75,7 @@ export function createApiWordlettuceClient(event: RequestEvent) {
 		if (result.status === 'ERROR') {
 			throw error(500, result.error);
 		}
-		const parseResult = safeParse(upsertUserResultSchema, result.data);
+		const parseResult = v.safeParse(UpsertUserResultSchema, result.data);
 		if (!parseResult.success) {
 			throw error(500, 'Invalid data from api-wordlettuce.');
 		}
@@ -96,8 +97,9 @@ export function createApiWordlettuceClient(event: RequestEvent) {
 		if (result.status === 'ERROR') {
 			throw error(500, result.error);
 		}
-		const parseResult = safeParse(getGameResultsResultSchema, result.data);
+		const parseResult = v.safeParse(GetGamesResultSchema, result.data);
 		if (!parseResult.success) {
+			console.log(v.flatten(parseResult.issues));
 			throw error(500, 'Invalid data from api-wordlettuce.');
 		}
 		return parseResult.output.data;
@@ -108,7 +110,7 @@ export function createApiWordlettuceClient(event: RequestEvent) {
 		if (result.status === 'ERROR') {
 			throw error(500, result.error);
 		}
-		const parseResult = safeParse(getRankinsResultSchema, result.data);
+		const parseResult = v.safeParse(GetRankingsResultSchema, result.data);
 		if (!parseResult.success) {
 			throw error(500, 'Invalid data from api-wordlettuce.');
 		}
@@ -130,7 +132,7 @@ export function createApiWordlettuceClient(event: RequestEvent) {
 		if (result.status === 'ERROR') {
 			throw error(500, result.error);
 		}
-		const parseResult = safeParse(saveGameResultSchema, result.data);
+		const parseResult = v.safeParse(SaveGameResultSchema, result.data);
 		if (!parseResult.success) {
 			throw error(500, 'Invalid data from api-wordlettuce.');
 		}

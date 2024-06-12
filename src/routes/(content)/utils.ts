@@ -1,9 +1,9 @@
-import { integer, minValue, number, safeParse } from 'valibot';
+import { PositiveIntegerSchema } from '$lib/schemas/util';
+import * as v from 'valibot';
 
-const msSchema = number([integer(), minValue(0)]);
 // Wait for a configurable number of milliseconds. if the number is not a positive integer, the function will immediately return instead of waiting.
 export async function delay(ms: number): Promise<undefined> {
-	const parseResult = safeParse(msSchema, ms);
+	const parseResult = v.safeParse(PositiveIntegerSchema, ms);
 	if (!parseResult.success) {
 		return;
 	}

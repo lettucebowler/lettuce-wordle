@@ -19,10 +19,9 @@
 	import { browser } from '$app/environment';
 	import { beforeNavigate } from '$app/navigation';
 	import { toastError, toastLoading, toastSuccess } from './toast';
-	import * as v from 'valibot';
 	import cx from 'classix';
 	import type { PageData } from './$types';
-	import { guessKeySchema, guessWordSchema, type GameState } from '$lib/schemas/game';
+	import type { GameState } from '$lib/schemas/game';
 	import { STATE_COOKIE_NAME_V2, successAnswer } from '$lib/constants/app-constants';
 
 	let { form, data } = $props();

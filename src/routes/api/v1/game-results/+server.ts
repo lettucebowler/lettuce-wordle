@@ -1,16 +1,40 @@
-import { safeParse, number, object, coerce, minValue, optional, integer, string } from 'valibot';
+import * as v from 'valibot';
 import { createApiWordlettuceClient } from '$lib/client/api-wordlettuce.server.js';
-const getGameResultsRequestSchema = object({
-	page: optional(coerce(number([integer(), minValue(0)]), Number), 1),
-	user: string()
-});
-
 import { error, json } from '@sveltejs/kit';
+
+const EventToObjectSchema = v.pipe(
+	v.object({
+		url: v.instance(URL)
+	}),
+	v.transform((input) => {
+		return v.parse(
+			v.object({
+				page: v.optional(
+					v.pipe(
+						v.pipe(
+							v.unknown(),
+							v.transform((input) => Number(input))
+						),
+						v.integer(),
+						v.minValue(1)
+					),
+					'1'
+				),
+				user: v.pipe(
+					v.pipe(
+						v.unknown(),
+						v.transform((input) => String(input))
+					),
+					v.minLength(1)
+				)
+			}),
+			Object.fromEntries(input.url.searchParams.entries())
+		);
+	})
+);
+
 export async function GET(event) {
-	const requestParseResult = safeParse(
-		getGameResultsRequestSchema,
-		Object.fromEntries(event.url.searchParams.entries())
-	);
+	const requestParseResult = v.safeParse(EventToObjectSchema, event);
 	if (!requestParseResult.success) {
 		error(400, 'Bad request');
 	}
