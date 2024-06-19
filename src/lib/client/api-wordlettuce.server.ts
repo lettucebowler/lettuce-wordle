@@ -1,6 +1,6 @@
 import { type StatusError, fetcher } from 'itty-fetcher';
 import { API_WORDLETTUCE_HOST, API_WORDLETTUCE_TOKEN } from '$env/static/private';
-import { error, type RequestEvent } from '@sveltejs/kit';
+import { error as svelteError, type RequestEvent } from '@sveltejs/kit';
 import { NonNegativeIntegerSchema, PositiveIntegerSchema } from '$lib/schemas/util';
 import * as v from 'valibot';
 
@@ -14,21 +14,6 @@ export function createApiWordLettuceFetcher(event: RequestEvent) {
 			Authorization: `Bearer ${API_WORDLETTUCE_TOKEN}`
 		}
 	});
-}
-
-type Result<T extends unknown> =
-	| {
-			status: 'SUCCESS';
-			data: T;
-	  }
-	| {
-			status: 'ERROR';
-			error: StatusError;
-	  };
-async function toResult<T extends unknown>(promise: Promise<T>): Promise<Result<T>> {
-	return promise
-		.then((data) => ({ status: 'SUCCESS' as 'SUCCESS', data }))
-		.catch((error) => ({ status: 'ERROR' as 'ERROR', error }));
 }
 
 const GetRankingsResultSchema = v.object({
@@ -71,11 +56,14 @@ export function createApiWordlettuceClient(event: RequestEvent) {
 	const wordlettuce = createApiWordLettuceFetcher(event);
 
 	async function upsertUser({ id, login }: { id: number; login: string }) {
-		const result = await toResult(wordlettuce.put(`/v1/users/${id}`, { username: login }));
-		if (result.status === 'ERROR') {
-			throw error(500, result.error);
+		const { error, data } = await wordlettuce
+			.put(`/v1/users/${id}`, { username: login })
+			.then((data) => ({ data, error: undefined }))
+			.catch((error) => ({ error, data: undefined }));
+		if (error) {
+			throw svelteError(500, error);
 		}
-		const parseResult = v.safeParse(UpsertUserResultSchema, result.data);
+		const parseResult = v.safeParse(UpsertUserResultSchema, data);
 		if (!parseResult.success) {
 			throw error(500, 'Invalid data from api-wordlettuce.');
 		}
@@ -91,26 +79,29 @@ export function createApiWordlettuceClient(event: RequestEvent) {
 		count: number;
 		offset: number;
 	}) {
-		const result = await toResult(
-			wordlettuce.get('/v1/game-results', { username: user, count, offset })
-		);
-		if (result.status === 'ERROR') {
-			throw error(500, result.error);
+		const { data, error } = await wordlettuce
+			.get('/v1/game-results', { username: user, count, offset })
+			.then((data) => ({ data, error: undefined }))
+			.catch((error) => ({ error, data: undefined }));
+		if (error) {
+			throw svelteError(500, error);
 		}
-		const parseResult = v.safeParse(GetGamesResultSchema, result.data);
+		const parseResult = v.safeParse(GetGamesResultSchema, data);
 		if (!parseResult.success) {
-			console.log(v.flatten(parseResult.issues));
 			throw error(500, 'Invalid data from api-wordlettuce.');
 		}
 		return parseResult.output.data;
 	}
 
 	async function getRankings() {
-		const result = await toResult(wordlettuce.get('/v2/rankings'));
-		if (result.status === 'ERROR') {
-			throw error(500, result.error);
+		const { data, error } = await wordlettuce
+			.get('/v2/rankings')
+			.then((data) => ({ data, error: undefined }))
+			.catch((error) => ({ error, data: undefined }));
+		if (error) {
+			throw svelteError(500, error);
 		}
-		const parseResult = v.safeParse(GetRankingsResultSchema, result.data);
+		const parseResult = v.safeParse(GetRankingsResultSchema, data);
 		if (!parseResult.success) {
 			throw error(500, 'Invalid data from api-wordlettuce.');
 		}
@@ -126,13 +117,14 @@ export function createApiWordlettuceClient(event: RequestEvent) {
 		gameNum: number;
 		answers: string;
 	}) {
-		const result = await toResult(
-			wordlettuce.post('/v1/game-results', { userId, gameNum, answers })
-		);
-		if (result.status === 'ERROR') {
-			throw error(500, result.error);
+		const { data, error } = await wordlettuce
+			.post('/v1/game-results', { userId, gameNum, answers })
+			.then((data) => ({ data, error: undefined }))
+			.catch((error) => ({ error, data: undefined }));
+		if (error) {
+			throw svelteError(500, error);
 		}
-		const parseResult = v.safeParse(SaveGameResultSchema, result.data);
+		const parseResult = v.safeParse(SaveGameResultSchema, data);
 		if (!parseResult.success) {
 			throw error(500, 'Invalid data from api-wordlettuce.');
 		}
