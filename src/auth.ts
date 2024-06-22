@@ -6,14 +6,16 @@ import {
 	SK_AUTH_GITHUB_CLIENT_ID,
 	SK_AUTH_GITHUB_CLIENT_SECRET
 } from '$env/static/private';
-import { object, safeParse, string, parse, number, integer, minValue, email } from 'valibot';
+import * as v from 'valibot';
 import { createApiWordlettuceClient } from '$lib/client/api-wordlettuce.server';
-import { getDailyWord, getGameNum } from '$lib/util/words';
-import { checkWords } from '$lib/util/gameFunctions';
+import { getGameNum } from '$lib/util/words';
+import { checkWordsV2 } from '$lib/util/gameFunctions';
+import { successAnswer } from '$lib/constants/app-constants';
+import { EmailSchema, PositiveIntegerSchema } from '$lib/schemas/util';
 
-const tokenSchema = object({
-	login: string(),
-	id: number()
+const tokenSchema = v.object({
+	login: v.string(),
+	id: v.number()
 });
 
 export const { handle, signIn, signOut } = SvelteKitAuth(async (event) => {
@@ -29,7 +31,7 @@ export const { handle, signIn, signOut } = SvelteKitAuth(async (event) => {
 		skipCSRFCheck,
 		callbacks: {
 			session({ session, token }) {
-				const tokenData = parse(tokenSchema, token);
+				const tokenData = v.parse(tokenSchema, token);
 				return {
 					...session,
 					user: {
@@ -41,11 +43,11 @@ export const { handle, signIn, signOut } = SvelteKitAuth(async (event) => {
 			},
 			async jwt({ token, profile }) {
 				if (profile) {
-					const profileParseResult = safeParse(
-						object({
-							id: number([integer(), minValue(0)]),
-							login: string(),
-							email: string([email()])
+					const profileParseResult = v.safeParse(
+						v.object({
+							id: PositiveIntegerSchema,
+							login: v.string(),
+							email: EmailSchema
 						}),
 						profile
 					);
@@ -60,9 +62,9 @@ export const { handle, signIn, signOut } = SvelteKitAuth(async (event) => {
 						await upsertUser(profileParseResult.output);
 
 						try {
-							const gameState = event.locals.getGameState();
-							if (gameState.length) {
-								const answers = checkWords(gameState, getDailyWord());
+							const gameState = event.locals.getGameStateV2();
+							const answers = checkWordsV2({ guesses: gameState.guesses });
+							if (answers.length && answers?.at(-1) === successAnswer) {
 								await saveGame({
 									userId: profileParseResult.output.id,
 									gameNum: getGameNum(),

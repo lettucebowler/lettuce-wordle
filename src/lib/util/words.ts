@@ -2,11 +2,10 @@ export function getGameNum() {
 	const msInADay = 1000 * 60 * 60 * 24;
 	const initial = new Date(1643673600000);
 	const now = new Date();
-	const gameNum = Math.floor((now.getTime() - initial.getTime()) / msInADay);
-	return gameNum;
+	return Math.floor((now.getTime() - initial.getTime()) / msInADay);
 }
 
-export const answerList = [
+export const answerList: ReadonlyArray<string> = [
 	'aback',
 	'abase',
 	'abate',
@@ -2320,7 +2319,7 @@ export const answerList = [
 	'zonal'
 ];
 
-export const allowedGuesses = [
+export const allowedGuesses: ReadonlyArray<string> = [
 	'aping',
 	'ralph',
 	'aahed',
@@ -12996,18 +12995,6 @@ export function getDailyWord() {
 	return answerList.at(wordIndex) ?? 'slate';
 }
 
-import { minLength, string, maxLength, custom, object, boolean } from 'valibot';
-
-export const GuessSchema = object({
-	guess: string([
-		minLength(5),
-		maxLength(5),
-		custom(function isAllowedGuess(value: string) {
-			const valid = answerList.includes(value) || allowedGuesses.includes(value);
-			return valid;
-		}, 'Guess not in list of allowed guesses.')
-	]),
-	complete: boolean()
-});
-
-export default answerList;
+export function isAllowedGuess({ guess }: { guess: string }) {
+	return answerList.includes(guess) || allowedGuesses.includes(guess);
+}

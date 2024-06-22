@@ -1,66 +1,52 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
 	import { clickOutsideAction, trapFocus } from './actions';
-	import { getGameNum } from '$lib/util/words';
 	import { appName } from '$lib/constants/app-constants';
-	import { timeUntilNextGame } from './stores';
 	import AuthForm from '$lib/components/AuthForm.svelte';
-	import type { Unsubscriber } from 'svelte/store';
-	import { letterStatusEnum, type Answers } from '$lib/types/gameresult';
-	import { safeParse } from 'valibot';
+	import { getGameNum } from '$lib/util/words';
+	import { createExpiringString, createNewGameCountDownTimer } from './spells.svelte';
 
-	let dialog: HTMLDialogElement;
-	let share = '';
-	let attempts: number;
-	let message = '';
-	let authenticated = false;
-	let timeUntil: number;
-	let unsub: Unsubscriber;
+	type ModalProps = {
+		answers: Array<string>;
+		user?: string;
+	};
+	let { answers, user }: ModalProps = $props();
+	let isAuthenticated = $derived(!!user);
+	let attempts = $derived(answers.length);
+	const clipboardMessage = createExpiringString();
+	let dialog: HTMLDialogElement | undefined = $state();
+	const timeUntilNextGame = createNewGameCountDownTimer();
 
-	export function open({
-		answers = [],
-		guesses = 0,
-		user = ''
-	}: {
-		answers: string[];
-		guesses: number;
-		user: string;
-	}) {
-		authenticated = !!user;
-		share = getGameStatus(answers);
-		attempts = guesses;
-		unsub = timeUntilNextGame.subscribe((value) => {
-			timeUntil = value;
-		});
-		if (dialog && !dialog.open) {
-			dialog.showModal();
-		}
+	let modalTimeout: NodeJS.Timeout | undefined = $state();
+	export function openModal() {
+		modalTimeout = setTimeout(() => {
+			dialog?.showModal();
+			timeUntilNextGame.start();
+		}, 500);
 	}
 
-	function closeModal() {
-		dialog.close();
-		if (unsub) {
-			unsub();
+	export function closeModal() {
+		if (modalTimeout) {
+			clearTimeout(modalTimeout);
+		}
+		if (dialog?.open) {
+			dialog?.close();
+			timeUntilNextGame.pause();
 		}
 	}
 
 	function shareGame() {
-		message = 'Results Copied to clipboard!';
-		setTimeout(() => {
-			message = '';
-		}, 4000);
-
 		if (!navigator?.clipboard) {
-			message = 'Failed to copy to clipboard.';
+			clipboardMessage.write('navigator clipboard api not supported in this browser');
 		}
 
 		navigator.clipboard
-			.writeText(share)
+			.writeText(getGameStatus(answers))
 			.then(() => {
-				message = 'Results copied to clipboard';
+				clipboardMessage.write('Results Copied to clipboard!');
 			})
 			.catch(() => {
-				message = 'Failed clipboard copy.';
+				clipboardMessage.write('Failed to copy to clipboard');
 			});
 	}
 
@@ -73,42 +59,30 @@
 			.padStart(2, '0')}`;
 	}
 
-	function getGameStatus(statuses: Answers[]) {
+	function getGameStatus(statuses: Array<string>) {
 		const gameNum = getGameNum();
 		const today = `${appName} ${gameNum} ${statuses.length}/6`;
 		const strings = statuses.map((k) => {
 			return k
 				.split('')
 				.map((w) => {
-					const parseResult = safeParse(letterStatusEnum, w);
-					if (!parseResult.success) {
-						return '';
-					}
-					return getStatusEmoji(parseResult.output);
+					return getStatusEmoji(w);
 				})
 				.join('');
 		});
 		return [today, ...strings].join('\n');
 	}
 
-	const green = '🟩';
-	const yellow = '🟨';
-	const black = '⬛';
 	function getStatusEmoji(status: string) {
-		const parseResult = safeParse(letterStatusEnum, status);
-
-		if (!parseResult.success) {
-			return black;
-		}
-
-		switch (parseResult.output) {
+		switch (status) {
 			case 'x':
-				return green;
+				return '🟩';
 			case 'c':
-				return yellow;
+				return '🟨';
 			case '_':
 			case 'i':
-				return black;
+			default:
+				return '⬛';
 		}
 	}
 </script>
@@ -119,12 +93,12 @@
 	open={false}
 	use:trapFocus
 >
-	<div class="flex flex-col gap-2" use:clickOutsideAction on:clickoutside={closeModal}>
+	<div class="flex flex-col gap-2" use:clickOutsideAction={closeModal}>
 		<div class="flex h-8 justify-between">
-			<div class="aspect-square h-full" />
+			<div class="aspect-square h-full"></div>
 			<h2 class="col-start-2 mt-0 flex-auto text-center text-2xl text-snow-300">&nbsp;Success!</h2>
 			<button
-				on:click={closeModal}
+				onclick={closeModal}
 				class="aspect-square h-8 rounded p-1 text-snow-300 transition transition-all hover:bg-charade-950 hover:p-0"
 				><svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -143,18 +117,18 @@
 			tomorrow and play again!
 		</p>
 		<div class="grid h-8 place-items-center">
-			{#if message}
+			{#if clipboardMessage.value}
 				<span
 					class="-z-10 p-2 text-center text-snow-300"
 					in:fly={{ duration: 400, y: 50, opacity: 0 }}
-					out:fly={{ duration: 400, y: 50, opacity: 0 }}>{message}</span
+					out:fly={{ duration: 400, y: 50, opacity: 0 }}>{clipboardMessage.value}</span
 				>
 			{/if}
 		</div>
 		<div class="grid place-items-center p-2 text-center font-bold text-snow-300">
-			Next word in {formatTime(timeUntil)}
+			Next word in {formatTime(timeUntilNextGame.value)}
 		</div>
-		{#if !authenticated}
+		{#if !isAuthenticated}
 			<AuthForm mode="login">
 				<div class="flex w-full flex-row justify-center gap-3">
 					<button
@@ -170,7 +144,7 @@
 		{/if}
 		<div class="flex w-full flex-row justify-center gap-3">
 			<button
-				on:click={shareGame}
+				onclick={shareGame}
 				class="h-12 w-full cursor-pointer rounded-lg border-transparent bg-frost-400 p-0 font-bold text-snow-300 active:brightness-90"
 				><span
 					class="grid h-full items-center duration-500 hover:backdrop-brightness-90 hover:backdrop-filter"

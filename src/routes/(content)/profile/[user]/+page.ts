@@ -1,5 +1,5 @@
 import { fetcher } from 'itty-fetcher';
-import type { GameResult } from '$lib/types/gameresult';
+import type { GameResult } from '$lib/schemas/game';
 
 export async function load(event) {
 	const { user } = event.params;

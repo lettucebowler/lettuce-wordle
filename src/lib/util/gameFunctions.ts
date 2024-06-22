@@ -1,10 +1,7 @@
-import {
-	completeGuessSchema,
-	type CompleteGuess,
-	type Guess,
-	type IncompleteGuess
-} from '$lib/types/gameresult';
-import { getDailyWord } from './words';
+import { successAnswer } from '$lib/constants/app-constants';
+import { guessKeySchema, type GameState } from '$lib/schemas/game';
+import { getDailyWord, isAllowedGuess } from './words';
+import * as v from 'valibot';
 
 const getLetterLocations = (s: string, l: string) => {
 	return s
@@ -14,7 +11,16 @@ const getLetterLocations = (s: string, l: string) => {
 		.map((slot) => slot.index);
 };
 
-const containsLetter = (letter: string, index: number, guess: string, answer: string) => {
+function containsLetter({
+	index,
+	guess,
+	answer
+}: {
+	index: number;
+	guess: string;
+	answer: string;
+}) {
+	const letter = guess.charAt(index);
 	const guessLocations = getLetterLocations(guess, letter);
 	const answerLocations = getLetterLocations(answer, letter);
 	const correctCount = guessLocations.filter((location) =>
@@ -24,41 +30,29 @@ const containsLetter = (letter: string, index: number, guess: string, answer: st
 		(index) => !answerLocations.includes(index)
 	).length;
 	return correctCount + previousContainsCount < answerLocations.length;
-};
+}
 
-export const checkWord = (word: string[], answer: string) => {
-	// _ => none
-	// x => correct
-	// c => contains
-	// i => incorrect
-	if (!word) {
+export function checkWord({ guess, answer = getDailyWord() }: { guess: string; answer?: string }) {
+	if (!guess.length) {
 		return '_____';
 	}
-
-	const contains = word.map((char, i) =>
-		containsLetter(char, i, word.join(''), answer) ? 'c' : 'i'
-	);
-	const correct = word.map((char, i) => (answer[i] === char ? 'x' : ''));
+	const contains = guess
+		.split('')
+		.map((_, i) => (containsLetter({ index: i, guess, answer }) ? 'c' : 'i'));
+	const correct = guess.split('').map((char, i) => (answer[i] === char ? 'x' : ''));
 
 	const statuses = correct.map((status, i) => (status ? status : contains[i]));
 	return statuses.join('');
-};
+}
 
-export const checkWords = (guesses: { guess: string; complete: boolean }[], answer: string) => {
-	return guesses
-		.filter((guess) => guess?.guess?.length === 5 && guess?.complete)
-		.map((guess) => {
-			return checkWord(guess.guess.split(''), answer);
-		});
-};
+export function checkWordsV2({ guesses }: { guesses: Array<string> }) {
+	const answer = getDailyWord();
+	return guesses.map((guess: string) => {
+		return checkWord({ guess, answer });
+	});
+}
 
-export const getKeyStatuses = (
-	words: {
-		guess: string;
-		complete: boolean;
-	}[],
-	statuses: string[]
-) => {
+export const getKeyStatuses = (words: Array<string>, statuses: string[]) => {
 	if (!words || !statuses) {
 		return {};
 	}
@@ -66,7 +60,7 @@ export const getKeyStatuses = (
 		new Set(
 			words
 				.map((w, i) =>
-					w.guess.split('').map((l, j) => ({
+					w.split('').map((l, j) => ({
 						letter: l,
 						status: statuses[i]?.[j] || '_'
 					}))
@@ -90,92 +84,79 @@ export const getKeyStatuses = (
 	return { ...incorrect, ...contains, ...correct };
 };
 
-export const applyKey = (key: string, guesses: Guess[], answers: string[]) => {
-	if (answers?.at(-1) === 'xxxxx') {
-		return guesses;
-	}
-	const keyTest = /^[a-zA-Z]{1}$/;
-	const isLetter = keyTest.test(key);
-	const current_guess = answers.length;
-	const guess = guesses.at(current_guess) || {
-		guess: '',
-		complete: false
-	};
-	if (
-		(!isLetter && key.toLowerCase() !== 'backspace') ||
-		(key.toLowerCase() === 'backspace' && guess.guess.length === 0) ||
-		(isLetter && guess.guess.length >= 5)
-	) {
-		return guesses;
-	}
+type ApplyResult =
+	| {
+			error: {
+				message: string;
+			};
+			gameState?: undefined;
+	  }
+	| {
+			error?: undefined;
+			gameState: GameState;
+	  };
 
-	const updatedGuesses = guesses;
-	if (key.toLowerCase() === 'backspace') {
-		updatedGuesses[current_guess] = {
-			guess: updatedGuesses[current_guess]?.guess?.slice(0, -1),
-			complete: false
-		};
-	} else {
-		updatedGuesses[current_guess] = {
-			guess: (updatedGuesses[current_guess]?.guess || '') + key.toLowerCase(),
-			complete: false
-		};
-	}
-	return updatedGuesses;
-};
-
-import { array, safeParse } from 'valibot';
-import { GuessSchema } from './words';
-import { successAnswer } from '$lib/constants/app-constants';
-export const applyWord = (
-	guesses: CompleteGuess[],
-	guess: IncompleteGuess,
-	answers: string[]
-): {
-	updatedGuesses: Guess[];
-	metadata: { invalid: boolean; success: boolean };
-	updatedAnswers: string[];
-} => {
-	const metadata = {
-		invalid: false,
-		success: false
-	};
-	const parseGuessesResult = safeParse(array(completeGuessSchema), guesses);
-	if (!parseGuessesResult.success) {
-		metadata.invalid = true;
+export function applyKey({ gameState, key }: { gameState: GameState; key: string }): ApplyResult {
+	const lastGuess = gameState.guesses.at(0) ?? '';
+	if (checkWord({ guess: lastGuess }) === successAnswer) {
 		return {
-			updatedGuesses: guesses,
-			metadata,
-			updatedAnswers: answers
+			gameState
 		};
 	}
-	const answer = getDailyWord();
-	if (answers.at(-1) === 'xxxxx') {
-		metadata.success = true;
+	const keyParseResult = v.safeParse(guessKeySchema, key);
+	if (!keyParseResult.success) {
 		return {
-			updatedGuesses: guesses,
-			metadata,
-			updatedAnswers: answers
+			error: {
+				message: 'Invalid key'
+			}
 		};
 	}
-	const guessParseResult = safeParse(GuessSchema, guess);
-	if (!guessParseResult.success) {
+	if (keyParseResult.output === 'enter') {
 		return {
-			updatedGuesses: guesses,
-			metadata: {
-				...metadata,
-				invalid: true
-			},
-			updatedAnswers: answers
+			gameState
 		};
 	}
-	answers.push(checkWord(guessParseResult.output.guess.split(''), answer));
+	if (keyParseResult.output === 'backspace') {
+		return {
+			gameState: {
+				...gameState,
+				currentGuess: gameState.currentGuess.slice(0, -1)
+			}
+		};
+	}
 	return {
-		updatedGuesses: [...guesses, { guess: guessParseResult.output.guess, complete: true }],
-		metadata: {
-			invalid: false,
-			success: answers.at(-1) === successAnswer
-		},
-		updatedAnswers: answers
+		gameState: {
+			...gameState,
+			currentGuess: `${gameState.currentGuess}${keyParseResult.output}`.slice(0, 5)
+		}
 	};
-};
+}
+
+export function applyWord({
+	gameState,
+	guess
+}: {
+	gameState: GameState;
+	guess: string;
+}): ApplyResult {
+	const lastGuess = gameState.guesses.at(-1) ?? '';
+	if (checkWord({ guess: lastGuess }) === successAnswer) {
+		return {
+			gameState
+		};
+	}
+	if (!isAllowedGuess({ guess })) {
+		return {
+			error: {
+				message: 'Invalid word'
+			}
+		};
+	}
+	return {
+		gameState: {
+			gameNum: gameState.gameNum,
+			currentGuess: '',
+			guesses: [...gameState.guesses, guess]
+		}
+	};
+}

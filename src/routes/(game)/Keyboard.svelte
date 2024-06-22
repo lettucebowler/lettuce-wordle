@@ -1,11 +1,14 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { createEventDispatcher } from 'svelte';
 	import LettuceIcon from '$lib/components/Icon.svelte';
+	import cx from 'classix';
 
-	export let answers: { [x: string]: string } = {};
+	type KeyboardProps = {
+		answers: { [x: string]: string };
+		onkey?: (key: string) => void;
+	};
 
-	const dispatch = createEventDispatcher();
+	let { onkey = (key) => undefined, answers }: KeyboardProps = $props();
 
 	let keys: {
 		[x: string]: HTMLButtonElement;
@@ -36,8 +39,8 @@
 	class="grid h-full flex-auto grid-rows-3 gap-1"
 	id="keyboard"
 	use:enhance={({ cancel, formData }) => {
-		const key = formData.get('key');
-		dispatch('key', key);
+		const key = formData.get('key')?.toString() ?? '';
+		onkey(key);
 		cancel();
 	}}
 >
@@ -50,13 +53,18 @@
 						<button
 							aria-label={letter}
 							title={letter}
-							formaction="?/{letter === 'enter' ? 'enter' : 'keyboard'}"
+							formaction={letter === 'enter' ? '?/word' : '?/letter'}
 							form={letter === 'enter' ? 'game' : undefined}
 							name="key"
 							value={letter}
 							bind:this={keys[letter]}
 							data-answer={status}
-							class="col-span-4 mt-[--keyboard-height] box-content grid h-full w-full cursor-pointer place-items-center rounded-md bg-[--bg-color] text-center text-sm font-bold text-[--text-color] shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--highlight-color)] active:mt-0 active:shadow-none xl:text-base"
+							class={cx(
+								'col-span-4 mt-[--keyboard-height] box-content grid h-full w-full cursor-pointer place-items-center rounded-md bg-[--bg-color] text-center text-sm font-bold text-[--text-color] active:mt-0 active:shadow-none xl:text-base',
+								['x', 'c', '_'].includes(status)
+									? 'shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--highlight-color)]'
+									: ''
+							)}
 						>
 							{#if icons.get(letter)}
 								<span class="h-5"><LettuceIcon {...icons.get(letter)} /></span>
@@ -65,7 +73,7 @@
 							{/if}
 						</button>
 					{:else}
-						<div />
+						<div></div>
 					{/if}
 				{/each}
 			</div>
@@ -86,15 +94,16 @@
 		--text-color: theme('colors.swamp-green.900');
 	}
 
-	[data-answer='_'] {
+	[data-answer='i'] {
 		--bg-color: theme('colors.charade.800');
 		--highlight-color: theme('colors.charade.600');
+		--text-color: theme('colors.charade.300');
 	}
 
 	button {
+		--bg-color: theme('colors.charade.600');
+		--highlight-color: theme('colors.charade.400');
 		--keyboard-height: var(--height, 2px);
-		--bg-color: theme('colors.charade.700');
-		--highlight-color: theme('colors.charade.500');
 		--text-color: theme('colors.charade.100');
 	}
 </style>

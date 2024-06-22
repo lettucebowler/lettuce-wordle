@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let message: string = 'just a sec...';
+	let { message = 'Just a sec...' } = $props();
 </script>
 
 <div class="flex flex-col items-center gap-2 text-snow-300">

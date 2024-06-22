@@ -1,140 +1,133 @@
 <script lang="ts">
-	import Modal from './Modal.svelte';
-	import { slide } from 'svelte/transition';
+	import BetterModal from './Modal.svelte';
 	import { flip } from 'svelte/animate';
-	import { onMount } from 'svelte';
 	import { applyAction, enhance } from '$app/forms';
 	import Keyboard from './Keyboard.svelte';
 	import Tile from './Tile.svelte';
-	import { applyKey, getKeyStatuses, applyWord } from '$lib/util/gameFunctions';
-	import { getCookieFromGameState } from '$lib/util/encodeCookie';
+	import {
+		getKeyStatuses,
+		checkWord,
+		applyKey,
+		applyWord,
+		checkWordsV2
+	} from '$lib/util/gameFunctions';
+	import { encodeStateV2 } from '$lib/util/encodeCookie';
 	import Cookies from 'js-cookie';
 	import { Toaster } from 'svelte-french-toast';
 	import type { SubmitFunction } from '@sveltejs/kit';
-	import type { CompleteGuess, IncompleteGuess } from '$lib/types/gameresult';
-	import { allowedGuess } from '$lib/types/gameresult';
-	import { createExpiringBoolean } from './stores';
+	import { createExpiringBoolean } from './spells.svelte';
 	import { browser } from '$app/environment';
 	import { beforeNavigate } from '$app/navigation';
 	import { toastError, toastLoading, toastSuccess } from './toast';
-	import { safeParse, string } from 'valibot';
 	import cx from 'classix';
+	import type { PageData } from './$types';
+	import type { GameState } from '$lib/schemas/game';
+	import { STATE_COOKIE_NAME_V2, successAnswer } from '$lib/constants/app-constants';
 
-	export let data;
-	export let form;
+	let { form, data } = $props();
+	let modal: BetterModal | undefined = $state();
 
-	let modal: Modal;
-	const wordIsInvalid = createExpiringBoolean();
-	const submittingWord = createExpiringBoolean();
-	const delayScale = 0.03;
+	const wordIsInvalid = createExpiringBoolean({ name: 'wordIsInvalid' });
+	const submittingWord = createExpiringBoolean({ name: 'submittingWord' });
 	const duration = 0.15;
 
-	let modalTimer: NodeJS.Timeout;
-	const openModal = ({
-		answers = [],
-		guesses = 0,
-		user = ''
-	}: {
-		answers: string[];
-		guesses: number;
-		user?: string;
-	}) => {
-		if (modal) {
-			modalTimer = setTimeout(() => {
-				if (modal?.open) {
-					modal.open({ answers, guesses, user });
-				}
-			}, 500);
+	$effect(() => {
+		if (data?.success) {
+			modal?.openModal();
 		}
-	};
+	});
 
-	const handleKey = (key: string) => {
-		if (key.toLowerCase() !== 'enter') {
-			data.state = applyKey(key, data.state, data.answers);
-			data = data;
-		}
-	};
-
-	const getRealIndex = (
-		i: number,
-		guesses: { guess: string; complete: boolean }[],
-		answers: string[]
-	) => {
-		const filteredLength = guesses.filter(
-			(g, j) => g.guess.length === 5 && answers[j]?.length === 5
-		).length;
-
-		if (filteredLength < 6) {
-			return i;
-		} else if (data.success) {
-			return filteredLength - 6 + i;
-		} else {
-			return filteredLength - 5 + i;
-		}
-	};
-
-	const enhanceForm: SubmitFunction = async ({ formData, cancel }) => {
-		if ($submittingWord || data.success) {
-			cancel();
-			return;
-		}
-		submittingWord.setTrue();
-		const guessData = safeParse(
-			string([allowedGuess()]),
-			formData
-				.getAll('guess')
-				.map((l) => l.toString().toLowerCase())
-				.join('')
-		);
-		if (!guessData.success) {
-			cancel();
-			form = {
-				success: false,
-				invalid: true
-			};
-			return;
-		}
-		const guess: IncompleteGuess = {
-			guess: guessData.output,
-			complete: false
-		};
-		const { metadata, updatedAnswers, updatedGuesses } = applyWord(
-			data.state.filter((guess): guess is CompleteGuess => guess.complete),
-			guess,
-			data.answers
-		);
-		if (metadata.invalid) {
-			cancel();
-			form = {
-				success: false,
-				invalid: true
-			};
-			return;
-		}
-		data.state = updatedGuesses;
-		data.answers = updatedAnswers;
-		Cookies.set('wordLettuce', getCookieFromGameState(data.state), {
+	function writeStateToCookie(state: GameState) {
+		Cookies.set(STATE_COOKIE_NAME_V2, encodeStateV2(state), {
 			path: '/',
 			httpOnly: false,
 			expires: 1,
 			secure: false
 		});
+	}
 
-		data.success = metadata.success;
-		data = data;
-		if (!metadata.success) {
-			cancel();
-			form = {
-				success: false,
-				invalid: false
-			};
+	beforeNavigate(() => {
+		modal?.closeModal();
+	});
+
+	function handleKey(key: string) {
+		const { error, gameState: newGameState } = applyKey({ gameState: data.gameState, key });
+		if (error) {
 			return;
 		}
+		data.gameState = newGameState;
+	}
+
+	function invalidForm(message = 'Invalid word') {
+		form = {
+			success: false,
+			invalid: true
+		};
+		wordIsInvalid.truthify();
+		toastError(message);
+	}
+
+	function getItemsForGrid(data: PageData) {
+		const maxPreviousGuesses = data.success ? 6 : 5;
+		const maxFillerGuesses = 5;
+
+		const previousGuesses = data.gameState.guesses
+			.map((guess, index) => ({ index, guess }))
+			.slice(-1 * maxPreviousGuesses);
+		const currentGuesses = data.success
+			? []
+			: [
+					{
+						index: data.gameState.guesses.length,
+						guess: data.gameState.currentGuess
+					}
+				];
+		const fillerGuesses = Array(maxFillerGuesses)
+			.fill(null)
+			.map((_, index) => ({
+				index: data.gameState.guesses.length + (data.success ? 0 : 1) + index,
+				guess: ''
+			}));
+		const items = [...previousGuesses, ...currentGuesses, ...fillerGuesses]
+			.filter(Boolean)
+			.slice(0, 6);
+		return items;
+	}
+
+	const enhanceForm: SubmitFunction = async ({ formData, cancel }) => {
+		if (submittingWord.value || data.success) {
+			cancel();
+			return;
+		}
+		submittingWord.truthify();
+		const guess = formData
+			.getAll('guess')
+			.map((l) => l.toString().toLowerCase())
+			.join('');
+		const { error, gameState: newGameState } = applyWord({ gameState: data.gameState, guess });
+		if (error) {
+			cancel();
+			return invalidForm();
+		}
+		const newAnswers = checkWordsV2({ guesses: newGameState.guesses });
+		const success = checkWord({ guess: newGameState.guesses.at(-1) ?? '' }) === successAnswer;
+		data.answers = newAnswers;
+		data.gameState = newGameState;
+		form = {
+			success,
+			invalid: false
+		};
+		if (!success) {
+			cancel();
+			writeStateToCookie(newGameState);
+			return;
+		}
+		data.success = true;
 		let id: string;
 		if (data.session?.user) {
 			id = toastLoading('beep boop...');
 		}
-		return async ({ result }) => {
+		return async ({ result, update }) => {
 			applyAction(result);
 			if (data.session?.user?.login) {
 				if (result.type === 'success') {
@@ -143,36 +136,8 @@
 					toastError('Failed to save game results', { id });
 				}
 			}
-			openModal({
-				answers: data.answers,
-				guesses: data.state.length,
-				user: data.session?.user?.login
-			});
 		};
 	};
-
-	onMount(() => {
-		if (data.success) {
-			openModal({
-				answers: data.answers,
-				guesses: data.state.length,
-				user: data.session?.user?.login
-			});
-		}
-	});
-
-	beforeNavigate(() => {
-		if (modalTimer) {
-			clearTimeout(modalTimer);
-		}
-	});
-
-	$: {
-		if (form?.invalid) {
-			wordIsInvalid.setTrue();
-			toastError('Invalid word');
-		}
-	}
 </script>
 
 <div class="flex flex-auto flex-col items-center gap-2">
@@ -180,39 +145,35 @@
 		<div class="flex w-full flex-auto flex-col items-center">
 			<form
 				method="POST"
-				action="?/enter"
-				id="game"
+				action="?/word"
 				use:enhance={enhanceForm}
+				id="game"
 				class="my-auto flex w-full max-w-[min(700px,_55vh)]"
 			>
-				<div class="grid w-full grid-rows-[repeat(6,_1fr)] gap-2">
-					{#each [...Array(6).keys()] as i (getRealIndex(i, data.state, data.answers))}
-						{@const realIndex = getRealIndex(i, data.state, data.answers)}
-						{@const current = realIndex === data.answers.length}
-						{@const guess = data.state?.at(realIndex)?.guess ?? ''}
+				<div class="max-w-700 grid w-full grid-rows-[repeat(6,_1fr)] gap-2">
+					{#each getItemsForGrid(data) as item (item.index)}
+						{@const current = item.index === data.answers.length}
 						<div
 							class="grid w-full grid-cols-[repeat(5,_1fr)] gap-2"
-							out:slide={{ duration: duration * 1000 }}
 							animate:flip={{ duration: duration * 1000 }}
+							data-index={item.index}
 						>
-							{#each [...Array(5).keys()] as j}
-								{@const answer = data.answers?.at(realIndex)?.at(j) ?? ''}
-								{@const letter = guess?.at(j) ?? ''}
-								{@const doJump = browser && data.answers.at(realIndex)?.length === 5}
-								{@const doWiggle = browser && $wordIsInvalid && current}
+							{#each item.guess.padEnd(5, ' ').slice(0, 5).split('') as letter, j}
+								{@const doJump = browser && data.answers.at(item.index)?.length === 5}
+								{@const doWiggle = browser && wordIsInvalid.value && current}
 								{@const doWiggleOnce = !browser && form?.invalid && current}
 								<div
 									class={cx(
 										'z-[--z-index] aspect-square min-h-0 w-full rounded-xl bg-charade-950',
 										/* shadows and highlights */ 'shadow-[inset_0_var(--height)_var(--height)_0_rgb(0_0_0_/_0.2),_inset_0_calc(-1_*_var(--height))_0_0_theme(colors.charade.800)]',
-										!guess && current && $wordIsInvalid && 'animate-wiggle-once'
+										!item.guess && current && wordIsInvalid.value && 'animate-wiggle-once'
 									)}
 								>
 									<Tile
 										--column={j}
 										--tile-height="3px"
-										{letter}
-										{answer}
+										letter={letter === ' ' ? '' : letter}
+										answer={data.answers.at(item.index)?.charAt(j) || '_'}
 										{doJump}
 										{doWiggle}
 										{doWiggleOnce}
@@ -228,13 +189,13 @@
 		<div class="flex h-full max-h-[min(20rem,_30vh)] w-full flex-[5_1_auto] flex-col">
 			<Keyboard
 				--height="1px"
-				on:key={(e) => handleKey(e.detail)}
-				answers={getKeyStatuses(data.state, data.answers)}
+				onkey={handleKey}
+				answers={getKeyStatuses(data.gameState.guesses, data.answers)}
 			/>
 		</div>
-		<div />
+		<div></div>
 	</main>
-	<Modal bind:this={modal} />
+	<BetterModal answers={data.answers} user={data.session?.user?.login} bind:this={modal} />
 	<Toaster />
 </div>
 

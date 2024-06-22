@@ -1,6 +1,3 @@
-const { transform } = require('typescript');
-const { nonNullable } = require('valibot');
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
 	content: [

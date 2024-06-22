@@ -12,8 +12,7 @@ declare module '@auth/sveltekit' {
 declare global {
 	declare namespace App {
 		interface Locals {
-			_gameState: import('$lib/types/gameresult').Guess[];
-			getGameState: () => import('$lib/types/gameresult').Guess[];
+			getGameStateV2: () => import('$lib/schemas/game').GameState;
 		}
 	}
 }

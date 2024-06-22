@@ -1,8 +1,10 @@
 import { type StatusError, fetcher } from 'itty-fetcher';
 import { API_WORDLETTUCE_HOST, API_WORDLETTUCE_TOKEN } from '$env/static/private';
-import { error, type RequestEvent } from '@sveltejs/kit';
-import { array, boolean, integer, number, object, required, safeParse, string } from 'valibot';
-import { gameResultSchema, leaderboardResultSchema } from '$lib/types/gameresult';
+import { error as svelteError, type RequestEvent } from '@sveltejs/kit';
+import { NonNegativeIntegerSchema, PositiveIntegerSchema } from '$lib/schemas/util';
+import * as v from 'valibot';
+
+import { GameNumSchema, GameResultSchema } from '$lib/schemas/game';
 
 export function createApiWordLettuceFetcher(event: RequestEvent) {
 	return fetcher({
@@ -14,47 +16,39 @@ export function createApiWordLettuceFetcher(event: RequestEvent) {
 	});
 }
 
-type Result<T extends unknown> =
-	| {
-			status: 'SUCCESS';
-			data: T;
-	  }
-	| {
-			status: 'ERROR';
-			error: StatusError;
-	  };
-async function toResult<T extends unknown>(promise: Promise<T>): Promise<Result<T>> {
-	return promise
-		.then((data) => ({ status: 'SUCCESS' as 'SUCCESS', data }))
-		.catch((error) => ({ status: 'ERROR' as 'ERROR', error }));
-}
-
-const getRankinsResultSchema = object({
-	data: object({
-		rankings: array(leaderboardResultSchema)
-	})
-});
-const getGameResultsResultSchema = object({
-	data: object({
-		results: array(required(gameResultSchema)),
-		more: boolean(),
-		offset: number([integer()]),
-		limit: number([integer()])
+const GetRankingsResultSchema = v.object({
+	data: v.object({
+		rankings: v.array(
+			v.object({
+				user: v.string(),
+				games: PositiveIntegerSchema,
+				score: PositiveIntegerSchema
+			})
+		)
 	})
 });
 
-const upsertUserResultSchema = object({
-	data: object({
-		userId: number(),
-		username: string()
+const GetGamesResultSchema = v.object({
+	data: v.object({
+		results: v.array(v.required(GameResultSchema)),
+		more: v.boolean(),
+		offset: NonNegativeIntegerSchema,
+		limit: PositiveIntegerSchema
 	})
 });
 
-const saveGameResultSchema = object({
-	data: object({
-		gameNum: number(),
-		answers: string(),
-		userId: number()
+const UpsertUserResultSchema = v.object({
+	data: v.object({
+		userId: PositiveIntegerSchema,
+		username: v.string()
+	})
+});
+
+const SaveGameResultSchema = v.object({
+	data: v.object({
+		gameNum: GameNumSchema,
+		answers: v.string(),
+		userId: PositiveIntegerSchema
 	})
 });
 
@@ -62,11 +56,14 @@ export function createApiWordlettuceClient(event: RequestEvent) {
 	const wordlettuce = createApiWordLettuceFetcher(event);
 
 	async function upsertUser({ id, login }: { id: number; login: string }) {
-		const result = await toResult(wordlettuce.put(`/v1/users/${id}`, { username: login }));
-		if (result.status === 'ERROR') {
-			throw error(500, result.error);
+		const { error, data } = await wordlettuce
+			.put(`/v1/users/${id}`, { username: login })
+			.then((data) => ({ data, error: undefined }))
+			.catch((error) => ({ error, data: undefined }));
+		if (error) {
+			throw svelteError(500, error);
 		}
-		const parseResult = safeParse(upsertUserResultSchema, result.data);
+		const parseResult = v.safeParse(UpsertUserResultSchema, data);
 		if (!parseResult.success) {
 			throw error(500, 'Invalid data from api-wordlettuce.');
 		}
@@ -82,13 +79,14 @@ export function createApiWordlettuceClient(event: RequestEvent) {
 		count: number;
 		offset: number;
 	}) {
-		const result = await toResult(
-			wordlettuce.get('/v1/game-results', { username: user, count, offset })
-		);
-		if (result.status === 'ERROR') {
-			throw error(500, result.error);
+		const { data, error } = await wordlettuce
+			.get('/v1/game-results', { username: user, count, offset })
+			.then((data) => ({ data, error: undefined }))
+			.catch((error) => ({ error, data: undefined }));
+		if (error) {
+			throw svelteError(500, error);
 		}
-		const parseResult = safeParse(getGameResultsResultSchema, result.data);
+		const parseResult = v.safeParse(GetGamesResultSchema, data);
 		if (!parseResult.success) {
 			throw error(500, 'Invalid data from api-wordlettuce.');
 		}
@@ -96,11 +94,14 @@ export function createApiWordlettuceClient(event: RequestEvent) {
 	}
 
 	async function getRankings() {
-		const result = await toResult(wordlettuce.get('/v2/rankings'));
-		if (result.status === 'ERROR') {
-			throw error(500, result.error);
+		const { data, error } = await wordlettuce
+			.get('/v2/rankings')
+			.then((data) => ({ data, error: undefined }))
+			.catch((error) => ({ error, data: undefined }));
+		if (error) {
+			throw svelteError(500, error);
 		}
-		const parseResult = safeParse(getRankinsResultSchema, result.data);
+		const parseResult = v.safeParse(GetRankingsResultSchema, data);
 		if (!parseResult.success) {
 			throw error(500, 'Invalid data from api-wordlettuce.');
 		}
@@ -116,13 +117,14 @@ export function createApiWordlettuceClient(event: RequestEvent) {
 		gameNum: number;
 		answers: string;
 	}) {
-		const result = await toResult(
-			wordlettuce.post('/v1/game-results', { userId, gameNum, answers })
-		);
-		if (result.status === 'ERROR') {
-			throw error(500, result.error);
+		const { data, error } = await wordlettuce
+			.post('/v1/game-results', { userId, gameNum, answers })
+			.then((data) => ({ data, error: undefined }))
+			.catch((error) => ({ error, data: undefined }));
+		if (error) {
+			throw svelteError(500, error);
 		}
-		const parseResult = safeParse(saveGameResultSchema, result.data);
+		const parseResult = v.safeParse(SaveGameResultSchema, data);
 		if (!parseResult.success) {
 			throw error(500, 'Invalid data from api-wordlettuce.');
 		}
