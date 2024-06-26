@@ -1,10 +1,10 @@
-import { type StatusError, fetcher } from 'itty-fetcher';
+import { fetcher } from 'itty-fetcher';
 import { API_WORDLETTUCE_HOST, API_WORDLETTUCE_TOKEN } from '$env/static/private';
 import { error as svelteError, type RequestEvent } from '@sveltejs/kit';
-import { NonNegativeIntegerSchema, PositiveIntegerSchema } from '$lib/schemas/util';
+import { PositiveIntegerSchema } from '$lib/schemas/util';
 import * as v from 'valibot';
 
-import { GameNumSchema, GameResultSchema } from '$lib/schemas/game';
+import { GameNumSchema, } from '$lib/schemas/game';
 
 export function createApiWordLettuceFetcher(event: RequestEvent) {
 	return fetcher({
@@ -15,27 +15,6 @@ export function createApiWordLettuceFetcher(event: RequestEvent) {
 		}
 	});
 }
-
-const GetRankingsResultSchema = v.object({
-	data: v.object({
-		rankings: v.array(
-			v.object({
-				user: v.string(),
-				games: PositiveIntegerSchema,
-				score: PositiveIntegerSchema
-			})
-		)
-	})
-});
-
-const GetGamesResultSchema = v.object({
-	data: v.object({
-		results: v.array(v.required(GameResultSchema)),
-		more: v.boolean(),
-		offset: NonNegativeIntegerSchema,
-		limit: PositiveIntegerSchema
-	})
-});
 
 const UpsertUserResultSchema = v.object({
 	data: v.object({
@@ -80,32 +59,29 @@ export function createApiWordlettuceClient(event: RequestEvent) {
 		offset: number;
 	}) {
 		const { data, error } = await wordlettuce
-			.get('/v1/game-results', { username: user, count, offset })
+			.get<{
+				limit: number;
+				offset: number;
+				more: boolean;
+				results: Array<{ gameNum: number; attempts: number; answers: string; userId: number; }>
+			}>('/v1/game-results', { username: user, count, offset })
 			.then((data) => ({ data, error: undefined }))
 			.catch((error) => ({ error, data: undefined }));
 		if (error) {
 			throw svelteError(500, error);
 		}
-		const parseResult = v.safeParse(GetGamesResultSchema, data);
-		if (!parseResult.success) {
-			throw error(500, 'Invalid data from api-wordlettuce.');
-		}
-		return parseResult.output.data;
+		return data;
 	}
 
 	async function getRankings() {
 		const { data, error } = await wordlettuce
-			.get('/v2/rankings')
+			.get<{ rankings: Array<{ user: string; games: number; score: number; }> }>('/v2/rankings')
 			.then((data) => ({ data, error: undefined }))
 			.catch((error) => ({ error, data: undefined }));
 		if (error) {
 			throw svelteError(500, error);
 		}
-		const parseResult = v.safeParse(GetRankingsResultSchema, data);
-		if (!parseResult.success) {
-			throw error(500, 'Invalid data from api-wordlettuce.');
-		}
-		return parseResult.output.data;
+		return data;
 	}
 
 	async function saveGame({
