@@ -14,14 +14,14 @@
 </script>
 
 <a
-	class="grid cursor-pointer items-center rounded-xl border-transparent text-3xl font-medium text-snow-300 hover:underline sm:h-14"
+	class="grid h-full cursor-pointer items-center rounded-xl border-transparent text-3xl font-medium text-snow-300 hover:underline"
 	class:ml-auto={link.margin === 'left'}
 	class:text-snow-100={current}
 	class:after:bg-charade-800={current}
 	aria-current={current}
 	href={link.path}
 >
-	<div class="col-[1] row-[1] grid hidden w-full sm:block sm:h-14">
+	<div class="col-[1] row-[1] box-border grid hidden h-14 h-full w-full sm:block">
 		{#if enableTransition}
 			{#if current}
 				<div
@@ -35,7 +35,7 @@
 			<div class="grid h-full rounded-xl" class:bg-charade-800={current}></div>
 		{/if}
 	</div>
-	<span class="z-10 col-[1] row-[1] my-auto grid items-center sm:h-14 sm:px-6 sm:py-2"
+	<span class="z-10 col-[1] row-[1] my-auto grid items-center sm:h-14 sm:px-4 sm:py-2"
 		>{link.name}</span
 	>
 </a>

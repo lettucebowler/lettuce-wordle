@@ -54,7 +54,7 @@ export function createApiWordlettuceClient(event: RequestEvent) {
 				results: Array<{ gameNum: number; attempts: number; answers: string; userId: number }>;
 			}>('/v1/game-results', { username: user, count, offset })
 			.then((data) => ({ data, error: undefined }))
-			.catch((error) => ({ error, data: undefined }));
+			.catch((error) => ({ error: error as Error, data: undefined }));
 		if (error) {
 			throw svelteError(500, error);
 		}

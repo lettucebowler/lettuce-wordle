@@ -3,7 +3,6 @@
 	import LettuceAvatar from '$lib/components/LettuceAvatar.svelte';
 	import { fetcher } from 'itty-fetcher';
 	import { browser } from '$app/environment';
-	import type { GameResultOutput } from '$lib/types/gameresult.js';
 	import GameSummary from './GameSummary.svelte';
 
 	let { data } = $props();
@@ -12,7 +11,7 @@
 
 	async function getNextPage() {
 		const newItems = await fetcher({ base: window.location.origin }).get<{
-			results: GameResultOutput[];
+			results: Array<{ gameNum: number; attempts: number; answers: string; userId: number }>;
 			more: boolean;
 		}>('/api/v1/game-results', { user: data.user, page: data.page + items.length / 30 });
 		if (!newItems.more) {
@@ -34,7 +33,7 @@
 <main class="grid w-full gap-8">
 	<figure class="flex flex-col gap-2">
 		{#each [data.user] as user (user)}
-			<div class="mx-auto h-full max-h-[10rem] sm:h-full">
+			<div class="mx-auto h-40 w-40">
 				<LettuceAvatar name={user} />
 			</div>
 		{/each}

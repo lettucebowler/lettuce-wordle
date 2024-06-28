@@ -49,10 +49,3 @@ export const guessKeySchema = v.picklist([
 ]);
 
 export type GuessKey = v.InferOutput<typeof guessKeySchema>;
-
-export const GameResultSchema = v.object({
-	gameNum: GameNumSchema,
-	answers: v.string()
-});
-
-export type GameResult = v.InferOutput<typeof GameResultSchema>;
