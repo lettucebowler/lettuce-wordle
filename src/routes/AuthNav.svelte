@@ -31,14 +31,14 @@
 	});
 </script>
 
-<div class="w-full">
+<div class="mb-1 min-h-[66px] w-full">
 	<div id="big-papa-nav" class="flex justify-end">
 		<nav
-			class="h-18 z-10 box-content w-full justify-end gap-x-2 rounded-2xl sm:p-1"
+			class="h-18 z-10 ml-0 ml-auto box-content max-h-[72px] w-full justify-end gap-x-4 rounded-2xl border-t-[2px] border-t-charade-500 bg-charade-700 p-1 shadow-[0_2px_4px_0_rgb(0_0_0_/_0.2)]"
 			id="primary-nav"
 		>
 			<div class="flex">
-				<div class="hidden gap-2 sm:flex">
+				<div class="hidden gap-4 sm:flex">
 					{#each links.filter((link) => link.enabled) as link}
 						<NavLink {link} />
 					{/each}
@@ -47,7 +47,7 @@
 					<div class="flex h-full flex-col sm:hidden">
 						<label
 							for="subnav-toggle-small"
-							class="box-border flex h-full flex-[0_0_auto] cursor-pointer select-none items-center justify-center gap-2 rounded-xl text-center text-3xl text-snow-100 transition ease-in-out active:bg-charade-900 sm:hidden"
+							class="box-border flex h-full flex-[0_0_auto] cursor-pointer select-none items-center justify-center gap-2 rounded-xl text-center text-3xl text-snow-100 transition ease-in-out hover:bg-charade-800 active:bg-charade-900 sm:hidden"
 						>
 							<span
 								class="box-border aspect-square h-full overflow-hidden rounded-xl border-snow-300 transition-transform"
@@ -140,10 +140,12 @@
 			bind:checked={dropdownVisible}
 		/>
 		<div
-			class="mx-auto grid w-max grid-rows-[0fr] transition transition-all peer-checked:grid-rows-[1fr]"
+			class="-mt-4 ml-auto mr-6 grid w-max grid-rows-[0fr] transition transition-all peer-checked:grid-rows-[1fr]"
 		>
 			<nav id="subnav-content" class="overflow-hidden">
-				<div class="z-0 mx-auto flex justify-evenly gap-4 rounded-b-xl p-1 pt-4 font-medium">
+				<div
+					class="z-0 mx-auto flex justify-evenly gap-4 rounded-b-xl bg-charade-800 p-1 pt-4 font-medium"
+				>
 					{#each subnavItems as subnavItem}
 						<a
 							href={subnavItem.path}
