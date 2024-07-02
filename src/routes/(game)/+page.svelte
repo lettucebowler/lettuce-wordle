@@ -193,7 +193,6 @@
 				answers={getKeyStatuses(data.gameState.guesses, data.answers)}
 			/>
 		</div>
-		<div></div>
 	</main>
 	<BetterModal answers={data.answers} user={data.session?.user?.login} bind:this={modal} />
 	<Toaster />
