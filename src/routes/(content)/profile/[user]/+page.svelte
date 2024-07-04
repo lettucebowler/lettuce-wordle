@@ -17,7 +17,7 @@
 		if (!newItems.more) {
 			fetchMore = false;
 		}
-		items = [...items, ...newItems.results];
+		items = items.concat(newItems.results);
 	}
 </script>
 
