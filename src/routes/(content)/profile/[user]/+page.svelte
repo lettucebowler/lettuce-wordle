@@ -6,18 +6,17 @@
 	import GameSummary from './GameSummary.svelte';
 
 	let { data } = $props();
-	let items = $state(data.results);
 	let fetchMore = $state(data.more);
 
 	async function getNextPage() {
 		const newItems = await fetcher({ base: window.location.origin }).get<{
 			results: Array<{ gameNum: number; attempts: number; answers: string; userId: number }>;
 			more: boolean;
-		}>('/api/v1/game-results', { user: data.user, page: data.page + items.length / 30 });
+		}>('/api/v1/game-results', { user: data.user, page: data.page + data.results.length / 30 });
 		if (!newItems.more) {
 			fetchMore = false;
 		}
-		items = items.concat(newItems.results);
+		data.results = data.results.concat(newItems.results);
 	}
 </script>
 
@@ -45,7 +44,7 @@
 	<h1 class="text-center text-3xl font-bold text-snow-300">Play History</h1>
 
 	<div class="grid w-full grid-cols-2 gap-2 px-1 sm:grid-cols-3 sm:gap-3">
-		{#each items as gameResult (gameResult.gameNum)}
+		{#each data.results as gameResult (gameResult.gameNum)}
 			<div class="flex w-full flex-[1_1_200px] flex-col gap-2 rounded-2xl">
 				<h2 class="flex justify-between text-center text-xl font-medium text-snow-300">
 					<span class="text-left">#{gameResult.gameNum}</span><span class="text-right"
