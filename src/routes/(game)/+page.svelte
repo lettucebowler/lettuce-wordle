@@ -27,6 +27,8 @@
 	let { form, data } = $props();
 	let modal: BetterModal | undefined = $state();
 
+	let gameState = $state(data.gameState);
+
 	const wordIsInvalid = createExpiringBoolean({ name: 'wordIsInvalid' });
 	const submittingWord = createExpiringBoolean({ name: 'submittingWord' });
 	const duration = 0.15;
@@ -51,11 +53,11 @@
 	});
 
 	function handleKey(key: string) {
-		const { error, gameState: newGameState } = applyKey({ gameState: data.gameState, key });
+		const { error, gameState: newGameState } = applyKey({ gameState, key });
 		if (error) {
 			return;
 		}
-		data.gameState = newGameState;
+		gameState = newGameState;
 	}
 
 	function invalidForm(message = 'Invalid word') {
@@ -71,21 +73,21 @@
 		const maxPreviousGuesses = data.success ? 6 : 5;
 		const maxFillerGuesses = 5;
 
-		const previousGuesses = data.gameState.guesses
+		const previousGuesses = gameState.guesses
 			.map((guess, index) => ({ index, guess }))
 			.slice(-1 * maxPreviousGuesses);
 		const currentGuesses = data.success
 			? []
 			: [
 					{
-						index: data.gameState.guesses.length,
-						guess: data.gameState.currentGuess
+						index: gameState.guesses.length,
+						guess: gameState.currentGuess
 					}
 				];
 		const fillerGuesses = Array(maxFillerGuesses)
 			.fill(null)
 			.map((_, index) => ({
-				index: data.gameState.guesses.length + (data.success ? 0 : 1) + index,
+				index: gameState.guesses.length + (data.success ? 0 : 1) + index,
 				guess: ''
 			}));
 		const items = [...previousGuesses, ...currentGuesses, ...fillerGuesses]
@@ -104,7 +106,7 @@
 			.getAll('guess')
 			.map((l) => l.toString().toLowerCase())
 			.join('');
-		const { error, gameState: newGameState } = applyWord({ gameState: data.gameState, guess });
+		const { error, gameState: newGameState } = applyWord({ gameState, guess });
 		if (error) {
 			cancel();
 			return invalidForm();
@@ -112,7 +114,7 @@
 		const newAnswers = checkWordsV2({ guesses: newGameState.guesses });
 		const success = checkWord({ guess: newGameState.guesses.at(-1) ?? '' }) === successAnswer;
 		data.answers = newAnswers;
-		data.gameState = newGameState;
+		gameState = newGameState;
 		form = {
 			success,
 			invalid: false
@@ -190,7 +192,7 @@
 			<Keyboard
 				--height="1px"
 				onkey={handleKey}
-				answers={getKeyStatuses(data.gameState.guesses, data.answers)}
+				answers={getKeyStatuses(gameState.guesses, data.answers)}
 			/>
 		</div>
 	</main>
