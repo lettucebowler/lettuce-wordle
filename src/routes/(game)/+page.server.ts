@@ -3,9 +3,7 @@ import { checkWordsV2, checkWord, applyKey, applyWord } from '$lib/util/gameFunc
 import { fail } from '@sveltejs/kit';
 import { STATE_COOKIE_NAME_V2, successAnswer } from '$lib/constants/app-constants.js';
 import type { GameState } from '$lib/schemas/game';
-import { guessKeySchema } from '$lib/schemas/game';
 import { createApiWordlettuceClient } from '$lib/client/api-wordlettuce.server';
-import { isAllowedGuess } from '$lib/util/words.js';
 
 export const trailingSlash = 'never';
 
@@ -21,12 +19,6 @@ export async function load(event) {
 	});
 
 	return {
-		state: gameState2.guesses.map((guess) => {
-			return {
-				guess,
-				complete: true
-			};
-		}) as Array<{ guess: string; complete: boolean }>,
 		currentGuess: gameState2.currentGuess,
 		answers: answers2,
 		success: answers2.length ? answers2.at(-1) === successAnswer : false,

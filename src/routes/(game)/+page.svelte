@@ -28,15 +28,23 @@
 	let modal: BetterModal | undefined = $state();
 
 	let gameState = $state(data.gameState);
+	let success = $state(data.success);
+	let answers = $state(data.answers);
 
 	const wordIsInvalid = createExpiringBoolean({ name: 'wordIsInvalid' });
 	const submittingWord = createExpiringBoolean({ name: 'submittingWord' });
 	const duration = 0.15;
 
 	$effect(() => {
-		if (data?.success) {
+		if (success) {
 			modal?.openModal();
 		}
+	});
+
+	$effect(() => {
+		gameState = data.gameState;
+		answers = data.answers;
+		success = data.success;
 	});
 
 	function writeStateToCookie(state: GameState) {
@@ -70,13 +78,13 @@
 	}
 
 	function getItemsForGrid(data: PageData) {
-		const maxPreviousGuesses = data.success ? 6 : 5;
+		const maxPreviousGuesses = success ? 6 : 5;
 		const maxFillerGuesses = 5;
 
 		const previousGuesses = gameState.guesses
 			.map((guess, index) => ({ index, guess }))
 			.slice(-1 * maxPreviousGuesses);
-		const currentGuesses = data.success
+		const currentGuesses = success
 			? []
 			: [
 					{
@@ -87,7 +95,7 @@
 		const fillerGuesses = Array(maxFillerGuesses)
 			.fill(null)
 			.map((_, index) => ({
-				index: gameState.guesses.length + (data.success ? 0 : 1) + index,
+				index: gameState.guesses.length + (success ? 0 : 1) + index,
 				guess: ''
 			}));
 		const items = [...previousGuesses, ...currentGuesses, ...fillerGuesses]
@@ -97,7 +105,7 @@
 	}
 
 	const enhanceForm: SubmitFunction = async ({ formData, cancel }) => {
-		if (submittingWord.value || data.success) {
+		if (submittingWord.value || success) {
 			cancel();
 			return;
 		}
@@ -112,19 +120,19 @@
 			return invalidForm();
 		}
 		const newAnswers = checkWordsV2({ guesses: newGameState.guesses });
-		const success = checkWord({ guess: newGameState.guesses.at(-1) ?? '' }) === successAnswer;
-		data.answers = newAnswers;
+		const wordIsCorrect = checkWord({ guess: newGameState.guesses.at(-1) ?? '' }) === successAnswer;
+		answers = newAnswers;
 		gameState = newGameState;
 		form = {
-			success,
+			success: wordIsCorrect,
 			invalid: false
 		};
-		if (!success) {
+		if (!wordIsCorrect) {
 			cancel();
 			writeStateToCookie(newGameState);
 			return;
 		}
-		data.success = true;
+		success = true;
 		let id: string;
 		if (data.session?.user) {
 			id = toastLoading('beep boop...');
@@ -138,6 +146,7 @@
 					toastError('Failed to save game results', { id });
 				}
 			}
+			update();
 		};
 	};
 </script>
@@ -154,14 +163,14 @@
 			>
 				<div class="max-w-700 grid w-full grid-rows-[repeat(6,_1fr)] gap-2">
 					{#each getItemsForGrid(data) as item (item.index)}
-						{@const current = item.index === data.answers.length}
+						{@const current = item.index === answers.length}
 						<div
 							class="grid w-full grid-cols-[repeat(5,_1fr)] gap-2"
 							animate:flip={{ duration: duration * 1000 }}
 							data-index={item.index}
 						>
 							{#each item.guess.padEnd(5, ' ').slice(0, 5).split('') as letter, j}
-								{@const doJump = browser && data.answers.at(item.index)?.length === 5}
+								{@const doJump = browser && answers.at(item.index)?.length === 5}
 								{@const doWiggle = browser && wordIsInvalid.value && current}
 								{@const doWiggleOnce = !browser && form?.invalid && current}
 								<div
@@ -175,7 +184,7 @@
 										--column={j}
 										--tile-height="3px"
 										letter={letter === ' ' ? '' : letter}
-										answer={data.answers.at(item.index)?.charAt(j) || '_'}
+										answer={answers.at(item.index)?.charAt(j) || '_'}
 										{doJump}
 										{doWiggle}
 										{doWiggleOnce}
@@ -192,11 +201,11 @@
 			<Keyboard
 				--height="1px"
 				onkey={handleKey}
-				answers={getKeyStatuses(gameState.guesses, data.answers)}
+				answers={getKeyStatuses(gameState.guesses, answers)}
 			/>
 		</div>
 	</main>
-	<BetterModal answers={data.answers} user={data.session?.user?.login} bind:this={modal} />
+	<BetterModal {answers} user={data.session?.user?.login} bind:this={modal} />
 	<Toaster />
 </div>
 
