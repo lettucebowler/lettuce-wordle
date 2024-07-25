@@ -2,31 +2,41 @@
 	import { infiniteScrollAction } from './actions.js';
 	import LettuceAvatar from '$lib/components/LettuceAvatar.svelte';
 	import { fetcher } from 'itty-fetcher';
-	import { browser } from '$app/environment';
 	import GameSummary from './GameSummary.svelte';
+	import { browser } from '$app/environment';
 
+	import { createInfiniteQuery } from '@tanstack/svelte-query';
 	let { data } = $props();
-	let fetchMore = $state(data.more);
 
-	async function getNextPage() {
+	async function getResults({ page = 1 }) {
 		const newItems = await fetcher({ base: window.location.origin }).get<{
 			results: Array<{ gameNum: number; attempts: number; answers: string; userId: number }>;
 			more: boolean;
-		}>('/api/v1/game-results', { user: data.user, page: data.page + data.results.length / 30 });
-		if (!newItems.more) {
-			fetchMore = false;
-		}
-		data.results = data.results.concat(newItems.results);
+		}>('/api/v1/game-results', { user: data.user, page });
+		return newItems;
 	}
+
+	let query = createInfiniteQuery({
+		queryKey: ['game-results', data.user, data.page],
+		initialPageParam: data.page,
+		getNextPageParam(lastPage, pages) {
+			return lastPage.more ? pages.length + 1 : undefined;
+		},
+		queryFn: ({ pageParam }) => getResults({ page: pageParam }),
+		initialData: {
+			pageParams: [data.page],
+			pages: [{ results: data.results, more: data.more }]
+		}
+	});
 </script>
 
 <svelte:body
 	use:infiniteScrollAction={{
 		distance: 100,
-		cb: getNextPage,
+		cb: () => $query.fetchNextPage(),
 		delay: 100,
 		immediate: false,
-		disabled: !fetchMore
+		disabled: $query.hasNextPage === false || data.page !== 1
 	}}
 />
 <main class="grid w-full gap-8">
@@ -44,22 +54,24 @@
 	<h1 class="text-center text-3xl font-bold text-snow-300">Play History</h1>
 
 	<div class="grid w-full grid-cols-2 gap-2 px-1 sm:grid-cols-3 sm:gap-3">
-		{#each data.results as gameResult (gameResult.gameNum)}
-			<div class="flex w-full flex-[1_1_200px] flex-col gap-2 rounded-2xl">
-				<h2 class="flex justify-between text-center text-xl font-medium text-snow-300">
-					<span class="text-left">#{gameResult.gameNum}</span><span class="text-right"
-						>{1 + 6 - gameResult.answers.length / 5} pts</span
-					>
-				</h2>
-				<GameSummary answers={gameResult.answers} />
-			</div>
-		{:else}
-			<p class="rounded-xl p-2 text-center text-center text-xl text-snow-300 col-span-3">
-				No wins in the last seven days...
-			</p>
+		{#each $query.data?.pages ?? [] as page (page)}
+			{#each page.results as gameResult (gameResult)}
+				<div class="flex w-full flex-[1_1_200px] flex-col gap-2 rounded-2xl">
+					<h2 class="flex justify-between text-center text-xl font-medium text-snow-300">
+						<span class="text-left">#{gameResult.gameNum}</span><span class="text-right"
+							>{1 + 6 - gameResult.answers.length / 5} pts</span
+						>
+					</h2>
+					<GameSummary answers={gameResult.answers} />
+				</div>
+			{:else}
+				<div class="text-lg font-medium text-snow-300 text-center col-span-3">
+					This user has no play history
+				</div>
+			{/each}
 		{/each}
 	</div>
-	{#if browser && fetchMore}
+	{#if browser && $query.hasNextPage && data.page === 1}
 		<div class="flex flex-col items-center gap-2">
 			<svg
 				class="h-8 animate-spin text-snow-100"
@@ -82,7 +94,7 @@
 			</svg>
 			<p class="text-center text-xl font-medium text-snow-100">loading...</p>
 		</div>
-	{:else if !browser && (data.page > 1 || data.more)}
+	{:else if data.page > 1 || !browser}
 		<nav class="mx-4 flex justify-between gap-2">
 			{#if data.page > 1}
 				<a href="?page={data.page - 1}" title="Previous" class="text-lg font-medium text-snow-300"

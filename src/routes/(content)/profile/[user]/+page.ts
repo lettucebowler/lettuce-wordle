@@ -1,5 +1,9 @@
 import { fetcher } from 'itty-fetcher';
-import type { GameResult } from '$lib/schemas/game';
+
+type GameResult = {
+	gameNum: number;
+	answers: string;
+}
 
 export async function load(event) {
 	const { user } = event.params;
