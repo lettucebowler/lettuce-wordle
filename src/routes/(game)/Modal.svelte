@@ -17,7 +17,7 @@
 	let dialog: HTMLDialogElement | undefined = $state();
 	const timeUntilNextGame = createNewGameCountDownTimer();
 
-	let modalTimeout: NodeJS.Timeout | undefined = $state();
+	let modalTimeout = $state(setTimeout(() => {}));
 	export function openModal() {
 		modalTimeout = setTimeout(() => {
 			dialog?.showModal();

@@ -8,7 +8,7 @@
 		onkey?: (key: string) => void;
 	};
 
-	let { onkey = (key) => undefined, answers }: KeyboardProps = $props();
+	let { onkey = () => undefined, answers }: KeyboardProps = $props();
 
 	let keys: {
 		[x: string]: HTMLButtonElement;

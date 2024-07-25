@@ -71,7 +71,9 @@ export const { handle, signIn, signOut } = SvelteKitAuth(async (event) => {
 									answers: answers.join('')
 								});
 							}
-						} catch (e) {}
+						} catch (e) {
+							// do nothing
+						}
 					}
 				}
 				return token;

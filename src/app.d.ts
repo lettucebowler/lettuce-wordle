@@ -1,5 +1,4 @@
 /// <reference types="@sveltejs/kit" />
-import type { D1Database } from '@cloudflare/workers-types';
 import '@auth/sveltekit';
 
 declare module '@auth/sveltekit' {

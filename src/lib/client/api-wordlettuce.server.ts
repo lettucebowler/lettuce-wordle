@@ -1,10 +1,6 @@
 import { fetcher } from 'itty-fetcher';
 import { API_WORDLETTUCE_HOST, API_WORDLETTUCE_TOKEN } from '$env/static/private';
 import { error as svelteError, type RequestEvent } from '@sveltejs/kit';
-import { PositiveIntegerSchema } from '$lib/schemas/util';
-import * as v from 'valibot';
-
-import { GameNumSchema } from '$lib/schemas/game';
 
 export function createApiWordLettuceFetcher(event: RequestEvent) {
 	return fetcher({
@@ -15,14 +11,6 @@ export function createApiWordLettuceFetcher(event: RequestEvent) {
 		}
 	});
 }
-
-const SaveGameResultSchema = v.object({
-	data: v.object({
-		gameNum: GameNumSchema,
-		answers: v.string(),
-		userId: PositiveIntegerSchema
-	})
-});
 
 export function createApiWordlettuceClient(event: RequestEvent) {
 	const wordlettuce = createApiWordLettuceFetcher(event);

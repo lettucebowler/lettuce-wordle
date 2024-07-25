@@ -20,7 +20,6 @@
 	import { beforeNavigate } from '$app/navigation';
 	import { toastError, toastLoading, toastSuccess } from './toast';
 	import cx from 'classix';
-	import type { PageData } from './$types';
 	import type { GameState } from '$lib/schemas/game';
 	import { STATE_COOKIE_NAME_V2, successAnswer } from '$lib/constants/app-constants';
 
@@ -77,7 +76,7 @@
 		toastError(message);
 	}
 
-	function getItemsForGrid(data: PageData) {
+	function getItemsForGrid() {
 		const maxPreviousGuesses = success ? 6 : 5;
 		const maxFillerGuesses = 5;
 
@@ -162,7 +161,7 @@
 				class="my-auto flex w-full max-w-[min(700px,_55vh)]"
 			>
 				<div class="max-w-700 grid w-full grid-rows-[repeat(6,_1fr)] gap-2">
-					{#each getItemsForGrid(data) as item (item.index)}
+					{#each getItemsForGrid() as item (item.index)}
 						{@const current = item.index === answers.length}
 						<div
 							class="grid w-full grid-cols-[repeat(5,_1fr)] gap-2"

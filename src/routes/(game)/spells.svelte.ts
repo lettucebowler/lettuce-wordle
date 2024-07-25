@@ -24,7 +24,7 @@ export function createNewGameCountDownTimer() {
 	};
 }
 
-export function createExpiringBoolean({ duration = 150, name = 'boolean' } = {}) {
+export function createExpiringBoolean({ duration = 150 } = {}) {
 	let value = $state(false);
 	let timeout: NodeJS.Timeout | undefined = $state();
 
