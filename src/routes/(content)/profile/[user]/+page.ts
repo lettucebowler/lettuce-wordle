@@ -3,7 +3,7 @@ import { fetcher } from 'itty-fetcher';
 type GameResult = {
 	gameNum: number;
 	answers: string;
-}
+};
 
 export async function load(event) {
 	const { user } = event.params;

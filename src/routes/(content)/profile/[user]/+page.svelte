@@ -5,38 +5,56 @@
 	import GameSummary from './GameSummary.svelte';
 	import { browser } from '$app/environment';
 
-	import { createInfiniteQuery } from '@tanstack/svelte-query';
+	// import { createInfiniteQuery } from '@tanstack/svelte-query';
 	let { data } = $props();
 
+	let resultPages = $state({
+		pages: [{ results: data.results, more: data.more }],
+		hasNextPage: true
+	});
+
 	async function getResults({ page = 1 }) {
-		const newItems = await fetcher({ base: window.location.origin }).get<{
+		const api = fetcher({ base: window.location.origin });
+		const newItems = await api.get<{
 			results: Array<{ gameNum: number; attempts: number; answers: string; userId: number }>;
 			more: boolean;
 		}>('/api/v1/game-results', { user: data.user, page });
 		return newItems;
 	}
 
-	let query = createInfiniteQuery({
-		queryKey: ['game-results', data.user, data.page],
-		initialPageParam: data.page,
-		getNextPageParam(lastPage, pages) {
-			return lastPage.more ? pages.length + 1 : undefined;
-		},
-		queryFn: ({ pageParam }) => getResults({ page: pageParam }),
-		initialData: {
-			pageParams: [data.page],
-			pages: [{ results: data.results, more: data.more }]
+	async function getNextPage() {
+		if (!resultPages.hasNextPage) {
+			return;
 		}
-	});
+
+		const nextPage = await getResults({ page: data.page + resultPages.pages.length });
+		if (!nextPage?.more) {
+			resultPages.hasNextPage = false;
+		}
+		resultPages.pages.push(nextPage);
+	}
+
+	// let query = createInfiniteQuery({
+	// 	queryKey: ['game-results', data.user, data.page],
+	// 	initialPageParam: data.page,
+	// 	getNextPageParam(lastPage, pages) {
+	// 		return lastPage.more ? pages.length + 1 : undefined;
+	// 	},
+	// 	queryFn: ({ pageParam }) => getResults({ page: pageParam }),
+	// 	initialData: {
+	// 		pageParams: [data.page],
+	// 		pages: [{ results: data.results, more: data.more }]
+	// 	}
+	// });
 </script>
 
 <svelte:body
 	use:infiniteScrollAction={{
 		distance: 100,
-		cb: () => $query.fetchNextPage(),
+		cb: () => getNextPage(),
 		delay: 100,
 		immediate: false,
-		disabled: $query.hasNextPage === false || data.page !== 1
+		disabled: resultPages.hasNextPage === false || data.page !== 1
 	}}
 />
 <main class="grid w-full gap-8">
@@ -54,7 +72,7 @@
 	<h1 class="text-center text-3xl font-bold text-snow-300">Play History</h1>
 
 	<div class="grid w-full grid-cols-2 gap-2 px-1 sm:grid-cols-3 sm:gap-3">
-		{#each $query.data?.pages ?? [] as page (page)}
+		{#each resultPages?.pages ?? [] as page (page)}
 			{#each page.results as gameResult (gameResult)}
 				<div class="flex w-full flex-[1_1_200px] flex-col gap-2 rounded-2xl">
 					<h2 class="flex justify-between text-center text-xl font-medium text-snow-300">
@@ -71,7 +89,7 @@
 			{/each}
 		{/each}
 	</div>
-	{#if browser && $query.hasNextPage && data.page === 1}
+	{#if browser && resultPages.hasNextPage && data.page === 1}
 		<div class="flex flex-col items-center gap-2">
 			<svg
 				class="h-8 animate-spin text-snow-100"
