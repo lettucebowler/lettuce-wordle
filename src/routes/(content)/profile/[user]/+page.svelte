@@ -61,7 +61,7 @@
 	use:infiniteScrollAction={{
 		distance: 100,
 		cb: () => $query?.fetchNextPage(),
-		delay: 100,
+		delay: 250,
 		immediate: false,
 		disabled: resultPages.hasNextPage === false || data.page !== 1
 	}}
