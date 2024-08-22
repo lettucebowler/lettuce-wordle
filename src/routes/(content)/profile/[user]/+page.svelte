@@ -53,7 +53,9 @@
 		initialData: {
 			pageParams: [data.page],
 			pages: [{ results: data.results, more: data.more }]
-		}
+		},
+		refetchOnMount: false,
+		refetchOnWindowFocus: false
 	});
 </script>
 
