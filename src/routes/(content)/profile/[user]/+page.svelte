@@ -8,18 +8,7 @@
 	import { browser } from '$app/environment';
 	import { createInfiniteQuery } from '@tanstack/svelte-query';
 
-	// import { createInfiniteQuery } from '@tanstack/svelte-query';
 	export let data;
-	// let { data } = $props();
-
-	// let resultPages = $state({
-	// 	pages: [{ results: data.results, more: data.more }],
-	// 	hasNextPage: true
-	// });
-	let resultPages = {
-		pages: [{ results: data.results, more: data.more }],
-		hasNextPage: true
-	};
 
 	async function getResults({ page = 1 }) {
 		const api = fetcher({ base: window.location.origin });
@@ -28,19 +17,6 @@
 			more: boolean;
 		}>('/api/v1/game-results', { user: data.user, page });
 		return newItems;
-	}
-
-	async function getNextPage() {
-		if (!resultPages.hasNextPage) {
-			return;
-		}
-
-		const nextPage = await getResults({ page: data.page + resultPages.pages.length });
-		if (!nextPage?.more) {
-			resultPages.hasNextPage = false;
-		}
-		resultPages.pages.push(nextPage);
-		resultPages = resultPages;
 	}
 
 	$: query = createInfiniteQuery({
@@ -54,18 +30,17 @@
 			pageParams: [data.page],
 			pages: [{ results: data.results, more: data.more }]
 		},
-		refetchOnMount: false,
-		refetchOnWindowFocus: false
+		refetchOnMount: false
 	});
 </script>
 
 <svelte:body
 	use:infiniteScrollAction={{
 		distance: 100,
-		cb: () => $query?.fetchNextPage(),
+		cb: $query?.fetchNextPage,
 		delay: 250,
 		immediate: false,
-		disabled: resultPages.hasNextPage === false || data.page !== 1
+		disabled: data.page !== 1 || !$query.hasNextPage
 	}}
 />
 <main class="grid w-full gap-8">
@@ -102,7 +77,7 @@
 			{/each}
 		{/if}
 	</div>
-	{#if browser && resultPages.hasNextPage && data.page === 1}
+	{#if browser && $query.hasNextPage && data.page === 1}
 		<div class="flex flex-col items-center gap-2">
 			<svg
 				class="h-8 animate-spin text-snow-100"
