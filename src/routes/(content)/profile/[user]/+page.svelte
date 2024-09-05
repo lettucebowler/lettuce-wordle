@@ -1,5 +1,3 @@
-<svelte:options runes={false} />
-
 <script lang="ts">
 	import { infiniteScrollAction } from './actions.js';
 	import LettuceAvatar from '$lib/components/LettuceAvatar.svelte';
@@ -8,7 +6,7 @@
 	import { browser } from '$app/environment';
 	import { createInfiniteQuery } from '@tanstack/svelte-query';
 
-	export let data;
+	let { data } = $props();
 
 	async function getResults({ page = 1 }) {
 		const api = fetcher({ base: window.location.origin });
@@ -19,7 +17,7 @@
 		return newItems;
 	}
 
-	$: query = createInfiniteQuery({
+	let query = createInfiniteQuery(() => ({
 		queryKey: ['game-results', data.user, data.page],
 		initialPageParam: data.page,
 		getNextPageParam(lastPage, pages) {
@@ -30,17 +28,18 @@
 			pageParams: [data.page],
 			pages: [{ results: data.results, more: data.more }]
 		},
-		refetchOnMount: false
-	});
+		refetchOnMount: false,
+		refetchOnWindowFocus: false
+	}));
 </script>
 
 <svelte:body
 	use:infiniteScrollAction={{
 		distance: 100,
-		cb: $query?.fetchNextPage,
+		cb: query?.fetchNextPage,
 		delay: 250,
 		immediate: false,
-		disabled: data.page !== 1 || !$query.hasNextPage
+		disabled: data.page !== 1 || !query.hasNextPage
 	}}
 />
 <main class="grid w-full gap-8">
@@ -58,8 +57,8 @@
 	<h1 class="text-center text-3xl font-bold text-snow-300">Play History</h1>
 
 	<div class="grid w-full grid-cols-2 gap-2 px-1 sm:grid-cols-3 sm:gap-3">
-		{#if $query.data}
-			{#each $query.data.pages ?? [] as page (page)}
+		{#if query.data}
+			{#each query.data.pages ?? [] as page (page)}
 				{#each page.results as gameResult (gameResult)}
 					<div class="flex w-full flex-[1_1_200px] flex-col gap-2 rounded-2xl">
 						<h2 class="flex justify-between text-center text-xl font-medium text-snow-300">
@@ -77,7 +76,7 @@
 			{/each}
 		{/if}
 	</div>
-	{#if browser && $query.hasNextPage && data.page === 1}
+	{#if browser && query.hasNextPage && data.page === 1}
 		<div class="flex flex-col items-center gap-2">
 			<svg
 				class="h-8 animate-spin text-snow-100"
