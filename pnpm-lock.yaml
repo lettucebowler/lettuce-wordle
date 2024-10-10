@@ -24,7 +24,7 @@ importers:
         specifier: ^4.7.2
         version: 4.7.2(@sveltejs/kit@2.6.4(@sveltejs/vite-plugin-svelte@3.1.2(svelte@5.0.0-next.260)(vite@5.4.8(@types/node@22.7.5)))(svelte@5.0.0-next.260)(vite@5.4.8(@types/node@22.7.5)))(wrangler@3.33.0(@cloudflare/workers-types@4.20241004.0))
       '@sveltejs/kit':
-        specifier: ^2.6.4
+        specifier: 2.6.4
         version: 2.6.4(@sveltejs/vite-plugin-svelte@3.1.2(svelte@5.0.0-next.260)(vite@5.4.8(@types/node@22.7.5)))(svelte@5.0.0-next.260)(vite@5.4.8(@types/node@22.7.5))
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.1.2
@@ -53,9 +53,6 @@ importers:
       classix:
         specifier: ^2.2.0
         version: 2.2.0
-      cookie:
-        specifier: ^1.0.0
-        version: 1.0.0
       eslint:
         specifier: ^9.12.0
         version: 9.12.0(jiti@1.21.0)
@@ -934,10 +931,6 @@ packages:
   cookie@0.7.1:
     resolution: {integrity: sha512-6DnInpx7SJ2AK3+CTUE/ZM0vWTUboZCegxhC2xiIydHR9jNuTAASBrfEpHhiGOZw/nX51bHt6YQl8jsGo4y/0w==}
     engines: {node: '>= 0.6'}
-
-  cookie@1.0.0:
-    resolution: {integrity: sha512-bsSztFoaR8bw9MlFCrTHzc1wOKCUKOBsbgFdoDilZDkETAOOjKSqV7L+EQLbTaylwvZasd9vM4MGKotJaUfSpA==}
-    engines: {node: '>=18'}
 
   cross-spawn@7.0.3:
     resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==}
@@ -2629,8 +2622,6 @@ snapshots:
   cookie@0.6.0: {}
 
   cookie@0.7.1: {}
-
-  cookie@1.0.0: {}
 
   cross-spawn@7.0.3:
     dependencies:

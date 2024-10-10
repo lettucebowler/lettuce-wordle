@@ -24,26 +24,26 @@
 	import { STATE_COOKIE_NAME_V2, successAnswer } from '$lib/constants/app-constants';
 
 	let { form, data } = $props();
-	let modal: BetterModal | undefined = $state();
+	let modalOpen = $state(false);
 
 	let gameState = $state(data.gameState);
 	let success = $state(data.success);
 	let answers = $state(data.answers);
 
-	const wordIsInvalid = createExpiringBoolean({ name: 'wordIsInvalid' });
-	const submittingWord = createExpiringBoolean({ name: 'submittingWord' });
+	const wordIsInvalid = createExpiringBoolean();
+	const submittingWord = createExpiringBoolean();
 	const duration = 0.15;
-
-	$effect(() => {
-		if (success) {
-			modal?.openModal();
-		}
-	});
 
 	$effect(() => {
 		gameState = data.gameState;
 		answers = data.answers;
 		success = data.success;
+	});
+
+	$effect(() => {
+		if (success) {
+			modalOpen = true;
+		}
 	});
 
 	function writeStateToCookie(state: GameState) {
@@ -55,9 +55,13 @@
 		});
 	}
 
-	beforeNavigate(() => {
-		modal?.closeModal();
-	});
+	function onModalOpen() {
+		modalOpen = true;
+	}
+
+	function onModalClose() {
+		modalOpen = false;
+	}
 
 	function handleKey(key: string) {
 		const { error, gameState: newGameState } = applyKey({ gameState, key });
@@ -204,7 +208,13 @@
 			/>
 		</div>
 	</main>
-	<BetterModal {answers} user={data.session?.user?.login} bind:this={modal} />
+	<BetterModal
+		{answers}
+		user={data.session?.user?.login}
+		{onModalOpen}
+		{onModalClose}
+		open={modalOpen}
+	/>
 	<Toaster />
 </div>
 

@@ -9,8 +9,12 @@
 	type ModalProps = {
 		answers: Array<string>;
 		user?: string;
+		open: boolean;
+		onModalOpen?: () => void;
+		onModalClose?: () => void;
 	};
-	let { answers, user }: ModalProps = $props();
+
+	let { answers, user, open, onModalOpen, onModalClose }: ModalProps = $props();
 	let isAuthenticated = $derived(!!user);
 	let attempts = $derived(answers.length);
 	const clipboardMessage = createExpiringString();
@@ -18,7 +22,19 @@
 	const timeUntilNextGame = createNewGameCountDownTimer();
 
 	let modalTimeout = $state(setTimeout(() => {}));
+
+	$effect(() => {
+		if (open) {
+			openModal();
+		} else {
+			closeModal();
+		}
+	});
+
 	export function openModal() {
+		if (onModalOpen) {
+			onModalOpen();
+		}
 		modalTimeout = setTimeout(() => {
 			dialog?.showModal();
 			timeUntilNextGame.start();
@@ -26,6 +42,9 @@
 	}
 
 	export function closeModal() {
+		if (onModalClose) {
+			onModalClose();
+		}
 		if (modalTimeout) {
 			clearTimeout(modalTimeout);
 		}
@@ -98,6 +117,7 @@
 			<div class="aspect-square h-full"></div>
 			<h2 class="col-start-2 mt-0 flex-auto text-center text-2xl text-snow-300">&nbsp;Success!</h2>
 			<button
+				aria-label="close modal"
 				onclick={closeModal}
 				class="aspect-square h-8 rounded p-1 text-snow-300 transition transition-all hover:bg-charade-950 hover:p-0"
 				><svg
