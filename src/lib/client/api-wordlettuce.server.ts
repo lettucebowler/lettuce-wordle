@@ -54,7 +54,7 @@ export function createApiWordlettuceClient(event: RequestEvent) {
 			.get<{ rankings: Array<{ user: string; games: number; score: number }> }>('/v2/rankings')
 			.then((data) => ({ data, error: undefined }))
 			.catch((error) => ({ error, data: undefined }));
-		if (error) {
+		if (error || !data) {
 			throw svelteError(500, error);
 		}
 		return data;
