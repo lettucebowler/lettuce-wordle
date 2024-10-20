@@ -22,14 +22,15 @@
 				<div class="hidden text-center sm:grid">Score</div>
 				<div class="text-right">Rank</div>
 			</div>
-			<div class="grid w-full gap-2">
+			<div class="w-full divide-y-[1px]">
 				{#each scores.rankings as score, i (i)}
 					{@const position = scores.rankings.filter((s) => s.score > score.score).length + 1}
-					<a href={`/profile/${score.user}`}>
-						<div
-							class="box-border grid w-full grid-cols-[1fr,_50px] gap-2 rounded-2xl p-2 pr-4 text-xl font-medium sm:grid-cols-[1fr,_50px,_50px] sm:gap-8"
-							class:bg-charade-800={i % 2 == 1}
-							class:bg-charade-950={i % 2 == 0}
+					<div
+						class="grid grid-cols-[1fr,_50px] border-charade-700 p-2 sm:grid-cols-[1fr,_50px,_50px] sm:gap-8"
+					>
+						<a
+							href={`/profile/${score.user}`}
+							class="##rounded-2xl ##odd:bg-charade-800 ##even:bg-charade-950 mr-auto box-border w-full w-max gap-2 rounded-2xl p-2 pr-4 text-xl font-medium hover:bg-charade-800 sm:gap-8"
 						>
 							<div class="flex w-max justify-start gap-2 text-left sm:gap-4">
 								<span class="box-border h-11 w-max overflow-hidden rounded"
@@ -39,18 +40,18 @@
 									{score.user}
 								</span>
 							</div>
-							<div class="hidden items-center text-right sm:grid">
-								{score.score}
-							</div>
-							<div class="flex flex-[0_0_2rem] items-center justify-end text-right text-snow-300">
-								{#if position === 1}
-									<span class="h-8"><LettuceIcon icon="trophy" /></span>
-								{:else}
-									#{position}
-								{/if}
-							</div>
-						</div></a
-					>
+						</a>
+						<div class="hidden items-center text-right sm:grid">
+							{score.score}
+						</div>
+						<div class="flex flex-[0_0_2rem] items-center justify-end text-right text-snow-300">
+							{#if position === 1}
+								<span class="h-8"><LettuceIcon icon="trophy" /></span>
+							{:else}
+								#{position}
+							{/if}
+						</div>
+					</div>
 				{/each}
 			</div>
 		</div>
