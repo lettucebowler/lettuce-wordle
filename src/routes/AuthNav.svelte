@@ -34,7 +34,7 @@
 <div class="mb-1 min-h-[66px] w-full">
 	<div id="big-papa-nav" class="flex justify-end">
 		<nav
-			class="h-18 z-10 ml-0 ml-auto box-content max-h-[72px] w-full justify-end gap-x-4 rounded-2xl border-t-[2px] border-t-charade-500 bg-charade-700 p-1 shadow-[0_2px_4px_0_rgb(0_0_0_/_0.2)]"
+			class="h-18 ##bg-charade-700 ##shadow-[0_2px_4px_0_rgb(0_0_0_/_0.2)] @@rounded-2xl @@border-t-[2px] z-10 ml-0 ml-auto box-content max-h-[72px] w-full justify-end gap-x-4 border-t-charade-500 p-1"
 			id="primary-nav"
 		>
 			<div class="flex">
@@ -144,7 +144,7 @@
 		>
 			<nav id="subnav-content" class="overflow-hidden">
 				<div
-					class="z-0 mx-auto flex justify-evenly gap-4 rounded-b-xl bg-charade-800 p-1 pt-4 font-medium"
+					class="##bg-charade-800 z-0 mx-auto flex justify-evenly gap-4 rounded-b-xl p-1 pt-4 font-medium"
 				>
 					{#each subnavItems as subnavItem}
 						<a

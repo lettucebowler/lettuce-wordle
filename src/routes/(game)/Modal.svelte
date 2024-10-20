@@ -35,10 +35,12 @@
 		if (onModalOpen) {
 			onModalOpen();
 		}
+		// dialog?.showModal();
+		// timeUntilNextGame.start();
 		modalTimeout = setTimeout(() => {
 			dialog?.showModal();
 			timeUntilNextGame.start();
-		}, 500);
+		}, 0);
 	}
 
 	export function closeModal() {

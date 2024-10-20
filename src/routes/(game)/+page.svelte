@@ -17,7 +17,6 @@
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { createExpiringBoolean } from './spells.svelte';
 	import { browser } from '$app/environment';
-	import { beforeNavigate } from '$app/navigation';
 	import { toastError, toastLoading, toastSuccess } from './toast';
 	import cx from 'classix';
 	import type { GameState } from '$lib/schemas/game';
@@ -37,14 +36,16 @@
 	$effect(() => {
 		gameState = data.gameState;
 		answers = data.answers;
-		success = data.success;
+		// if (data.success) {
+		// 	modalOpen = true;
+		// }
 	});
 
-	$effect(() => {
-		if (success) {
-			modalOpen = true;
-		}
-	});
+	// $effect(() => {
+	// 	if (success) {
+	// 		modalOpen = true;
+	// 	}
+	// });
 
 	function writeStateToCookie(state: GameState) {
 		Cookies.set(STATE_COOKIE_NAME_V2, encodeStateV2(state), {
@@ -64,6 +65,9 @@
 	}
 
 	function handleKey(key: string) {
+		if (key === 'share') {
+			modalOpen = true;
+		}
 		const { error, gameState: newGameState } = applyKey({ gameState, key });
 		if (error) {
 			return;
@@ -136,11 +140,13 @@
 			return;
 		}
 		success = true;
+
 		let id: string;
 		if (data.session?.user) {
 			id = toastLoading('beep boop...');
 		}
 		return async ({ result, update }) => {
+			modalOpen = true;
 			applyAction(result);
 			if (data.session?.user?.login) {
 				if (result.type === 'success') {

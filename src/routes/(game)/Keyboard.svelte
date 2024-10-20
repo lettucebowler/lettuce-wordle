@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import LettuceIcon from '$lib/components/Icon.svelte';
+	import ShareIcon from '$lib/components/ShareIcon.svelte';
 	import cx from 'classix';
 
 	type KeyboardProps = {
@@ -28,6 +29,13 @@
 				icon: 'backspace',
 				flip: false
 			}
+		],
+		[
+			'share',
+			{
+				icon: 'share',
+				flip: false
+			}
 		]
 	]);
 </script>
@@ -44,7 +52,7 @@
 		cancel();
 	}}
 >
-	{#each ['q,w,e,r,t,y,u,i,o,p', ',a,s,d,f,g,h,j,k,l', ',,,z,x,c,v,b,n,m,enter,backspace'] as row}
+	{#each ['q,w,e,r,t,y,u,i,o,p', ',,a,s,d,f,g,h,j,k,l', 'z,x,c,v,b,n,m,enter,backspace,share'] as row}
 		<div class="flex w-full flex-auto flex-col justify-center">
 			<div class="grid flex-auto grid-cols-[repeat(40,_0.25fr)] gap-1">
 				{#each row.split(',') as letter}
@@ -66,7 +74,11 @@
 									: ''
 							)}
 						>
-							{#if icons.get(letter)}
+							{#if letter === 'share'}
+								<div class="h-5 w-full">
+									<ShareIcon />
+								</div>
+							{:else if icons.get(letter)}
 								<span class="h-5"><LettuceIcon {...icons.get(letter)} /></span>
 							{:else}
 								{letter.toUpperCase()}
