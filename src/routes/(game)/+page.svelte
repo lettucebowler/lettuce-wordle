@@ -145,7 +145,7 @@
 				}
 			}
 			update();
-			setTimeout(() => showModal(), 10);
+			setTimeout(() => showModal(), 100);
 		};
 	};
 </script>
