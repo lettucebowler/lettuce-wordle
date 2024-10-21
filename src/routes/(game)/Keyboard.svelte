@@ -45,7 +45,7 @@
 
 <form
 	method="POST"
-	class="grid h-full flex-auto gap-1"
+	class="grid max-h-40 w-full flex-auto gap-1 sm:max-h-80"
 	id="keyboard"
 	use:enhance={({ cancel, formData }) => {
 		const key = formData.get('key')?.toString() ?? '';
@@ -67,7 +67,7 @@
 					bind:this={keys[letter]}
 					data-answer={status}
 					class={cx(
-						'col-span-4 mt-[--keyboard-height] box-content grid h-full w-full cursor-pointer place-items-center rounded-md bg-[--bg-color] text-center text-sm font-bold text-[--text-color] active:mt-0 active:shadow-none md:text-xl',
+						'col-span-4 mt-[--keyboard-height] grid h-full w-full cursor-pointer place-items-center rounded-md bg-[--bg-color] text-center text-sm font-bold text-[--text-color] active:mt-0 active:shadow-none sm:py-2 md:text-xl',
 						['x', 'c', '_'].includes(status)
 							? 'shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--highlight-color)]'
 							: ''

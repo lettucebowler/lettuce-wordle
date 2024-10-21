@@ -35,7 +35,7 @@
 	});
 </script>
 
-<div class="min-h-[66px] w-full">
+<div class="w-full">
 	<div id="big-papa-nav" class="flex justify-end">
 		<nav
 			class="h-18 z-10 ml-0 ml-auto box-content max-h-[72px] w-full justify-end gap-x-4 border-t-charade-500"

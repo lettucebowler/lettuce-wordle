@@ -150,60 +150,58 @@
 	};
 </script>
 
-<div class="flex flex-auto flex-col items-center gap-2">
-	<main class="flex w-full flex-auto flex-col items-center justify-end justify-between gap-2">
-		<div class="flex w-full flex-auto flex-col items-center">
-			<form
-				method="POST"
-				action="?/word"
-				use:enhance={enhanceForm}
-				id="game"
-				class="my-auto flex w-full"
-			>
-				<div class="max-w-700 grid w-full grid-rows-[repeat(6,_1fr)] gap-2">
-					{#each getItemsForGrid() as item (item.index)}
-						{@const current = item.index === answers.length}
-						<div
-							class="grid w-full grid-cols-[repeat(5,_1fr)] gap-2"
-							animate:flip={{ duration: duration * 1000 }}
-							data-index={item.index}
-						>
-							{#each item.guess.padEnd(5, ' ').slice(0, 5).split('') as letter, j}
-								{@const doJump = browser && answers.at(item.index)?.length === 5}
-								{@const doWiggle = browser && wordIsInvalid.value && current}
-								{@const doWiggleOnce = !browser && form?.invalid && current}
-								<div
-									class={cx(
-										'z-[--z-index] aspect-square min-h-0 w-full rounded-xl bg-charade-950',
-										'shadow-[inset_0_var(--height)_var(--height)_0_rgb(0_0_0_/_0.2),_inset_0_calc(-1_*_var(--height))_0_0_theme(colors.charade.800)]',
-										!item.guess && current && wordIsInvalid.value && 'animate-wiggle-once'
-									)}
-								>
-									<Tile
-										--column={j}
-										--tile-height="3px"
-										letter={letter === ' ' ? '' : letter}
-										answer={answers.at(item.index)?.charAt(j) || '_'}
-										{doJump}
-										{doWiggle}
-										{doWiggleOnce}
-										{current}
-									/>
-								</div>
-							{/each}
-						</div>
-					{/each}
-				</div>
-			</form>
-		</div>
-		<div class="flex h-full max-h-[min(20rem,_30vh)] w-full flex-[5_1_auto] flex-col">
-			<Keyboard
-				--height="1px"
-				onkey={handleKey}
-				answers={getKeyStatuses(gameState.guesses, answers)}
-				showShareKey={success}
-			/>
-		</div>
+<div class="max-h-min-content flex w-full flex-auto flex-col items-center gap-2">
+	<main
+		class="flex w-full flex-auto flex-col items-center justify-end justify-between gap-2 sm:gap-4"
+	>
+		<form
+			method="POST"
+			action="?/word"
+			use:enhance={enhanceForm}
+			id="game"
+			class="my-auto flex w-full max-w-[min(700px,_55vh)]"
+		>
+			<div class="max-w-700 grid w-full grid-rows-[repeat(6,_1fr)] gap-2">
+				{#each getItemsForGrid() as item (item.index)}
+					{@const current = item.index === answers.length}
+					<div
+						class="grid w-full grid-cols-[repeat(5,_1fr)] gap-2"
+						animate:flip={{ duration: duration * 1000 }}
+						data-index={item.index}
+					>
+						{#each item.guess.padEnd(5, ' ').slice(0, 5).split('') as letter, j}
+							{@const doJump = browser && answers.at(item.index)?.length === 5}
+							{@const doWiggle = browser && wordIsInvalid.value && current}
+							{@const doWiggleOnce = !browser && form?.invalid && current}
+							<div
+								class={cx(
+									'z-[--z-index] aspect-square min-h-0 w-full rounded-xl bg-charade-950',
+									'shadow-[inset_0_var(--height)_var(--height)_0_rgb(0_0_0_/_0.2),_inset_0_calc(-1_*_var(--height))_0_0_theme(colors.charade.800)]',
+									!item.guess && current && wordIsInvalid.value && 'animate-wiggle-once'
+								)}
+							>
+								<Tile
+									--column={j}
+									--tile-height="3px"
+									letter={letter === ' ' ? '' : letter}
+									answer={answers.at(item.index)?.charAt(j) || '_'}
+									{doJump}
+									{doWiggle}
+									{doWiggleOnce}
+									{current}
+								/>
+							</div>
+						{/each}
+					</div>
+				{/each}
+			</div>
+		</form>
+		<Keyboard
+			--height="1px"
+			onkey={handleKey}
+			answers={getKeyStatuses(gameState.guesses, answers)}
+			showShareKey={success}
+		/>
 	</main>
 	{#if $page.state.showModal}
 		<BetterModal {answers} user={data.session?.user?.login} close={() => history.back()} />
