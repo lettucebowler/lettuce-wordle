@@ -143,26 +143,20 @@
 			<AuthForm mode="login">
 				<div class="flex w-full flex-row justify-center gap-3">
 					<button
-						class="h-12 w-full cursor-pointer rounded-lg border-transparent bg-aurora-200 p-0 font-bold text-snow-300 active:brightness-90"
-						><span
-							class="grid h-full items-center duration-500 hover:backdrop-brightness-90 hover:backdrop-filter"
-						>
-							Login to save your results
-						</span>
+						class="h-12 w-full cursor-pointer rounded-lg border-transparent bg-antique-brass-500 p-0 font-bold text-antique-brass-800 transition transition-all duration-500 hover:brightness-90"
+					>
+						Login to save your results
 					</button>
 				</div>
 			</AuthForm>
 		{/if}
-		<div class="flex w-full flex-row justify-center gap-3">
+		<div class="flex w-full flex-row justify-center">
 			<button
 				onclick={shareGame}
-				class="h-12 w-full cursor-pointer rounded-lg border-transparent bg-frost-400 p-0 font-bold text-snow-300 active:brightness-90"
-				><span
-					class="grid h-full items-center duration-500 hover:backdrop-brightness-90 hover:backdrop-filter"
-				>
-					Share
-				</span></button
+				class="h-12 w-full cursor-pointer rounded-lg border-transparent bg-frost-400 p-0 font-bold text-snow-300 transition transition-all duration-500 hover:brightness-90"
 			>
+				Share
+			</button>
 		</div>
 	</div>
 </dialog>

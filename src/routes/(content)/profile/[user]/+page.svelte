@@ -5,6 +5,7 @@
 	import GameSummary from './GameSummary.svelte';
 	import { browser } from '$app/environment';
 	import { createInfiniteQuery } from '@tanstack/svelte-query';
+	import AuthForm from '$lib/components/AuthForm.svelte';
 
 	let { data } = $props();
 
@@ -43,16 +44,24 @@
 	}}
 />
 <main class="grid w-full gap-8">
-	<figure class="flex flex-col gap-2">
-		{#each [data.user] as user (user)}
-			<div class="mx-auto h-40 w-40">
-				<LettuceAvatar name={user} />
+	<div>
+		<figure class="flex flex-col gap-2">
+			{#each [data.user] as user (user)}
+				<div class="mx-auto h-40 w-40">
+					<LettuceAvatar name={user} />
+				</div>
+			{/each}
+			<figcaption class="text-center text-xl font-medium text-snow-300">
+				{data.user}
+			</figcaption>
+		</figure>
+
+		{#if data.session?.user?.login === data.user}
+			<div class="flex justify-center">
+				<AuthForm mode="logout"></AuthForm>
 			</div>
-		{/each}
-		<figcaption class="text-center text-xl font-medium text-snow-300">
-			{data.user}
-		</figcaption>
-	</figure>
+		{/if}
+	</div>
 
 	<h1 class="text-center text-3xl font-bold text-snow-300">Play History</h1>
 

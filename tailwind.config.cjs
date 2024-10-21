@@ -53,6 +53,19 @@ module.exports = {
 				// 	800: 'var(--charade-800)',
 				// 	900: 'var(--charade-900)'
 				// }
+				'antique-brass': {
+					DEFAULT: 'var(--antique-brass-500)',
+					50: 'var(--antique-brass-50)',
+					100: 'var(--antique-brass-100)',
+					200: 'var(--antique-brass-200)',
+					300: 'var(--antique-brass-300)',
+					400: 'var(--antique-brass-400)',
+					500: 'var(--antique-brass-500)',
+					600: 'var(--antique-brass-600)',
+					700: 'var(--antique-brass-700)',
+					800: 'var(--antique-brass-800)',
+					900: 'var(--antique-brass-900)'
+				},
 				'swamp-green': {
 					DEFAULT: 'var(--swamp-green-500)',
 					50: 'var(--swamp-green-50)',

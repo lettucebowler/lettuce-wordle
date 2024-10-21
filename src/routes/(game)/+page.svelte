@@ -133,7 +133,7 @@
 
 		let id: string;
 		if (data.session?.user) {
-			id = toastLoading('beep boop...');
+			id = toastLoading('Saving results...');
 		}
 		return async ({ result, update }) => {
 			applyAction(result);

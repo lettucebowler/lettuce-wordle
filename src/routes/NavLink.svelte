@@ -6,11 +6,7 @@
 	let { link, enableTransition = true }: { enableTransition?: boolean; link: NavLinkProps } =
 		$props();
 
-	let current = $state($page.url.pathname === link.path);
-
-	$effect(() => {
-		current = $page.url.pathname === link.path;
-	});
+	let current = $derived($page.url.pathname === link.path);
 </script>
 
 <a
@@ -27,8 +23,7 @@
 				<div
 					in:navigationRecieve={{ key: 'current-link' }}
 					out:navigationSend={{ key: 'current-link' }}
-					class="grid h-full rounded-xl"
-					class:bg-charade-800={current}
+					class="grid h-full rounded-xl bg-charade-800"
 				></div>
 			{/if}
 		{:else if current}

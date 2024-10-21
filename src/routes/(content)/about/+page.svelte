@@ -10,12 +10,12 @@
 	</p>
 	<p class="box-border px-4 text-left text-lg text-snow-300">
 		This app was created using <a
-			class="text-aurora-400"
+			class="text-swamp-green-500"
 			href="https://kit.svelte.dev"
 			target="_blank">svelte-kit</a
 		>. Code for this project can be found
 		<a
-			class="text-aurora-400"
+			class="text-swamp-green-500"
 			target="_blank"
 			href="https://github.com/lettucebowler/lettuce-wordle">here</a
 		>.

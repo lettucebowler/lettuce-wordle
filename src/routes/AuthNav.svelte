@@ -3,9 +3,11 @@
 	import AuthForm from '$lib/components/AuthForm.svelte';
 	import LettuceAvatar from '$lib/components/LettuceAvatar.svelte';
 	import NavLink from './NavLink.svelte';
+	import { navigationSend, navigationRecieve } from './transitions';
 
 	import type { NavLinkProps } from '$lib/types';
 	import type { User } from '@auth/sveltekit';
+	import { page } from '$app/stores';
 
 	let { user, links }: { user: User | undefined; links: NavLinkProps[] } = $props();
 
@@ -25,6 +27,8 @@
 	$effect(() => {
 		subnavItems = getSubnavItems();
 	});
+
+	let current = $derived(user ? $page.url.pathname === '/profile/' + user.login : false);
 
 	afterNavigate(() => {
 		if (dropdownVisible) dropdownVisible = false;
@@ -70,21 +74,29 @@
 							</span>
 						</label>
 					</div>
-					<label
-						for="subnav-toggle-big"
-						class="box-border hidden h-full flex-[0_0_auto] cursor-pointer select-none items-center justify-center gap-2 rounded-xl text-center text-3xl text-snow-100 transition ease-in-out sm:flex"
-					>
+					<div class="hidden h-full sm:block">
 						{#if user}
-							<span
-								class="box-border aspect-square h-14 overflow-hidden rounded-xl border-snow-300 transition-transform"
-								class:rotate-180={dropdownVisible}
-							>
-								<LettuceAvatar name={user.login} />
-							</span>
+							<div class="grid h-14">
+								<div class="col-[1] row-[1] h-14">
+									{#if current}
+										<div
+											in:navigationRecieve={{ key: 'current-link' }}
+											out:navigationSend={{ key: 'current-link' }}
+											class="grid h-14 rounded-xl bg-charade-800"
+										></div>
+									{/if}
+								</div>
+								<a
+									class="z-10 col-[1] row-[1] m-1 box-border grid aspect-square overflow-hidden rounded-xl border-snow-300 transition transition-all duration-150 hover:m-0"
+									href="/profile/{user.login}"
+								>
+									<LettuceAvatar name={user.login} />
+								</a>
+							</div>
 						{:else}
 							<AuthForm mode="login" />
 						{/if}
-					</label>
+					</div>
 				</div>
 			</div>
 			<div id="mobile-nav" class="sm:hidden">
@@ -130,34 +142,5 @@
 				</nav>
 			</div>
 		</nav>
-	</div>
-	<div id="desktop-nav" class="hidden sm:block">
-		<input
-			type="checkbox"
-			class="peer hidden"
-			name="subnav"
-			id="subnav-toggle-big"
-			bind:checked={dropdownVisible}
-		/>
-		<div
-			class="-mt-4 ml-auto mr-6 grid w-max grid-rows-[0fr] transition transition-all peer-checked:grid-rows-[1fr]"
-		>
-			<nav id="subnav-content" class="overflow-hidden">
-				<div
-					class="##bg-charade-800 z-0 mx-auto flex justify-evenly gap-4 rounded-b-xl p-1 pt-4 font-medium"
-				>
-					{#each subnavItems as subnavItem}
-						<a
-							href={subnavItem.path}
-							class="flex cursor-pointer rounded-lg border-transparent p-0 text-lg font-medium text-snow-100 hover:underline"
-							><span class="grid h-full w-full place-items-center px-6 py-2 text-center"
-								>{subnavItem.name}</span
-							></a
-						>
-					{/each}
-					<AuthForm mode="logout" />
-				</div>
-			</nav>
-		</div>
 	</div>
 </div>

@@ -6,6 +6,7 @@ type GameResult = {
 };
 
 export async function load(event) {
+	const parentData = await event.parent();
 	const { user } = event.params;
 	const searchParams = event.url.searchParams;
 	const page = Number(searchParams.get('page')) || 1;
@@ -18,6 +19,7 @@ export async function load(event) {
 		user,
 		page,
 		more,
-		results
+		results,
+		...parentData
 	};
 }

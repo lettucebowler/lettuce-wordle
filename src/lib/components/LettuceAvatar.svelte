@@ -18,5 +18,5 @@
 <img
 	class="pointer-events-none inline aspect-square h-full w-full rounded-xl"
 	src="https://api.dicebear.com/7.x/bottts-neutral/svg?{getQueryParams(name)}"
-	alt=""
+	alt="{name} avatar image"
 />
