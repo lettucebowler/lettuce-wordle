@@ -21,9 +21,10 @@
 	import cx from 'classix';
 	import type { GameState } from '$lib/schemas/game';
 	import { STATE_COOKIE_NAME_V2, successAnswer } from '$lib/constants/app-constants';
+	import { pushState } from '$app/navigation';
+	import { page } from '$app/stores';
 
 	let { form, data } = $props();
-	let modalOpen = $state(false);
 
 	let gameState = $state(data.gameState);
 	let success = $state(data.success);
@@ -36,16 +37,7 @@
 	$effect(() => {
 		gameState = data.gameState;
 		answers = data.answers;
-		// if (data.success) {
-		// 	modalOpen = true;
-		// }
 	});
-
-	// $effect(() => {
-	// 	if (success) {
-	// 		modalOpen = true;
-	// 	}
-	// });
 
 	function writeStateToCookie(state: GameState) {
 		Cookies.set(STATE_COOKIE_NAME_V2, encodeStateV2(state), {
@@ -56,17 +48,15 @@
 		});
 	}
 
-	function onModalOpen() {
-		modalOpen = true;
-	}
-
-	function onModalClose() {
-		modalOpen = false;
+	function showModal() {
+		pushState('', {
+			showModal: true
+		});
 	}
 
 	function handleKey(key: string) {
 		if (key === 'share') {
-			modalOpen = true;
+			showModal();
 		}
 		const { error, gameState: newGameState } = applyKey({ gameState, key });
 		if (error) {
@@ -146,7 +136,6 @@
 			id = toastLoading('beep boop...');
 		}
 		return async ({ result, update }) => {
-			modalOpen = true;
 			applyAction(result);
 			if (data.session?.user?.login) {
 				if (result.type === 'success') {
@@ -156,6 +145,7 @@
 				}
 			}
 			update();
+			setTimeout(() => showModal(), 10);
 		};
 	};
 </script>
@@ -168,7 +158,7 @@
 				action="?/word"
 				use:enhance={enhanceForm}
 				id="game"
-				class="my-auto flex w-full max-w-[min(700px,_55vh)]"
+				class="my-auto flex w-full"
 			>
 				<div class="max-w-700 grid w-full grid-rows-[repeat(6,_1fr)] gap-2">
 					{#each getItemsForGrid() as item (item.index)}
@@ -185,7 +175,7 @@
 								<div
 									class={cx(
 										'z-[--z-index] aspect-square min-h-0 w-full rounded-xl bg-charade-950',
-										/* shadows and highlights */ 'shadow-[inset_0_var(--height)_var(--height)_0_rgb(0_0_0_/_0.2),_inset_0_calc(-1_*_var(--height))_0_0_theme(colors.charade.800)]',
+										'shadow-[inset_0_var(--height)_var(--height)_0_rgb(0_0_0_/_0.2),_inset_0_calc(-1_*_var(--height))_0_0_theme(colors.charade.800)]',
 										!item.guess && current && wordIsInvalid.value && 'animate-wiggle-once'
 									)}
 								>
@@ -211,16 +201,13 @@
 				--height="1px"
 				onkey={handleKey}
 				answers={getKeyStatuses(gameState.guesses, answers)}
+				showShareKey={success}
 			/>
 		</div>
 	</main>
-	<BetterModal
-		{answers}
-		user={data.session?.user?.login}
-		{onModalOpen}
-		{onModalClose}
-		open={modalOpen}
-	/>
+	{#if $page.state.showModal}
+		<BetterModal {answers} user={data.session?.user?.login} close={() => history.back()} />
+	{/if}
 	<Toaster />
 </div>
 

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import LettuceIcon from '$lib/components/Icon.svelte';
 	import LettuceAvatar from '$lib/components/LettuceAvatar.svelte';
+	import cx from 'classix';
 	import Spinner from '../Spinner.svelte';
 	let { data } = $props();
 </script>
@@ -9,30 +10,41 @@
 	<h1 class="text-center text-3xl font-bold text-snow-300">LeaderBoard</h1>
 	<p class="box-border px-4 text-left text-lg text-snow-300">
 		Each successful game earns 1 point, plus a bonus point for the number of guesses under 6 it took
-		to guess the word. 6 guesses is 1 point. 5 guesses is 2 points, etc.
+		to guess the word. 6 guesses is 1 point. 5 guesses is 2 points, etc. Score below is total of
+		last 7 days.
 	</p>
 	{#await data.leaderboard.scores}
 		<Spinner />
 	{:then scores}
-		<div class="grid w-full gap-2 text-snow-300">
-			<div
-				class="grid w-full grid-cols-[1fr,_50px] gap-4 rounded-2xl bg-charade-700 px-4 py-3 text-xl font-medium sm:grid-cols-[1fr,_50px,_50px] sm:gap-8"
-			>
-				<div class="text-left">User</div>
-				<div class="hidden text-center sm:grid">Score</div>
-				<div class="text-right">Rank</div>
+		<div class="table w-full text-snow-200 sm:text-xl">
+			<div class="table-header-group">
+				<div class="table-row gap-2 font-bold">
+					<div class="table-cell rounded-tl-xl p-4 font-bold capitalize sm:bg-charade-700">
+						rank
+					</div>
+					<div class="p-y-4 table-cell px-2 font-bold capitalize sm:bg-charade-700">user</div>
+					<div
+						class="table-cell rounded-tr-xl p-4 text-center font-bold capitalize sm:bg-charade-700"
+					>
+						score
+					</div>
+				</div>
 			</div>
-			<div class="w-full divide-y-[1px]">
+			<div class="table-row-group">
 				{#each scores.rankings as score, i (i)}
 					{@const position = scores.rankings.filter((s) => s.score > score.score).length + 1}
-					<div
-						class="grid grid-cols-[1fr,_50px] border-charade-700 p-2 sm:grid-cols-[1fr,_50px,_50px] sm:gap-8"
+
+					<a
+						class="group table-row cursor-pointer hover:bg-charade-800 sm:bg-charade-950"
+						href={`/profile/${score.user}`}
 					>
-						<a
-							href={`/profile/${score.user}`}
-							class="##rounded-2xl ##odd:bg-charade-800 ##even:bg-charade-950 mr-auto box-border w-full w-max gap-2 rounded-2xl p-2 pr-4 text-xl font-medium hover:bg-charade-800 sm:gap-8"
+						<div
+							class="border-box mx-auto table-cell border-t-2 border-charade-700 py-4 text-left group-last:rounded-bl-xl sm:p-2 sm:pl-4"
 						>
-							<div class="flex w-max justify-start gap-2 text-left sm:gap-4">
+							#{position}
+						</div>
+						<div class="border-box table-cell border-t-2 border-charade-700 py-4 text-left sm:p-2">
+							<div class="flex gap-2 sm:gap-4">
 								<span class="box-border h-11 w-max overflow-hidden rounded"
 									><LettuceAvatar name={score.user} /></span
 								>
@@ -40,18 +52,13 @@
 									{score.user}
 								</span>
 							</div>
-						</a>
-						<div class="hidden items-center text-right sm:grid">
+						</div>
+						<div
+							class="border-box mx-auto table-cell w-[2ch] border-t-2 border-charade-700 py-4 text-right group-last:rounded-br-xl sm:p-2 sm:pr-4"
+						>
 							{score.score}
 						</div>
-						<div class="flex flex-[0_0_2rem] items-center justify-end text-right text-snow-300">
-							{#if position === 1}
-								<span class="h-8"><LettuceIcon icon="trophy" /></span>
-							{:else}
-								#{position}
-							{/if}
-						</div>
-					</div>
+					</a>
 				{/each}
 			</div>
 		</div>

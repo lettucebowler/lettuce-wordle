@@ -31,10 +31,10 @@
 	});
 </script>
 
-<div class="mb-1 min-h-[66px] w-full">
+<div class="min-h-[66px] w-full">
 	<div id="big-papa-nav" class="flex justify-end">
 		<nav
-			class="h-18 ##bg-charade-700 ##shadow-[0_2px_4px_0_rgb(0_0_0_/_0.2)] @@rounded-2xl @@border-t-[2px] z-10 ml-0 ml-auto box-content max-h-[72px] w-full justify-end gap-x-4 border-t-charade-500 p-1"
+			class="h-18 z-10 ml-0 ml-auto box-content max-h-[72px] w-full justify-end gap-x-4 border-t-charade-500"
 			id="primary-nav"
 		>
 			<div class="flex">

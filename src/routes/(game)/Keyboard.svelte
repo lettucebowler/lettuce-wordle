@@ -7,13 +7,14 @@
 	type KeyboardProps = {
 		answers: { [x: string]: string };
 		onkey?: (key: string) => void;
+		showShareKey?: boolean;
 	};
 
-	let { onkey = () => undefined, answers }: KeyboardProps = $props();
+	let { onkey = () => undefined, answers, showShareKey = false }: KeyboardProps = $props();
 
 	let keys: {
 		[x: string]: HTMLButtonElement;
-	} = {};
+	} = $state({});
 
 	const icons = new Map([
 		[
@@ -44,7 +45,7 @@
 
 <form
 	method="POST"
-	class="grid h-full flex-auto grid-rows-3 gap-1"
+	class="grid h-full flex-auto gap-1"
 	id="keyboard"
 	use:enhance={({ cancel, formData }) => {
 		const key = formData.get('key')?.toString() ?? '';
@@ -52,45 +53,55 @@
 		cancel();
 	}}
 >
-	{#each ['q,w,e,r,t,y,u,i,o,p', ',,a,s,d,f,g,h,j,k,l', 'z,x,c,v,b,n,m,enter,backspace,share'] as row}
-		<div class="flex w-full flex-auto flex-col justify-center">
-			<div class="grid flex-auto grid-cols-[repeat(40,_0.25fr)] gap-1">
-				{#each row.split(',') as letter}
-					{@const status = answers[letter] || '_'}
-					{#if letter}
-						<button
-							aria-label={letter}
-							title={letter}
-							formaction={letter === 'enter' ? '?/word' : '?/letter'}
-							form={letter === 'enter' ? 'game' : undefined}
-							name="key"
-							value={letter}
-							bind:this={keys[letter]}
-							data-answer={status}
-							class={cx(
-								'col-span-4 mt-[--keyboard-height] box-content grid h-full w-full cursor-pointer place-items-center rounded-md bg-[--bg-color] text-center text-sm font-bold text-[--text-color] active:mt-0 active:shadow-none xl:text-base',
-								['x', 'c', '_'].includes(status)
-									? 'shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--highlight-color)]'
-									: ''
-							)}
-						>
-							{#if letter === 'share'}
-								<div class="h-5 w-full">
-									<ShareIcon />
-								</div>
-							{:else if icons.get(letter)}
-								<span class="h-5"><LettuceIcon {...icons.get(letter)} /></span>
-							{:else}
-								{letter.toUpperCase()}
-							{/if}
-						</button>
+	<div class="grid flex-auto grid-cols-[repeat(40,_0.25fr)] gap-1">
+		{#each 'q,w,e,r,t,y,u,i,o,p,,a,s,d,f,g,h,j,k,l,z,x,c,v,b,n,m,enter,backspace'.split(',') as letter}
+			{@const status = answers[letter] || '_'}
+			{#if letter}
+				<button
+					aria-label={letter}
+					title={letter}
+					formaction={letter === 'enter' ? '?/word' : '?/letter'}
+					form={letter === 'enter' ? 'game' : undefined}
+					name="key"
+					value={letter}
+					bind:this={keys[letter]}
+					data-answer={status}
+					class={cx(
+						'col-span-4 mt-[--keyboard-height] box-content grid h-full w-full cursor-pointer place-items-center rounded-md bg-[--bg-color] text-center text-sm font-bold text-[--text-color] active:mt-0 active:shadow-none md:text-xl',
+						['x', 'c', '_'].includes(status)
+							? 'shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--highlight-color)]'
+							: ''
+					)}
+				>
+					{#if letter === 'share'}
+						<div class="h-5 w-full lg:h-7">
+							<ShareIcon />
+						</div>
+					{:else if icons.get(letter)}
+						<span class="h-5 lg:h-7"><LettuceIcon {...icons.get(letter)} /></span>
 					{:else}
-						<div></div>
+						{letter.toUpperCase()}
 					{/if}
-				{/each}
-			</div>
-		</div>
-	{/each}
+				</button>
+			{:else}
+				<div></div>
+			{/if}
+		{/each}
+		{#if showShareKey}
+			<button
+				aria-label="share"
+				title="share"
+				formAction="?/letter"
+				name="key"
+				value="share"
+				class="col-span-4 mt-[--keyboard-height] box-content grid h-full w-full cursor-pointer place-items-center rounded-md bg-[--bg-color] text-center text-sm font-bold text-[--text-color] shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--highlight-color)] active:mt-0 active:shadow-none md:text-xl"
+			>
+				<div class="h-5 w-full lg:h-7">
+					<ShareIcon />
+				</div>
+			</button>
+		{/if}
+	</div>
 </form>
 
 <style>

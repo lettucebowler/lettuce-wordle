@@ -13,6 +13,9 @@ declare global {
 		interface Locals {
 			getGameStateV2: () => import('$lib/schemas/game').GameState;
 		}
+		interface PageState {
+			showModal: boolean;
+		}
 	}
 }
 export {};

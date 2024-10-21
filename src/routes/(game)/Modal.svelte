@@ -9,12 +9,10 @@
 	type ModalProps = {
 		answers: Array<string>;
 		user?: string;
-		open: boolean;
-		onModalOpen?: () => void;
-		onModalClose?: () => void;
+		close: () => void;
 	};
 
-	let { answers, user, open, onModalOpen, onModalClose }: ModalProps = $props();
+	let { answers, user, close }: ModalProps = $props();
 	let isAuthenticated = $derived(!!user);
 	let attempts = $derived(answers.length);
 	const clipboardMessage = createExpiringString();
@@ -24,29 +22,17 @@
 	let modalTimeout = $state(setTimeout(() => {}));
 
 	$effect(() => {
-		if (open) {
-			openModal();
-		} else {
-			closeModal();
-		}
+		openModal();
 	});
 
 	export function openModal() {
-		if (onModalOpen) {
-			onModalOpen();
-		}
-		// dialog?.showModal();
-		// timeUntilNextGame.start();
 		modalTimeout = setTimeout(() => {
 			dialog?.showModal();
 			timeUntilNextGame.start();
 		}, 0);
 	}
 
-	export function closeModal() {
-		if (onModalClose) {
-			onModalClose();
-		}
+	export function cleanup() {
 		if (modalTimeout) {
 			clearTimeout(modalTimeout);
 		}
@@ -113,14 +99,17 @@
 	class="open:opacity-1 box-border w-full max-w-xs rounded-2xl bg-charade-900 p-2 backdrop:animate-fadein backdrop:backdrop-blur-sm open:pointer-events-auto open:animate-flyup"
 	open={false}
 	use:trapFocus
+	onclose={() => {
+		close();
+	}}
 >
-	<div class="flex flex-col gap-2" use:clickOutsideAction={closeModal}>
+	<div class="flex flex-col gap-2" use:clickOutsideAction={cleanup}>
 		<div class="flex h-8 justify-between">
 			<div class="aspect-square h-full"></div>
 			<h2 class="col-start-2 mt-0 flex-auto text-center text-2xl text-snow-300">&nbsp;Success!</h2>
 			<button
 				aria-label="close modal"
-				onclick={closeModal}
+				onclick={cleanup}
 				class="aspect-square h-8 rounded p-1 text-snow-300 transition transition-all hover:bg-charade-950 hover:p-0"
 				><svg
 					xmlns="http://www.w3.org/2000/svg"
