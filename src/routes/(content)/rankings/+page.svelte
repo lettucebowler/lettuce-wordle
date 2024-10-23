@@ -35,15 +35,15 @@
 					{@const position = scores.rankings.filter((s) => s.score > score.score).length + 1}
 
 					<a
-						class="group table-row cursor-pointer hover:bg-charade-800 sm:bg-charade-950"
+						class="group table-row cursor-pointer hover:bg-charade-800 hover:brightness-90 sm:bg-charade-950"
 						href={`/profile/${score.user}`}
 					>
 						<div
-							class="border-box mx-auto table-cell border-t-2 border-charade-700 py-4 text-left group-last:rounded-bl-xl sm:p-2 sm:pl-4"
+							class="border-box mx-auto table-cell border-t border-charade-700 py-4 text-left group-last:rounded-bl-xl sm:p-2 sm:pl-4"
 						>
 							#{position}
 						</div>
-						<div class="border-box table-cell border-t-2 border-charade-700 py-4 text-left sm:p-2">
+						<div class="border-box table-cell border-t border-charade-700 py-4 text-left sm:p-2">
 							<div class="flex gap-2 sm:gap-4">
 								<span class="box-border h-11 w-max overflow-hidden rounded"
 									><LettuceAvatar name={score.user} /></span
@@ -54,7 +54,7 @@
 							</div>
 						</div>
 						<div
-							class="border-box mx-auto table-cell w-[2ch] border-t-2 border-charade-700 py-4 text-right group-last:rounded-br-xl sm:p-2 sm:pr-4"
+							class="border-box mx-auto table-cell w-[2ch] border-t border-charade-700 py-4 text-right group-last:rounded-br-xl sm:p-2 sm:pr-4"
 						>
 							{score.score}
 						</div>
