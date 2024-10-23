@@ -137,7 +137,9 @@ export function infiniteScrollAction<T extends HTMLElement>(
 	let stop: () => void;
 
 	const destroy = () => {
-		stop && stop();
+		if (stop) {
+			stop();
+		}
 	};
 
 	const update = (params: InfiniteScrollActionParams) => {

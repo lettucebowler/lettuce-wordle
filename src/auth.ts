@@ -7,11 +7,11 @@ import {
 	SK_AUTH_GITHUB_CLIENT_SECRET
 } from '$env/static/private';
 import * as v from 'valibot';
-import { createApiWordlettuceClient } from '$lib/client/api-wordlettuce.server';
 import { getGameNum } from '$lib/util/words';
 import { checkWordsV2 } from '$lib/util/gameFunctions';
 import { successAnswer } from '$lib/constants/app-constants';
 import { EmailSchema, PositiveIntegerSchema } from '$lib/schemas/util';
+import { createWordlettuceBetaDao } from '$lib/dao/wordlettuce-beta.server';
 
 const tokenSchema = v.object({
 	login: v.string(),
@@ -58,8 +58,8 @@ export const { handle, signIn, signOut } = SvelteKitAuth(async (event) => {
 							login,
 							id
 						};
-						const { upsertUser, saveGame } = createApiWordlettuceClient(event);
-						await upsertUser(profileParseResult.output);
+						const { saveGame, upsertUser } = createWordlettuceBetaDao(event);
+						await upsertUser({ username: login, userId: id });
 
 						try {
 							const gameState = event.locals.getGameStateV2();
@@ -72,6 +72,7 @@ export const { handle, signIn, signOut } = SvelteKitAuth(async (event) => {
 								});
 							}
 						} catch (e) {
+							console.error(e);
 							// do nothing
 						}
 					}

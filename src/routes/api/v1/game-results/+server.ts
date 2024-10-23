@@ -1,6 +1,6 @@
 import * as v from 'valibot';
-import { createApiWordlettuceClient } from '$lib/client/api-wordlettuce.server.js';
 import { error, json } from '@sveltejs/kit';
+import { createWordlettuceBetaDao } from '$lib/dao/wordlettuce-beta.server';
 
 const EventToObjectSchema = v.pipe(
 	v.object({
@@ -39,11 +39,14 @@ export async function GET(event) {
 		error(400, 'Bad request');
 	}
 	const { user, page } = requestParseResult.output;
-	const { getGames } = createApiWordlettuceClient(event);
-	const gameResults = await getGames({ user, count: 30, offset: (page - 1) * 30 });
+	const limit = 30;
+	const offset = (page - 1) * 30;
+	const { getGames } = createWordlettuceBetaDao(event);
+	const results = await getGames({ username: user, limit, offset });
+
 	return json({
-		more: gameResults.more,
-		results: gameResults.results,
+		more: results.length > 30,
+		results: results.slice(0, limit),
 		page
 	});
 }

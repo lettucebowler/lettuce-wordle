@@ -1,7 +1,5 @@
 <script lang="ts">
-	import LettuceIcon from '$lib/components/Icon.svelte';
 	import LettuceAvatar from '$lib/components/LettuceAvatar.svelte';
-	import cx from 'classix';
 	import Spinner from '../Spinner.svelte';
 	let { data } = $props();
 </script>
