@@ -1,4 +1,5 @@
 <script lang="ts">
+	import FireIcon from '$lib/components/FireIcon.svelte';
 	import LettuceAvatar from '$lib/components/LettuceAvatar.svelte';
 	import Spinner from '../Spinner.svelte';
 	let { data } = $props();
@@ -49,6 +50,11 @@
 								<span class="grid items-center">
 									{ranking.user}
 								</span>
+								{#if position === 1}
+									<div class="my-auto size-6 animate-pulse text-antique-brass-500">
+										<FireIcon />
+									</div>
+								{/if}
 							</div>
 						</div>
 						<div

@@ -8,10 +8,10 @@ import { createWordlettuceBetaDao } from '$lib/dao/wordlettuce-beta.server';
 export const trailingSlash = 'never';
 
 export async function load(event) {
-	const gameState2 = event.locals.getGameStateV2();
-	const answers2 = checkWordsV2({ guesses: gameState2.guesses });
+	const gameState = event.locals.getGameStateV2();
+	const answers = checkWordsV2({ guesses: gameState.guesses });
 
-	event.cookies.set(STATE_COOKIE_NAME_V2, encodeStateV2(gameState2), {
+	event.cookies.set(STATE_COOKIE_NAME_V2, encodeStateV2(gameState), {
 		httpOnly: false,
 		path: '/',
 		maxAge: 86400,
@@ -19,10 +19,10 @@ export async function load(event) {
 	});
 
 	return {
-		currentGuess: gameState2.currentGuess,
-		answers: answers2,
-		success: answers2.length ? answers2.at(-1) === successAnswer : false,
-		gameState: gameState2 as GameState
+		currentGuess: gameState.currentGuess,
+		answers,
+		success: answers.length ? answers.at(-1) === successAnswer : false,
+		gameState: gameState as GameState
 	};
 }
 

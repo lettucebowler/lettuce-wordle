@@ -76,13 +76,13 @@
 					</div>
 					<div class="hidden h-full sm:block">
 						{#if user}
-							<div class="grid h-14">
+							<div class="grid h-14 w-14">
 								<div class="col-[1] row-[1] h-14">
 									{#if current}
 										<div
 											in:navigationRecieve={{ key: 'current-link' }}
 											out:navigationSend={{ key: 'current-link' }}
-											class="grid h-14 rounded-xl bg-charade-800"
+											class="grid h-14 rounded-2xl bg-charade-800"
 										></div>
 									{/if}
 								</div>
@@ -120,7 +120,7 @@
 					<div class="flex flex-col gap-2 border-charade-800 p-4">
 						{#if user?.login}
 							<div class="mb-2 flex items-center justify-start gap-4">
-								<span class="box-border h-11 h-[44px] w-[44px] w-max overflow-hidden rounded"
+								<span class="box-border h-[44px] w-[44px] w-max overflow-hidden rounded"
 									><LettuceAvatar name={user.login} /></span
 								>
 								<span class="text-xl font-medium text-snow-300">{user.login}</span>

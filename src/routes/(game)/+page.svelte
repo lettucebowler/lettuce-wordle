@@ -2,7 +2,6 @@
 	import BetterModal from './Modal.svelte';
 	import { flip } from 'svelte/animate';
 	import { applyAction, enhance } from '$app/forms';
-	import Keyboard from './Keyboard.svelte';
 	import Tile from './Tile.svelte';
 	import {
 		getKeyStatuses,
@@ -23,12 +22,16 @@
 	import { STATE_COOKIE_NAME_V2, successAnswer } from '$lib/constants/app-constants';
 	import { pushState } from '$app/navigation';
 	import { page } from '$app/stores';
+	import ShareIcon from '$lib/components/ShareIcon.svelte';
+	import EnterIcon from '$lib/components/EnterIcon.svelte';
+	import BackSpaceIcon from '$lib/components/BackSpaceIcon.svelte';
 
 	let { form, data } = $props();
 
 	let gameState = $state(data.gameState);
 	let success = $state(data.success);
 	let answers = $state(data.answers);
+	let wordForm: HTMLFormElement | undefined = $state();
 
 	const wordIsInvalid = createExpiringBoolean();
 	const submittingWord = createExpiringBoolean();
@@ -38,6 +41,8 @@
 		gameState = data.gameState;
 		answers = data.answers;
 	});
+
+	let keyStatuses = $derived(getKeyStatuses(gameState.guesses, answers));
 
 	function writeStateToCookie(state: GameState) {
 		Cookies.set(STATE_COOKIE_NAME_V2, encodeStateV2(state), {
@@ -55,8 +60,8 @@
 	}
 
 	function handleKey(key: string) {
-		if (key === 'share') {
-			showModal();
+		if (key === 'enter') {
+			wordForm?.requestSubmit();
 		}
 		const { error, gameState: newGameState } = applyKey({ gameState, key });
 		if (error) {
@@ -150,6 +155,11 @@
 	};
 </script>
 
+<svelte:window
+	on:keydown={(e) => {
+		handleKey(e.key.toLowerCase());
+	}}
+/>
 <div class="max-h-min-content flex w-full flex-auto flex-col items-center gap-2">
 	<main
 		class="flex w-full flex-auto flex-col items-center justify-end justify-between gap-2 sm:gap-4"
@@ -159,6 +169,7 @@
 			action="?/word"
 			use:enhance={enhanceForm}
 			id="game"
+			bind:this={wordForm}
 			class="my-auto flex w-full max-w-[min(700px,_55vh)]"
 		>
 			<div class="max-w-700 grid w-full grid-rows-[repeat(6,_1fr)] gap-2">
@@ -196,12 +207,78 @@
 				{/each}
 			</div>
 		</form>
-		<Keyboard
-			--height="1px"
-			onkey={handleKey}
-			answers={getKeyStatuses(gameState.guesses, answers)}
-			showShareKey={success}
-		/>
+		<form
+			method="POST"
+			class="keyboard grid max-h-40 w-full flex-auto gap-1 sm:max-h-80"
+			id="keyboard"
+			use:enhance={({ cancel, formData }) => {
+				const key = formData.get('key')?.toString() ?? '';
+				handleKey(key);
+				cancel();
+			}}
+		>
+			<div class="grid flex-auto grid-cols-[repeat(40,_0.25fr)] grid-rows-3 gap-1">
+				{#each 'q,w,e,r,t,y,u,i,o,p,,a,s,d,f,g,h,j,k,l,z,x,c,v,b,n,m'.split(',') as letter}
+					{@const status = keyStatuses[letter] || '_'}
+					{#if letter}
+						<button
+							aria-label={letter}
+							title={letter}
+							formaction={letter === 'enter' ? '?/word' : '?/letter'}
+							form={letter === 'enter' ? 'game' : undefined}
+							name="key"
+							value={letter}
+							data-answer={status}
+							class={cx(
+								'col-span-4 mt-[--keyboard-height] grid h-full w-full cursor-pointer place-items-center rounded-md bg-[--bg-color] text-center text-sm font-bold text-[--text-color]  active:shadow-none sm:py-2 md:text-xl',
+								['x', 'c', '_'].includes(status)
+									? 'shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--highlight-color)] active:mt-0'
+									: ''
+							)}
+						>
+							{#if letter === 'share'}
+								<div class="h-5 w-full lg:h-7">
+									<ShareIcon />
+								</div>
+							{:else}
+								{letter.toUpperCase()}
+							{/if}
+						</button>
+					{:else}
+						<div></div>
+					{/if}
+				{/each}
+				<button
+					aria-label="enter"
+					title="enter"
+					formAction="?/word"
+					name="key"
+					value="enter"
+					form="game"
+					class="col-span-4 mt-[1px] grid h-full w-full cursor-pointer place-items-center rounded-md bg-[--bg-color] text-center text-sm font-bold text-[--text-color] shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--highlight-color)] active:mt-0 active:shadow-none sm:py-2 md:text-xl"
+					><div class="h-5 w-full lg:h-7"><EnterIcon /></div></button
+				>
+				<button
+					aria-label="backspace"
+					title="backspace"
+					formAction="?/letter"
+					name="key"
+					value="backspace"
+					class="col-span-4 mt-[1px] grid h-full w-full cursor-pointer place-items-center rounded-md bg-[--bg-color] text-center text-sm font-bold text-[--text-color] shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--highlight-color)] active:mt-0 active:shadow-none sm:py-2 md:text-xl"
+					><div class="h-5 w-full lg:h-7"><BackSpaceIcon /></div></button
+				>
+				{#if success}
+					<button
+						aria-label="share"
+						title="share"
+						onclick={() => showModal()}
+						type="button"
+						class="col-span-4 mt-[1px] grid h-full w-full cursor-pointer place-items-center rounded-md bg-[--bg-color] text-center text-sm font-bold text-[--text-color] shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--highlight-color)] active:mt-0 active:shadow-none sm:py-2 md:text-xl"
+						><div class="h-5 w-full lg:h-7"><ShareIcon /></div></button
+					>
+				{/if}
+			</div>
+		</form>
 	</main>
 	{#if $page.state.showModal}
 		<BetterModal {answers} user={data.session?.user?.login} close={() => history.back()} />
@@ -212,5 +289,32 @@
 <style>
 	:root {
 		--height: 3px;
+	}
+
+	[data-answer='c'] {
+		--bg-color: theme('colors.putty.500');
+		--highlight-color: theme('colors.putty.200');
+		--text-color: theme('colors.putty.900');
+	}
+	[data-answer='x'] {
+		--bg-color: theme('colors.swamp-green.500');
+		--highlight-color: theme('colors.swamp-green.200');
+		--text-color: theme('colors.swamp-green.900');
+	}
+
+	[data-answer='i'] {
+		--bg-color: theme('colors.charade.800');
+		--highlight-color: theme('colors.charade.600');
+		--text-color: theme('colors.charade.300');
+	}
+
+	button {
+		--bg-color: theme('colors.charade.600');
+		--highlight-color: theme('colors.charade.400');
+		--text-color: theme('colors.charade.100');
+	}
+
+	.keyboard {
+		--keyboard-height: 1px;
 	}
 </style>
