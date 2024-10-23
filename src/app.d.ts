@@ -16,6 +16,11 @@ declare global {
 		interface PageState {
 			showModal: boolean;
 		}
+		interface Platform {
+			env?: {
+				WORDLETTUCE_DB: D1Database;
+			};
+		}
 	}
 }
 export {};

@@ -13,9 +13,9 @@
 		to guess the word. 6 guesses is 1 point. 5 guesses is 2 points, etc. Score below is total of
 		last 7 days.
 	</p>
-	{#await data.leaderboard.scores}
+	{#await data.rankings}
 		<Spinner />
-	{:then scores}
+	{:then rankings}
 		<div class="table w-full text-snow-200 sm:text-xl">
 			<div class="table-header-group">
 				<div class="table-row gap-2 font-bold">
@@ -31,12 +31,12 @@
 				</div>
 			</div>
 			<div class="table-row-group">
-				{#each scores.rankings as score, i (i)}
-					{@const position = scores.rankings.filter((s) => s.score > score.score).length + 1}
+				{#each rankings as ranking, i (i)}
+					{@const position = rankings.filter((s) => s.score > ranking.score).length + 1}
 
 					<a
 						class="group table-row cursor-pointer hover:bg-charade-800 hover:brightness-90 sm:bg-charade-950"
-						href={`/profile/${score.user}`}
+						href={`/profile/${ranking.user}`}
 					>
 						<div
 							class="border-box mx-auto table-cell border-t border-charade-700 py-4 text-left group-last:rounded-bl-xl sm:p-2 sm:pl-4"
@@ -46,17 +46,17 @@
 						<div class="border-box table-cell border-t border-charade-700 py-4 text-left sm:p-2">
 							<div class="flex gap-2 sm:gap-4">
 								<span class="box-border h-11 w-max overflow-hidden rounded"
-									><LettuceAvatar name={score.user} /></span
+									><LettuceAvatar name={ranking.user} /></span
 								>
 								<span class="grid items-center">
-									{score.user}
+									{ranking.user}
 								</span>
 							</div>
 						</div>
 						<div
 							class="border-box mx-auto table-cell w-[2ch] border-t border-charade-700 py-4 text-right group-last:rounded-br-xl sm:p-2 sm:pr-4"
 						>
-							{score.score}
+							{ranking.score}
 						</div>
 					</a>
 				{/each}
