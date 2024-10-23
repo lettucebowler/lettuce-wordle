@@ -5,7 +5,7 @@ export async function load(event) {
 	const rankings = getRankings();
 
 	event.setHeaders({
-		'Cache-Control': 'max'
+		'Cache-Control': 'max-age=300'
 	});
 
 	return {
