@@ -39,6 +39,7 @@ export function createWordlettuceBetaDao() {
 
 	async function getRankings() {
 		const gameNum = getGameNum();
+		const before = performance.now();
 		const query = db
 			.select({
 				user: users.username,
@@ -53,7 +54,11 @@ export function createWordlettuceBetaDao() {
 			.groupBy(users.id)
 			.orderBy(desc(sql`score`))
 			.limit(10);
-		return query.all();
+		return query.all().then((data) => {
+			const after = performance.now();
+			console.log('get rankings:', after - before);
+			return data;
+		});
 	}
 
 	async function getNextPageAfter({
