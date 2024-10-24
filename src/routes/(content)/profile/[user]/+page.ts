@@ -15,6 +15,9 @@ export async function load(event) {
 		results: GameResult[];
 		more: boolean;
 	}>('/api/v1/game-results', { user, page });
+	event.setHeaders({
+		'Cache-Control': 'max-age=300'
+	});
 	return {
 		user,
 		page,
