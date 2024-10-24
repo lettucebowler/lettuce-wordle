@@ -1,7 +1,7 @@
 import { createWordlettuceBetaDao } from '$lib/dao/wordlettuce-beta.server';
 
 export async function load(event) {
-	const { getRankings } = createWordlettuceBetaDao(event);
+	const { getRankings } = createWordlettuceBetaDao();
 	const rankings = getRankings();
 
 	event.setHeaders({

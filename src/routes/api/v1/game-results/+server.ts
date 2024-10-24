@@ -1,6 +1,7 @@
 import * as v from 'valibot';
 import { error, json } from '@sveltejs/kit';
-import { createWordlettuceBetaDao } from '$lib/dao/wordlettuce-beta.server';
+import { createApiWordlettuceClient } from '$lib/client/api-wordlettuce.server.js';
+import { createWordlettuceBetaDao } from '$lib/dao/wordlettuce-beta.server.js';
 
 const EventToObjectSchema = v.pipe(
 	v.object({
@@ -41,11 +42,15 @@ export async function GET(event) {
 	const { user, page } = requestParseResult.output;
 	const limit = 30;
 	const offset = (page - 1) * 30;
-	const { getGames } = createWordlettuceBetaDao(event);
-	const results = await getGames({ username: user, limit, offset });
+	const { getGames } = createWordlettuceBetaDao();
+	const results = await getGames({ username: user, offset, limit });
+
+	event.setHeaders({
+		'Cache-Control': 'max-age=60'
+	});
 
 	return json({
-		more: results.length > 30,
+		more: results.length > limit,
 		results: results.slice(0, limit),
 		page
 	});
