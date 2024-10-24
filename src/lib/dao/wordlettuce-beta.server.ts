@@ -5,15 +5,12 @@ import { getGameNum } from '$lib/util/words';
 import { TURSO_AUTH_TOKEN, TURSO_DATABASE_URL } from '$env/static/private';
 
 export function createWordlettuceBetaDao() {
-	const before = performance.now();
 	const db = drizzle({
 		connection: {
 			url: TURSO_DATABASE_URL,
 			authToken: TURSO_AUTH_TOKEN
 		}
 	});
-	const after = performance.now();
-	console.log('initialize drizzle', after - before);
 
 	async function saveGame({
 		userId,
@@ -68,7 +65,6 @@ export function createWordlettuceBetaDao() {
 		limit: number;
 		start: number;
 	}) {
-		const beforeQuery = performance.now();
 		const query = db
 			.select({
 				gameNum: gameResults.gameNum,
@@ -81,14 +77,7 @@ export function createWordlettuceBetaDao() {
 			.where(and(eq(users.username, username), lte(gameResults.gameNum, start)))
 			.orderBy(desc(gameResults.gameNum))
 			.limit(limit + 1);
-		const afterQuery = performance.now();
-		console.log('initialize query', afterQuery - beforeQuery);
-		const before = performance.now();
-		return query.all().then((data) => {
-			const after = performance.now();
-			console.log('fetch game results', after - before);
-			return data;
-		});
+		return query.all();
 	}
 
 	async function upsertUser({ userId, username }: { userId: number; username: string }) {

@@ -1,16 +1,7 @@
 import { createWordlettuceBetaDao } from '$lib/dao/wordlettuce-beta.server.js';
-import { fetcher } from 'itty-fetcher';
-
-type GameResult = {
-	gameNum: number;
-	answers: string;
-};
 
 export async function load(event) {
-	const beforeParent = performance.now();
 	const parentData = await event.parent();
-	const afterParent = performance.now();
-	console.log('parent data', afterParent - beforeParent);
 	const { user } = event.params;
 	const searchParams = event.url.searchParams;
 	const startParam = Number(searchParams.get('start')) || parentData.gameNum;
