@@ -56,31 +56,6 @@ export function createWordlettuceBetaDao() {
 		return query.all();
 	}
 
-	async function getGames({
-		username,
-		limit,
-		offset
-	}: {
-		username: string;
-		limit: number;
-		offset: number;
-	}) {
-		const query = db
-			.select({
-				gameNum: gameResults.gameNum,
-				answers: gameResults.answers,
-				userId: gameResults.userId,
-				attempts: gameResults.attempts
-			})
-			.from(users)
-			.innerJoin(gameResults, eq(users.id, gameResults.userId))
-			.where(eq(users.username, username))
-			.orderBy(desc(gameResults.gameNum))
-			.limit(limit + 1)
-			.offset(offset);
-		return query.all();
-	}
-
 	async function getNextPageAfter({
 		username,
 		limit = 30,
@@ -116,7 +91,6 @@ export function createWordlettuceBetaDao() {
 	return {
 		saveGame,
 		getRankings,
-		getGames,
 		upsertUser,
 		getNextPageAfter
 	};
