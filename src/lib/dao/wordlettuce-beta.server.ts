@@ -39,7 +39,6 @@ export function createWordlettuceBetaDao() {
 
 	async function getRankings() {
 		const gameNum = getGameNum();
-		const before = performance.now();
 		const query = db
 			.select({
 				user: users.username,
@@ -54,11 +53,7 @@ export function createWordlettuceBetaDao() {
 			.groupBy(users.id)
 			.orderBy(desc(sql`score`))
 			.limit(10);
-		return query.all().then((data) => {
-			const after = performance.now();
-			console.log('get rankings:', after - before);
-			return data;
-		});
+		return query.all();
 	}
 
 	async function getNextPageAfter({
@@ -70,7 +65,6 @@ export function createWordlettuceBetaDao() {
 		limit: number;
 		start: number;
 	}) {
-		const before = performance.now();
 		const query = db
 			.select({
 				gameNum: gameResults.gameNum,
@@ -83,11 +77,7 @@ export function createWordlettuceBetaDao() {
 			.where(and(eq(users.username, username), lte(gameResults.gameNum, start)))
 			.orderBy(desc(gameResults.gameNum))
 			.limit(limit + 1);
-		return query.all().then((data) => {
-			const after = performance.now();
-			console.log('get games:', after - before);
-			return data;
-		});
+		return query.all();
 	}
 
 	async function upsertUser({ userId, username }: { userId: number; username: string }) {
