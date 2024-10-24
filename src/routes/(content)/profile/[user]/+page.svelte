@@ -9,25 +9,27 @@
 
 	let { data } = $props();
 
-	async function getResults({ page = 1 }) {
+	async function getResults({ start }: { start: number }) {
 		const api = fetcher({ base: window.location.origin });
 		const newItems = await api.get<{
 			results: Array<{ gameNum: number; attempts: number; answers: string; userId: number }>;
 			more: boolean;
-		}>('/api/v1/game-results', { user: data.user, page });
+			start: number;
+			next: number;
+		}>('/api/v1/game-results', { user: data.user, start });
 		return newItems;
 	}
 
 	let query = createInfiniteQuery(() => ({
-		queryKey: ['game-results', data.user, data.page],
-		initialPageParam: data.page,
-		getNextPageParam(lastPage, pages) {
-			return lastPage.more ? pages.length + 1 : undefined;
+		queryKey: ['game-results', data.user, data.start],
+		initialPageParam: data.start,
+		getNextPageParam(lastPage) {
+			return lastPage.next ? lastPage.next : undefined;
 		},
-		queryFn: ({ pageParam }) => getResults({ page: pageParam }),
+		queryFn: ({ pageParam }) => getResults({ start: pageParam }),
 		initialData: {
-			pageParams: [data.page],
-			pages: [{ results: data.results, more: data.more }]
+			pageParams: [data.start],
+			pages: [{ results: data.results, start: data.start, next: data.next }]
 		},
 		refetchOnMount: false,
 		refetchOnWindowFocus: false
@@ -40,7 +42,7 @@
 		cb: query?.fetchNextPage,
 		delay: 250,
 		immediate: false,
-		disabled: data.page !== 1 || !query.hasNextPage
+		disabled: !data.next || data.start !== data.gameNum || !query.hasNextPage
 	}}
 />
 <main class="grid w-full gap-8">
@@ -85,7 +87,7 @@
 			{/each}
 		{/if}
 	</div>
-	{#if browser && query.hasNextPage && data.page === 1}
+	{#if browser && query.hasNextPage && data.start === data.gameNum}
 		<div class="flex flex-col items-center gap-2">
 			<svg
 				class="h-8 animate-spin text-snow-100"
@@ -108,18 +110,18 @@
 			</svg>
 			<p class="text-center text-xl font-medium text-snow-100">loading...</p>
 		</div>
-	{:else if data.page > 1 || !browser}
-		<nav class="mx-4 flex justify-between gap-2">
-			{#if data.page > 1}
-				<a href="?page={data.page - 1}" title="Previous" class="text-lg font-medium text-snow-300"
-					>Previous</a
+	{:else if data.start < data.gameNum || !browser}
+		<nav class="mx-4 flex justify-end gap-2">
+			{#if data.start < data.gameNum}
+				<a
+					href="?start={data.gameNum}"
+					title="Back to start"
+					class="text-lg font-medium text-snow-300">Back to start</a
 				>
 			{/if}
-			{#if data.more}
-				<a
-					href="?page={data.page + 1}"
-					title="Next"
-					class="ml-auto text-lg font-medium text-snow-300">Next</a
+			{#if data.next}
+				<a href="?start={data.next}" title="Next" class="ml-auto text-lg font-medium text-snow-300"
+					>Next</a
 				>
 			{/if}
 		</nav>

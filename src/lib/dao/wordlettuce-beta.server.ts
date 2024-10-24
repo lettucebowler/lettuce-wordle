@@ -1,7 +1,6 @@
-import type { RequestEvent } from '@sveltejs/kit';
 import { drizzle } from 'drizzle-orm/libsql';
 import { gameResults, users } from '$lib/schemas/drizzle';
-import { and, count, desc, eq, gt, lte, sql } from 'drizzle-orm';
+import { and, count, desc, eq, gt, lt, lte, sql } from 'drizzle-orm';
 import { getGameNum } from '$lib/util/words';
 import { TURSO_AUTH_TOKEN, TURSO_DATABASE_URL } from '$env/static/private';
 
@@ -82,6 +81,30 @@ export function createWordlettuceBetaDao() {
 		return query.all();
 	}
 
+	async function getNextPageAfter({
+		username,
+		limit = 30,
+		start = getGameNum()
+	}: {
+		username: string;
+		limit: number;
+		start: number;
+	}) {
+		const query = db
+			.select({
+				gameNum: gameResults.gameNum,
+				answers: gameResults.answers,
+				userId: gameResults.userId,
+				attempts: gameResults.attempts
+			})
+			.from(users)
+			.innerJoin(gameResults, eq(users.id, gameResults.userId))
+			.where(and(eq(users.username, username), lte(gameResults.gameNum, start)))
+			.orderBy(desc(gameResults.gameNum))
+			.limit(limit + 1);
+		return query.all();
+	}
+
 	async function upsertUser({ userId, username }: { userId: number; username: string }) {
 		return db
 			.insert(users)
@@ -94,6 +117,7 @@ export function createWordlettuceBetaDao() {
 		saveGame,
 		getRankings,
 		getGames,
-		upsertUser
+		upsertUser,
+		getNextPageAfter
 	};
 }

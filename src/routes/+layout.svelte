@@ -4,7 +4,6 @@
 	import appleTouchIcon from '$lib/assets/apple-touch-icon.png';
 	import safariPinnedTabIcon from '$lib/assets/safari-pinned-tab.svg';
 	import { appName } from '$lib/constants/app-constants';
-	import { getGameNum } from '$lib/util/words';
 	import AuthNav from './AuthNav.svelte';
 	import '$lib/assets/app.css';
 
@@ -17,7 +16,7 @@
 	<link rel="icon" type="image/png" sizes="16x16" href={smallFavicon} />
 	<link rel="mask-icon" href={safariPinnedTabIcon} color="#a3be8c" />
 	<meta name="description" content="Lettuce Wordle`" />
-	<title>{appName} #{getGameNum()}</title>
+	<title>{appName} #{data.gameNum}</title>
 </svelte:head>
 
 <div

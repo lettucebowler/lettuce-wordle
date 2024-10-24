@@ -1,7 +1,7 @@
 import * as v from 'valibot';
 import { error, json } from '@sveltejs/kit';
-import { createApiWordlettuceClient } from '$lib/client/api-wordlettuce.server.js';
 import { createWordlettuceBetaDao } from '$lib/dao/wordlettuce-beta.server.js';
+import { getGameNum } from '$lib/util/words.js';
 
 const EventToObjectSchema = v.pipe(
 	v.object({
@@ -10,7 +10,7 @@ const EventToObjectSchema = v.pipe(
 	v.transform((input) => {
 		return v.parse(
 			v.object({
-				page: v.optional(
+				start: v.optional(
 					v.pipe(
 						v.pipe(
 							v.unknown(),
@@ -19,7 +19,7 @@ const EventToObjectSchema = v.pipe(
 						v.integer(),
 						v.minValue(1)
 					),
-					'1'
+					getGameNum().toString()
 				),
 				user: v.pipe(
 					v.pipe(
@@ -39,19 +39,19 @@ export async function GET(event) {
 	if (!requestParseResult.success) {
 		error(400, 'Bad request');
 	}
-	const { user, page } = requestParseResult.output;
+	const { user, start } = requestParseResult.output;
 	const limit = 30;
-	const offset = (page - 1) * 30;
-	const { getGames } = createWordlettuceBetaDao();
-	const results = await getGames({ username: user, offset, limit });
+	const { getNextPageAfter } = createWordlettuceBetaDao();
+	const results = await getNextPageAfter({ username: user, limit, start });
 
 	event.setHeaders({
 		'Cache-Control': 'max-age=300'
 	});
-
+	const last = results.at(-1);
+	const next = results.length > limit ? (last ? last.gameNum : getGameNum()) : null;
 	return json({
-		more: results.length > limit,
 		results: results.slice(0, limit),
-		page
+		start,
+		next
 	});
 }

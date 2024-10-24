@@ -9,19 +9,20 @@ export async function load(event) {
 	const parentData = await event.parent();
 	const { user } = event.params;
 	const searchParams = event.url.searchParams;
-	const page = Number(searchParams.get('page')) || 1;
+	const startParam = Number(searchParams.get('start')) || parentData.gameNum;
 	const apiWordlettuce = fetcher({ fetch: event.fetch });
-	const { results, more } = await apiWordlettuce.get<{
+	const { results, start, next } = await apiWordlettuce.get<{
 		results: GameResult[];
-		more: boolean;
-	}>('/api/v1/game-results', { user, page });
+		start: number;
+		next: number | null;
+	}>('/api/v1/game-results', { user, start: startParam });
 	event.setHeaders({
 		'Cache-Control': 'max-age=300'
 	});
 	return {
 		user,
-		page,
-		more,
+		start,
+		next,
 		results,
 		...parentData
 	};
