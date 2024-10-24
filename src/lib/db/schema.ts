@@ -1,4 +1,4 @@
-import { integer, sqliteTable, text, index } from 'drizzle-orm/sqlite-core';
+import { integer, sqliteTable, text, index, primaryKey } from 'drizzle-orm/sqlite-core';
 
 export const users = sqliteTable('users', {
 	id: integer('github_id').primaryKey(),
@@ -15,6 +15,7 @@ export const gameResults = sqliteTable(
 	},
 	(table) => {
 		return {
+			pk: primaryKey({ columns: [table.userId, table.gameNum] }),
 			gameNumIdx: index('game_num_idx').on(table.gameNum)
 		};
 	}
