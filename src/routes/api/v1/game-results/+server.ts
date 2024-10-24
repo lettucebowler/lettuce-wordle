@@ -45,9 +45,9 @@ export async function GET(event) {
 	const { getGames } = createWordlettuceBetaDao();
 	const results = await getGames({ username: user, offset, limit });
 
-	event.setHeaders({
-		'Cache-Control': 'max-age=60'
-	});
+	// event.setHeaders({
+	// 	'Cache-Control': 'max-age=60'
+	// });
 
 	return json({
 		more: results.length > limit,

@@ -4,9 +4,9 @@ export async function load(event) {
 	const { getRankings } = createWordlettuceBetaDao();
 	const rankings = getRankings();
 
-	event.setHeaders({
-		'Cache-Control': 'max-age=300'
-	});
+	// event.setHeaders({
+	// 	'Cache-Control': 'max-age=300'
+	// });
 
 	return {
 		rankings: event.isDataRequest ? rankings : await rankings
