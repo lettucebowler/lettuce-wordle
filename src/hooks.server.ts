@@ -36,8 +36,12 @@ function createNewGameStateHandler(event: RequestEvent) {
 }
 
 const gameStateHandler: Handle = async ({ event, resolve }) => {
+	const before = performance.now();
 	event.locals.getGameStateV2 = createNewGameStateHandler(event);
-	return resolve(event);
+	const result = await resolve(event);
+	const after = performance.now();
+	console.log(event.request.method, new URL(event.request.url).pathname, after - before);
+	return result;
 };
 
 const fetchHandler: Handle = ({ event, resolve }) => {
