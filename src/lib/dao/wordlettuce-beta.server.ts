@@ -70,6 +70,7 @@ export function createWordlettuceBetaDao() {
 		limit: number;
 		start: number;
 	}) {
+		const before = performance.now();
 		const query = db
 			.select({
 				gameNum: gameResults.gameNum,
@@ -82,7 +83,11 @@ export function createWordlettuceBetaDao() {
 			.where(and(eq(users.username, username), lte(gameResults.gameNum, start)))
 			.orderBy(desc(gameResults.gameNum))
 			.limit(limit + 1);
-		return query.all();
+		return query.all().then((data) => {
+			const after = performance.now();
+			console.log('get games:', after - before);
+			return data;
+		});
 	}
 
 	async function upsertUser({ userId, username }: { userId: number; username: string }) {
