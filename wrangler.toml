@@ -3,8 +3,8 @@ compatibility_date = "2024-10-22"
 
 [[ d1_databases ]]
 binding = "WORDLETTUCE_DB"
-database_name = "wordlettuce-beta"
-database_id = "6f4b4e21-8961-4fe3-b2da-842499b37879"
+database_name = "wordlettuce"
+database_id = "818c950f-7cbd-43b9-8f05-e6a230d06fe0"
 
 [env.prod]
 routes = [

@@ -1,16 +1,12 @@
-import { drizzle } from 'drizzle-orm/libsql';
+import { drizzle } from 'drizzle-orm/d1';
 import { gameResults, users } from '$lib/schemas/drizzle';
-import { and, count, desc, eq, gt, lt, lte, sql } from 'drizzle-orm';
+import { and, count, desc, eq, gt, lte, sql } from 'drizzle-orm';
 import { getGameNum } from '$lib/util/words';
-import { TURSO_AUTH_TOKEN, TURSO_DATABASE_URL } from '$env/static/private';
+// import { TURSO_AUTH_TOKEN, TURSO_DATABASE_URL } from '$env/static/private';
+import type { RequestEvent } from '@sveltejs/kit';
 
-export function createWordlettuceBetaDao() {
-	const db = drizzle({
-		connection: {
-			url: TURSO_DATABASE_URL,
-			authToken: TURSO_AUTH_TOKEN
-		}
-	});
+export function createWordlettuceBetaDao(event: RequestEvent) {
+	const db = drizzle(event.platform?.env?.WORDLETTUCE_DB);
 
 	async function saveGame({
 		userId,
