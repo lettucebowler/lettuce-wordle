@@ -77,7 +77,12 @@ export function createWordlettuceBetaDao() {
 			.where(and(eq(users.username, username), lte(gameResults.gameNum, start)))
 			.orderBy(desc(gameResults.gameNum))
 			.limit(limit + 1);
-		return query.all();
+		const results = await query.all();
+		return {
+			results: results.slice(0, limit),
+			next: results.length > limit ? results.at(-1)?.gameNum : null,
+			limit
+		};
 	}
 
 	async function upsertUser({ userId, username }: { userId: number; username: string }) {

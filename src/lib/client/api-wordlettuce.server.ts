@@ -25,22 +25,22 @@ export function createApiWordlettuceClient(event: RequestEvent) {
 		}
 	}
 
-	async function getGames({
-		user,
-		count = 30,
-		offset = 0
+	async function getNextPageAfter({
+		username,
+		limit,
+		start
 	}: {
-		user: string;
-		count: number;
-		offset: number;
+		username: string;
+		limit: number;
+		start: number;
 	}) {
 		const { data, error } = await wordlettuce
 			.get<{
 				limit: number;
-				offset: number;
-				more: boolean;
+				start: number;
+				next: number;
 				results: Array<{ gameNum: number; attempts: number; answers: string; userId: number }>;
-			}>('/v1/game-results', { username: user, count, offset })
+			}>('/v1/game-results', { username, limit, start })
 			.then((data) => ({ data, error: undefined }))
 			.catch((error) => ({ error: error as Error, data: undefined }));
 		if (error) {
@@ -57,7 +57,7 @@ export function createApiWordlettuceClient(event: RequestEvent) {
 		if (error || !data) {
 			throw svelteError(500, error);
 		}
-		return data;
+		return data.rankings;
 	}
 
 	async function saveGame({
@@ -79,12 +79,12 @@ export function createApiWordlettuceClient(event: RequestEvent) {
 		if (error) {
 			throw svelteError(500, error);
 		}
-		return data;
+		return data ? [data] : [];
 	}
 
 	return {
 		upsertUser,
-		getGames,
+		getNextPageAfter,
 		getRankings,
 		saveGame
 	};

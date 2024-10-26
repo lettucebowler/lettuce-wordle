@@ -2,6 +2,10 @@ import * as v from 'valibot';
 import { error, json } from '@sveltejs/kit';
 import { createWordlettuceBetaDao } from '$lib/dao/wordlettuce-beta.server.js';
 import { getGameNum } from '$lib/util/words.js';
+import {
+	createApiWordlettuceClient,
+	createApiWordLettuceFetcher
+} from '$lib/client/api-wordlettuce.server.js';
 
 const EventToObjectSchema = v.pipe(
 	v.object({
@@ -41,17 +45,18 @@ export async function GET(event) {
 	}
 	const { user, start } = requestParseResult.output;
 	const limit = 30;
-	const { getNextPageAfter } = createWordlettuceBetaDao();
-	const results = await getNextPageAfter({ username: user, limit, start });
+	// const { getNextPageAfter } = createWordlettuceBetaDao();
+	const apiWordlettuce = createApiWordlettuceClient(event);
+	// const {results, next, limit } = await getNextPageAfter({ username: user, limit, start });
+	const { results, next } = await apiWordlettuce.getNextPageAfter({ username: user, limit, start });
 
 	event.setHeaders({
 		'Cache-Control': 'public,max-age=300'
 	});
-	const last = results.at(-1);
-	const next = results.length > limit ? (last ? last.gameNum : getGameNum()) : null;
 	return json({
 		results: results.slice(0, limit),
 		start,
-		next
+		next,
+		limit
 	});
 }

@@ -11,7 +11,8 @@ import { getGameNum } from '$lib/util/words';
 import { checkWordsV2 } from '$lib/util/gameFunctions';
 import { successAnswer } from '$lib/constants/app-constants';
 import { EmailSchema, PositiveIntegerSchema } from '$lib/schemas/util';
-import { createWordlettuceBetaDao } from '$lib/dao/wordlettuce-beta.server';
+// import { createWordlettuceBetaDao } from '$lib/dao/wordlettuce-beta.server';
+import { createApiWordlettuceClient } from '$lib/client/api-wordlettuce.server';
 
 const tokenSchema = v.object({
 	login: v.string(),
@@ -58,14 +59,15 @@ export const { handle, signIn, signOut } = SvelteKitAuth(async (event) => {
 							login,
 							id
 						};
-						const { saveGame, upsertUser } = createWordlettuceBetaDao(event);
-						await upsertUser({ username: login, userId: id });
+						// const { saveGame, upsertUser } = createWordlettuceBetaDao();
+						const apiWordlettuce = createApiWordlettuceClient(event);
+						await apiWordlettuce.upsertUser({ login, id });
 
 						try {
 							const gameState = event.locals.getGameStateV2();
 							const answers = checkWordsV2({ guesses: gameState.guesses });
 							if (answers.length && answers?.at(-1) === successAnswer) {
-								await saveGame({
+								await apiWordlettuce.saveGame({
 									userId: profileParseResult.output.id,
 									gameNum: getGameNum(),
 									answers: answers.join('')
