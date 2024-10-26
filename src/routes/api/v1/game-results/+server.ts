@@ -50,9 +50,9 @@ export async function GET(event) {
 	// const {results, next, limit } = await getNextPageAfter({ username: user, limit, start });
 	const { results, next } = await apiWordlettuce.getNextPageAfter({ username: user, limit, start });
 
-	// event.setHeaders({
-	// 	'Cache-Control': 'public,max-age=300'
-	// });
+	event.setHeaders({
+		'Cache-Control': 'public,max-age=300'
+	});
 	return json({
 		results: results.slice(0, limit),
 		start,
