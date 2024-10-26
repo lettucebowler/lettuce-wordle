@@ -44,9 +44,9 @@ export async function GET(event) {
 	const { getNextPageAfter } = createWordlettuceBetaDao();
 	const results = await getNextPageAfter({ username: user, limit, start });
 
-	event.setHeaders({
-		'Cache-Control': 'public,max-age=300'
-	});
+	// event.setHeaders({
+	// 	'Cache-Control': 'public,max-age=300'
+	// });
 	const last = results.at(-1);
 	const next = results.length > limit ? (last ? last.gameNum : getGameNum()) : null;
 	return json({
