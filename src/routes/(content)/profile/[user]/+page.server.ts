@@ -15,9 +15,9 @@ export async function load(event) {
 		limit,
 		start: startParam
 	});
-	event.setHeaders({
-		'Cache-Control': 'max-age=300'
-	});
+	// event.setHeaders({
+	// 	'Cache-Control': 'max-age=300'
+	// });
 	return {
 		user,
 		start: startParam,

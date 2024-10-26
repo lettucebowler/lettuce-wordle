@@ -38,10 +38,10 @@
 
 <svelte:body
 	use:infiniteScrollAction={{
-		distance: 100,
+		distance: 400,
 		cb: query?.fetchNextPage,
 		delay: 250,
-		immediate: false,
+		immediate: true,
 		disabled: !data.next || data.start !== data.gameNum || !query.hasNextPage
 	}}
 />
