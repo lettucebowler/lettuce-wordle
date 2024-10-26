@@ -13,14 +13,14 @@
 	const { getNextPageAfter } = createApiWordlettuceClient();
 
 	async function getResults({ start }: { start: number }) {
-		// const api = fetcher({ base: window.location.origin });
-		// const newItems = await api.get<{
-		// 	results: Array<{ gameNum: number; attempts: number; answers: string; userId: number }>;
-		// 	more: boolean;
-		// 	start: number;
-		// 	next: number;
-		// }>('/api/v1/game-results', { user: data.user, start });
-		return getNextPageAfter({ username: data.user, start });
+		const api = fetcher({ base: window.location.origin });
+		return api.get<{
+			results: Array<{ gameNum: number; attempts: number; answers: string; userId: number }>;
+			more: boolean;
+			start: number;
+			next: number;
+		}>('/api/v1/game-results', { user: data.user, start });
+		// return getNextPageAfter({ username: data.user, start });
 	}
 
 	let query = createInfiniteQuery(() => ({
