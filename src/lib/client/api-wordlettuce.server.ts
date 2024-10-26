@@ -1,11 +1,13 @@
 import { fetcher } from 'itty-fetcher';
-import { API_WORDLETTUCE_HOST, API_WORDLETTUCE_TOKEN } from '$env/static/private';
+import { API_WORDLETTUCE_TOKEN } from '$env/static/private';
+import { PUBLIC_API_WORDLETTUCE_HOST } from '$env/static/public';
+
 import { error as svelteError, type RequestEvent } from '@sveltejs/kit';
 
 export function createApiWordLettuceFetcher(event: RequestEvent) {
 	return fetcher({
 		fetch: event.fetch,
-		base: API_WORDLETTUCE_HOST,
+		base: PUBLIC_API_WORDLETTUCE_HOST,
 		headers: {
 			Authorization: `Bearer ${API_WORDLETTUCE_TOKEN}`
 		}
@@ -23,41 +25,6 @@ export function createApiWordlettuceClient(event: RequestEvent) {
 		if (error) {
 			throw svelteError(500, error);
 		}
-	}
-
-	async function getNextPageAfter({
-		username,
-		limit,
-		start
-	}: {
-		username: string;
-		limit: number;
-		start: number;
-	}) {
-		const { data, error } = await wordlettuce
-			.get<{
-				limit: number;
-				start: number;
-				next: number;
-				results: Array<{ gameNum: number; attempts: number; answers: string; userId: number }>;
-			}>('/v1/game-results', { username, limit, start })
-			.then((data) => ({ data, error: undefined }))
-			.catch((error) => ({ error: error as Error, data: undefined }));
-		if (error) {
-			throw svelteError(500, error);
-		}
-		return data;
-	}
-
-	async function getRankings() {
-		const { data, error } = await wordlettuce
-			.get<{ rankings: Array<{ user: string; games: number; score: number }> }>('/v2/rankings')
-			.then((data) => ({ data, error: undefined }))
-			.catch((error) => ({ error, data: undefined }));
-		if (error || !data) {
-			throw svelteError(500, error);
-		}
-		return data.rankings;
 	}
 
 	async function saveGame({
@@ -84,8 +51,6 @@ export function createApiWordlettuceClient(event: RequestEvent) {
 
 	return {
 		upsertUser,
-		getNextPageAfter,
-		getRankings,
 		saveGame
 	};
 }
