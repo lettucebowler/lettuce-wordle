@@ -49,8 +49,45 @@ export function createApiWordlettuceClient(event: RequestEvent) {
 		return data ? [data] : [];
 	}
 
+	async function getNextPageAfter({
+		username,
+		limit = 30,
+		start
+	}: {
+		username: string;
+		limit?: number;
+		start: number;
+	}) {
+		const { data, error } = await wordlettuce
+			.get<{
+				limit: number;
+				start: number;
+				next: number;
+				results: Array<{ gameNum: number; attempts: number; answers: string; userId: number }>;
+			}>('/v1/game-results', { username, limit, start })
+			.then((data) => ({ data, error: undefined }))
+			.catch((error) => ({ error: error as Error, data: undefined }));
+		if (error) {
+			throw svelteError(500, error);
+		}
+		return data;
+	}
+
+	async function getRankings() {
+		const { data, error } = await wordlettuce
+			.get<{ rankings: Array<{ user: string; games: number; score: number }> }>('/v2/rankings')
+			.then((data) => ({ data, error: undefined }))
+			.catch((error) => ({ error, data: undefined }));
+		if (error || !data) {
+			throw svelteError(500, error);
+		}
+		return data.rankings;
+	}
+
 	return {
 		upsertUser,
-		saveGame
+		saveGame,
+		getNextPageAfter,
+		getRankings
 	};
 }
