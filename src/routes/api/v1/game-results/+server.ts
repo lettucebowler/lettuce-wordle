@@ -45,10 +45,10 @@ export async function GET(event) {
 	}
 	const { user, start } = requestParseResult.output;
 	const limit = 30;
-	// const { getNextPageAfter } = createWordlettuceBetaDao();
-	const apiWordlettuce = createApiWordlettuceClient(event);
+	const { getNextPageAfter } = createWordlettuceBetaDao(event);
+	// const apiWordlettuce = createApiWordlettuceClient(event);
 	// const {results, next, limit } = await getNextPageAfter({ username: user, limit, start });
-	const { results, next } = await apiWordlettuce.getNextPageAfter({ username: user, limit, start });
+	const { results, next } = await getNextPageAfter({ username: user, limit, start });
 
 	// event.setHeaders({
 	// 	'Cache-Control': 'public,max-age=300'
