@@ -1,12 +1,11 @@
-import { createWordlettuceBetaDao } from '$lib/dao/wordlettuce-beta.server';
+// import { createWordlettuceBetaDao } from '$lib/dao/wordlettuce-beta.server';
 import { createApiWordlettuceClient } from '$lib/client/api-wordlettuce.server.js';
 
 export async function load(event) {
-	const { getRankings } = createWordlettuceBetaDao(event);
-	// const apiWordlettuce = createApiWordlettuceClient(event);
-	// const dao = createWordlettuceBetaDao(event);
-	// const rankings = await apiWordlettuce.getRankings();
-	const rankings = await getRankings();
+	// const db = createWordlettuceBetaDao(event);
+	// const rankings = db.getRankings();
+	const api = createApiWordlettuceClient(event);
+	const rankings = api.getRankings();
 
 	event.setHeaders({
 		'Cache-Control': 'public,max-age=60'
