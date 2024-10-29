@@ -21,13 +21,13 @@ export function createWordlettuceBetaDao(event: RequestEvent) {
 		return db
 			.insert(gameResults)
 			.values({
-				gameNum,
+				gamenum: gameNum,
 				userId,
 				answers,
 				attempts
 			})
 			.onConflictDoUpdate({
-				target: [gameResults.userId, gameResults.gameNum],
+				target: [gameResults.userId, gameResults.gamenum],
 				set: { answers, attempts }
 			})
 			.returning();
@@ -44,9 +44,9 @@ export function createWordlettuceBetaDao(event: RequestEvent) {
 					.as('score')
 			})
 			.from(users)
-			.innerJoin(gameResults, eq(users.id, gameResults.userId))
-			.where(and(gt(gameResults.gameNum, gameNum - 7), lte(gameResults.gameNum, gameNum)))
-			.groupBy(users.id)
+			.innerJoin(gameResults, eq(users.githubId, gameResults.userId))
+			.where(and(gt(gameResults.gamenum, gameNum - 7), lte(gameResults.gamenum, gameNum)))
+			.groupBy(users.githubId)
 			.orderBy(desc(sql`score`))
 			.limit(10);
 		return query.all();
@@ -58,20 +58,20 @@ export function createWordlettuceBetaDao(event: RequestEvent) {
 		start = getGameNum()
 	}: {
 		username: string;
-		limit: number;
+		limit?: number;
 		start: number;
 	}) {
 		const query = db
 			.select({
-				gameNum: gameResults.gameNum,
+				gameNum: gameResults.gamenum,
 				answers: gameResults.answers,
 				userId: gameResults.userId,
 				attempts: gameResults.attempts
 			})
 			.from(users)
-			.innerJoin(gameResults, eq(users.id, gameResults.userId))
-			.where(and(eq(users.username, username), lte(gameResults.gameNum, start)))
-			.orderBy(desc(gameResults.gameNum))
+			.innerJoin(gameResults, eq(users.githubId, gameResults.userId))
+			.where(and(eq(users.username, username), lte(gameResults.gamenum, start)))
+			.orderBy(desc(gameResults.gamenum))
 			.limit(limit + 1);
 		const results = await query.all();
 		return {
@@ -84,8 +84,8 @@ export function createWordlettuceBetaDao(event: RequestEvent) {
 	async function upsertUser({ userId, username }: { userId: number; username: string }) {
 		return db
 			.insert(users)
-			.values({ username: username, id: userId })
-			.onConflictDoUpdate({ target: users.id, set: { username } })
+			.values({ username: username, githubId: userId })
+			.onConflictDoUpdate({ target: users.githubId, set: { username } })
 			.returning();
 	}
 

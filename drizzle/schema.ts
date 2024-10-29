@@ -1,11 +1,13 @@
 import {
 	sqliteTable,
+	AnySQLiteColumn,
 	uniqueIndex,
 	integer,
 	text,
 	index,
 	primaryKey
 } from 'drizzle-orm/sqlite-core';
+import { sql } from 'drizzle-orm';
 
 export const users = sqliteTable(
 	'users',
