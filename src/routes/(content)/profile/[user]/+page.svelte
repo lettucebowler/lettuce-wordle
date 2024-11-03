@@ -5,12 +5,9 @@
 	import GameSummary from './GameSummary.svelte';
 	import { browser } from '$app/environment';
 	import { createInfiniteQuery } from '@tanstack/svelte-query';
-	import { createApiWordlettuceClient } from '$lib/client/api-wordlettuce.client';
 	import AuthForm from '$lib/components/AuthForm.svelte';
 
 	let { data } = $props();
-
-	const { getNextPageAfter } = createApiWordlettuceClient();
 
 	async function getResults({ start }: { start: number }) {
 		const api = fetcher({ base: window.location.origin });
