@@ -21,7 +21,7 @@ export async function load(event) {
 		start: startParam,
 		next: next,
 		results,
-		limit,
+		limit
 	};
 	return data;
 }
