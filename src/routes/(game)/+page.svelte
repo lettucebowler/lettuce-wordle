@@ -228,13 +228,8 @@
 							form={letter === 'enter' ? 'game' : undefined}
 							name="key"
 							value={letter}
-							data-answer={status}
-							class={cx(
-								'col-span-4 mt-[--keyboard-height] grid h-full w-full cursor-pointer place-items-center rounded-md bg-[--bg-color] text-center text-sm font-bold text-[--text-color]  active:shadow-none sm:py-2 md:text-xl',
-								['x', 'c', '_'].includes(status)
-									? 'shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--highlight-color)] active:mt-0'
-									: ''
-							)}
+							data-answer={status === '_' ? 'u' : status}
+							class="md:text-xl' col-span-4 mt-[--keyboard-height] grid h-full w-full cursor-pointer place-items-center rounded-md bg-charade-600 text-center text-sm font-bold text-charade-100 shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--charade-400)] data-[answer=c]:bg-putty-500 data-[answer=i]:bg-charade-800 data-[answer=x]:bg-swamp-green-500 data-[answer=c]:text-putty-900 data-[answer=i]:text-charade-300 data-[answer=x]:text-swamp-green-900 data-[answer=c]:shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--putty-200)] data-[answer=i]:shadow-none data-[answer=x]:shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--swamp-green-200)] active:mt-0 active:shadow-none data-[answer=i]:active:mt-[--keyboard-height] sm:py-2"
 						>
 							{#if letter === 'share'}
 								<div class="h-5 w-full lg:h-7">
@@ -255,7 +250,7 @@
 					name="key"
 					value="enter"
 					form="game"
-					class="col-span-4 mt-[1px] grid h-full w-full cursor-pointer place-items-center rounded-md bg-[--bg-color] text-center text-sm font-bold text-[--text-color] shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--highlight-color)] active:mt-0 active:shadow-none sm:py-2 md:text-xl"
+					class="col-span-4 mt-[--keyboard-height] grid h-full w-full cursor-pointer place-items-center rounded-md bg-charade-600 text-center text-sm font-bold text-charade-100 shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--charade-400)] active:shadow-none sm:py-2 md:text-xl"
 					><div class="h-5 w-full lg:h-7"><EnterIcon /></div></button
 				>
 				<button
@@ -264,7 +259,7 @@
 					formAction="?/letter"
 					name="key"
 					value="backspace"
-					class="col-span-4 mt-[1px] grid h-full w-full cursor-pointer place-items-center rounded-md bg-[--bg-color] text-center text-sm font-bold text-[--text-color] shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--highlight-color)] active:mt-0 active:shadow-none sm:py-2 md:text-xl"
+					class="col-span-4 mt-[--keyboard-height] grid h-full w-full cursor-pointer place-items-center rounded-md bg-charade-600 text-center text-sm font-bold text-charade-100 shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--charade-400)] active:shadow-none sm:py-2 md:text-xl"
 					><div class="h-5 w-full lg:h-7"><BackSpaceIcon /></div></button
 				>
 				{#if success}
@@ -273,7 +268,7 @@
 						title="share"
 						onclick={() => showModal()}
 						type="button"
-						class="col-span-4 mt-[1px] grid h-full w-full cursor-pointer place-items-center rounded-md bg-[--bg-color] text-center text-sm font-bold text-[--text-color] shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--highlight-color)] active:mt-0 active:shadow-none sm:py-2 md:text-xl"
+						class="col-span-4 mt-[--keyboard-height] grid h-full w-full cursor-pointer place-items-center rounded-md bg-charade-600 text-center text-sm font-bold text-charade-100 shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--charade-400)] active:shadow-none sm:py-2 md:text-xl"
 						><div class="h-5 w-full lg:h-7"><ShareIcon /></div></button
 					>
 				{/if}
@@ -289,29 +284,6 @@
 <style>
 	:root {
 		--height: 3px;
-	}
-
-	[data-answer='c'] {
-		--bg-color: theme('colors.putty.500');
-		--highlight-color: theme('colors.putty.200');
-		--text-color: theme('colors.putty.900');
-	}
-	[data-answer='x'] {
-		--bg-color: theme('colors.swamp-green.500');
-		--highlight-color: theme('colors.swamp-green.200');
-		--text-color: theme('colors.swamp-green.900');
-	}
-
-	[data-answer='i'] {
-		--bg-color: theme('colors.charade.800');
-		--highlight-color: theme('colors.charade.600');
-		--text-color: theme('colors.charade.300');
-	}
-
-	button {
-		--bg-color: theme('colors.charade.600');
-		--highlight-color: theme('colors.charade.400');
-		--text-color: theme('colors.charade.100');
 	}
 
 	.keyboard {

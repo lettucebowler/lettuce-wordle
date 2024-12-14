@@ -92,3 +92,16 @@
 	--bouquet-900: #3b2737;
 	--bouquet-950: #2a1c27;
 }
+
+@layer components {
+	.column-delay,
+	.column-delay * {
+		--tile-column: var(--column, 0);
+		--tile-delay-scale: var(--delay-scale, 0.03);
+		--tile-duration: var(--duration, 0.15);
+		animation-delay: calc(1s * (var(--tile-column) * var(--tile-delay-scale)));
+		transition-delay: calc(
+			(var(--tile-column) * var(--tile-delay-scale) + var(--tile-duration)) * 1s
+		);
+	}
+}
