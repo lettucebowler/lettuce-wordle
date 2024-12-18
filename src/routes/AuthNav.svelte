@@ -7,7 +7,7 @@
 
 	import type { NavLinkProps } from '$lib/types';
 	import type { User } from '@auth/sveltekit';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 
 	let { user, links }: { user: User | undefined; links: NavLinkProps[] } = $props();
 
@@ -28,7 +28,7 @@
 		subnavItems = getSubnavItems();
 	});
 
-	let current = $derived(user ? $page.url.pathname === '/profile/' + user.login : false);
+	let current = $derived(user ? page.url.pathname === '/profile/' + user.login : false);
 
 	afterNavigate(() => {
 		if (dropdownVisible) dropdownVisible = false;

@@ -21,7 +21,7 @@
 	import type { GameState } from '$lib/schemas/game';
 	import { STATE_COOKIE_NAME_V2, successAnswer } from '$lib/constants/app-constants';
 	import { pushState } from '$app/navigation';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import ShareIcon from '$lib/components/ShareIcon.svelte';
 	import EnterIcon from '$lib/components/EnterIcon.svelte';
 	import BackSpaceIcon from '$lib/components/BackSpaceIcon.svelte';
@@ -280,7 +280,7 @@
 			</div>
 		</form>
 	</main>
-	{#if $page.state.showModal}
+	{#if page.state.showModal}
 		<BetterModal {answers} user={data.session?.user?.login} close={() => history.back()} />
 	{/if}
 	<Toaster />

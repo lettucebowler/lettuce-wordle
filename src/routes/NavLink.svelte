@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import type { NavLinkProps } from '$lib/types';
 	import { navigationSend, navigationRecieve } from './transitions';
 
 	let { link, enableTransition = true }: { enableTransition?: boolean; link: NavLinkProps } =
 		$props();
 
-	let current = $derived($page.url.pathname === link.path);
+	let current = $derived(page.url.pathname === link.path);
 </script>
 
 <a
