@@ -6,8 +6,13 @@
 	import { appName } from '$lib/constants/app-constants';
 	import AuthNav from './AuthNav.svelte';
 	import '$lib/assets/app.css';
+	import { invalidate, onNavigate } from '$app/navigation';
 
 	let { data, children } = $props();
+
+	onNavigate(() => {
+		invalidate('data:gamenum');
+	});
 </script>
 
 <svelte:head>
