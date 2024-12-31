@@ -17,7 +17,6 @@
 	import { createExpiringBoolean } from './spells.svelte';
 	import { browser } from '$app/environment';
 	import { toastError, toastLoading, toastSuccess } from './toast';
-	import cx from 'classix';
 	import type { GameState } from '$lib/schemas/game';
 	import { STATE_COOKIE_NAME_V2, successAnswer } from '$lib/constants/app-constants';
 	import { pushState } from '$app/navigation';
@@ -185,11 +184,10 @@
 							{@const doWiggle = browser && wordIsInvalid.value && current}
 							{@const doWiggleOnce = !browser && form?.invalid && current}
 							<div
-								class={cx(
-									'z-[--z-index] aspect-square min-h-0 w-full rounded-xl bg-charade-950',
-									'shadow-[inset_0_var(--height)_var(--height)_0_rgb(0_0_0_/_0.2),_inset_0_calc(-1_*_var(--height))_0_0_theme(colors.charade.800)]',
-									!item.guess && current && wordIsInvalid.value && 'animate-wiggle-once'
-								)}
+								class={{
+									'z-[--z-index] aspect-square min-h-0 w-full rounded-xl bg-charade-950 shadow-[inset_0_var(--height)_var(--height)_0_rgb(0_0_0_/_0.2),_inset_0_calc(-1_*_var(--height))_0_0_theme(colors.charade.800)]': true,
+									'animate-wiggle-once': !item.guess && current && wordIsInvalid.value
+								}}
 							>
 								<Tile
 									--column={j}
@@ -229,12 +227,11 @@
 							name="key"
 							value={letter}
 							data-answer={status}
-							class={cx(
-								'col-span-4 mt-[--keyboard-height] grid h-full w-full cursor-pointer place-items-center rounded-md bg-[--bg-color] text-center text-sm font-bold text-[--text-color]  active:shadow-none sm:py-2 md:text-xl',
-								['x', 'c', '_'].includes(status)
-									? 'shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--highlight-color)] active:mt-0'
-									: ''
-							)}
+							class={{
+								'col-span-4 mt-[--keyboard-height] grid h-full w-full cursor-pointer place-items-center rounded-md bg-[--bg-color] text-center text-sm font-bold text-[--text-color]  active:shadow-none sm:py-2 md:text-xl': true,
+								'shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--highlight-color)] active:mt-0':
+									['x', 'c', '_'].includes(status)
+							}}
 						>
 							{#if letter === 'share'}
 								<div class="h-5 w-full lg:h-7">

@@ -16,25 +16,22 @@
 		doWiggleOnce = false,
 		current = false
 	}: TileProps = $props();
-
-	import { cx } from 'classix';
 </script>
 
 <div
-	class={cx(
-		'aspect-square rounded-xl pt-[--tile-height]',
-		answer === 'c' && 'bg-putty-300',
-		answer === 'x' && 'bg-swamp-green-300',
-		answer === 'i' && 'bg-charade-500',
-		doWiggle && 'animate-wiggle',
-		doWiggleOnce && 'animate-wiggle-once',
-		doJump && 'animate-jump',
-		doWiggle || doWiggleOnce ? null : 'column-delay'
-	)}
-	data-answer={answer}
+	class={{
+		'aspect-square rounded-xl pt-[--tile-height]': true,
+		'bg-putty-300': answer === 'c',
+		'bg-swamp-green-300': answer === 'x',
+		'bg-charade-500': answer === 'i',
+		'animate-wiggle': doWiggle,
+		'animate-wiggle-once': doWiggleOnce,
+		'animate-jump': doJump,
+		'column-delay': !doWiggle && !doWiggleOnce
+	}}
 >
 	<div
-		class={cx(
+		class={[
 			'relative box-content grid aspect-square items-center rounded-xl text-center text-2xl font-bold transition-all duration-0 sm:text-3xl',
 			answer === 'c' && 'bg-putty-500 text-putty-800',
 			answer === 'x' && 'bg-swamp-green-500 text-swamp-green-800',
@@ -42,7 +39,7 @@
 			['c', 'x', 'i'].includes(answer)
 				? 'shadow-[0_var(--tile-height)_4px_0_rgb(0_0_0_/_0.2)]'
 				: 'text-charade-100'
-		)}
+		]}
 	>
 		<input
 			type="hidden"

@@ -3,7 +3,6 @@
 		answers: string;
 	};
 	let { answers }: GameSummaryProps = $props();
-	import { cx } from 'classix';
 </script>
 
 <div class="grid grid-cols-5 gap-1">
@@ -11,12 +10,11 @@
 		{@const answer = answers.charAt(i) || '_'}
 		<div
 			data-answer={answer}
-			class={cx(
-				`tile aspect-square w-full rounded-lg bg-[--bg-color]`,
-				answer === '_'
-					? ''
-					: 'border-t-[1px] border-[--highlight-color] shadow-[0_var(--depth)_4px_0_rgb(0_0_0_/_0.2)]'
-			)}
+			class={{
+				'tile aspect-square w-full rounded-lg bg-[--bg-color]': true,
+				'border-t-[1px] border-[--highlight-color] shadow-[0_var(--depth)_4px_0_rgb(0_0_0_/_0.2)]':
+					answer !== '_'
+			}}
 		></div>
 	{/each}
 </div>
