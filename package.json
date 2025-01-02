@@ -14,7 +14,7 @@
 	"devDependencies": {
 		"@auth/core": "^0.37.4",
 		"@auth/sveltekit": "1.7.4",
-		"@cloudflare/workers-types": "^4.20241224.0",
+		"@cloudflare/workers-types": "^4.20241230.0",
 		"@eslint/js": "^9.17.0",
 		"@libsql/client": "^0.14.0",
 		"@sveltejs/adapter-cloudflare": "^5.0.0",
@@ -22,7 +22,7 @@
 		"@sveltejs/vite-plugin-svelte": "^5.0.3",
 		"@tanstack/svelte-query": "https://pkg.pr.new/@tanstack/svelte-query@ccce0b8",
 		"@types/js-cookie": "^3.0.6",
-		"@types/node": "^22.10.2",
+		"@types/node": "^22.10.4",
 		"@typescript-eslint/eslint-plugin": "^8.19.0",
 		"@typescript-eslint/parser": "^8.19.0",
 		"autoprefixer": "^10.4.20",
@@ -39,7 +39,7 @@
 		"prettier": "^3.4.2",
 		"prettier-plugin-svelte": "^3.3.2",
 		"prettier-plugin-tailwindcss": "^0.6.9",
-		"svelte": "5.16.0",
+		"svelte": "5.16.1",
 		"svelte-check": "^4.1.1",
 		"svelte-french-toast": "^1.2.0",
 		"svelte2tsx": "^0.7.31",
@@ -50,7 +50,7 @@
 		"typescript": "^5.7.2",
 		"typescript-eslint": "^8.19.0",
 		"valibot": "^0.42.1",
-		"vite": "^6.0.6"
+		"vite": "^6.0.7"
 	},
 	"type": "module",
 	"pnpm": {
