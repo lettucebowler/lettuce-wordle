@@ -53,7 +53,7 @@
 					<LettuceAvatar name={user} />
 				</div>
 			{/each}
-			<figcaption class="text-center text-xl font-medium text-snow-300">
+			<figcaption class="text-snow-300 text-center text-xl font-medium">
 				{data.user}
 			</figcaption>
 		</figure>
@@ -65,14 +65,14 @@
 		{/if}
 	</div>
 
-	<h1 class="text-center text-3xl font-bold text-snow-300">Play History</h1>
+	<h1 class="text-snow-300 text-center text-3xl font-bold">Play History</h1>
 
 	<div class="grid w-full grid-cols-2 gap-2 px-1 sm:grid-cols-3 sm:gap-3">
 		{#if query.data}
 			{#each query.data.pages ?? [] as page (page)}
 				{#each page.results as gameResult (gameResult)}
 					<div class="flex w-full flex-[1_1_200px] flex-col gap-2 rounded-2xl">
-						<h2 class="flex justify-between text-center text-xl font-medium text-snow-300">
+						<h2 class="text-snow-300 flex justify-between text-center text-xl font-medium">
 							<span class="text-left">#{gameResult.gameNum}</span><span class="text-right"
 								>{1 + 6 - gameResult.answers.length / 5} pts</span
 							>
@@ -90,7 +90,7 @@
 	{#if browser && query.hasNextPage && data.start === data.gameNum}
 		<div class="flex flex-col items-center gap-2">
 			<svg
-				class="h-8 animate-spin text-snow-100"
+				class="text-snow-100 h-8 animate-spin"
 				xmlns="http://www.w3.org/2000/svg"
 				fill="none"
 				viewBox="0 0 24 24"
@@ -108,7 +108,7 @@
 					d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
 				></path>
 			</svg>
-			<p class="text-center text-xl font-medium text-snow-100">loading...</p>
+			<p class="text-snow-100 text-center text-xl font-medium">loading...</p>
 		</div>
 	{:else if data.start < data.gameNum || !browser}
 		<nav class="mx-4 flex justify-end gap-2">
@@ -116,11 +116,11 @@
 				<a
 					href="?start={data.gameNum}"
 					title="Back to start"
-					class="text-lg font-medium text-snow-300">Back to start</a
+					class="text-snow-300 text-lg font-medium">Back to start</a
 				>
 			{/if}
 			{#if data.next}
-				<a href="?start={data.next}" title="Next" class="ml-auto text-lg font-medium text-snow-300"
+				<a href="?start={data.next}" title="Next" class="text-snow-300 ml-auto text-lg font-medium"
 					>Next</a
 				>
 			{/if}

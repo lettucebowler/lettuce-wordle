@@ -26,7 +26,7 @@
 
 <div
 	id="lettuce-wordle-root"
-	class="mx-auto flex w-full max-w-(--breakpoint-md) flex-auto flex-col gap-2 p-2 sm:gap-4 sm:p-1 sm:pb-4 sm:pt-4"
+	class="mx-auto flex w-full max-w-(--breakpoint-md) flex-auto flex-col gap-2 p-2 sm:gap-4 sm:p-1 sm:pt-4 sm:pb-4"
 	data-sveltekit-preload-data="hover"
 >
 	<AuthNav links={data.nav} user={data.session?.user} />

@@ -3,12 +3,12 @@
 </script>
 
 <main class="grid gap-8">
-	<h1 class="text-center text-3xl font-bold text-snow-300">About {appName}</h1>
-	<p class="box-border px-4 text-left text-lg text-snow-300">
+	<h1 class="text-snow-300 text-center text-3xl font-bold">About {appName}</h1>
+	<p class="text-snow-300 box-border px-4 text-left text-lg">
 		I wrote this app because the real wordle got blocked on my work network and I wanted to keep
 		playing and sharing scores with my coworkers.
 	</p>
-	<p class="box-border px-4 text-left text-lg text-snow-300">
+	<p class="text-snow-300 box-border px-4 text-left text-lg">
 		This app was created using <a
 			class="text-swamp-green-500"
 			href="https://kit.svelte.dev"

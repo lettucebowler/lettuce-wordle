@@ -2,7 +2,7 @@
 	let { message = 'Just a sec...' } = $props();
 </script>
 
-<div class="flex flex-col items-center gap-2 text-snow-300">
+<div class="text-snow-300 flex flex-col items-center gap-2">
 	<svg class="h-20 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
 		<circle class="text-charade-800" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"
 		></circle>

@@ -161,7 +161,7 @@
 />
 <div class="max-h-min-content flex w-full flex-auto flex-col items-center gap-2">
 	<main
-		class="flex w-full flex-auto flex-col items-center justify-end justify-between gap-2 sm:gap-4"
+		class="flex w-full flex-auto flex-col items-center justify-between justify-end gap-2 sm:gap-4"
 	>
 		<form
 			method="POST"
@@ -171,7 +171,7 @@
 			bind:this={wordForm}
 			class="my-auto flex w-full max-w-[min(700px,_55vh)]"
 		>
-			<div class="max-w-700 grid w-full grid-rows-[repeat(6,1fr)] gap-2">
+			<div class="grid w-full max-w-700 grid-rows-[repeat(6,1fr)] gap-2">
 				{#each getItemsForGrid() as item (item.index)}
 					{@const current = item.index === answers.length}
 					<div
@@ -185,7 +185,7 @@
 							{@const doWiggleOnce = !browser && form?.invalid && current}
 							<div
 								class={{
-									'z-(--z-index) aspect-square min-h-0 w-full rounded-xl bg-charade-950 shadow-[inset_0_var(--height)_var(--height)_0_rgb(0_0_0/0.2),inset_0_calc(-1*var(--height))_0_0_var(--color-charade-800)]': true,
+									'bg-charade-950 z-(--z-index) aspect-square min-h-0 w-full rounded-xl shadow-[inset_0_var(--height)_var(--height)_0_rgb(0_0_0/0.2),inset_0_calc(-1*var(--height))_0_0_var(--color-charade-800)]': true,
 									'animate-wiggle-once': !item.guess && current && wordIsInvalid.value
 								}}
 							>
@@ -289,26 +289,27 @@
 	}
 
 	[data-answer='c'] {
-		--bg-color: theme('colors.putty.500');
-		--highlight-color: theme('colors.putty.200');
-		--text-color: theme('colors.putty.900');
+		--bg-color: var(--color-putty-500);
+		--highlight-color: var(--color-putty-200);
+		--text-color: var(--color-putty-900);
 	}
+
 	[data-answer='x'] {
-		--bg-color: theme('colors.swamp-green.500');
-		--highlight-color: theme('colors.swamp-green.200');
-		--text-color: theme('colors.swamp-green.900');
+		--bg-color: var(--color-swamp-green-500);
+		--highlight-color: var(--color-swamp-green-200);
+		--text-color: var(--color-swamp-green-900);
 	}
 
 	[data-answer='i'] {
-		--bg-color: theme('colors.charade.800');
-		--highlight-color: theme('colors.charade.600');
-		--text-color: theme('colors.charade.300');
+		--bg-color: var(--color-charade-800);
+		--highlight-color: var(--color-charade-600);
+		--text-color: var(--color-charade-300);
 	}
 
 	button {
-		--bg-color: theme('colors.charade.600');
-		--highlight-color: theme('colors.charade.400');
-		--text-color: theme('colors.charade.100');
+		--bg-color: var(--color-charade-600);
+		--highlight-color: var(--color-charade-400);
+		--text-color: var(--color-charade-100);
 	}
 
 	.keyboard {

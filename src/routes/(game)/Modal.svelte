@@ -96,7 +96,7 @@
 
 <dialog
 	bind:this={dialog}
-	class="open:opacity-1 box-border w-full max-w-xs rounded-2xl bg-charade-900 p-2 backdrop:animate-fadein backdrop:backdrop-blur-xs open:pointer-events-auto open:animate-flyup"
+	class="bg-charade-900 backdrop:animate-fadein open:animate-flyup box-border w-full max-w-xs rounded-2xl p-2 backdrop:backdrop-blur-xs open:pointer-events-auto open:opacity-1"
 	open={false}
 	use:trapFocus
 	onclose={() => {
@@ -106,11 +106,11 @@
 	<div class="flex flex-col gap-2" use:clickOutsideAction={cleanup}>
 		<div class="flex h-8 justify-between">
 			<div class="aspect-square h-full"></div>
-			<h2 class="col-start-2 mt-0 flex-auto text-center text-2xl text-snow-300">&nbsp;Success!</h2>
+			<h2 class="text-snow-300 col-start-2 mt-0 flex-auto text-center text-2xl">&nbsp;Success!</h2>
 			<button
 				aria-label="close modal"
 				onclick={cleanup}
-				class="aspect-square h-8 rounded-sm p-1 text-snow-300 transition transition-all hover:bg-charade-950 hover:p-0"
+				class="text-snow-300 hover:bg-charade-950 aspect-square h-8 rounded-sm p-1 transition transition-all hover:p-0"
 				><svg
 					xmlns="http://www.w3.org/2000/svg"
 					fill="none"
@@ -123,27 +123,27 @@
 				</svg>
 			</button>
 		</div>
-		<p class="p-2 text-center text-snow-300">
+		<p class="text-snow-300 p-2 text-center">
 			You solved today's WordLettuce in {attempts} guess{attempts > 1 ? 'es' : ''}. Come back
 			tomorrow and play again!
 		</p>
 		<div class="grid h-8 place-items-center">
 			{#if clipboardMessage.value}
 				<span
-					class="-z-10 p-2 text-center text-snow-300"
+					class="text-snow-300 -z-10 p-2 text-center"
 					in:fly={{ duration: 400, y: 50, opacity: 0 }}
 					out:fly={{ duration: 400, y: 50, opacity: 0 }}>{clipboardMessage.value}</span
 				>
 			{/if}
 		</div>
-		<div class="grid place-items-center p-2 text-center font-bold text-snow-300">
+		<div class="text-snow-300 grid place-items-center p-2 text-center font-bold">
 			Next word in {formatTime(timeUntilNextGame.value)}
 		</div>
 		{#if !isAuthenticated}
 			<AuthForm mode="login">
 				<div class="flex w-full flex-row justify-center gap-3">
 					<button
-						class="h-12 w-full cursor-pointer rounded-lg border-transparent bg-antique-brass-500 p-0 font-bold text-antique-brass-800 transition transition-all duration-500 hover:brightness-90"
+						class="bg-antique-brass-500 text-antique-brass-800 h-12 w-full cursor-pointer rounded-lg border-transparent p-0 font-bold transition transition-all duration-500 hover:brightness-90"
 					>
 						Login to save your results
 					</button>
@@ -153,7 +153,7 @@
 		<div class="flex w-full flex-row justify-center">
 			<button
 				onclick={shareGame}
-				class="h-12 w-full cursor-pointer rounded-lg border-transparent bg-frost-400 p-0 font-bold text-snow-300 transition transition-all duration-500 hover:brightness-90"
+				class="bg-frost-400 text-snow-300 h-12 w-full cursor-pointer rounded-lg border-transparent p-0 font-bold transition transition-all duration-500 hover:brightness-90"
 			>
 				Share
 			</button>

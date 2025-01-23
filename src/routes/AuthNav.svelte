@@ -38,7 +38,7 @@
 <div class="w-full">
 	<div id="big-papa-nav" class="flex justify-end">
 		<nav
-			class="h-18 z-10 ml-0 ml-auto box-content max-h-[72px] w-full justify-end gap-x-4 border-t-charade-500"
+			class="border-t-charade-500 z-10 ml-0 ml-auto box-content h-18 max-h-[72px] w-full justify-end gap-x-4"
 			id="primary-nav"
 		>
 			<div class="flex">
@@ -51,10 +51,10 @@
 					<div class="flex h-full flex-col sm:hidden">
 						<label
 							for="subnav-toggle-small"
-							class="box-border flex h-full flex-[0_0_auto] cursor-pointer select-none items-center justify-center gap-2 rounded-xl text-center text-3xl text-snow-100 transition ease-in-out hover:bg-charade-800 active:bg-charade-900 sm:hidden"
+							class="text-snow-100 hover:bg-charade-800 active:bg-charade-900 box-border flex h-full flex-[0_0_auto] cursor-pointer items-center justify-center gap-2 rounded-xl text-center text-3xl transition ease-in-out select-none sm:hidden"
 						>
 							<span
-								class="box-border aspect-square h-full overflow-hidden rounded-xl border-snow-300 transition-transform"
+								class="border-snow-300 box-border aspect-square h-full overflow-hidden rounded-xl transition-transform"
 								class:rotate-180={dropdownVisible}
 							>
 								<svg
@@ -82,12 +82,12 @@
 										<div
 											in:navigationRecieve={{ key: 'current-link' }}
 											out:navigationSend={{ key: 'current-link' }}
-											class="grid h-14 rounded-2xl bg-charade-800"
+											class="bg-charade-800 grid h-14 rounded-2xl"
 										></div>
 									{/if}
 								</div>
 								<a
-									class="z-10 col-[1] row-[1] m-1 box-border grid aspect-square overflow-hidden rounded-xl border-snow-300 transition transition-all duration-150 hover:m-0"
+									class="border-snow-300 z-10 col-[1] row-[1] m-1 box-border grid aspect-square overflow-hidden rounded-xl transition transition-all duration-150 hover:m-0"
 									href="/profile/{user.login}"
 								>
 									<LettuceAvatar name={user.login} />
@@ -109,7 +109,7 @@
 				/>
 				<nav
 					id="subnav-content"
-					class="absolute bottom-0 left-0 right-0 top-[72px] z-10 hidden flex-col divide-y bg-charade-900 peer-checked:block"
+					class="bg-charade-900 absolute top-[72px] right-0 bottom-0 left-0 z-10 hidden flex-col divide-y peer-checked:block"
 					class:hidden={!dropdownVisible}
 				>
 					<div class="space-y-4 p-4">
@@ -117,24 +117,24 @@
 							<NavLink {link} enableTransition={false} />
 						{/each}
 					</div>
-					<div class="flex flex-col gap-2 border-charade-800 p-4">
+					<div class="border-charade-800 flex flex-col gap-2 p-4">
 						{#if user?.login}
 							<div class="mb-2 flex items-center justify-start gap-4">
 								<span class="box-border h-[44px] w-[44px] w-max overflow-hidden rounded-sm"
 									><LettuceAvatar name={user.login} /></span
 								>
-								<span class="text-xl font-medium text-snow-300">{user.login}</span>
+								<span class="text-snow-300 text-xl font-medium">{user.login}</span>
 							</div>
 							{#each subnavItems as subnavItem}
 								<a
 									href={subnavItem.path}
-									class="cursor-pointer p-0 text-2xl font-medium text-snow-300 hover:underline"
+									class="text-snow-300 cursor-pointer p-0 text-2xl font-medium hover:underline"
 									>{subnavItem.name}</a
 								>
 							{/each}
 						{/if}
 						<AuthForm mode={user?.login ? 'logout' : 'login'}
-							><button class="text-2xl font-medium text-snow-300 hover:underline"
+							><button class="text-snow-300 text-2xl font-medium hover:underline"
 								>{user?.login ? 'Logout' : 'Login'}</button
 							>
 						</AuthForm>

@@ -10,7 +10,7 @@
 </script>
 
 <a
-	class="grid h-full cursor-pointer items-center rounded-xl border-transparent text-3xl font-medium text-snow-300 hover:underline"
+	class="text-snow-300 grid h-full cursor-pointer items-center rounded-xl border-transparent text-3xl font-medium hover:underline"
 	class:ml-auto={link.margin === 'left'}
 	class:text-snow-100={current}
 	class:after:bg-charade-800={current}
@@ -23,7 +23,7 @@
 				<div
 					in:navigationRecieve={{ key: 'current-link' }}
 					out:navigationSend={{ key: 'current-link' }}
-					class="grid h-full rounded-xl bg-charade-800"
+					class="bg-charade-800 grid h-full rounded-xl"
 				></div>
 			{/if}
 		{:else if current}
