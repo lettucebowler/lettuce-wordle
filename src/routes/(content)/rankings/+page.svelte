@@ -44,7 +44,7 @@
 						</div>
 						<div class="border-box table-cell border-t border-charade-700 py-4 text-left sm:p-2">
 							<div class="flex gap-2 sm:gap-4">
-								<span class="box-border h-11 w-max overflow-hidden rounded"
+								<span class="box-border h-11 w-max overflow-hidden rounded-sm"
 									><LettuceAvatar name={ranking.user} /></span
 								>
 								<span class="grid items-center">

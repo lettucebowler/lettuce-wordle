@@ -1,6 +1,151 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@plugin 'tailwind-scrollbar';
+
+@theme {
+  --color-transparent: transparent;
+
+  --color-snow-100: var(--snow-100);
+  --color-snow-200: var(--snow-200);
+  --color-snow-300: var(--snow-300);
+
+  --color-frost-100: var(--frost-100);
+  --color-frost-200: var(--frost-200);
+  --color-frost-300: var(--frost-300);
+  --color-frost-400: var(--frost-400);
+
+  --color-aurora-100: var(--aurora-100);
+  --color-aurora-200: var(--aurora-200);
+  --color-aurora-300: var(--aurora-300);
+  --color-aurora-400: var(--aurora-400);
+  --color-aurora-500: var(--aurora-500);
+
+  --color-contessa-50: #f4e4e5;
+  --color-contessa-100: #eed5d8;
+  --color-contessa-200: #e2b8bc;
+  --color-contessa-300: #d79ba1;
+  --color-contessa-400: #cb7e85;
+  --color-contessa-500: #bf616a;
+  --color-contessa-600: #a5434c;
+  --color-contessa-700: #7d333a;
+  --color-contessa-800: #552327;
+  --color-contessa-900: #2d1215;
+  --color-contessa-950: #190a0c;
+  --color-contessa: #bf616a;
+
+  --color-antique-brass-50: var(--antique-brass-50);
+  --color-antique-brass-100: var(--antique-brass-100);
+  --color-antique-brass-200: var(--antique-brass-200);
+  --color-antique-brass-300: var(--antique-brass-300);
+  --color-antique-brass-400: var(--antique-brass-400);
+  --color-antique-brass-500: var(--antique-brass-500);
+  --color-antique-brass-600: var(--antique-brass-600);
+  --color-antique-brass-700: var(--antique-brass-700);
+  --color-antique-brass-800: var(--antique-brass-800);
+  --color-antique-brass-900: var(--antique-brass-900);
+  --color-antique-brass: var(--antique-brass-500);
+
+  --color-swamp-green-50: var(--swamp-green-50);
+  --color-swamp-green-100: var(--swamp-green-100);
+  --color-swamp-green-200: var(--swamp-green-200);
+  --color-swamp-green-300: var(--swamp-green-300);
+  --color-swamp-green-400: var(--swamp-green-400);
+  --color-swamp-green-500: var(--swamp-green-500);
+  --color-swamp-green-600: var(--swamp-green-600);
+  --color-swamp-green-700: var(--swamp-green-700);
+  --color-swamp-green-800: var(--swamp-green-800);
+  --color-swamp-green-900: var(--swamp-green-900);
+  --color-swamp-green: var(--swamp-green-500);
+
+  --color-putty-50: var(--putty-50);
+  --color-putty-100: var(--putty-100);
+  --color-putty-200: var(--putty-200);
+  --color-putty-300: var(--putty-300);
+  --color-putty-400: var(--putty-400);
+  --color-putty-500: var(--putty-500);
+  --color-putty-600: var(--putty-600);
+  --color-putty-700: var(--putty-700);
+  --color-putty-800: var(--putty-800);
+  --color-putty-900: var(--putty-900);
+  --color-putty: var(--putty-500);
+
+  --color-charade-50: #e6e8ed;
+  --color-charade-100: #dadee5;
+  --color-charade-200: #c2c8d4;
+  --color-charade-300: #aab2c3;
+  --color-charade-400: #939db2;
+  --color-charade-500: #7b87a1;
+  --color-charade-600: #65738e;
+  --color-charade-700: #545f76;
+  --color-charade-800: #434c5e;
+  --color-charade-900: #323946;
+  --color-charade-950: #2a2f3a;
+  --color-charade: #434c5e;
+
+  --animate-jump: jump 0.3s ease-in-out 1;
+  --animate-wiggle: wiggle 0.15s ease-in infinite;
+  --animate-wiggle-once: wiggle 0.15s ease-in 1;
+  --animate-flyup: flyup 0.5s ease-in 1;
+  --animate-fadein: fadein 0.5s ease-in 1;
+
+  @keyframes jump {
+    50% {
+      transform: scale(1.05) translateY(-10%) translateX(5%);
+    }
+    0%,
+    100% {
+      transform: scale(1);
+    }
+  }
+  @keyframes wiggle {
+    0%,
+    100% {
+      transform: translateX(0%);
+    }
+    25% {
+      transform: translateX(-10%);
+    }
+    75% {
+      transform: translateX(10%);
+    }
+  }
+  @keyframes flyup {
+    0% {
+      transform: translateY(+100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  @keyframes fadein {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
 
 :root {
 	--transparent: transparent;

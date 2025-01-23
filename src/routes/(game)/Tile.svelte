@@ -20,7 +20,7 @@
 
 <div
 	class={{
-		'aspect-square rounded-xl pt-[--tile-height]': true,
+		'aspect-square rounded-xl pt-(--tile-height)': true,
 		'bg-putty-300': answer === 'c',
 		'bg-swamp-green-300': answer === 'x',
 		'bg-charade-500': answer === 'i',

@@ -171,11 +171,11 @@
 			bind:this={wordForm}
 			class="my-auto flex w-full max-w-[min(700px,_55vh)]"
 		>
-			<div class="max-w-700 grid w-full grid-rows-[repeat(6,_1fr)] gap-2">
+			<div class="max-w-700 grid w-full grid-rows-[repeat(6,1fr)] gap-2">
 				{#each getItemsForGrid() as item (item.index)}
 					{@const current = item.index === answers.length}
 					<div
-						class="grid w-full grid-cols-[repeat(5,_1fr)] gap-2"
+						class="grid w-full grid-cols-[repeat(5,1fr)] gap-2"
 						animate:flip={{ duration: duration * 1000 }}
 						data-index={item.index}
 					>
@@ -185,7 +185,7 @@
 							{@const doWiggleOnce = !browser && form?.invalid && current}
 							<div
 								class={{
-									'z-[--z-index] aspect-square min-h-0 w-full rounded-xl bg-charade-950 shadow-[inset_0_var(--height)_var(--height)_0_rgb(0_0_0_/_0.2),_inset_0_calc(-1_*_var(--height))_0_0_theme(colors.charade.800)]': true,
+									'z-(--z-index) aspect-square min-h-0 w-full rounded-xl bg-charade-950 shadow-[inset_0_var(--height)_var(--height)_0_rgb(0_0_0/0.2),inset_0_calc(-1*var(--height))_0_0_var(--color-charade-800)]': true,
 									'animate-wiggle-once': !item.guess && current && wordIsInvalid.value
 								}}
 							>
@@ -215,7 +215,7 @@
 				cancel();
 			}}
 		>
-			<div class="grid flex-auto grid-cols-[repeat(40,_0.25fr)] grid-rows-3 gap-1">
+			<div class="grid flex-auto grid-cols-[repeat(40,0.25fr)] grid-rows-3 gap-1">
 				{#each 'q,w,e,r,t,y,u,i,o,p,,a,s,d,f,g,h,j,k,l,z,x,c,v,b,n,m'.split(',') as letter}
 					{@const status = keyStatuses[letter] || '_'}
 					{#if letter}
@@ -228,7 +228,7 @@
 							value={letter}
 							data-answer={status}
 							class={{
-								'col-span-4 mt-[--keyboard-height] grid h-full w-full cursor-pointer place-items-center rounded-md bg-[--bg-color] text-center text-sm font-bold text-[--text-color]  active:shadow-none sm:py-2 md:text-xl': true,
+								'col-span-4 mt-(--keyboard-height) grid h-full w-full cursor-pointer place-items-center rounded-md bg-(--bg-color) text-center text-sm font-bold text-(--text-color)  active:shadow-none sm:py-2 md:text-xl': true,
 								'shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--highlight-color)] active:mt-0':
 									['x', 'c', '_'].includes(status)
 							}}
@@ -252,7 +252,7 @@
 					name="key"
 					value="enter"
 					form="game"
-					class="col-span-4 mt-[1px] grid h-full w-full cursor-pointer place-items-center rounded-md bg-[--bg-color] text-center text-sm font-bold text-[--text-color] shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--highlight-color)] active:mt-0 active:shadow-none sm:py-2 md:text-xl"
+					class="col-span-4 mt-[1px] grid h-full w-full cursor-pointer place-items-center rounded-md bg-(--bg-color) text-center text-sm font-bold text-(--text-color) shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--highlight-color)] active:mt-0 active:shadow-none sm:py-2 md:text-xl"
 					><div class="h-5 w-full lg:h-7"><EnterIcon /></div></button
 				>
 				<button
@@ -261,7 +261,7 @@
 					formAction="?/letter"
 					name="key"
 					value="backspace"
-					class="col-span-4 mt-[1px] grid h-full w-full cursor-pointer place-items-center rounded-md bg-[--bg-color] text-center text-sm font-bold text-[--text-color] shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--highlight-color)] active:mt-0 active:shadow-none sm:py-2 md:text-xl"
+					class="col-span-4 mt-[1px] grid h-full w-full cursor-pointer place-items-center rounded-md bg-(--bg-color) text-center text-sm font-bold text-(--text-color) shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--highlight-color)] active:mt-0 active:shadow-none sm:py-2 md:text-xl"
 					><div class="h-5 w-full lg:h-7"><BackSpaceIcon /></div></button
 				>
 				{#if success}
@@ -270,7 +270,7 @@
 						title="share"
 						onclick={() => showModal()}
 						type="button"
-						class="col-span-4 mt-[1px] grid h-full w-full cursor-pointer place-items-center rounded-md bg-[--bg-color] text-center text-sm font-bold text-[--text-color] shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--highlight-color)] active:mt-0 active:shadow-none sm:py-2 md:text-xl"
+						class="col-span-4 mt-[1px] grid h-full w-full cursor-pointer place-items-center rounded-md bg-(--bg-color) text-center text-sm font-bold text-(--text-color) shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--highlight-color)] active:mt-0 active:shadow-none sm:py-2 md:text-xl"
 						><div class="h-5 w-full lg:h-7"><ShareIcon /></div></button
 					>
 				{/if}

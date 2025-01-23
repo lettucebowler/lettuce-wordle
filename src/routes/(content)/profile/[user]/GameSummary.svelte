@@ -11,8 +11,8 @@
 		<div
 			data-answer={answer}
 			class={{
-				'tile aspect-square w-full rounded-lg bg-[--bg-color]': true,
-				'border-t-[1px] border-[--highlight-color] shadow-[0_var(--depth)_4px_0_rgb(0_0_0_/_0.2)]':
+				'tile aspect-square w-full rounded-lg bg-(--bg-color)': true,
+				'border-t-[1px] border-(--highlight-color) shadow-[0_var(--depth)_4px_0_rgb(0_0_0_/_0.2)]':
 					answer !== '_'
 			}}
 		></div>

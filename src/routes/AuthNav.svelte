@@ -120,7 +120,7 @@
 					<div class="flex flex-col gap-2 border-charade-800 p-4">
 						{#if user?.login}
 							<div class="mb-2 flex items-center justify-start gap-4">
-								<span class="box-border h-[44px] w-[44px] w-max overflow-hidden rounded"
+								<span class="box-border h-[44px] w-[44px] w-max overflow-hidden rounded-sm"
 									><LettuceAvatar name={user.login} /></span
 								>
 								<span class="text-xl font-medium text-snow-300">{user.login}</span>
