@@ -9,7 +9,8 @@
 		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check --plugin prettier-plugin-svelte --plugin prettier-plugin-tailwindcss . && eslint .",
-		"format": "prettier --write --plugin prettier-plugin-svelte --plugin prettier-plugin-tailwindcss ."
+		"format": "prettier --write --plugin prettier-plugin-svelte --plugin prettier-plugin-tailwindcss .",
+		"prepare": "svelte-kit sync"
 	},
 	"devDependencies": {
 		"@auth/core": "^0.37.4",
