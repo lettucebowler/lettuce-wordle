@@ -3,10 +3,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 /** @type {import('vite').UserConfig} */
 const config = {
-	plugins: [
-		tailwindcss(),
-		sveltekit()
-	],
+	plugins: [tailwindcss(), sveltekit()],
 	build: {
 		assetsInlineLimit: 1024
 	}

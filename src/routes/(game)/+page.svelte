@@ -152,6 +152,8 @@
 			setTimeout(() => showModal(), 500);
 		};
 	};
+
+	$inspect(answers);
 </script>
 
 <svelte:window
@@ -193,7 +195,7 @@
 									--column={j}
 									--tile-height="3px"
 									letter={letter === ' ' ? '' : letter}
-									answer={answers.at(item.index)?.charAt(j) || '_'}
+									answer={answers.at(item.index)?.charAt(j)}
 									{doJump}
 									{doWiggle}
 									{doWiggleOnce}

@@ -1,7 +1,7 @@
 <script lang="ts">
 	type TileProps = {
 		letter: string;
-		answer: string;
+		answer: string | undefined;
 		doJump?: boolean;
 		doWiggle?: boolean;
 		doWiggleOnce?: boolean;
@@ -10,7 +10,7 @@
 
 	let {
 		letter = '',
-		answer = '',
+		answer,
 		doJump = false,
 		doWiggle = false,
 		doWiggleOnce = false,
@@ -20,25 +20,18 @@
 
 <div
 	class={{
-		'aspect-square rounded-xl pt-(--tile-height)': true,
-		'bg-putty-300': answer === 'c',
-		'bg-swamp-green-300': answer === 'x',
-		'bg-charade-500': answer === 'i',
-		'animate-wiggle': doWiggle,
-		'animate-wiggle-once': doWiggleOnce,
-		'animate-jump': doJump,
+		'data-[answer=x]:bg-swamp-green-300 data-[answer=c]:bg-putty-300 data-[answer=i]:bg-charade-500 data-wiggle:animate-wiggle data-wiggle-once:animate-wiggle-once datacron-jump:animate-jump aspect-square rounded-xl pt-(--tile-height)': true,
 		'column-delay': !doWiggle && !doWiggleOnce
 	}}
+	data-answer={answer}
+	data-wiggle={doWiggle || undefined}
+	data-wiggle-once={doWiggleOnce || undefined}
+	data-jump={doJump || undefined}
+	style="--tile-column: var(--column, 0); --tile-delay-scale: var(--delay-scale, 0.03); --tile-duration: var(--duration, 0.15);"
 >
 	<div
 		class={[
-			'relative box-content grid aspect-square items-center rounded-xl text-center text-2xl font-bold transition-all duration-0 sm:text-3xl',
-			answer === 'c' && 'bg-putty-500 text-putty-800',
-			answer === 'x' && 'bg-swamp-green-500 text-swamp-green-800',
-			answer === 'i' && 'bg-charade-700 text-charade-100',
-			['c', 'x', 'i'].includes(answer)
-				? 'shadow-[0_var(--tile-height)_4px_0_rgb(0_0_0_/_0.2)]'
-				: 'text-charade-100'
+			'in-data-[answer=c]:bg-putty-500 in-data-[answer=c]:text-putty-800 in-data-[answer=x]:bg-swamp-green-500 in-data-[answer=x]:text-swamp-green-800 in-data-[answer=i]:bg-charade-700 text-charade-100 relative box-content grid aspect-square items-center rounded-xl text-center text-2xl font-bold transition-all duration-0 in-data-answer:shadow-[0_var(--tile-height)_4px_0_rgb(0_0_0_/_0.2)] sm:text-3xl'
 		]}
 	>
 		<input
@@ -54,9 +47,6 @@
 <style>
 	.column-delay,
 	.column-delay * {
-		--tile-column: var(--column, 0);
-		--tile-delay-scale: var(--delay-scale, 0.03);
-		--tile-duration: var(--duration, 0.15);
 		animation-delay: calc(1s * (var(--tile-column) * var(--tile-delay-scale)));
 		transition-delay: calc(
 			(var(--tile-column) * var(--tile-delay-scale) + var(--tile-duration)) * 1s
