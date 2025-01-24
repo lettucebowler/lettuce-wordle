@@ -6,6 +6,7 @@
 		doWiggle?: boolean;
 		doWiggleOnce?: boolean;
 		current: boolean;
+		column?: number;
 	};
 
 	let {
@@ -14,24 +15,33 @@
 		doJump = false,
 		doWiggle = false,
 		doWiggleOnce = false,
-		current = false
+		current = false,
+		column = 0
 	}: TileProps = $props();
+
+	const delayScale = 0.03;
+	const duration = delayScale * 5;
 </script>
 
 <div
-	class={{
-		'data-[answer=x]:bg-swamp-green-300 data-[answer=c]:bg-putty-300 data-[answer=i]:bg-charade-500 data-wiggle:animate-wiggle data-wiggle-once:animate-wiggle-once datacron-jump:animate-jump aspect-square rounded-xl pt-(--tile-height)': true,
-		'column-delay': !doWiggle && !doWiggleOnce
-	}}
+	style="--tile-column: var(--column, 0); --animation-delay:{column *
+		0.03}s; --transition-delay:{column * 0.03 + 0.15}s"
+	class={[
+		'aspect-square rounded-xl pt-0.5 transition delay-(--transition-delay)',
+		!doWiggle && !doWiggleOnce && '[animation-delay:var(--animation-delay)]',
+		answer === 'c' && 'bg-putty-300',
+		answer === 'x' && 'bg-swamp-green-300',
+		answer === 'i' && 'bg-charade-500',
+		doWiggle && 'animate-wiggle',
+		doWiggleOnce && 'animate-wiggle-once',
+		doJump && 'animate-jump'
+	]}
 	data-answer={answer}
-	data-wiggle={doWiggle || undefined}
-	data-wiggle-once={doWiggleOnce || undefined}
-	data-jump={doJump || undefined}
-	style="--tile-column: var(--column, 0); --tile-delay-scale: var(--delay-scale, 0.03); --tile-duration: var(--duration, 0.15);"
 >
 	<div
 		class={[
-			'in-data-[answer=c]:bg-putty-500 in-data-[answer=c]:text-putty-800 in-data-[answer=x]:bg-swamp-green-500 in-data-[answer=x]:text-swamp-green-800 in-data-[answer=i]:bg-charade-700 text-charade-100 relative box-content grid aspect-square items-center rounded-xl text-center text-2xl font-bold transition-all duration-0 in-data-answer:shadow-[0_var(--tile-height)_4px_0_rgb(0_0_0_/_0.2)] sm:text-3xl'
+			'in-data-[answer=c]:bg-putty-500 in-data-[answer=c]:text-putty-800 in-data-[answer=x]:bg-swamp-green-500 in-data-[answer=x]:text-swamp-green-800 in-data-[answer=i]:bg-charade-700 text-charade-100 relative box-content grid aspect-square items-center rounded-xl text-center text-2xl font-bold transition transition-all delay-(--transition-delay) duration-0 in-data-answer:shadow-[0_var(--tile-height)_4px_0_rgb(0_0_0_/_0.2)] sm:text-3xl',
+			answer === 'x' && 'bg-swamp-green-500 text-swamp-green-800'
 		]}
 	>
 		<input
@@ -43,13 +53,3 @@
 		{letter.toUpperCase()}
 	</div>
 </div>
-
-<style>
-	.column-delay,
-	.column-delay * {
-		animation-delay: calc(1s * (var(--tile-column) * var(--tile-delay-scale)));
-		transition-delay: calc(
-			(var(--tile-column) * var(--tile-delay-scale) + var(--tile-duration)) * 1s
-		);
-	}
-</style>

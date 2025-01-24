@@ -32,9 +32,3 @@
 	<AuthNav links={data.nav} user={data.session?.user} />
 	{@render children()}
 </div>
-
-<style>
-	:global(body) {
-		margin-left: calc(100vw - 100%);
-	}
-</style>

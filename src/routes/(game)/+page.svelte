@@ -193,9 +193,9 @@
 							>
 								<Tile
 									--column={j}
-									--tile-height="3px"
 									letter={letter === ' ' ? '' : letter}
 									answer={answers.at(item.index)?.charAt(j)}
+									column={j}
 									{doJump}
 									{doWiggle}
 									{doWiggleOnce}
