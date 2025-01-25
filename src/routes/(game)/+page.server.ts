@@ -8,6 +8,7 @@ import { createApiWordlettuceClient } from '$lib/client/api-wordlettuce.server.j
 export const trailingSlash = 'never';
 
 export async function load(event) {
+	const game = event.locals.getGameStateV3();
 	const gameState = event.locals.getGameStateV2();
 	const answers = checkWordsV2({ guesses: gameState.guesses });
 

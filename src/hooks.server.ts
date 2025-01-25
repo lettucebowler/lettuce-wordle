@@ -29,22 +29,6 @@ function decodeStateV2(state: string) {
 	};
 }
 
-function decodeStateV3(state: string) {
-	if (!state) {
-		return new WordlettuceGame();
-	}
-	const decoded = atob(state);
-	const [gameNum, guesses, currentGuess] = decoded.split(';');
-	if (!gameNum || Number(gameNum) !== getGameNum()) {
-		return new WordlettuceGame();
-	}
-	return new WordlettuceGame({
-		gameNum: gameNum ? Number(gameNum) : getGameNum(),
-		guesses: guesses.length ? guesses.split(',') : [],
-		currentGuess
-	});
-}
-
 function createGetGameState(event: RequestEvent) {
 	return {
 		getGameStateV2: () => {
@@ -53,7 +37,7 @@ function createGetGameState(event: RequestEvent) {
 		},
 		getGameStateV3: () => {
 			const stateString = event.cookies.get(STATE_COOKIE_NAME_V2) || '';
-			return decodeStateV3(stateString);
+			return WordlettuceGame.fromStateString(stateString);
 		}
 	};
 }
