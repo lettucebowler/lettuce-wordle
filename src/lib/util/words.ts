@@ -12995,6 +12995,11 @@ export function getDailyWord() {
 	return answerList.at(wordIndex) ?? 'slate';
 }
 
+export function getGameWord(gameNum: number) {
+	const wordIndex = mulberry(gameNum) * answerList.length;
+	return answerList.at(wordIndex) ?? 'slate';
+}
+
 export function isAllowedGuess({ guess }: { guess: string }) {
 	return answerList.includes(guess) || allowedGuesses.includes(guess);
 }

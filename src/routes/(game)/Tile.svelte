@@ -24,7 +24,7 @@
 </script>
 
 <div
-	style="--tile-column: var(--column, 0); --animation-delay:{column *
+	style="--tile-column: var({column}, 0); --animation-delay:{column *
 		0.03}s; --transition-delay:{column * delayScale + duration}s"
 	class={[
 		'aspect-square rounded-xl pt-0.5 transition delay-(--transition-delay)',

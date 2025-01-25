@@ -12,6 +12,7 @@ declare global {
 	declare namespace App {
 		interface Locals {
 			getGameStateV2: () => import('$lib/schemas/game').GameState;
+			getGameStateV3: () => import('$lib/game/wordlettuce-game.svelte').WordlettuceGame;
 		}
 		interface PageState {
 			showModal: boolean;

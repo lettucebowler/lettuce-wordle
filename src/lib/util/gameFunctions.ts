@@ -1,6 +1,6 @@
 import { successAnswer } from '$lib/constants/app-constants';
 import { guessKeySchema, type GameState } from '$lib/schemas/game';
-import { getDailyWord, isAllowedGuess } from './words';
+import { getDailyWord, getGameNum, getGameWord, isAllowedGuess } from './words';
 import * as v from 'valibot';
 
 const getLetterLocations = (s: string, l: string) => {
@@ -45,8 +45,14 @@ export function checkWord({ guess, answer = getDailyWord() }: { guess: string; a
 	return statuses.join('');
 }
 
-export function checkWordsV2({ guesses }: { guesses: Array<string> }) {
-	const answer = getDailyWord();
+export function checkWordsV2({
+	guesses,
+	gameNum = getGameNum()
+}: {
+	guesses: Array<string>;
+	gameNum?: number;
+}) {
+	const answer = getGameWord(gameNum);
 	return guesses.map((guess: string) => {
 		return checkWord({ guess, answer });
 	});

@@ -3,13 +3,7 @@
 	import { flip } from 'svelte/animate';
 	import { applyAction, enhance } from '$app/forms';
 	import Tile from './Tile.svelte';
-	import {
-		getKeyStatuses,
-		checkWord,
-		applyKey,
-		applyWord,
-		checkWordsV2
-	} from '$lib/util/gameFunctions';
+	import { getKeyStatuses } from '$lib/util/gameFunctions';
 	import { encodeStateV2 } from '$lib/util/encodeCookie';
 	import Cookies from 'js-cookie';
 	import { Toaster } from 'svelte-french-toast';
@@ -17,40 +11,40 @@
 	import { createExpiringBoolean } from './spells.svelte';
 	import { browser } from '$app/environment';
 	import { toastError, toastLoading, toastSuccess } from './toast';
-	import type { GameState } from '$lib/schemas/game';
-	import { STATE_COOKIE_NAME_V2, successAnswer } from '$lib/constants/app-constants';
 	import { pushState } from '$app/navigation';
 	import { page } from '$app/state';
 	import ShareIcon from '$lib/components/ShareIcon.svelte';
 	import EnterIcon from '$lib/components/EnterIcon.svelte';
 	import BackSpaceIcon from '$lib/components/BackSpaceIcon.svelte';
+	import { WordlettuceGame } from '$lib/game/wordlettuce-game.svelte';
+	import { STATE_COOKIE_NAME_V2 } from '$lib/constants/app-constants';
+	import * as v from 'valibot';
+	import { guessKeySchema } from '$lib/schemas/game';
 
 	let { form, data } = $props();
-
-	let gameState = $state(data.gameState);
-	let success = $state(data.success);
-	let answers = $state(data.answers);
 	let wordForm: HTMLFormElement | undefined = $state();
 
 	const wordIsInvalid = createExpiringBoolean();
 	const submittingWord = createExpiringBoolean();
 	const duration = 0.15;
 
+	let game = $state(
+		new WordlettuceGame({
+			gameNum: data.gameState.gameNum,
+			guesses: data.gameState.guesses,
+			currentGuess: data.gameState.currentGuess
+		})
+	);
+
 	$effect(() => {
-		gameState = data.gameState;
-		answers = data.answers;
+		game = new WordlettuceGame({
+			gameNum: data.gameState.gameNum,
+			guesses: data.gameState.guesses,
+			currentGuess: data.gameState.currentGuess
+		});
 	});
 
-	let keyStatuses = $derived(getKeyStatuses(gameState.guesses, answers));
-
-	function writeStateToCookie(state: GameState) {
-		Cookies.set(STATE_COOKIE_NAME_V2, encodeStateV2(state), {
-			path: '/',
-			httpOnly: false,
-			expires: 1,
-			secure: false
-		});
-	}
+	let keyStatuses = $derived(getKeyStatuses(game.guesses, game.answers));
 
 	function showModal() {
 		pushState('', {
@@ -58,15 +52,37 @@
 		});
 	}
 
+	function saveGameStateToCookie() {
+		Cookies.set(
+			STATE_COOKIE_NAME_V2,
+			encodeStateV2({
+				gameNum: game.gameNum,
+				guesses: game.guesses,
+				currentGuess: game.currentGuess
+			}),
+			{
+				path: '/',
+				httpOnly: false,
+				expires: 1,
+				secure: false
+			}
+		);
+	}
+
 	function handleKey(key: string) {
-		if (key === 'enter') {
-			wordForm?.requestSubmit();
-		}
-		const { error, gameState: newGameState } = applyKey({ gameState, key });
-		if (error) {
+		const parseResult = v.safeParse(guessKeySchema, key);
+		if (!parseResult.success) {
 			return;
 		}
-		gameState = newGameState;
+		if (parseResult.output === 'enter') {
+			wordForm?.requestSubmit();
+			return;
+		}
+		if (parseResult.output === 'backspace') {
+			game.undo();
+			return;
+		}
+		game.letter(parseResult.output);
 	}
 
 	function invalidForm(message = 'Invalid word') {
@@ -79,24 +95,24 @@
 	}
 
 	function getItemsForGrid() {
-		const maxPreviousGuesses = success ? 6 : 5;
+		const maxPreviousGuesses = game.success ? 6 : 5;
 		const maxFillerGuesses = 5;
 
-		const previousGuesses = gameState.guesses
+		const previousGuesses = game.guesses
 			.map((guess, index) => ({ index, guess }))
 			.slice(-1 * maxPreviousGuesses);
-		const currentGuesses = success
+		const currentGuesses = game.success
 			? []
 			: [
 					{
-						index: gameState.guesses.length,
-						guess: gameState.currentGuess
+						index: game.guesses.length,
+						guess: game.currentGuess
 					}
 				];
 		const fillerGuesses = Array(maxFillerGuesses)
 			.fill(null)
 			.map((_, index) => ({
-				index: gameState.guesses.length + (success ? 0 : 1) + index,
+				index: game.guesses.length + (game.success ? 0 : 1) + index,
 				guess: ''
 			}));
 		const items = [...previousGuesses, ...currentGuesses, ...fillerGuesses]
@@ -106,54 +122,43 @@
 	}
 
 	const enhanceForm: SubmitFunction = async ({ formData, cancel }) => {
-		if (submittingWord.value || success) {
+		if (submittingWord.value || game.success) {
 			cancel();
 			return;
 		}
 		submittingWord.truthify();
-		const guess = formData
-			.getAll('guess')
-			.map((l) => l.toString().toLowerCase())
-			.join('');
-		const { error, gameState: newGameState } = applyWord({ gameState, guess });
+		const { error } = game.submit();
 		if (error) {
 			cancel();
 			return invalidForm();
 		}
-		const newAnswers = checkWordsV2({ guesses: newGameState.guesses });
-		const wordIsCorrect = checkWord({ guess: newGameState.guesses.at(-1) ?? '' }) === successAnswer;
-		answers = newAnswers;
-		gameState = newGameState;
 		form = {
-			success: wordIsCorrect,
+			success: game.success,
 			invalid: false
 		};
-		if (!wordIsCorrect) {
+		if (!game.success) {
 			cancel();
-			writeStateToCookie(newGameState);
+			saveGameStateToCookie();
 			return;
 		}
-		success = true;
 
-		let id: string;
+		let saveGameToastId: string;
 		if (data.session?.user) {
-			id = toastLoading('Saving results...');
+			saveGameToastId = toastLoading('Saving results...');
 		}
 		return async ({ result, update }) => {
 			applyAction(result);
-			if (data.session?.user?.login) {
+			if (saveGameToastId) {
 				if (result.type === 'success') {
-					toastSuccess('Game results saved', { id });
+					toastSuccess('Game results saved', { id: saveGameToastId });
 				} else {
-					toastError('Failed to save game results', { id });
+					toastError('Failed to save game results', { id: saveGameToastId });
 				}
 			}
 			update();
 			setTimeout(() => showModal(), 500);
 		};
 	};
-
-	$inspect(answers);
 </script>
 
 <svelte:window
@@ -175,14 +180,14 @@
 		>
 			<div class="grid w-full max-w-700 grid-rows-[repeat(6,1fr)] gap-2">
 				{#each getItemsForGrid() as item (item.index)}
-					{@const current = item.index === answers.length}
+					{@const current = item.index === game.answers.length}
 					<div
 						class="grid w-full grid-cols-[repeat(5,1fr)] gap-2"
 						animate:flip={{ duration: duration * 1000 }}
 						data-index={item.index}
 					>
 						{#each item.guess.padEnd(5, ' ').slice(0, 5).split('') as letter, j}
-							{@const doJump = browser && answers.at(item.index)?.length === 5}
+							{@const doJump = browser && game.answers.at(item.index)?.length === 5}
 							{@const doWiggle = browser && wordIsInvalid.value && current}
 							{@const doWiggleOnce = !browser && form?.invalid && current}
 							<div
@@ -192,9 +197,8 @@
 								}}
 							>
 								<Tile
-									--column={j}
 									letter={letter === ' ' ? '' : letter}
-									answer={answers.at(item.index)?.charAt(j)}
+									answer={game.answers.at(item.index)?.charAt(j)}
 									column={j}
 									{doJump}
 									{doWiggle}
@@ -266,7 +270,7 @@
 					class="col-span-4 mt-[1px] grid h-full w-full cursor-pointer place-items-center rounded-md bg-(--bg-color) text-center text-sm font-bold text-(--text-color) shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--highlight-color)] active:mt-0 active:shadow-none sm:py-2 md:text-xl"
 					><div class="h-5 w-full lg:h-7"><BackSpaceIcon /></div></button
 				>
-				{#if success}
+				{#if game.success}
 					<button
 						aria-label="share"
 						title="share"
@@ -280,7 +284,11 @@
 		</form>
 	</main>
 	{#if page.state.showModal}
-		<BetterModal {answers} user={data.session?.user?.login} close={() => history.back()} />
+		<BetterModal
+			answers={game.answers}
+			user={data.session?.user?.login}
+			close={() => history.back()}
+		/>
 	{/if}
 	<Toaster />
 </div>

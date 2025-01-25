@@ -3,7 +3,6 @@ import { checkWordsV2, checkWord, applyKey, applyWord } from '$lib/util/gameFunc
 import { fail } from '@sveltejs/kit';
 import { STATE_COOKIE_NAME_V2, successAnswer } from '$lib/constants/app-constants.js';
 import type { GameState } from '$lib/schemas/game';
-// import { createWordlettuceBetaDao } from '$lib/dao/wordlettuce-beta.server';
 import { createApiWordlettuceClient } from '$lib/client/api-wordlettuce.server.js';
 
 export const trailingSlash = 'never';
@@ -92,9 +91,7 @@ export const actions: import('./$types').Actions = {
 				const answers = checkWordsV2({ guesses: newGameState.guesses }).join('');
 				const userId = session.user.githubId;
 				const gameNum = newGameState.gameNum;
-				// const { saveGame } = createWordlettuceBetaDao();
 				const apiWordlettuce = createApiWordlettuceClient(event);
-				// const inserts = await saveGame({ answers, userId, gameNum });
 				const inserts = await apiWordlettuce.saveGame({ answers, userId, gameNum });
 				if (!inserts.length) {
 					fail(500, { message: 'Error saving to database' });
