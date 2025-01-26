@@ -22,7 +22,7 @@ export async function load(event) {
 			currentGuess: game.currentGuess,
 			success: game.success,
 			guesses: game.guesses,
-			gameNum: game.gameNum,
+			gameNum: game.gameNum
 		}
 	};
 }
@@ -43,8 +43,8 @@ export const actions: import('./$types').Actions = {
 		if (parseResult.output === 'enter') {
 			return {
 				success: false,
-				invalid: false,
-			}
+				invalid: false
+			};
 		}
 
 		if (parseResult.output === 'backspace') {
@@ -84,7 +84,8 @@ export const actions: import('./$types').Actions = {
 		const guess = data
 			.getAll('guess')
 			.map((letter) => letter.toString().toLowerCase())
-			.join('').slice(0, 5);
+			.join('')
+			.slice(0, 5);
 		game.currentGuess = guess;
 		const { error } = game.doSumbit();
 		if (error) {
@@ -101,13 +102,15 @@ export const actions: import('./$types').Actions = {
 			secure: false
 		});
 		if (game.success) {
-			console.log('game success');
 			const session = await event.locals.auth();
 			if (session?.user) {
-
 				const userId = session.user.githubId;
 				const apiWordlettuce = createApiWordlettuceClient(event);
-				const inserts = await apiWordlettuce.saveGame({ answers: game.answers.join(''), userId, gameNum: game.gameNum });
+				const inserts = await apiWordlettuce.saveGame({
+					answers: game.answers.join(''),
+					userId,
+					gameNum: game.gameNum
+				});
 				if (!inserts.length) {
 					fail(500, { message: 'Error saving to database' });
 				}

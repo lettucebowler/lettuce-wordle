@@ -14,7 +14,9 @@ type WordlettuceGameConstructorArgs = {
 export class WordlettuceGame {
 	gameNum: number = $state(1);
 	guesses: Array<string> = $state([]);
-	answers: Array<string> = $derived.by(() => checkWordsV2({ guesses: this.guesses, gameNum: this.gameNum }));
+	answers: Array<string> = $derived.by(() =>
+		checkWordsV2({ guesses: this.guesses, gameNum: this.gameNum })
+	);
 	// answers: Array<string> = $state([]);
 	success: boolean = $derived.by(() => {
 		return this.answers.at(-1) === successAnswer;
@@ -35,7 +37,6 @@ export class WordlettuceGame {
 		// const answers = checkWordsV2({ guesses: guesses, gameNum: gameNum });
 		// this.answers = answers;
 		// this.success = answers.at(-1) === successAnswer;
-
 	}
 
 	static fromStateString = (state: string) => {
@@ -56,7 +57,7 @@ export class WordlettuceGame {
 
 	toStateString = () => {
 		return btoa(`${this.gameNum};${this.guesses.join(',')};${this.currentGuess}`);
-	}
+	};
 
 	doReset = () => {
 		this.gameNum = getGameNum();
@@ -79,7 +80,7 @@ export class WordlettuceGame {
 			};
 		}
 		this.currentGuess += letterParseResult.output;
-		return {}
+		return {};
 	};
 
 	doUndo = () => {
