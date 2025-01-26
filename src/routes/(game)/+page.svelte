@@ -19,7 +19,7 @@
 	import { WordlettuceGame } from '$lib/game/wordlettuce-game.svelte';
 	import { STATE_COOKIE_NAME_V2 } from '$lib/constants/app-constants';
 	import * as v from 'valibot';
-	import { guessKeySchema } from '$lib/schemas/game';
+	import { GameKey } from '$lib/schemas/game';
 
 	let { form, data } = $props();
 	let wordForm: HTMLFormElement | undefined = $state();
@@ -30,17 +30,17 @@
 
 	let game = $state(
 		new WordlettuceGame({
-			gameNum: data.gameState.gameNum,
-			guesses: data.gameState.guesses,
-			currentGuess: data.gameState.currentGuess
+			gameNum: data.game.gameNum,
+			guesses: data.game.guesses,
+			currentGuess: data.game.currentGuess
 		})
 	);
 
 	$effect(() => {
 		game = new WordlettuceGame({
-			gameNum: data.gameState.gameNum,
-			guesses: data.gameState.guesses,
-			currentGuess: data.gameState.currentGuess
+			gameNum: data.game.gameNum,
+			guesses: data.game.guesses,
+			currentGuess: data.game.currentGuess
 		});
 	});
 
@@ -70,7 +70,7 @@
 	}
 
 	function handleKey(key: string) {
-		const parseResult = v.safeParse(guessKeySchema, key);
+		const parseResult = v.safeParse(GameKey, key);
 		if (!parseResult.success) {
 			return;
 		}
@@ -79,10 +79,10 @@
 			return;
 		}
 		if (parseResult.output === 'backspace') {
-			game.undo();
+			game.doUndo();
 			return;
 		}
-		game.letter(parseResult.output);
+		game.doLetter(parseResult.output);
 	}
 
 	function invalidForm(message = 'Invalid word') {
@@ -127,7 +127,7 @@
 			return;
 		}
 		submittingWord.truthify();
-		const { error } = game.submit();
+		const { error } = game.doSumbit();
 		if (error) {
 			cancel();
 			return invalidForm();

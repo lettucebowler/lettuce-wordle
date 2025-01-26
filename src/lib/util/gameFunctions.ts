@@ -1,5 +1,5 @@
 import { successAnswer } from '$lib/constants/app-constants';
-import { guessKeySchema, type GameState } from '$lib/schemas/game';
+import { GameKey, type GameState } from '$lib/schemas/game';
 import { getDailyWord, getGameNum, getGameWord, isAllowedGuess } from './words';
 import * as v from 'valibot';
 
@@ -109,7 +109,7 @@ export function applyKey({ gameState, key }: { gameState: GameState; key: string
 			gameState
 		};
 	}
-	const keyParseResult = v.safeParse(guessKeySchema, key);
+	const keyParseResult = v.safeParse(GameKey, key);
 	if (!keyParseResult.success) {
 		return {
 			error: {
