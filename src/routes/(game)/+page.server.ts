@@ -2,7 +2,7 @@ import { fail } from '@sveltejs/kit';
 import { STATE_COOKIE_NAME_V2 } from '$lib/constants/app-constants.js';
 import { createApiWordlettuceClient } from '$lib/client/api-wordlettuce.server.js';
 import * as v from 'valibot';
-import { GameKey } from '$lib/schemas/game.js';
+import { GameKey, GuessLetter } from '$lib/schemas/game.js';
 import { WordlettuceGame } from '$lib/game/wordlettuce-game.svelte.js';
 
 export const trailingSlash = 'never';
@@ -50,13 +50,7 @@ export const actions: import('./$types').Actions = {
 		if (parseResult.output === 'backspace') {
 			game.doUndo();
 		} else {
-			const { error } = game.doLetter(parseResult.output);
-			if (error) {
-				return fail(400, {
-					success: false,
-					invalid: true
-				});
-			}
+			game.doLetter(parseResult.output);
 		}
 
 		event.cookies.set(STATE_COOKIE_NAME_V2, game.toStateString(), {
@@ -84,9 +78,13 @@ export const actions: import('./$types').Actions = {
 		const guess = data
 			.getAll('guess')
 			.map((letter) => letter.toString().toLowerCase())
-			.join('')
 			.slice(0, 5);
-		game.currentGuess = guess;
+		guess.forEach((letter) => {
+			const parseResult = v.safeParse(GuessLetter, letter);
+			if (parseResult.success) {
+				game.doLetter(parseResult.output);
+			}
+		});
 		const { error } = game.doSumbit();
 		if (error) {
 			return fail(400, {
@@ -94,7 +92,6 @@ export const actions: import('./$types').Actions = {
 				invalid: true
 			});
 		}
-		game = new WordlettuceGame({ gameNum: game.gameNum, guesses: game.guesses });
 		event.cookies.set(STATE_COOKIE_NAME_V2, game.toStateString(), {
 			httpOnly: false,
 			path: '/',

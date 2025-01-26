@@ -1,8 +1,6 @@
-import { getGameNum } from '$lib/util/words';
-import * as v from 'valibot';
+import { getGameNum, getGameWord } from '$lib/util/words';
 import { successAnswer } from '$lib/constants/app-constants';
 import { isAllowedGuess } from '$lib/util/words';
-import { checkWordsV2 } from '$lib/util/gameFunctions';
 import { GuessLetter } from '$lib/schemas/game';
 
 type WordlettuceGameConstructorArgs = {
@@ -12,31 +10,20 @@ type WordlettuceGameConstructorArgs = {
 };
 
 export class WordlettuceGame {
-	gameNum: number = $state(1);
-	guesses: Array<string> = $state([]);
-	answers: Array<string> = $derived.by(() =>
-		checkWordsV2({ guesses: this.guesses, gameNum: this.gameNum })
-	);
-	// answers: Array<string> = $state([]);
-	success: boolean = $derived.by(() => {
-		return this.answers.at(-1) === successAnswer;
-	});
-	// success: boolean = $state(false);
-	currentGuess: string = $state('');
+	#gameNum: number = $state(1);
+	#guesses: Array<string> = $state([]);
+	#currentGuess: string = $state('');
 
 	constructor({
 		gameNum = getGameNum(),
 		guesses = [],
 		currentGuess = ''
 	}: WordlettuceGameConstructorArgs = {}) {
-		this.gameNum = gameNum;
-		this.currentGuess = currentGuess;
+		this.#gameNum = gameNum;
+		this.#currentGuess = currentGuess;
 		if (guesses) {
-			this.guesses = guesses;
+			this.#guesses = guesses;
 		}
-		// const answers = checkWordsV2({ guesses: guesses, gameNum: gameNum });
-		// this.answers = answers;
-		// this.success = answers.at(-1) === successAnswer;
 	}
 
 	static fromStateString = (state: string) => {
@@ -55,53 +42,139 @@ export class WordlettuceGame {
 		});
 	};
 
-	toStateString = () => {
-		return btoa(`${this.gameNum};${this.guesses.join(',')};${this.currentGuess}`);
-	};
+	get gameNum() {
+		return this.#gameNum;
+	}
 
-	doReset = () => {
-		this.gameNum = getGameNum();
-		// this.answers = [];
-		this.guesses = [];
-		// this.success = false;
-		this.currentGuess = '';
+	get currentGuess() {
+		return this.#currentGuess;
+	}
+
+	get guesses() {
+		return this.#guesses;
+	}
+
+	get answers() {
+		return this.#checkWords();
+	}
+
+	get success() {
+		return this.answers.at(-1) === successAnswer;
+	}
+
+	get letterStatuses() {
+		if (!this.#guesses.length) {
+			return {};
+		}
+		const letters = Array.from(
+			new Set(
+				this.#guesses
+					.map((w, i) =>
+						w.split('').map((l, j) => ({
+							letter: l,
+							status: this.answers[i]?.[j] || '_'
+						}))
+					)
+					.flat()
+			)
+		);
+		const correctList = letters
+			.filter((letter) => letter.status === 'x')
+			.map((l) => ({ [l.letter]: l.status }));
+		const correct: { [x: string]: string } = Object.assign({}, ...correctList);
+		const containsList = letters
+			.filter((letter) => letter.status === 'c')
+			.map((l) => ({ [l.letter]: l.status }));
+		const contains: { [x: string]: string } = Object.assign({}, ...containsList);
+		const incorrectList = letters
+			.filter((letter) => letter.status === 'i')
+			.map((l) => ({ [l.letter]: l.status }));
+		const incorrect: { [x: string]: string } = Object.assign({}, ...incorrectList);
+
+		return { ...incorrect, ...contains, ...correct };
+	}
+
+	toStateString = () => {
+		return btoa(`${this.#gameNum};${this.#guesses.join(',')};${this.#currentGuess}`);
 	};
 
 	doLetter = (letter: GuessLetter) => {
-		if (this.success || this.currentGuess.length >= 5) {
+		if (this.success || this.#currentGuess.length >= 5) {
 			return {};
 		}
-		const letterParseResult = v.safeParse(GuessLetter, letter);
-		if (!letterParseResult.success) {
-			return {
-				error: {
-					message: 'Invalid key'
-				}
-			};
-		}
-		this.currentGuess += letterParseResult.output;
+		this.#currentGuess += letter;
 		return {};
 	};
 
 	doUndo = () => {
-		this.currentGuess = this.currentGuess.slice(0, -1);
+		if (!this.#currentGuess.length) {
+			return;
+		}
+		this.#currentGuess = this.#currentGuess.slice(0, -1);
 	};
 
 	doSumbit = () => {
 		if (this.success) {
 			return {};
 		}
-		if (!isAllowedGuess({ guess: this.currentGuess })) {
+		if (!isAllowedGuess({ guess: this.#currentGuess })) {
 			return {
 				error: {
 					message: 'Invalid word'
 				}
 			};
 		}
-		this.guesses = Array.from([...this.guesses, this.currentGuess]);
-		this.currentGuess = '';
-		// this.answers = checkWordsV2({ guesses: this.guesses, gameNum: this.gameNum });
-		// this.success = this.answers.at(-1) === successAnswer;
+		this.#guesses.push(this.#currentGuess);
+		this.#currentGuess = '';
 		return {};
 	};
+
+	#checkWords = () => {
+		const answer = getGameWord(this.#gameNum);
+		return this.#guesses.map((guess: string) => {
+			return checkWord({ guess, answer });
+		});
+	};
+}
+
+const getLetterLocations = (s: string, l: string) => {
+	return s
+		.split('')
+		.map((l: string, i: number) => ({ letter: l, index: i }))
+		.filter((slot) => slot.letter === l)
+		.map((slot) => slot.index);
+};
+
+function containsLetter({
+	index,
+	guess,
+	answer
+}: {
+	index: number;
+	guess: string;
+	answer: string;
+}) {
+	const letter = guess.charAt(index);
+	const guessLocations = getLetterLocations(guess, letter);
+	const answerLocations = getLetterLocations(answer, letter);
+	const correctCount = guessLocations.filter((location) =>
+		answerLocations.includes(location)
+	).length;
+	const previousContainsCount = getLetterLocations(guess.slice(0, index), letter).filter(
+		(index) => !answerLocations.includes(index)
+	).length;
+	return correctCount + previousContainsCount < answerLocations.length;
+}
+
+function checkWord({ guess, answer }: { guess: string; answer: string }) {
+	if (!guess.length) {
+		return '_____';
+	}
+	const contains = guess
+		.split('')
+		.map((_, i) => (containsLetter({ index: i, guess, answer }) ? 'c' : 'i'));
+	const correct = guess.split('').map((char, i) => (answer[i] === char ? 'x' : ''));
+
+	const statuses = correct.map((status, i) => (status ? status : contains[i]));
+	return statuses.join('');
 }

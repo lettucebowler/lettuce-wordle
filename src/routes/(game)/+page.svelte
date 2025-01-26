@@ -3,8 +3,6 @@
 	import { flip } from 'svelte/animate';
 	import { applyAction, enhance } from '$app/forms';
 	import Tile from './Tile.svelte';
-	import { getKeyStatuses } from '$lib/util/gameFunctions';
-	import { encodeStateV2 } from '$lib/util/encodeCookie';
 	import Cookies from 'js-cookie';
 	import { Toaster } from 'svelte-french-toast';
 	import type { SubmitFunction } from '@sveltejs/kit';
@@ -44,8 +42,6 @@
 		});
 	});
 
-	let keyStatuses = $derived(getKeyStatuses(game.guesses, game.answers));
-
 	function showModal() {
 		pushState('', {
 			showModal: true
@@ -53,20 +49,12 @@
 	}
 
 	function saveGameStateToCookie() {
-		Cookies.set(
-			STATE_COOKIE_NAME_V2,
-			encodeStateV2({
-				gameNum: game.gameNum,
-				guesses: game.guesses,
-				currentGuess: game.currentGuess
-			}),
-			{
-				path: '/',
-				httpOnly: false,
-				expires: 1,
-				secure: false
-			}
-		);
+		Cookies.set(STATE_COOKIE_NAME_V2, game.toStateString(), {
+			path: '/',
+			httpOnly: false,
+			expires: 1,
+			secure: false
+		});
 	}
 
 	function handleKey(key: string) {
@@ -185,16 +173,17 @@
 						class="grid w-full grid-cols-[repeat(5,1fr)] gap-2"
 						animate:flip={{ duration: duration * 1000 }}
 						data-index={item.index}
+						style="--tile-height:2px;"
 					>
 						{#each item.guess.padEnd(5, ' ').slice(0, 5).split('') as letter, j}
 							{@const doJump = browser && game.answers.at(item.index)?.length === 5}
 							{@const doWiggle = browser && wordIsInvalid.value && current}
 							{@const doWiggleOnce = !browser && form?.invalid && current}
 							<div
-								class={{
-									'bg-charade-950 z-(--z-index) aspect-square min-h-0 w-full rounded-xl shadow-[inset_0_var(--height)_var(--height)_0_rgb(0_0_0/0.2),inset_0_calc(-1*var(--height))_0_0_var(--color-charade-800)]': true,
-									'animate-wiggle-once': !item.guess && current && wordIsInvalid.value
-								}}
+								class={[
+									'bg-charade-950 z-(--z-index) aspect-square min-h-0 w-full rounded-xl shadow-[inset_0_var(--tile-height)_var(--tile-height)_0_rgb(0_0_0/0.2),inset_0_calc(-1*var(--tile-height))_0_0_var(--color-charade-800)]',
+									!item.guess && current && wordIsInvalid.value && 'animate-wiggle-once'
+								]}
 							>
 								<Tile
 									letter={letter === ' ' ? '' : letter}
@@ -221,9 +210,12 @@
 				cancel();
 			}}
 		>
-			<div class="grid flex-auto grid-cols-[repeat(40,0.25fr)] grid-rows-3 gap-1">
+			<div
+				class="grid flex-auto grid-cols-[repeat(40,0.25fr)] grid-rows-3 gap-1"
+				style="--keyboard-height: 1px;"
+			>
 				{#each 'q,w,e,r,t,y,u,i,o,p,,a,s,d,f,g,h,j,k,l,z,x,c,v,b,n,m'.split(',') as letter}
-					{@const status = keyStatuses[letter] || '_'}
+					{@const status = game.letterStatuses[letter]}
 					{#if letter}
 						<button
 							aria-label={letter}
@@ -232,12 +224,16 @@
 							form={letter === 'enter' ? 'game' : undefined}
 							name="key"
 							value={letter}
-							data-answer={status}
-							class={{
-								'col-span-4 mt-(--keyboard-height) grid h-full w-full cursor-pointer place-items-center rounded-md bg-(--bg-color) text-center text-sm font-bold text-(--text-color)  active:shadow-none sm:py-2 md:text-xl': true,
-								'shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--highlight-color)] active:mt-0':
-									['x', 'c', '_'].includes(status)
-							}}
+							class={[
+								'col-span-4 mt-(--keyboard-height) grid h-full w-full cursor-pointer place-items-center rounded-md bg-(--bg-color) text-center text-sm font-bold text-(--text-color)  active:shadow-none sm:py-2 md:text-xl',
+								status === 'x' &&
+									'bg-swamp-green-500 text-swamp-green-900 shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--color-swamp-green-200)] active:mt-0',
+								status === 'c' &&
+									'bg-putty-500 text-putty-900 shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--color-putty-200)] active:mt-0',
+								status === 'i' && 'bg-charade-800 text-charade-300',
+								!status &&
+									'bg-charade-600 text-charade-100 shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--color-charade-400)] active:mt-0'
+							]}
 						>
 							{#if letter === 'share'}
 								<div class="h-5 w-full lg:h-7">
@@ -258,7 +254,7 @@
 					name="key"
 					value="enter"
 					form="game"
-					class="col-span-4 mt-[1px] grid h-full w-full cursor-pointer place-items-center rounded-md bg-(--bg-color) text-center text-sm font-bold text-(--text-color) shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--highlight-color)] active:mt-0 active:shadow-none sm:py-2 md:text-xl"
+					class="bg-charade-600 text-charade-100 col-span-4 mt-[1px] grid h-full w-full cursor-pointer place-items-center rounded-md text-center text-sm font-bold shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--color-charade-400)] active:mt-0 active:shadow-none sm:py-2 md:text-xl"
 					><div class="h-5 w-full lg:h-7"><EnterIcon /></div></button
 				>
 				<button
@@ -267,7 +263,7 @@
 					formAction="?/letter"
 					name="key"
 					value="backspace"
-					class="col-span-4 mt-[1px] grid h-full w-full cursor-pointer place-items-center rounded-md bg-(--bg-color) text-center text-sm font-bold text-(--text-color) shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--highlight-color)] active:mt-0 active:shadow-none sm:py-2 md:text-xl"
+					class="bg-charade-600 text-charade-100 col-span-4 mt-[1px] grid h-full w-full cursor-pointer place-items-center rounded-md text-center text-sm font-bold shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--color-charade-400)] active:mt-0 active:shadow-none sm:py-2 md:text-xl"
 					><div class="h-5 w-full lg:h-7"><BackSpaceIcon /></div></button
 				>
 				{#if game.success}
@@ -292,37 +288,3 @@
 	{/if}
 	<Toaster />
 </div>
-
-<style>
-	:root {
-		--height: 3px;
-	}
-
-	[data-answer='c'] {
-		--bg-color: var(--color-putty-500);
-		--highlight-color: var(--color-putty-200);
-		--text-color: var(--color-putty-900);
-	}
-
-	[data-answer='x'] {
-		--bg-color: var(--color-swamp-green-500);
-		--highlight-color: var(--color-swamp-green-200);
-		--text-color: var(--color-swamp-green-900);
-	}
-
-	[data-answer='i'] {
-		--bg-color: var(--color-charade-800);
-		--highlight-color: var(--color-charade-600);
-		--text-color: var(--color-charade-300);
-	}
-
-	button {
-		--bg-color: var(--color-charade-600);
-		--highlight-color: var(--color-charade-400);
-		--text-color: var(--color-charade-100);
-	}
-
-	.keyboard {
-		--keyboard-height: 1px;
-	}
-</style>
