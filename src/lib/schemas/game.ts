@@ -1,21 +1,4 @@
 import * as v from 'valibot';
-import { getGameNum, isAllowedGuess } from '$lib/util/words';
-import { PositiveIntegerSchema } from './util';
-
-export const GuessWordSchema = v.pipe(
-	v.string(),
-	v.check((input) => isAllowedGuess({ guess: input }))
-);
-
-export const GameNumSchema = v.optional(PositiveIntegerSchema, getGameNum);
-
-export const GameStateSchema = v.object({
-	gameNum: GameNumSchema,
-	guesses: v.array(GuessWordSchema),
-	currentGuess: v.string()
-});
-
-export type GameState = v.InferOutput<typeof GameStateSchema>;
 
 export const GameHotKey = v.picklist(['enter', 'backspace']);
 
@@ -55,3 +38,7 @@ export type GuessLetter = v.InferOutput<typeof GuessLetter>;
 export const GameKey = v.union([GuessLetter, GameHotKey]);
 
 export type GuessKey = v.InferOutput<typeof GameKey>;
+
+export const LetterStatus = v.undefinedable(v.picklist(['x', 'c', 'i']));
+
+export type LetterStatus = v.InferOutput<typeof LetterStatus>;

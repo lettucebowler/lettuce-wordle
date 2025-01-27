@@ -17,7 +17,8 @@
 	import { WordlettuceGame } from '$lib/game/wordlettuce-game.svelte';
 	import { STATE_COOKIE_NAME_V2 } from '$lib/constants/app-constants';
 	import * as v from 'valibot';
-	import { GameKey } from '$lib/schemas/game';
+	import { GameKey, LetterStatus } from '$lib/schemas/game';
+	import Key from './Key.svelte';
 
 	let { form, data } = $props();
 	let wordForm: HTMLFormElement | undefined = $state();
@@ -217,36 +218,23 @@
 				{#each 'q,w,e,r,t,y,u,i,o,p,,a,s,d,f,g,h,j,k,l,z,x,c,v,b,n,m'.split(',') as letter}
 					{@const status = game.letterStatuses[letter]}
 					{#if letter}
-						<button
+						<Key
+							status={status as LetterStatus}
 							aria-label={letter}
 							title={letter}
-							formaction={letter === 'enter' ? '?/word' : '?/letter'}
-							form={letter === 'enter' ? 'game' : undefined}
+							formaction="?/letter"
 							name="key"
 							value={letter}
-							class={[
-								'col-span-4 mt-(--keyboard-height) grid h-full w-full cursor-pointer place-items-center rounded-md bg-(--bg-color) text-center text-sm font-bold text-(--text-color)  active:shadow-none sm:py-2 md:text-xl',
-								status === 'x' &&
-									'bg-swamp-green-500 text-swamp-green-900 shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--color-swamp-green-200)] active:mt-0',
-								status === 'c' &&
-									'bg-putty-500 text-putty-900 shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--color-putty-200)] active:mt-0',
-								status === 'i' && 'bg-charade-800 text-charade-300',
-								!status &&
-									'bg-charade-600 text-charade-100 shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--color-charade-400)] active:mt-0'
-							]}
 						>
-							{#if letter === 'share'}
-								<div class="h-5 w-full lg:h-7">
-									<ShareIcon />
-								</div>
-							{:else}
-								{letter.toUpperCase()}
-							{/if}
-						</button>
+							{letter}
+						</Key>
 					{:else}
 						<div></div>
 					{/if}
 				{/each}
+				<Key aria-label="enter" title="enter" formAction="?/word" name="key" value="enter"
+					><EnterIcon /></Key
+				>
 				<button
 					aria-label="enter"
 					title="enter"
@@ -272,7 +260,7 @@
 						title="share"
 						onclick={() => showModal()}
 						type="button"
-						class="col-span-4 mt-[1px] grid h-full w-full cursor-pointer place-items-center rounded-md bg-(--bg-color) text-center text-sm font-bold text-(--text-color) shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--highlight-color)] active:mt-0 active:shadow-none sm:py-2 md:text-xl"
+						class="bg-charade-600 text-charade-100 col-span-4 mt-[1px] grid h-full w-full cursor-pointer place-items-center rounded-md text-center text-sm font-bold shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--color-charade-400)] active:mt-0 active:shadow-none sm:py-2 md:text-xl"
 						><div class="h-5 w-full lg:h-7"><ShareIcon /></div></button
 					>
 				{/if}
