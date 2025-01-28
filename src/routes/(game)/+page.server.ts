@@ -8,9 +8,7 @@ export const trailingSlash = 'never';
 
 export async function load(event) {
 	const game = event.locals.getGameStateV3();
-
 	event.cookies.set(STATE_COOKIE_NAME_V2, game.toStateString(), STATE_COOKIE_SETTINGS);
-
 	return {
 		game: {
 			currentGuess: game.currentGuess,

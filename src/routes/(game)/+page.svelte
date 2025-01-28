@@ -36,6 +36,10 @@
 	);
 
 	$effect(() => {
+		console.log('woohoo new game', game);
+	});
+
+	$effect(() => {
 		game = new WordlettuceGame({
 			gameNum: data.game.gameNum,
 			guesses: data.game.guesses,

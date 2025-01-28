@@ -7,7 +7,7 @@ import {
 	SK_AUTH_GITHUB_CLIENT_SECRET
 } from '$env/static/private';
 import * as v from 'valibot';
-import { EmailSchema, PositiveIntegerSchema } from '$lib/schemas/util';
+import { Email, PositiveInteger } from '$lib/schemas/util';
 import { createApiWordlettuceClient } from '$lib/client/api-wordlettuce.server';
 
 const tokenSchema = v.object({
@@ -42,9 +42,9 @@ export const { handle, signIn, signOut } = SvelteKitAuth(async (event) => {
 				if (profile) {
 					const profileParseResult = v.safeParse(
 						v.object({
-							id: PositiveIntegerSchema,
+							id: PositiveInteger,
 							login: v.string(),
-							email: EmailSchema
+							email: Email
 						}),
 						profile
 					);

@@ -1,6 +1,5 @@
 import * as v from 'valibot';
 
-export const PositiveIntegerSchema = v.pipe(v.number(), v.integer(), v.minValue(1));
-export const NonNegativeIntegerSchema = v.pipe(v.number(), v.integer(), v.minValue(0));
-
-export const EmailSchema = v.pipe(v.string(), v.email());
+export const PositiveInteger = v.pipe(v.number(), v.integer(), v.minValue(1));
+export const NonNegativeInteger = v.pipe(v.number(), v.integer(), v.minValue(0));
+export const Email = v.pipe(v.string(), v.email());

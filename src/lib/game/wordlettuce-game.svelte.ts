@@ -13,6 +13,8 @@ export class WordlettuceGame {
 	#gameNum: number = $state(1);
 	#guesses: Array<string> = $state([]);
 	#currentGuess: string = $state('');
+	#answers: Array<string> = $state([]);
+	// #success: boolean = $state(false);
 
 	constructor({
 		gameNum = getGameNum(),
@@ -23,6 +25,8 @@ export class WordlettuceGame {
 		this.#currentGuess = currentGuess;
 		if (guesses) {
 			this.#guesses = guesses;
+			this.#answers = this.#checkWords();
+			// this.#success = this.#answers.at(-1) === successAnswer;
 		}
 	}
 
@@ -55,11 +59,12 @@ export class WordlettuceGame {
 	}
 
 	get answers() {
-		return this.#checkWords();
+		return this.#answers;
 	}
 
 	get success() {
-		return this.answers.at(-1) === successAnswer;
+		return this.#answers.at(-1) === successAnswer;
+		// return this.#success;
 	}
 
 	get letterStatuses() {
@@ -126,14 +131,20 @@ export class WordlettuceGame {
 		}
 		this.#guesses.push(this.#currentGuess);
 		this.#currentGuess = '';
+		this.#answers = this.#checkWords();
+		// this.#success = this.#answers.at(-1) === successAnswer;
 		return {};
 	};
 
 	#checkWords = () => {
+		const before = performance.now();
 		const answer = getGameWord(this.#gameNum);
-		return this.#guesses.map((guess: string) => {
+		const answers = this.#guesses.map((guess: string) => {
 			return checkWord({ guess, answer });
 		});
+		const after = performance.now();
+		console.log('calculate answers:', after - before);
+		return answers;
 	};
 }
 
