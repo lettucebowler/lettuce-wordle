@@ -11,10 +11,10 @@ export async function load(event) {
 	event.cookies.set(STATE_COOKIE_NAME_V2, game.toStateString(), STATE_COOKIE_SETTINGS);
 	return {
 		game: {
-			currentGuess: game.currentGuess,
-			success: game.success,
-			guesses: game.guesses,
-			gameNum: game.gameNum
+			currentGuess: game.currentGuess as string,
+			success: game.success as boolean,
+			guesses: game.guesses as Array<string>,
+			gameNum: game.gameNum as number
 		}
 	};
 }

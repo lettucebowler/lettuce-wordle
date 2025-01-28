@@ -19,33 +19,22 @@
 	import * as v from 'valibot';
 	import { GameKey, LetterStatus } from '$lib/schemas/game';
 	import Key from './Key.svelte';
+	import type { PageProps } from './$types';
 
-	let { form, data } = $props();
+	let { form, data }: PageProps = $props();
 	let wordForm: HTMLFormElement | undefined = $state();
 
 	const wordIsInvalid = createExpiringBoolean();
 	const submittingWord = createExpiringBoolean();
 	const duration = 0.15;
 
-	let game = $state(
+	let game = $state.raw(
 		new WordlettuceGame({
 			gameNum: data.game.gameNum,
 			guesses: data.game.guesses,
 			currentGuess: data.game.currentGuess
 		})
 	);
-
-	$effect(() => {
-		console.log('woohoo new game', game);
-	});
-
-	$effect(() => {
-		game = new WordlettuceGame({
-			gameNum: data.game.gameNum,
-			guesses: data.game.guesses,
-			currentGuess: data.game.currentGuess
-		});
-	});
 
 	function showModal() {
 		pushState('', {
