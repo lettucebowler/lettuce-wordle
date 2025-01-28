@@ -21,6 +21,14 @@ export class WordlettuceGame {
 		guesses = [],
 		currentGuess = ''
 	}: WordlettuceGameConstructorArgs = {}) {
+		this.replaceState({ gameNum, guesses, currentGuess });
+	}
+
+	replaceState = ({
+		gameNum = getGameNum(),
+		guesses = [],
+		currentGuess = ''
+	}: WordlettuceGameConstructorArgs = {}) => {
 		this.#gameNum = gameNum;
 		this.#currentGuess = currentGuess;
 		if (guesses) {

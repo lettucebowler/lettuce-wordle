@@ -28,13 +28,11 @@
 	const submittingWord = createExpiringBoolean();
 	const duration = 0.15;
 
-	let game = $state.raw(
-		new WordlettuceGame({
-			gameNum: data.game.gameNum,
-			guesses: data.game.guesses,
-			currentGuess: data.game.currentGuess
-		})
-	);
+	const game = new WordlettuceGame({
+		gameNum: data.game.gameNum,
+		guesses: data.game.guesses,
+		currentGuess: data.game.currentGuess
+	});
 
 	function showModal() {
 		pushState('', {
