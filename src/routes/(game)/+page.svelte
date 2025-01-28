@@ -232,40 +232,35 @@
 						<div></div>
 					{/if}
 				{/each}
-				<Key aria-label="enter" title="enter" formAction="?/word" name="key" value="enter"
-					><EnterIcon /></Key
-				>
-				<button
-					aria-label="enter"
-					title="enter"
-					formAction="?/word"
-					name="key"
-					value="enter"
-					form="game"
-					class="bg-charade-600 text-charade-100 col-span-4 mt-[1px] grid h-full w-full cursor-pointer place-items-center rounded-md text-center text-sm font-bold shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--color-charade-400)] active:mt-0 active:shadow-none sm:py-2 md:text-xl"
-					><div class="h-5 w-full lg:h-7"><EnterIcon /></div></button
-				>
-				<button
-					aria-label="backspace"
-					title="backspace"
-					formAction="?/letter"
-					name="key"
-					value="backspace"
-					class="bg-charade-600 text-charade-100 col-span-4 mt-[1px] grid h-full w-full cursor-pointer place-items-center rounded-md text-center text-sm font-bold shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--color-charade-400)] active:mt-0 active:shadow-none sm:py-2 md:text-xl"
-					><div class="h-5 w-full lg:h-7"><BackSpaceIcon /></div></button
-				>
+				<Key aria-label="enter" title="enter" form="game">
+					<div class="h-5 w-full lg:h-7">
+						<EnterIcon />
+					</div>
+				</Key>
+				<Key aria-label="undo" title="undo" form="undo-form">
+					<div class="h-5 w-full lg:h-7">
+						<BackSpaceIcon />
+					</div>
+				</Key>
 				{#if game.success}
-					<button
-						aria-label="share"
-						title="share"
-						onclick={() => showModal()}
-						type="button"
-						class="bg-charade-600 text-charade-100 col-span-4 mt-[1px] grid h-full w-full cursor-pointer place-items-center rounded-md text-center text-sm font-bold shadow-[0_var(--keyboard-height)_4px_0_rgb(0_0_0_/_0.2),0_calc(-1*var(--keyboard-height))_0_0_var(--color-charade-400)] active:mt-0 active:shadow-none sm:py-2 md:text-xl"
-						><div class="h-5 w-full lg:h-7"><ShareIcon /></div></button
-					>
+					<Key aria-label="share" title="share" onclick={() => showModal()}>
+						<div class="h-5 w-full lg:h-7">
+							<ShareIcon />
+						</div>
+					</Key>
 				{/if}
 			</div>
 		</form>
+		<form
+			class="hidden"
+			id="undo-form"
+			method="POST"
+			action="?/undo"
+			use:enhance={({ cancel }) => {
+				game.doUndo();
+				cancel();
+			}}
+		></form>
 	</main>
 	{#if page.state.showModal}
 		<BetterModal

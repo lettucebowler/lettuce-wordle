@@ -1,21 +1,15 @@
 import { fail } from '@sveltejs/kit';
-import { STATE_COOKIE_NAME_V2 } from '$lib/constants/app-constants.js';
+import { STATE_COOKIE_NAME_V2, STATE_COOKIE_SETTINGS } from '$lib/constants/app-constants.js';
 import { createApiWordlettuceClient } from '$lib/client/api-wordlettuce.server.js';
 import * as v from 'valibot';
-import { GameKey, GuessLetter } from '$lib/schemas/game.js';
-import { WordlettuceGame } from '$lib/game/wordlettuce-game.svelte.js';
+import { GuessLetter } from '$lib/schemas/game.js';
 
 export const trailingSlash = 'never';
 
 export async function load(event) {
 	const game = event.locals.getGameStateV3();
 
-	event.cookies.set(STATE_COOKIE_NAME_V2, game.toStateString(), {
-		httpOnly: false,
-		path: '/',
-		maxAge: 86400,
-		secure: false
-	});
+	event.cookies.set(STATE_COOKIE_NAME_V2, game.toStateString(), STATE_COOKIE_SETTINGS);
 
 	return {
 		game: {
@@ -31,7 +25,7 @@ export const actions: import('./$types').Actions = {
 	letter: async (event) => {
 		const game = event.locals.getGameStateV3();
 		const key = (await event.request.formData()).get('key');
-		const parseResult = v.safeParse(GameKey, key);
+		const parseResult = v.safeParse(GuessLetter, key);
 
 		if (!parseResult.success) {
 			return fail(400, {
@@ -40,32 +34,26 @@ export const actions: import('./$types').Actions = {
 			});
 		}
 
-		if (parseResult.output === 'enter') {
-			return {
-				success: false,
-				invalid: false
-			};
-		}
+		game.doLetter(parseResult.output);
 
-		if (parseResult.output === 'backspace') {
-			game.doUndo();
-		} else {
-			game.doLetter(parseResult.output);
-		}
-
-		event.cookies.set(STATE_COOKIE_NAME_V2, game.toStateString(), {
-			httpOnly: false,
-			path: '/',
-			maxAge: 86400,
-			secure: false
-		});
+		event.cookies.set(STATE_COOKIE_NAME_V2, game.toStateString(), STATE_COOKIE_SETTINGS);
 
 		return {
 			success: false,
 			invalid: false
 		};
 	},
+	undo: async (event) => {
+		const game = event.locals.getGameStateV3();
+		game.doUndo();
 
+		event.cookies.set(STATE_COOKIE_NAME_V2, game.toStateString(), STATE_COOKIE_SETTINGS);
+
+		return {
+			success: false,
+			invalid: false
+		};
+	},
 	word: async (event) => {
 		let game = event.locals.getGameStateV3();
 		if (game.success) {
@@ -92,12 +80,7 @@ export const actions: import('./$types').Actions = {
 				invalid: true
 			});
 		}
-		event.cookies.set(STATE_COOKIE_NAME_V2, game.toStateString(), {
-			httpOnly: false,
-			path: '/',
-			maxAge: 86400,
-			secure: false
-		});
+		event.cookies.set(STATE_COOKIE_NAME_V2, game.toStateString(), STATE_COOKIE_SETTINGS);
 		if (game.success) {
 			const session = await event.locals.auth();
 			if (session?.user) {
