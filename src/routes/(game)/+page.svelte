@@ -20,6 +20,7 @@
 	import { GameKey, LetterStatus } from '$lib/schemas/game';
 	import Key from './Key.svelte';
 	import type { PageProps } from './$types';
+	import { getGameNum } from '$lib/util/words';
 
 	let { form, data }: PageProps = $props();
 	let wordForm: HTMLFormElement | undefined = $state();
@@ -158,6 +159,7 @@
 			bind:this={wordForm}
 			class="my-auto flex w-full max-w-[min(700px,_55vh)]"
 		>
+			<input type="hidden" value={game.gameNum} name="gameNum" />
 			<div class="grid w-full max-w-700 grid-rows-[repeat(6,1fr)] gap-2">
 				{#each getItemsForGrid() as item (item.index)}
 					{@const current = item.index === game.answers.length}
@@ -255,6 +257,7 @@
 	</main>
 	{#if page.state.showModal}
 		<BetterModal
+			gameNum={game.gameNum}
 			answers={game.answers}
 			user={data.session?.user?.login}
 			close={() => history.back()}

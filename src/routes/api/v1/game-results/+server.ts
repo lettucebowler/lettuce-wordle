@@ -1,8 +1,8 @@
 import * as v from 'valibot';
 import { error, json } from '@sveltejs/kit';
-// import { createWordlettuceBetaDao } from '$lib/dao/wordlettuce-beta.server.js';
+import { createWordLettuceDao } from '$lib/dao/wordlettuce.server.js';
 import { getGameNum } from '$lib/util/words.js';
-import { createApiWordlettuceClient } from '$lib/client/api-wordlettuce.server.js';
+// import { createApiWordlettuceClient } from '$lib/client/api-wordlettuce.server.js';
 
 const EventToObjectSchema = v.pipe(
 	v.object({
@@ -36,18 +36,20 @@ const EventToObjectSchema = v.pipe(
 );
 
 export async function GET(event) {
+	const searchParams = new URL(event.request.url).searchParams;
+	console.log('searchParams', searchParams);
 	const requestParseResult = v.safeParse(EventToObjectSchema, event);
 	if (!requestParseResult.success) {
 		error(400, 'Bad request');
 	}
 	const { user, start } = requestParseResult.output;
-	// const db = createWordlettuceBetaDao(event);
-	// const { results, next, limit } = await db.getNextPageAfter({
-	// 	username: user,
-	// 	start
-	// });
-	const api = createApiWordlettuceClient(event);
-	const { results, next, limit } = await api.getNextPageAfter({ username: user, start });
+	const db = createWordLettuceDao(event);
+	const { results, next, limit } = await db.getNextPageAfter({
+		username: user,
+		start
+	});
+	// const api = createApiWordlettuceClient(event);
+	// const { results, next, limit } = await api.getNextPageAfter({ username: user, start });
 
 	// event.setHeaders({
 	// 	'Cache-Control': 'public,max-age=300'

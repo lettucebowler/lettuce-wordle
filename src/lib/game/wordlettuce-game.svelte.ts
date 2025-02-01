@@ -1,10 +1,10 @@
-import { getGameNum, getGameWord } from '$lib/util/words';
+import { getGameWord } from '$lib/util/words';
 import { successAnswer } from '$lib/constants/app-constants';
 import { isAllowedGuess } from '$lib/util/words';
 import { GuessLetter } from '$lib/schemas/game';
 
 type WordlettuceGameConstructorArgs = {
-	gameNum?: number;
+	gameNum: number;
 	currentGuess?: string;
 	guesses?: Array<string>;
 };
@@ -17,18 +17,18 @@ export class WordlettuceGame {
 	// #success: boolean = $state(false);
 
 	constructor({
-		gameNum = getGameNum(),
+		gameNum,
 		guesses = [],
 		currentGuess = ''
-	}: WordlettuceGameConstructorArgs = {}) {
+	}: WordlettuceGameConstructorArgs) {
 		this.replaceState({ gameNum, guesses, currentGuess });
 	}
 
 	replaceState = ({
-		gameNum = getGameNum(),
+		gameNum,
 		guesses = [],
 		currentGuess = ''
-	}: WordlettuceGameConstructorArgs = {}) => {
+	}: WordlettuceGameConstructorArgs) => {
 		this.#gameNum = gameNum;
 		this.#currentGuess = currentGuess;
 		if (guesses) {
@@ -38,17 +38,17 @@ export class WordlettuceGame {
 		}
 	}
 
-	static fromStateString = (state: string) => {
+	static fromStateString = ({ state, currentGameNum }: { state: string; currentGameNum: number; }) => {
 		if (!state) {
-			return new WordlettuceGame();
+			return new WordlettuceGame({ gameNum: currentGameNum });
 		}
 		const decoded = atob(state);
 		const [gameNum, guesses, currentGuess] = decoded.split(';');
-		if (!gameNum || Number(gameNum) !== getGameNum()) {
-			return new WordlettuceGame();
+		if (!gameNum || Number(gameNum) !== currentGameNum) {
+			return new WordlettuceGame({ gameNum: currentGameNum });
 		}
 		return new WordlettuceGame({
-			gameNum: gameNum ? Number(gameNum) : getGameNum(),
+			gameNum: currentGameNum,
 			guesses: guesses.length ? guesses.split(',') : [],
 			currentGuess
 		});
@@ -108,7 +108,8 @@ export class WordlettuceGame {
 	}
 
 	toStateString = () => {
-		return btoa(`${this.#gameNum};${this.#guesses.join(',')};${this.#currentGuess}`);
+		const state = `${this.#gameNum};${this.#guesses.join(',')};${this.#currentGuess}`;
+		return btoa(state);
 	};
 
 	doLetter = (letter: GuessLetter) => {

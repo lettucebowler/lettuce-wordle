@@ -1,6 +1,5 @@
 export const prerender = false;
 import type { NavLinkProps } from '$lib/types.js';
-import { getGameNum } from '$lib/util/words.js';
 export async function load(event) {
 	event.depends('data:gamenum');
 	const links: NavLinkProps[] = [
@@ -24,7 +23,7 @@ export async function load(event) {
 		}
 	];
 	const auth = await event.locals.auth();
-	const gameNum = getGameNum();
+	const gameNum = event.locals.getGameStateV3().gameNum;
 	return {
 		nav: links,
 		session: auth,

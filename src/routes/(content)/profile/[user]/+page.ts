@@ -7,6 +7,7 @@ type GameResult = {
 
 export async function load(event) {
 	const parentData = await event.parent();
+	console.log(parentData);
 	const { user } = event.params;
 	const searchParams = event.url.searchParams;
 	const startParam = Number(searchParams.get('start')) || parentData.gameNum;

@@ -3,16 +3,16 @@
 	import { clickOutsideAction, trapFocus } from './actions';
 	import { appName } from '$lib/constants/app-constants';
 	import AuthForm from '$lib/components/AuthForm.svelte';
-	import { getGameNum } from '$lib/util/words';
 	import { createExpiringString, createNewGameCountDownTimer } from './spells.svelte';
 
 	type ModalProps = {
+		gameNum: number;
 		answers: Array<string>;
 		user?: string;
 		close: () => void;
 	};
 
-	let { answers, user, close }: ModalProps = $props();
+	let { answers, user, gameNum, close }: ModalProps = $props();
 	let isAuthenticated = $derived(!!user);
 	let attempts = $derived(answers.length);
 	const clipboardMessage = createExpiringString();
@@ -67,7 +67,6 @@
 	}
 
 	function getGameStatus(statuses: Array<string>) {
-		const gameNum = getGameNum();
 		const today = `${appName} ${gameNum} ${statuses.length}/6`;
 		const strings = statuses.map((k) => {
 			return k

@@ -1,8 +1,9 @@
 import { fail } from '@sveltejs/kit';
 import { STATE_COOKIE_NAME_V2, STATE_COOKIE_SETTINGS } from '$lib/constants/app-constants.js';
-import { createApiWordlettuceClient } from '$lib/client/api-wordlettuce.server.js';
+// import { createApiWordlettuceClient } from '$lib/client/api-wordlettuce.server.js';
 import * as v from 'valibot';
 import { GuessLetter } from '$lib/schemas/game.js';
+import { createWordLettuceDao } from '$lib/dao/wordlettuce.server.js';
 
 export const trailingSlash = 'never';
 
@@ -54,6 +55,7 @@ export const actions: import('./$types').Actions = {
 	},
 	word: async (event) => {
 		let game = event.locals.getGameStateV3();
+		console.log(game.gameNum, game.guesses);
 		if (game.success) {
 			return {
 				success: true,
@@ -83,12 +85,18 @@ export const actions: import('./$types').Actions = {
 			const session = await event.locals.auth();
 			if (session?.user) {
 				const userId = session.user.githubId;
-				const apiWordlettuce = createApiWordlettuceClient(event);
-				const inserts = await apiWordlettuce.saveGame({
-					answers: game.answers.join(''),
-					userId,
-					gameNum: game.gameNum
+				const wordLettuce = createWordLettuceDao(event);
+				const inserts = await wordLettuce.saveGame({
+					userId: userId,
+					gameNum: game.gameNum,
+					answers: game.answers.join('')
 				});
+				// const apiWordlettuce = createApiWordlettuceClient(event);
+				// const inserts = await apiWordlettuce.saveGame({
+				// 	answers: game.answers.join(''),
+				// 	userId,
+				// 	gameNum: game.gameNum
+				// });
 				if (!inserts.length) {
 					fail(500, { message: 'Error saving to database' });
 				}
